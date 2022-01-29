@@ -1,219 +1,28 @@
-h1 {
-  text-align: center;
-}
-
 body {
   background: #1d1d1e;
   color: white;
   font-family: "verdana";
 }
 
-.mainContainer {
-  width: 80%;
-  margin: auto auto;
+a {
+  color: #66ccfa;
+  text-decoration: none;
 }
 
-.mangaIndex {
-  margin-top: 50px;
-  display: flex;
-  background: #212428;
-  flex-wrap: wrap;
+video {
+  width: 100%;
+  height: auto;
 }
 
-.bookContainer {
-  padding: 20px;
-  background: #131416;
-  border: 1px solid #070707;
-  width: 25%;
-  text-align: center;
-}
-
-.bookCover {
-  width: 95%;
+#video-container {
+  width: 90%;
   height: auto;
   margin: auto;
-  overflow: hidden;
+  padding: 10px;
 }
 
-.bookCover img {
-  width: 100%;
-  height: auto;
-}
-
-.pagination {
-  text-align: center;
-  margin: 50px 0px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.paginationButton {
-  color: white !important;
-  background: #121a26 !important;
-  width: 5% !important;
-}
-
-.paginationButton:hover {
-  background: #182333 !important;
-}
-
-.buttonActive {
-  background: #1f2d42 !important;
-}
-
-.mangaSearch {
-  margin: auto;
-  margin-top: 50px;
-  width: 100%;
-  height: 50px;
-  justify-content: center;
-  padding: 0px;
-  display: flex;
-}
-
-.mangaSearch .ui.input {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-form {
-  width: 95%;
-  height: 100%;
-  border: none;
-}
-
-input {
-  background: #1f2d42 !important;
-  color: white !important;
-  font-size: 24px;
-  height: 100%;
-}
-
-/* single manga */
-.cover {
-  width: 40%;
-  height: auto;
-}
-
-.cover img {
-  width: 100%;
-  height: auto;
-}
-
-.metaData {
-  width: 55%;
-  margin-left: 30px;
-  padding: 20px;
-}
-
-.ui.big.label {
-  background: #121a26 !important;
-  color: #dae2ef !important;
-  margin-top: 5px !important;
-}
-
-.ui.big.label:hover {
-  background: #1f2c3f !important;
-}
-
-.backMangaButton {
-  margin-top: 20px !important;
-}
-
-.downloadButton {
-  height: 100%;
-  justify-content: center;
-  line-height: 23px !important;
-}
-
-.deleteContainer {
-  text-align: center;
-  margin-top: 100px;
-}
-
-.deleteButton {
-  width: 100%;
-  background: #261112 !important;
-  color: #dae2ef !important;
-}
-
-/* single page */
-.navbar {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.navbar a {
-  font-size: 26px;
-  margin-top: 20px;
-  margin-left: 25px;
-}
-
-.fullPage {
-  margin-top: 50px;
-  background: #212428;
-}
-
-.videoContainer {
-  margin-bottom: 50px;
-}
-
-.pageImage {
-  margin: auto;
-  width: auto;
-  height: 100%;
-}
-
-.pageImage img {
-  width: 100%;
-  height: auto;
-}
-
-.goBack {
-  position: fixed;
-  width: 30%;
-  height: 100%;
-  z-index: 100;
-  opacity: 0.5;
-  left: 0;
-}
-
-.goForward {
-  position: fixed;
-  width: 30%;
-  height: 100%;
-  z-index: 2;
-  opacity: 0.5;
-  right: 0;
-}
-
-/* Download Page */
-
-.widthSmall {
-  width: 60%;
-}
-
-.downloadBody {
-  width: 100%;
-  margin: auto auto;
-  margin-top: 30px;
-  background: #212428;
-  padding: 20px;
-}
-
-.downloadSubmit {
-  margin: auto !important;
-}
-
-@media only screen and (max-width: 1224px) {
-  .bookContainer {
-    width: 33%;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .bookContainer {
-    width: 50%;
-  }
+.back-button {
+  background-color: #004565;
+  padding: 8px 15px 8px 15px;
+  border-radius: 10px;
 }

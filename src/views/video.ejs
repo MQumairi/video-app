@@ -2,8 +2,8 @@
 <!-- START -->
 <h1><%= DIR_NAME %></h1>
 <h2><%= VID_NAME %></h2>
-<a class="button" href="/directory/<%= DIR_NAME %>">Back</a>
-<div>
+<a class="back-button" href="/directory/<%= DIR_NAME %>">Back</a>
+<div id="video-container">
   <video width="1000" height="500" controls autoplay loop playsinline>
     <source src="/api/videos/directory/<%= DIR_NAME %>/video/<%= VID_NAME %>" type="video/mp4" />
   </video>

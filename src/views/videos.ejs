@@ -5,7 +5,7 @@
 <a class="back-button" href="/">Back</a>
 <div id="item-grid">
   <% vids.forEach(vid => { %>
-  <h3><a href="/<%= vid.url %>"><%= vid.name %></a></h3>
+  <div class="item"><a href="/<%= vid.url %>"><%= vid.name %></a></div>
   <% }); %>
 </div>
 <!-- END -->

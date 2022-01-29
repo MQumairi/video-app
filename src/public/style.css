@@ -23,11 +23,20 @@ video {
 
 #item-grid {
   width: 100%;
+  margin: auto;
+  margin-top: 20px;
   height: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 5%;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+
+.item {
+  height: auto;
+  background: #000f17;
+  border-radius: 10px;
+  padding: 5px 10px;
 }
 
 .back-button {

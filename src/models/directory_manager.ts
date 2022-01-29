@@ -42,7 +42,7 @@ export class DirectoryManager {
 
   async isVideo(file_path: string): Promise<boolean> {
     let extension = path.extname(file_path);
-    return extension == ".mp4";
+    return extension == ".mp4" || extension == ".mov";
   }
 
   async listItems(directory: string = DirectoryManager.getDataPath()): Promise<string[]> {

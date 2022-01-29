@@ -1,15 +1,5 @@
-# Skeleton Node Project 
+# Video Server
 
-Template to use for Typescript based node project, employing PostGres and TypeORM for persistence.
+Node.js server written in typescript, that provides a web GUI to navigate the `/data` directory, and stream any `.mp4` video files found.
 
-To initialize project, run script.sh by passing node server port number and postgres database name as arguments:
-
-`bash script.sh <Port> <Psql Database Name>`
-
-For example, the following script will create a postgres database named "mydb", and run node server on port 3000:
-
-`bash script.sh 3000 mydb`
-
-To run server use:
-
-`npm run dev`
+Place your videos inside of directories. Place those directories inside of `/data` folder.

@@ -1,0 +1,1 @@
+Do not place videos directly inside of this directory. Instead, this directory must contain the folders which will hold your videos.

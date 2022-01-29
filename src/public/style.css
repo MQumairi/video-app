@@ -21,6 +21,15 @@ video {
   padding: 10px;
 }
 
+#item-grid {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5%;
+}
+
 .back-button {
   background-color: #004565;
   padding: 8px 15px 8px 15px;

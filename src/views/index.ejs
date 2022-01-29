@@ -3,10 +3,11 @@
 <!-- START -->
 <h1>Directories</h1>
 
-<% dirs.forEach(dir => { %>
-<h3><a href="/<%= dir.url %>"><%= dir.name %></a></h3>
-<% }); %>
-
+<div id="item-grid">
+  <% dirs.forEach(dir => { %>
+  <h3><a href="/<%= dir.url %>"><%= dir.name %></a></h3>
+  <% }); %>
+</div>
 <!-- END -->
 
 <%- include ("partials/footer") %>

@@ -3,10 +3,11 @@
 <!-- START -->
 <h1>Videos</h1>
 <a class="back-button" href="/">Back</a>
-<% vids.forEach(vid => { %>
-<h3><a href="/<%= vid.url %>"><%= vid.name %></a></h3>
-<% }); %>
-
+<div id="item-grid">
+  <% vids.forEach(vid => { %>
+  <h3><a href="/<%= vid.url %>"><%= vid.name %></a></h3>
+  <% }); %>
+</div>
 <!-- END -->
 
 <%- include ("partials/footer") %>

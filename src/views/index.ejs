@@ -1,0 +1,12 @@
+<%- include ("partials/header") %>
+
+<!-- START -->
+<h1>Directories</h1>
+
+<% dirs.forEach(dir => { %>
+<h3><a href="/<%= dir.url %>"><%= dir.name %></a></h3>
+<% }); %>
+
+<!-- END -->
+
+<%- include ("partials/footer") %>

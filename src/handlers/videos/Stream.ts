@@ -4,7 +4,7 @@ import { DirectoryManager } from "../../models/directory_manager";
 
 const Stream = async (req: Request, res: Response): Promise<boolean | undefined> => {
   //Define consts
-  const CHUNK_SIZE = 5 ** 6;
+  const CHUNK_SIZE = 50 ** 6;
 
   //Parse request
   const range = req.headers.range;

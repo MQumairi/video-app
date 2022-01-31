@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: #1d1d1e;
   color: white;
@@ -9,16 +14,46 @@ a {
   text-decoration: none;
 }
 
-video {
-  width: 100%;
-  height: auto;
+#video-page {
+  margin: 0;
+  height: 100vh;
+}
+
+#index-page {
+  margin: auto;
+  margin-top: 20px;
+  width: 80%;
+}
+
+#index-page #video-nav {
+  margin-bottom: 30px;
+}
+
+#video-nav {
+  height: 10vh;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#video-nav h1 {
+  text-align: center;
 }
 
 #video-container {
-  width: 90%;
-  height: auto;
+  height: 80vh;
+  width: auto;
   margin: auto;
-  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+video {
+  margin: auto;
+  height: 80vh;
+  width: auto;
 }
 
 #item-grid {
@@ -37,15 +72,6 @@ video {
   background: #000f17;
   border-radius: 10px;
   padding: 5px 10px;
-}
-
-#video-nav {
-  width: 90%;
-  margin: auto;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  padding-top: 10px;
 }
 
 .video-button {

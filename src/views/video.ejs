@@ -1,15 +1,17 @@
 <%- include ("partials/header") %>
 <!-- START -->
 <!-- <h2><%= VID_NAME %></h2> -->
-<div id="video-nav">
-  <a class="video-button back-button" href="/directory/<%= DIR_NAME %>">Back</a>
-  <h3><%= VID_NAME %></h3>
-  <a class="video-button shuffle-button" href="/<%= RANDOM_VID.url %>">Shuffle</a>
-</div>
-<div id="video-container">
-  <video width="1000" height="500" controls autoplay loop playsinline>
-    <source src="/api/videos/directory/<%= DIR_NAME %>/video/<%= VID_NAME %>" type="video/mp4" />
-  </video>
+<div id="video-page">
+  <div id="video-nav">
+    <a class="video-button back-button" href="/directory/<%= DIR_NAME %>">Back</a>
+    <h3><%= VID_NAME %></h3>
+    <a class="video-button shuffle-button" href="/<%= RANDOM_VID.url %>">Shuffle</a>
+  </div>
+  <div id="video-container">
+    <video width="1000" height="500" controls autoplay loop playsinline>
+      <source src="/api/videos/directory/<%= DIR_NAME %>/video/<%= VID_NAME %>" type="video/mp4" />
+    </video>
+  </div>
 </div>
 <!-- END -->
 <%- include ("partials/footer") %>

@@ -36,6 +36,11 @@ export class DirectoryManager {
     return out;
   }
 
+  async randomVideo(dir_path: string): Promise<IVideoFile> {
+    let videos = await this.listVideos(dir_path);
+    return videos[Math.floor(Math.random() * videos.length)];
+  }
+
   async isDirectory(file_path: string): Promise<boolean> {
     return (await fs.stat(file_path)).isDirectory();
   }

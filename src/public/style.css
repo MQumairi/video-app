@@ -39,8 +39,30 @@ video {
   padding: 5px 10px;
 }
 
-.back-button {
+#video-nav {
+  width: 90%;
+  margin: auto;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.video-button {
   background-color: #004565;
   padding: 8px 15px 8px 15px;
   border-radius: 10px;
+  height: 20px;
+}
+
+.shuffle-button {
+  /* margin-right: auto; */
+  margin-left: auto;
+}
+
+.back-button {
+  /* background-color: #004565;
+  padding: 8px 15px 8px 15px;
+  border-radius: 10px; */
+  margin-right: auto;
 }

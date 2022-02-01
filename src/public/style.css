@@ -52,8 +52,9 @@ a {
 
 video {
   margin: auto;
-  height: 80vh;
-  width: auto;
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
 }
 
 #item-grid {

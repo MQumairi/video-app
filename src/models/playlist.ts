@@ -9,7 +9,7 @@ export class Playlist {
   @Column("text")
   name: string;
 
-  @ManyToMany((type) => Video)
+  @ManyToMany((type) => Video, { eager: true })
   @JoinTable()
   videos: Video[];
 }

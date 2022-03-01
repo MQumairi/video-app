@@ -1,0 +1,19 @@
+<%- include ("partials/header") %>
+
+<!-- START -->
+<div id="index-page">
+  <div id="video-nav">
+    <a class="video-button back-button" href="/playlists">Back</a>
+    <h2>Create Playlist</h2>
+    <a class="video-button shuffle-button hide" href="/playlists">Back</a>
+  </div>
+  <div id="form-container">
+    <form action="/api/playlists" method="post">
+      <input class="text-field" type="text" name="name" /> <br />
+      <input class="submit-button large-submit" type="submit" value="Submit" />
+    </form>
+  </div>
+</div>
+<!-- END -->
+
+<%- include ("partials/footer") %>

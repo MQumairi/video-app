@@ -28,17 +28,12 @@ export class DirectoryManager {
         let directory = path.basename(dir_path);
         let video_file: IVideoFile = {
           name: file_name,
-          url: `directory/${directory}/video/${file_name}`,
+          src: `directory/${directory}/video/${file_name}`,
         };
         out.push(video_file);
       }
     }
     return out;
-  }
-
-  async randomVideo(dir_path: string): Promise<IVideoFile> {
-    let videos = await this.listVideos(dir_path);
-    return videos[Math.floor(Math.random() * videos.length)];
   }
 
   async isDirectory(file_path: string): Promise<boolean> {

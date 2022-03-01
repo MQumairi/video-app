@@ -8,27 +8,34 @@ import { Tag } from "./models/tag";
 import { Playlist } from "./models/playlist";
 import videoController from "./controllers/video_controller";
 import videoGUIController from "./controllers/video_gui_controller";
+import playlist_controller from "./controllers/playlist_controller";
+import playlist_gui_controller from "./controllers/playlist_gui_controller";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
-// createConnection({
-//   type: "postgres",
-//   host: "localhost",
-//   database: process.env.DBNAME,
-//   entities: [Video, Tag, Playlist],
-//   synchronize: true,
-//   logging: false,
-// });
+createConnection({
+  type: "postgres",
+  host: "localhost",
+  database: process.env.DBNAME,
+  entities: [Video, Tag, Playlist],
+  synchronize: true,
+  logging: false,
+});
 
 export const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.json())
+app.use(express.urlencoded({extended: true}));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 app.use("/", videoGUIController);
+app.use("/playlists", playlist_gui_controller);
 app.use("/api/videos", videoController);
+app.use("/api/playlists", playlist_controller);
 
 const port = process.env.PORT || 3000;
 

@@ -5,7 +5,18 @@
   <div id="video-nav">
     <a class="video-button back-button" href="/directory/<%= DIR_NAME %>">Back</a>
     <h3><%= VID_NAME %></h3>
-    <a class="video-button shuffle-button" href="/<%= RANDOM_VID.url %>">Shuffle</a>
+    <!-- FORM START -->
+    <form action="/api/playlists/add-video" method="post">
+      <label for="playlists">Add to</label>
+      <select name="playlist" id="playlist">
+        <% PLAYLISTS.forEach(playlist => { %>
+        <option value="<%= playlist.name %>"><%= playlist.name %></option>
+        <% }); %>
+      </select>
+      <input type="submit" value="Submit" />
+    </form>
+    <!-- FORM END -->
+    <a class="video-button shuffle-button" href="<%= RANDOM_VID %>?mode=<%= MODE %>&playlist=<%= PLAYLIST_NAME %>">Shuffle</a>
   </div>
   <div id="video-container">
     <video width="1000" height="500" controls autoplay loop playsinline>

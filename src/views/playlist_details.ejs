@@ -3,13 +3,13 @@
 <!-- START -->
 <div id="index-page">
   <div id="video-nav">
-    <a class="video-button back-button" href="/">Back</a>
-    <h3><%= DIR_NAME %></h3>
+    <a class="video-button back-button" href="/playlists">Back</a>
+    <h1><%= PLAYLIST.name %></h1>
     <a class="video-button shuffle-button" href="<%= RANDOM_VID %>?mode=<%= MODE %>&playlist=<%= PLAYLIST_NAME %>">Shuffle</a>
   </div>
   <div id="item-grid">
-    <% vids.forEach(vid => { %>
-    <div class="item"><a href="/<%= vid.src %>"><%= vid.name %></a></div>
+    <% PLAYLIST.videos.forEach(vid => { %>
+    <div class="item"><a href="<%= vid.src %>"><%= vid.name %></a></div>
     <% }); %>
   </div>
 </div>

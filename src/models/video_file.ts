@@ -1,4 +1,4 @@
 export interface IVideoFile {
-  url: string;
+  src: string;
   name: string;
 }

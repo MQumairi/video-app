@@ -1,0 +1,28 @@
+<%- include ("../partials/header") %>
+<!-- START -->
+<!-- <h2><%= VID_NAME %></h2> -->
+<div id="video-page">
+  <div id="video-nav">
+    <a class="video-button back-button" href="/playlists/<%= PLAYLIST_ID %>">Back</a>
+    <h3><%= VID_NAME %></h3>
+    <!-- FORM START -->
+    <form action="/api/playlists/add-video" method="post">
+      <label for="playlists">Add to</label>
+      <select name="playlist" id="playlist">
+        <% PLAYLISTS.forEach(playlist => { %>
+        <option value="<%= playlist.name %>"><%= playlist.name %></option>
+        <% }); %>
+      </select>
+      <input type="submit" value="Submit" />
+    </form>
+    <!-- FORM END -->
+    <a class="video-button shuffle-button" href="<%= RANDOM_VID %>">Shuffle</a>
+  </div>
+  <div id="video-container">
+    <video width="1000" height="500" controls autoplay loop playsinline>
+      <source src="<%= VID_SRC %>" type="video/mp4" />
+    </video>
+  </div>
+</div>
+<!-- END -->
+<%- include ("../partials/footer") %>

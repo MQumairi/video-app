@@ -10,9 +10,10 @@ import videoController from "./controllers/video_controller";
 import videoGUIController from "./controllers/video_gui_controller";
 import playlist_controller from "./controllers/playlist_controller";
 import playlist_gui_controller from "./controllers/playlist_gui_controller";
-import bodyParser from "body-parser";
 
 dotenv.config();
+
+export let pg_connected = false;
 
 createConnection({
   type: "postgres",
@@ -21,7 +22,13 @@ createConnection({
   entities: [Video, Tag, Playlist],
   synchronize: true,
   logging: false,
-});
+})
+  .then(() => {
+    pg_connected = true;
+  })
+  .catch(() => {
+    console.log("Failed to connect to postgres.");
+  });
 
 export const app = express();
 app.use(cors());

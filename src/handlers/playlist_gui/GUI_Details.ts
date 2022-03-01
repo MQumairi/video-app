@@ -12,11 +12,8 @@ const GUI_Details = async (req: Request, res: Response): Promise<void> => {
     playlist.name = "Unfound";
     playlist.videos = [];
   }
-
-  let mode: string = "playlist";
-  let random_vid_url = await new Shuffler().get_random_video(mode, "/", playlist.name);
-
-  res.render("playlist_details.ejs", { PLAYLIST: playlist, RANDOM_VID: random_vid_url, MODE: mode, PLAYLIST_NAME: playlist.name });
+  let random_vid_url = await new Shuffler().playlist_shuffle(id);
+  res.render("playlists/playlist_details.ejs", { PLAYLIST: playlist, RANDOM_VID: random_vid_url });
 };
 
 export default GUI_Details;

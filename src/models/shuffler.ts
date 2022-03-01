@@ -5,15 +5,6 @@ import { Video } from "./video";
 import { IVideoFile } from "./video_file";
 
 export default class Shuffler {
-  async get_random_video(mode: string, dir_path: string, playlist_name = ""): Promise<string> {
-    if (mode == "global") {
-      return await this.global_shuffle();
-    } else if (mode == "playlist") {
-      return await this.playlist_shuffle(playlist_name);
-    }
-    return await this.directory_shuffle(dir_path);
-  }
-
   async directory_shuffle(dir_path: string): Promise<string> {
     let directory_manager = new DirectoryManager();
     let videos = await directory_manager.listVideos(dir_path);
@@ -27,8 +18,8 @@ export default class Shuffler {
     return vid.src;
   }
 
-  async playlist_shuffle(playlist_name: string): Promise<string> {
-    let playlist = await getRepository(Playlist).findOne({ where: { name: playlist_name } });
+  async playlist_shuffle(playlist_id: number): Promise<string> {
+    let playlist = await getRepository(Playlist).findOne(playlist_id);
     if (playlist == undefined) {
       return "/";
     }

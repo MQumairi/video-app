@@ -12,7 +12,7 @@ const GUI_Vid = async (req: Request, res: Response): Promise<void> => {
 
   let mode: string = req.query.mode?.toString() ?? "";
   let playlist: string = req.query.playlist?.toString() ?? "";
-  let random_vid_url = await new Shuffler().get_random_video(mode, directory_path, playlist);
+  let random_vid_url = await new Shuffler().directory_shuffle(directory_path);
 
   const playlist_repo = getRepository(Playlist);
   const playlists = await playlist_repo.find();

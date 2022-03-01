@@ -6,6 +6,7 @@ import path from "path";
 
 const Add_Vid = async (req: Request, res: Response): Promise<void> => {
   let origin_url: string = (req.headers.referer ?? "/").split("5000")[1].split("?")[0];
+  let vid_url: string = "/directory" + origin_url.split("directory")[1];
   let playlist_name = req.body.playlist;
   let playlist_repo = getRepository(Playlist);
   let playlist = await playlist_repo.findOne({ where: { name: playlist_name } });
@@ -21,7 +22,7 @@ const Add_Vid = async (req: Request, res: Response): Promise<void> => {
     }
   }
   let video = new Video();
-  video.src = origin_url.replace("http//localhost:5000", "");
+  video.src = vid_url;
   video.name = path.basename(origin_url).split("%20").join(" ");
   await getRepository(Video).save(video);
   playlist.videos.push(video);

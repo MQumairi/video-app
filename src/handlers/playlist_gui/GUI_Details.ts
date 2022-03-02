@@ -12,7 +12,7 @@ const GUI_Details = async (req: Request, res: Response): Promise<void> => {
     playlist.name = "Unfound";
     playlist.videos = [];
   }
-  let random_vid_url = await new Shuffler().playlist_shuffle(id);
+  let random_vid_url = "/playlists/" + id + (await new Shuffler().playlist_shuffle(id));
   res.render("playlists/playlist_details.ejs", { PLAYLIST: playlist, RANDOM_VID: random_vid_url });
 };
 

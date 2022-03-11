@@ -33,6 +33,10 @@ a {
   width: 80%;
 }
 
+#index-page h1 {
+  text-align: center;
+}
+
 #index-page #video-nav {
   margin-bottom: 30px;
 }
@@ -42,12 +46,8 @@ a {
   width: 90%;
   margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-}
-
-#video-nav h1 {
-  text-align: center;
 }
 
 #video-container {
@@ -88,18 +88,6 @@ video {
   padding: 8px 15px 8px 15px;
   border-radius: 10px;
   height: 20px;
-}
-
-.shuffle-button {
-  /* margin-right: auto; */
-  margin-left: auto;
-}
-
-.back-button {
-  /* background-color: #004565;
-  padding: 8px 15px 8px 15px;
-  border-radius: 10px; */
-  margin-right: auto;
 }
 
 #form-container {

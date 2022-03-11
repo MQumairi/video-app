@@ -46,14 +46,10 @@ app.use("/api/playlists", playlist_controller);
 
 const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello world" });
-});
-
 app.get("*", (req: Request, res: Response) => {
   res.json({ message: "page not found" });
 });
 
 app.listen(port, () => {
-  console.log("listening on " + port);
+  console.log("listening on: http://localhost:" + port + "/");
 });

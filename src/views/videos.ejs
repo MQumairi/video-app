@@ -2,9 +2,10 @@
 
 <!-- START -->
 <div id="index-page">
+  <h1><%= DIR_NAME %></h1>
   <div id="video-nav">
     <a class="video-button back-button" href="/">Back</a>
-    <h3><%= DIR_NAME %></h3>
+    <a class="video-button shuffle-button" href="/directory/<%= DIR_NAME %>/edit">Edit</a>
     <a class="video-button shuffle-button" href="<%= RANDOM_VID %>?mode=<%= MODE %>&playlist=<%= PLAYLIST_NAME %>">Shuffle</a>
   </div>
   <div id="item-grid">

@@ -3,16 +3,20 @@
 <!-- START -->
 <div id="index-page">
   <div id="video-nav">
-    <a class="video-button back-button" href="/playlists">Back</a>
+    <a class="video-button back-button" href="/playlists/<%= PLAYLIST.id %>">Back</a>
     <h1><%= PLAYLIST.name %></h1>
     <a class="video-button shuffle-button" href="<%= RANDOM_VID %>">Shuffle</a>
   </div>
   <div id="item-grid">
     <form action="/api/playlists/<%= PLAYLIST.id %>/delete-videos" method="POST">
-      <% PLAYLIST.videos.forEach(vid => { %>
-      <div class="item"><input type="checkbox" name="<%= vid.id %>" /><a href="/playlists/<%= PLAYLIST.id %><%= vid.src %>"><%= vid.name %></a></div>
-      <% }); %>
-      <input type="submit" />
+      <div class="form-edit">
+        <% PLAYLIST.videos.forEach(vid => { %>
+        <div class="item"><input type="checkbox" name="<%= vid.id %>" /><a href="/playlists/<%= PLAYLIST.id %><%= vid.src %>"><%= vid.name %></a></div>
+        <% }); %>
+      </div>
+      <div class="form-edit">
+        <input class="form-submit" type="submit" value="Delete" />
+      </div>
     </form>
   </div>
 </div>

@@ -118,7 +118,7 @@ video {
   border-radius: 10px;
 }
 
-input[type="submit"] {
+.form-submit {
   padding: 5px 15px;
   background-color: #004565;
   color: white;

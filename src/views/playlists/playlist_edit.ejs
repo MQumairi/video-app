@@ -11,11 +11,15 @@
     <form action="/api/playlists/<%= PLAYLIST.id %>/delete-videos" method="POST">
       <div class="form-edit">
         <% PLAYLIST.videos.forEach(vid => { %>
-        <div class="item"><input type="checkbox" name="<%= vid.id %>" /><a href="/playlists/<%= PLAYLIST.id %><%= vid.src %>"><%= vid.name %></a></div>
+        <div class="item">
+          <input type="checkbox" name="<%= vid.id %>" />
+          <%= vid.name %>
+        </div>
         <% }); %>
       </div>
       <div class="form-edit">
-        <input class="form-submit" type="submit" value="Delete" />
+        <input class="form-submit" type="submit" value="Remove Selected Videos" />
+        <a class="form-submit" href="/playlists/<%= PLAYLIST.id %>/delete">Delete Playlist</a>
       </div>
     </form>
   </div>

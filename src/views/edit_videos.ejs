@@ -21,7 +21,7 @@
         <% vids.forEach(vid => { %>
         <div class="item">
           <input type="checkbox" name="<%= vid.name %>" />
-          <a href="<%= vid.src %>"><%= vid.name %></a>
+          <%= vid.name %>
         </div>
         <% }); %>
       </div>

@@ -1,0 +1,14 @@
+<%- include ("../partials/header") %>
+
+<!-- START -->
+<div id="index-page">
+  <h1><%= PLAYLIST.name %></h1>
+  <h3 style="text-align: center">Are you sure you want to delete this playlist?</h3>
+  <div class="form-edit">
+    <a class="form-submit" href="/playlists/<%= PLAYLIST.id %>/edit">Back</a>
+    <a class="form-submit" href="/api/playlists/<%= PLAYLIST.id %>/delete">Delete</a>
+  </div>
+</div>
+<!-- END -->
+
+<%- include ("../partials/footer") %>

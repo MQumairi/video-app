@@ -3,6 +3,7 @@ import Add_Vid from "../handlers/playlists/Add_Vid";
 import Add_Vids from "../handlers/playlists/Add_Vids";
 import Create from "../handlers/playlists/Create";
 import Delete_Vid from "../handlers/playlists/Delete_Vid";
+import Delete from "../handlers/playlists/Delete";
 
 const playlist_controller = Router();
 
@@ -16,6 +17,10 @@ playlist_controller.post("/:dirname/add-videos", async (req: Request, res: Respo
 
 playlist_controller.post("/:id/delete-videos", async (req: Request, res: Response) => {
   await Delete_Vid(req, res);
+});
+
+playlist_controller.get("/:id/delete", async (req: Request, res: Response) => {
+  await Delete(req, res);
 });
 
 playlist_controller.post("/", async (req: Request, res: Response) => {

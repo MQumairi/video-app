@@ -17,7 +17,8 @@ export let pg_connected = false;
 
 createConnection({
   type: "postgres",
-  host: "localhost",
+  host: "host.docker.internal",
+  username: "user",
   database: process.env.DBNAME,
   entities: [Video, Tag, Playlist],
   synchronize: true,
@@ -44,7 +45,7 @@ app.use("/playlists", playlist_gui_controller);
 app.use("/api/videos", videoController);
 app.use("/api/playlists", playlist_controller);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.get("*", (req: Request, res: Response) => {
   res.json({ message: "page not found" });

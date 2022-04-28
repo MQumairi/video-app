@@ -1,7 +1,12 @@
+import DirectoryList from "./directories/directory_list";
+
 const App = () => {
   return (
-    <div>Video App 2.0</div>
+    <div>
+      <h1>Video App</h1>
+      <DirectoryList />
+    </div>
   );
-}
+};
 
 export default App;

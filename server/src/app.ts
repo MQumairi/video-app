@@ -10,6 +10,7 @@ import videoController from "./controllers/video_controller";
 import videoGUIController from "./controllers/video_gui_controller";
 import playlist_controller from "./controllers/playlist_controller";
 import playlist_gui_controller from "./controllers/playlist_gui_controller";
+import directory_controller from "./controllers/directory_controller";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use("/", videoGUIController);
 app.use("/playlists", playlist_gui_controller);
 app.use("/api/videos", videoController);
 app.use("/api/playlists", playlist_controller);
+app.use("/api/directories", directory_controller);
 
 const port = process.env.PORT || 5000;
 

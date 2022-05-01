@@ -59,3 +59,24 @@ test("can find parent", () => {
   expect(dir_2.get_parent_dir()).toBe("data");
   expect(sub_dir.get_parent_dir()).toBe("data/dir_1");
 });
+
+test("can build directory from path", async () => {
+  let expected_root_object = {
+    path: "data",
+    video_paths: ["data/vid.mov", "data/vid.mp4"],
+    directory_paths: ["data/dir_1", "data/dir_2"],
+  };
+  expect(await Directory.from_path("data")).toMatchObject(expected_root_object);
+  let expected_dir_1_object = {
+    path: "data/dir_1",
+    video_paths: ["data/dir_1/vid.mov", "data/dir_1/vid.mp4"],
+    directory_paths: ["data/dir_1/sub_dir"],
+  };
+  expect(await Directory.from_path("data/dir_1")).toMatchObject(expected_dir_1_object);
+  let expected_sub_dir_object = {
+    path: "data/dir_1/sub_dir",
+    video_paths: [],
+    directory_paths: [],
+  };
+  expect(await Directory.from_path("data/dir_1/sub_dir")).toMatchObject(expected_sub_dir_object);
+});

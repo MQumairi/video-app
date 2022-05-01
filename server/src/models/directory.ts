@@ -6,12 +6,29 @@ export interface IDirectory {
 
 import fs from "fs/promises";
 import path from "path";
+import { existsSync } from "fs";
 
 export class Directory {
+  static async from_path(path: string): Promise<Directory | undefined> {
+    if (!existsSync(path) || !(await Directory.is_directory(path))) {
+      return undefined;
+    }
+    let directory = new Directory(path);
+    await directory.read_contents();
+    return directory;
+  }
+
   path: string;
+  video_paths: string[];
+  directory_paths: string[];
 
   constructor(path_: string) {
     this.path = path.join(path_);
+  }
+
+  async read_contents() {
+    this.video_paths = await this.list_video_paths();
+    this.directory_paths = await this.list_directory_paths();
   }
 
   async list_directory_paths(): Promise<string[]> {

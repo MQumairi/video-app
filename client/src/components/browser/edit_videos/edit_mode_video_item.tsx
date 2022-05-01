@@ -1,4 +1,5 @@
 import VideoFileIcon from "@mui/icons-material/VideoFile";
+import { Checkbox } from "@mui/material";
 
 export const EditModeVideoItem = (props: any) => {
   const card_style = {
@@ -12,15 +13,24 @@ export const EditModeVideoItem = (props: any) => {
     height: "auto",
     textAlign: "center",
   };
+
+  const checkbox_style = {
+    color: "white",
+    margin: "auto",
+  };
+
+  const handle_change = (event: any) => {
+    console.log("checked ", props.vid);
+    props.modify_set(props.vid);
+  };
+
   return (
-    <div
-      style={card_style}
-      onClick={() => {
-        props.fetch_directory(props.dir);
-      }}
-    >
+    <div style={card_style}>
       <VideoFileIcon sx={icon_style} />
-      <h4 style={{ textAlign: "center" }}>Edit {props.vid.name}</h4>
+      <div>
+        <Checkbox sx={checkbox_style} onChange={handle_change} />
+      </div>
+      <h4 style={{ textAlign: "center" }}>{props.vid.name}</h4>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { Video } from "./models/video";
+import { VideoMeta } from "./models/video_meta";
 import { Tag } from "./models/tag";
 import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
@@ -18,14 +18,15 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [Video, Tag],
+  entities: [VideoMeta, Tag],
   synchronize: true,
   logging: false,
 })
   .then(() => {
     pg_connected = true;
   })
-  .catch(() => {
+  .catch((error) => {
+    console.log(error);
     console.log("Failed to connect to postgres.");
   });
 

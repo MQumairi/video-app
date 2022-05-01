@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
-import { Video } from "./video";
+import { VideoMeta } from "./video_meta";
 
 @Entity()
 export class Tag {
@@ -9,7 +9,7 @@ export class Tag {
   @Column("text")
   name: string;
 
-  @ManyToMany((type) => Video, { eager: true })
+  @ManyToMany((type) => VideoMeta, { eager: true })
   @JoinTable()
-  videos: Video[];
+  videos: VideoMeta[];
 }

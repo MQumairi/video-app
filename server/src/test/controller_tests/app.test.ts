@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app, { not_found_error } from "../app";
+import app, { not_found_error } from "../../app";
 
 const request = supertest(app);
 

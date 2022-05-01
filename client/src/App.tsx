@@ -6,6 +6,7 @@ import { TagsIndexPage } from "./components/tags/tags_index/tags_index_page";
 import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
 import { TagDetailsPage } from "./components/tags/tag_details/tag_details_page";
+import { TagVideoPage } from "./components/tags/tag_video/tag_video_page";
 
 const App = () => {
   const box_style = {
@@ -24,11 +25,14 @@ const App = () => {
       <a href="/tags">Tags</a>
       <BrowserRouter>
         <Routes>
+          {/* Main Browser */}
           <Route index element={<BrowserPage />} />
           <Route path="browser/:dir_path" element={<BrowserPage />} />
           <Route path="player/:vid_path" element={<PlayerPage />} />
+          {/* Tag System */}
           <Route path="tags" element={<TagsIndexPage />} />
           <Route path="tags/new" element={<TagsCreatePage />} />
+          <Route path="tags/:id/video/:vid_path" element={<TagVideoPage />} />
           <Route path="tags/:id" element={<TagDetailsPage />} />
         </Routes>
       </BrowserRouter>

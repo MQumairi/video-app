@@ -1,44 +1,31 @@
 import { Request, Response } from "express";
-import fs from "fs";
-import { DirectoryManager } from "../../models/directory_manager";
+import { Streamer } from "../../models/streamer";
+import { not_found_error } from "../../app";
+import { Directory } from "../../models/directory";
 
-const Stream = async (req: Request, res: Response): Promise<boolean | undefined> => {
-  //Define consts
-  const CHUNK_SIZE = 50 ** 6;
-
-  //Parse request
+const Stream = async (req: Request, res: Response): Promise<boolean> => {
+  // Determine that request includes a range
   const range = req.headers.range;
   if (!range) {
-    res.status(404).send("Range not found");
-    return;
+    res.status(404).send(not_found_error);
+    return false;
   }
 
-  //Video path
-  let dirname = req.params.dirname;
-  let vidname = req.params.vidname;
-  const path = DirectoryManager.getDataPath() + "/" + dirname + "/" + vidname;
+  //Determine that video path is valid
+  const vid_path = req.params.filepath;
+  if (!Directory.is_video(vid_path)) {
+    res.status(404).send(not_found_error);
+    return false;
+  }
 
-  //Get file size
-  const video_size = fs.statSync(path).size;
+  // Create Streamer
+  const streamer = new Streamer(vid_path, range);
 
-  let t = range; //"bytes=0-1";
-  let ts = t.split("bytes=")[1].split("-");
-
-  const start = Number(ts[0]);
-  const end = Number(ts[1]) > start ? Number(ts[1]) : Math.min(start + CHUNK_SIZE, video_size - 1);
-  const responseLength = end - start + 1;
-
-  //Write response headers
-  const headers = {
-    "Content-Range": `bytes ${start}-${end}/${video_size}`,
-    "Accept-Ranges": "bytes",
-    "Content-Length": responseLength,
-    "Content-Type": "video/mp4",
-  };
-  res.writeHead(206, headers);
+  // Write headers
+  res.writeHead(206, streamer.get_header());
 
   //Pipe binary
-  const video_stream = fs.createReadStream(path, { start, end });
+  const video_stream = streamer.create_stream();
   video_stream.pipe(res);
   return true;
 };

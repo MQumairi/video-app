@@ -6,7 +6,7 @@ import { createConnection } from "typeorm";
 import { Video } from "./models/video";
 import { Tag } from "./models/tag";
 import { Playlist } from "./models/playlist";
-import videoController from "./controllers/video_controller";
+import video_controller from "./controllers/video_controller";
 import videoGUIController from "./controllers/video_gui_controller";
 import playlist_controller from "./controllers/playlist_controller";
 import playlist_gui_controller from "./controllers/playlist_gui_controller";
@@ -43,7 +43,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use("/", videoGUIController);
 app.use("/playlists", playlist_gui_controller);
-app.use("/api/videos", videoController);
+app.use("/api/videos", video_controller);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/directories", directory_controller);
 

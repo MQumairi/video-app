@@ -6,8 +6,10 @@ export const TagItem = (props: any) => {
     borderRadius: "10px",
   };
   return (
-    <div style={card_style}>
-      <h4>{props.tag.name}</h4>
-    </div>
+    <a href={`/tags/${props.tag.id}`}>
+      <div style={card_style}>
+        <h4>{props.tag.name}</h4>
+      </div>
+    </a>
   );
 };

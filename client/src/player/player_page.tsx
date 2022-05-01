@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../util/path_converter";
 import IVdeoMeta from "../models/video_meta";
-import { base_url, Video } from "../api/agent";
+import { Video } from "../api/agent";
 import { useEffect, useState } from "react";
+import { Box } from "@mui/system";
+import { BackButton } from "../browser/back_button";
+import { VideoPlayer } from "./video_player";
 
 export const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "data";
@@ -18,17 +21,26 @@ export const PlayerPage = () => {
     fetch_video_meta(vid_path);
   }, []);
 
+  const box_style = {
+    backgroundColor: "#000f17",
+    width: "80%",
+    height: "min-content",
+    margin: "auto",
+    marginTop: "50px",
+    borderRadius: "10px",
+    padding: "25px",
+  };
+
+  const get_parent_path = () => {
+    const query = (video_meta && PathConverter.to_query(video_meta.parent_path)) ?? "/";
+    return `/browser/${query}`;
+  };
+
   return (
-    <div>
-      <h1>Player Page</h1>
-      <p>{vid_path}</p>
-      <p>{video_meta?.name}</p>
-      <p>{video_meta?.path}</p>
-      <b>Go Back: </b>
-      <a href={`/browser/${PathConverter.to_query(video_meta?.parent_path ?? "data")}`}>Back</a>
-      <video width="1000" height="500" controls autoPlay loop playsInline>
-        <source src={`${base_url}/videos/${PathConverter.to_query(vid_path)}`} type="video/mp4" />
-      </video>
-    </div>
+    <Box sx={box_style}>
+      <h1>{video_meta?.name}</h1>
+      <BackButton href={get_parent_path()} />
+      <VideoPlayer vid_path={vid_path} />
+    </Box>
   );
 };

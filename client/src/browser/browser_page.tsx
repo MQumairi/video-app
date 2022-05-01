@@ -18,10 +18,6 @@ const BrowserPage = () => {
     set_directory(responded_directory);
   };
 
-  const check_and_fetch = async () => {
-    directory && (await fetch_directory(directory.parent_path));
-  };
-
   useEffect(() => {
     fetch_directory(dir_path);
   }, []);
@@ -38,8 +34,8 @@ const BrowserPage = () => {
   return (
     <Box component="div" sx={box_style}>
       <div className="browser-container">
-        <h1>{directory?.name ?? "Nothing"}</h1>
-        <BackButton on_click={check_and_fetch} />
+        <h1>{directory?.name}</h1>
+        <BackButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} />
         {directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
         {directory && <DirectoryVideos video_paths={directory.video_paths} />}
       </div>

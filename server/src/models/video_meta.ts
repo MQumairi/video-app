@@ -16,7 +16,7 @@ export class VideoMeta {
   @Column("text")
   parent_path: string;
 
-  @ManyToMany((type) => Tag, (tag) => tag.videos, { eager: true })
+  @ManyToMany((type) => Tag, (tag) => tag.videos)
   tags: Tag[];
 
   constructor(path_: any) {

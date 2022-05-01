@@ -7,17 +7,14 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
-  let found_tag = await tag_repo.findOne(id);
-  if (found_tag === undefined) {
+  let found_tag = await tag_repo.findOne({ relations: ["videos"], where: { id: id } });
+  if (!found_tag) {
     res.status(404).send("Tag not found");
     return undefined;
   }
-  const videos_to_add: VideoMeta[] = req.body.videos;
+  const videos_to_add: VideoMeta[] = req.body.videos ?? [];
   for (let received_video of videos_to_add) {
-    if (!found_tag.videos) {
-      break;
-    }
-    const found_in_tag = found_tag.videos.find((v) => v.path == received_video.path);
+    const found_in_tag = found_tag.videos.find((vid) => vid.path == received_video.path);
     if (!found_in_tag) {
       let added_video = await video_repo.save(new VideoMeta(received_video.path));
       found_tag.videos.push(added_video);

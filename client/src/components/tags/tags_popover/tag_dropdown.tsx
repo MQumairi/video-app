@@ -19,10 +19,15 @@ export const TagDropDown = (props: any) => {
     fetch_tags();
   }, []);
 
+  const selector_style = {
+    background: "#064669",
+    color: "white",
+  };
+
   return (
     <div>
       {tags.length > 0 && (
-        <Select labelId="tag-dropdown" id="tag-dropdown" label="tags" value={props.selected_tag_id ?? 1} onChange={handle_change}>
+        <Select sx={selector_style} labelId="tag-dropdown" id="tag-dropdown" label="tags" value={props.selected_tag_id ?? 1} onChange={handle_change}>
           {tags.map((tag) => {
             return (
               <MenuItem key={tag.id} value={tag.id}>

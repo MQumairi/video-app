@@ -9,7 +9,7 @@ export const TagVideoPopover = (props: any) => {
   const [selected_tag_id, set_selected_tag_id] = useState<number>(1);
 
   const style = {
-    background: "red",
+    background: "#022a40",
     width: "500px",
     height: "min-content",
     padding: "20px",
@@ -29,9 +29,7 @@ export const TagVideoPopover = (props: any) => {
   return (
     <div style={style}>
       <TagDropDown selected_tag_id={selected_tag_id} set_selected_tag_id={set_selected_tag_id} />
-      <h1>TAG POPOVER</h1>
-      <h1>TAG POPOVER</h1>
-      <h1>TAG POPOVER</h1>
+      <p>Associate the video with the selected tag.</p>
       <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} textContent="Cancel" />
       <FunctionButton fn={send_video} textContent="Submit" />
     </div>

@@ -3,7 +3,7 @@ import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
 import { Video } from "../../api/agent";
 import { useEffect, useState } from "react";
-import { BackButton } from "../browser/back_button";
+import { AppButton } from "../misc/app_button";
 import { VideoPlayer } from "./video_player";
 
 export const PlayerPage = () => {
@@ -28,7 +28,7 @@ export const PlayerPage = () => {
   return (
     <div>
       <h1>{video_meta?.name}</h1>
-      <BackButton href={get_parent_path()} />
+      <AppButton href={get_parent_path()} textContent="Back" />
       <VideoPlayer vid_path={vid_path} />
     </div>
   );

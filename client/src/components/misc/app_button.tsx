@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
 
-export const BackButton = (props: any) => {
+export const AppButton = (props: any) => {
   return (
     <Button variant="contained" href={props.href} sx={{ marginTop: "20px" }}>
-      Back
+      {props.textContent}
     </Button>
   );
 };

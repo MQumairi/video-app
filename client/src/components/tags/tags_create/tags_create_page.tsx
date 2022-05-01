@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tag } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
+import { AppButton } from "../../misc/app_button";
 
 export const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
@@ -17,7 +18,8 @@ export const TagsCreatePage = () => {
   };
   return (
     <div>
-      Tags create page <a href="/tags">Back</a>
+      <h1>New Tag </h1>
+      <AppButton href="/tags" textContent="Back" />
       <form onSubmit={on_submit}>
         <label>
           Name:

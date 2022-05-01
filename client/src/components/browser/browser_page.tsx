@@ -5,7 +5,7 @@ import IDirectory from "../../models/directory";
 import { PathConverter } from "../../util/path_converter";
 import { DirectoryVideos } from "./directory_videos";
 import { SubDirectoryList } from "./sub_directory_list";
-import { AppButton } from "../misc/app_button";
+import { HrefButton } from "../misc/href_button";
 
 const BrowserPage = () => {
   let dir_path = useParams().dir_path ?? "videos";
@@ -24,7 +24,7 @@ const BrowserPage = () => {
   return (
     <div>
       <h1>{directory?.name}</h1>
-      <AppButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
+      <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
       {directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
       {directory && <DirectoryVideos video_paths={directory.video_paths} />}
     </div>

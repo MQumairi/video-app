@@ -4,6 +4,7 @@ import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 
 const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
+  console.log("Entered add video");
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
@@ -16,9 +17,8 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
   for (let received_video of videos_to_add) {
     const found_in_tag = found_tag.videos.find((v) => v.path == received_video.path);
     if (!found_in_tag) {
-      let new_video = new VideoMeta(received_video.path);
-      video_repo.save(new_video);
-      found_tag.videos.push(new_video);
+      let added_video = await video_repo.save(new VideoMeta(received_video.path));
+      found_tag.videos.push(added_video);
     }
   }
   await tag_repo.save(found_tag);

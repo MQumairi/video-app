@@ -20,7 +20,7 @@ export class VideoMeta {
       return;
     }
     this.name = path.basename(path_);
-    this.path = path_;
+    this.path = path.join(path_);
     this.parent_path = path.dirname(path_);
   }
 }

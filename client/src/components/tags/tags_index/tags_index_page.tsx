@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
-import { AppButton } from "../../misc/app_button";
+import { HrefButton } from "../../misc/href_button";
 import { TagsList } from "./tags_list";
 
 export const TagsIndexPage = () => {
@@ -16,7 +16,7 @@ export const TagsIndexPage = () => {
   return (
     <div>
       <h1>Tags</h1>
-      <AppButton href="/tags/new" textContent="Create" />
+      <HrefButton href="/tags/new" textContent="Create" />
       <TagsList tags={tags} />
     </div>
   );

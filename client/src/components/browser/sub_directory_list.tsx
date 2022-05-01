@@ -12,7 +12,7 @@ export const SubDirectoryList = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.directory_paths.map((dir: string) => {
-        return <SubDirectoryItem dir={dir} fetch_directory={props.fetch_directory} />;
+        return <SubDirectoryItem dir={dir} fetch_directory={props.fetch_directory} key={dir} />;
       })}
     </Box>
   );

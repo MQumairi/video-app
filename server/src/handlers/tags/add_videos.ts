@@ -16,8 +16,8 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
   for (let received_video of videos_to_add) {
     const found_in_tag = found_tag.videos.find((vid) => vid.path == received_video.path);
     if (!found_in_tag) {
-      let added_video = await video_repo.save(new VideoMeta(received_video.path));
-      found_tag.videos.push(added_video);
+      let added_video = await video_repo.findOne({ where: { name: received_video.name } });
+      found_tag.videos.push(added_video ?? (await video_repo.save(new VideoMeta(received_video.path))));
     }
   }
   await tag_repo.save(found_tag);

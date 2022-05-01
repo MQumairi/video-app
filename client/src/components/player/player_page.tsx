@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { PathConverter } from "../util/path_converter";
-import IVdeoMeta from "../models/video_meta";
-import { Video } from "../api/agent";
+import { PathConverter } from "../../util/path_converter";
+import IVdeoMeta from "../../models/video_meta";
+import { Video } from "../../api/agent";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { BackButton } from "../browser/back_button";

@@ -1,5 +1,5 @@
 import FolderIcon from "@mui/icons-material/Folder";
-import { PathConverter } from "../util/path_converter";
+import { PathConverter } from "../../util/path_converter";
 
 const get_base_name = (file: string) => {
   let split_arr = file.split("/");

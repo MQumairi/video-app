@@ -1,5 +1,5 @@
-import { base_url } from "../api/agent";
-import { PathConverter } from "../util/path_converter";
+import { base_url } from "../../api/agent";
+import { PathConverter } from "../../util/path_converter";
 
 export const VideoPlayer = (props: any) => {
   const box_style = {

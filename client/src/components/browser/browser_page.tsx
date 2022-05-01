@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Directory } from "../api/agent";
-import IDirectory from "../models/directory";
-import { PathConverter } from "../util/path_converter";
+import { Directory } from "../../api/agent";
+import IDirectory from "../../models/directory";
+import { PathConverter } from "../../util/path_converter";
 import { DirectoryVideos } from "./directory_videos";
 import { SubDirectoryList } from "./sub_directory_list";
 import { Box } from "@mui/system";

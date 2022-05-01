@@ -9,7 +9,7 @@ import { VideoPlayer } from "./video_player";
 import { TagVideoPopover } from "../tags/tags_popover/tag_video_popover";
 
 export const PlayerPage = () => {
-  let vid_path = useParams().vid_path ?? "data";
+  let vid_path = useParams().vid_path ?? "videos";
   const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [tag_toggled, set_tag_toggled] = useState<boolean>(false);
 

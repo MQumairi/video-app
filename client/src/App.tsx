@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { TagsIndexPage } from "./components/tags/tags_index/tags_index_page";
 import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
+import { TagDetailsPage } from "./components/tags/tag_details/tag_details_page";
 
 const App = () => {
   const box_style = {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="player/:vid_path" element={<PlayerPage />} />
           <Route path="tags" element={<TagsIndexPage />} />
           <Route path="tags/new" element={<TagsCreatePage />} />
+          <Route path="tags/:id" element={<TagDetailsPage />} />
         </Routes>
       </BrowserRouter>
     </Box>

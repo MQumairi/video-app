@@ -18,5 +18,6 @@ export const Video = {
 export const Tag = {
   get: async () => axios.get(`tags`),
   post: async (video_meta: IVideoMeta) => axios.post(`tags`, video_meta),
+  details: async (tag_id: number) => axios.get(`tags/${tag_id}`),
   add_video: async (updated_tag: ITag) => axios.put(`tags/${updated_tag.id}/video/add`, updated_tag),
 };

@@ -11,9 +11,5 @@ export class Video {
   name: string;
 
   @Column("text")
-  src: string;
-
-  @ManyToMany((type) => Tag, { eager: true })
-  @JoinTable()
-  tags: Tag[];
+  path: string;
 }

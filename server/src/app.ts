@@ -5,11 +5,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Video } from "./models/video";
 import { Tag } from "./models/tag";
-import { Playlist } from "./models/playlist";
 import video_controller from "./controllers/video_controller";
-import videoGUIController from "./controllers/video_gui_controller";
-import playlist_controller from "./controllers/playlist_controller";
-import playlist_gui_controller from "./controllers/playlist_gui_controller";
 import directory_controller from "./controllers/directory_controller";
 
 dotenv.config();
@@ -21,7 +17,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [Video, Tag, Playlist],
+  entities: [Video, Tag],
   synchronize: true,
   logging: false,
 })
@@ -35,16 +31,8 @@ createConnection({
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
-
-app.use("/", videoGUIController);
-app.use("/playlists", playlist_gui_controller);
 app.use("/api/videos", video_controller);
-app.use("/api/playlists", playlist_controller);
 app.use("/api/directories", directory_controller);
 
 export const not_found_error = { message: "page not found" };

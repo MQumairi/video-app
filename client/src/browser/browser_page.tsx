@@ -5,7 +5,7 @@ import { PathConverter } from "../util/path_converter";
 import { DirectoryVideos } from "./directory_videos";
 import { SubDirectoryList } from "./sub_directory_list";
 
-const DirectoryPanel = (props: any) => {
+const BrowserPage = (props: any) => {
   const [directory, set_directory] = useState<IDirectory | null>(null);
 
   const fetch_directory = async (query: string) => {
@@ -41,4 +41,4 @@ const DirectoryPanel = (props: any) => {
   );
 };
 
-export default DirectoryPanel;
+export default BrowserPage;

@@ -1,11 +1,11 @@
-import DirectoryPanel from "./browser/directory_panel";
+import BrowserPage from "./browser/browser_page";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { PlayerPage } from "./player/player_page";
 
 const App = () => {
   return (
-    <div>
-      <h1>Video App</h1>
-      <DirectoryPanel dir_path="data" />
-    </div>
+    // <BrowserPage dir_path="data" />
+    <BrowserRouter></BrowserRouter>
   );
 };
 

@@ -12,11 +12,11 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
     res.status(404).send("Tag not found");
     return undefined;
   }
-  const videos_to_add: string[] = req.body.videos;
-  for (let path of videos_to_add) {
-    const found_in_tag = found_tag.videos.find((v) => v.path == path);
+  const videos_to_add: VideoMeta[] = req.body.videos;
+  for (let received_video of videos_to_add) {
+    const found_in_tag = found_tag.videos.find((v) => v.path == received_video.path);
     if (!found_in_tag) {
-      let new_video = new VideoMeta(path);
+      let new_video = new VideoMeta(received_video.path);
       video_repo.save(new_video);
       found_tag.videos.push(new_video);
     }

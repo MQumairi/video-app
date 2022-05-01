@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
+import { VideoMeta } from "../../models/video_meta";
 
 const RemoveVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const id = +req.params.id;
@@ -10,9 +11,9 @@ const RemoveVideo = async (req: Request, res: Response): Promise<Tag | undefined
     res.status(404).send("Tag not found");
     return undefined;
   }
-  const videos_to_remove: string[] = req.body.videos;
-  for (let path of videos_to_remove) {
-    const found_in_tag = found_tag.videos.find((v) => v.path == path);
+  const videos_to_remove: VideoMeta[] = req.body.videos;
+  for (let received_video of videos_to_remove) {
+    const found_in_tag = found_tag.videos.find((v) => v.path == received_video.path);
     if (found_in_tag) {
       const index_to_remove = found_tag.videos.indexOf(found_in_tag);
       found_tag.videos.splice(index_to_remove, 1);

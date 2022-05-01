@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 export const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "data";
-
   const [video_meta, set_video_meta] = useState<IVdeoMeta | null>(null);
 
   const fetch_video_meta = async (query: string) => {
@@ -25,7 +24,8 @@ export const PlayerPage = () => {
       <p>{vid_path}</p>
       <p>{video_meta?.name}</p>
       <p>{video_meta?.path}</p>
-      <p>{video_meta?.parent_path}</p>
+      <b>Go Back: </b>
+      <a href={`/browser/${PathConverter.to_query(video_meta?.parent_path ?? "data")}`}>Back</a>
       <video width="1000" height="500" controls autoPlay loop playsInline>
         <source src={`${base_url}/videos/${PathConverter.to_query(vid_path)}`} type="video/mp4" />
       </video>

@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Directory } from "../api/agent";
 import IDirectory from "../models/directory";
@@ -5,7 +6,8 @@ import { PathConverter } from "../util/path_converter";
 import { DirectoryVideos } from "./directory_videos";
 import { SubDirectoryList } from "./sub_directory_list";
 
-const BrowserPage = (props: any) => {
+const BrowserPage = () => {
+  let dir_path = useParams().dir_path ?? "data";
   const [directory, set_directory] = useState<IDirectory | null>(null);
 
   const fetch_directory = async (query: string) => {
@@ -19,7 +21,7 @@ const BrowserPage = (props: any) => {
   };
 
   useEffect(() => {
-    fetch_directory(props.dir_path);
+    fetch_directory(dir_path);
   }, []);
 
   return (

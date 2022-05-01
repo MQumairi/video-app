@@ -1,6 +1,6 @@
 import { Streamer } from "../src/models/streamer";
 
-const sample_streamer = new Streamer("data/dir_1/vid.mov", "bytes=0-386253");
+const sample_streamer = new Streamer("test/data/dir_1/vid.mov", "bytes=0-386253");
 
 export const sample_streamer_header = {
   "Content-Range": "bytes 0-386253/386254",
@@ -19,5 +19,5 @@ test("streamer headers are correct", () => {
 });
 
 test("gets video size", () => {
-  expect(Streamer.get_video_size("data/dir_1/vid.mov")).toBe(386254);
+  expect(Streamer.get_video_size("test/data/dir_1/vid.mov")).toBe(386254);
 });

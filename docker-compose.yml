@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: user
+      POSTGRES_DB: videodb
+    restart: always
+    volumes:
+      - "./pg:/var/lib/postgresql/data"
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - "/app/node_modules"
+      - ./server:/app
+    ports:
+      - "5000:5000"
+    command: ["npm", "run", "dev"]
+    restart: always
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - "/app/node_modules"
+      - ./client:/app
+    ports:
+      - "3000:3000"
+    command: ["npm", "start"]
+    restart: always

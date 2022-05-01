@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+body {
+    background: #1d1d1e !important;
+    color: white !important;
+
+}
+
+a {
+    color: #66ccfa;
+    text-decoration: none;
+  }

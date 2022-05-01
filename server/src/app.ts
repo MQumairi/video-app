@@ -7,6 +7,7 @@ import { Video } from "./models/video";
 import { Tag } from "./models/tag";
 import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
+import tag_controller from "./controllers/tag_controller";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/videos", video_controller);
 app.use("/api/directories", directory_controller);
+app.use("/api/tags", tag_controller);
 
 export const not_found_error = { message: "page not found" };
 

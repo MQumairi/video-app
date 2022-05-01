@@ -12,7 +12,7 @@ export const VideoPlayer = (props: any) => {
   };
 
   const video_style = {
-    width: "100%",
+    width: "90%",
     height: "auto",
   };
 

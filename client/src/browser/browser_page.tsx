@@ -9,7 +9,7 @@ import { Box } from "@mui/system";
 import { BackButton } from "./back_button";
 
 const BrowserPage = () => {
-  let dir_path = useParams().dir_path ?? "data";
+  let dir_path = useParams().dir_path ?? "videos";
   const [directory, set_directory] = useState<IDirectory | null>(null);
 
   const fetch_directory = async (query: string) => {

@@ -12,7 +12,7 @@ export const DirectoryVideos = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.video_paths.map((vid: any) => {
-        return <VideoItem vid={vid} />;
+        return <VideoItem vid={vid} key={vid.name} />;
       })}
     </Box>
   );

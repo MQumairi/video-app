@@ -32,7 +32,7 @@ createConnection({
     console.log("Failed to connect to postgres.");
   });
 
-export const app = express();
+const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.json());
@@ -47,12 +47,8 @@ app.use("/api/videos", videoController);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/directories", directory_controller);
 
-const port = process.env.PORT || 5000;
-
 app.get("*", (req: Request, res: Response) => {
   res.json({ message: "page not found" });
 });
 
-app.listen(port, () => {
-  console.log("listening on: http://localhost:" + port + "/");
-});
+export default app;

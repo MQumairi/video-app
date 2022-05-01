@@ -14,7 +14,7 @@ export const VideoItem = (props: any) => {
     textAlign: "center",
   };
   return (
-    <a href={`/player/${PathConverter.to_query(props.vid.path)}`} key={props.vid.name}>
+    <a href={props.href} key={props.vid.name}>
       <div
         style={card_style}
         onClick={() => {

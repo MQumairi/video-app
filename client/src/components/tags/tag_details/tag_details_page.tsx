@@ -21,7 +21,7 @@ export const TagDetailsPage = () => {
   return (
     <div>
       {tag && <h1>Tag: {tag?.name}</h1>}
-      <TagVideoList videos={tag?.videos} />
+      <TagVideoList tag_id={tag_id} videos={tag?.videos} />
     </div>
   );
 };

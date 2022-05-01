@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { PathConverter } from "../../util/path_converter";
 import { VideoItem } from "./video_item";
 
 export const DirectoryVideos = (props: any) => {
@@ -13,7 +14,7 @@ export const DirectoryVideos = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.video_paths.map((vid: any) => {
-        return <VideoItem vid={vid} key={vid.name} />;
+        return <VideoItem href={`/player/${PathConverter.to_query(vid.path)}`} vid={vid} key={vid.name} />;
       })}
     </Box>
   );

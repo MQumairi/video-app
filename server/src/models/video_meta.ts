@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
 import path from "path";
+import { Tag } from "./tag";
 
 @Entity()
 export class VideoMeta {
@@ -14,6 +15,9 @@ export class VideoMeta {
 
   @Column("text")
   parent_path: string;
+
+  @ManyToMany((type) => Tag, (tag) => tag.videos, { eager: true })
+  tags: Tag[];
 
   constructor(path_: any) {
     if (!path_) {

@@ -15,8 +15,9 @@ export const PlayerPage = () => {
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
-    const responded_directory: IVideoMeta = (await Video.get(api_query)).data;
-    set_video_meta(responded_directory);
+    const received_video: IVideoMeta = (await Video.get(api_query)).data;
+    set_video_meta(received_video);
+    console.log(received_video);
   };
 
   useEffect(() => {

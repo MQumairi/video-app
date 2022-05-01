@@ -9,7 +9,7 @@ export class Tag {
   @Column("text")
   name: string;
 
-  @ManyToMany((type) => VideoMeta)
+  @ManyToMany((type) => VideoMeta, (video) => video.tags)
   @JoinTable()
   videos: VideoMeta[];
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import IVideoMeta from "../models/video_meta";
 
 export const base_url = "http://localhost:5000/api";
 
@@ -11,4 +12,9 @@ export const Directory = {
 export const Video = {
   // /:filepath/metadata
   get: async (vid_path: string) => axios.get(`videos/${vid_path}/metadata`),
+};
+
+export const Tag = {
+  get: async () => axios.get(`tags`),
+  post: async (video_meta: IVideoMeta) => axios.post(`tags`, video_meta),
 };

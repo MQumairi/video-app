@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
-import IVdeoMeta from "../../models/video_meta";
+import IVideoMeta from "../../models/video_meta";
 import { Video } from "../../api/agent";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
@@ -9,11 +9,11 @@ import { VideoPlayer } from "./video_player";
 
 export const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "data";
-  const [video_meta, set_video_meta] = useState<IVdeoMeta | null>(null);
+  const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
-    const responded_directory: IVdeoMeta = (await Video.get(api_query)).data;
+    const responded_directory: IVideoMeta = (await Video.get(api_query)).data;
     set_video_meta(responded_directory);
   };
 

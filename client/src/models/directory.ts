@@ -1,9 +1,9 @@
-import IVdeoMeta from "./video_meta";
+import IVideoMeta from "./video_meta";
 
 export default interface IDirectory {
   name: string;
   path: string;
   parent_path: string;
-  video_paths: IVdeoMeta[];
+  video_paths: IVideoMeta[];
   directory_paths: string[];
 }

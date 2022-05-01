@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import { AppButton } from "../../misc/app_button";
+import { TagsList } from "./tags_list";
 
 export const TagsIndexPage = () => {
   const [tags, set_tags] = useState<ITag[]>([]);
@@ -16,9 +17,7 @@ export const TagsIndexPage = () => {
     <div>
       <h1>Tags</h1>
       <AppButton href="/tags/new" textContent="Create" />
-      {tags.map((tag) => {
-        return <div key={tag.name}>{tag.name}</div>;
-      })}
+      <TagsList tags={tags} />
     </div>
   );
 };

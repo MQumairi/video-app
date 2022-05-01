@@ -14,6 +14,10 @@ const DirectoryPanel = (props: any) => {
     set_directory(responded_directory);
   };
 
+  const check_and_fetch = async () => {
+    directory && (await fetch_directory(directory.parent_path));
+  };
+
   useEffect(() => {
     fetch_directory(props.dir_path);
   }, []);
@@ -23,10 +27,8 @@ const DirectoryPanel = (props: any) => {
       <h2>{directory?.path ?? "Nothing"}</h2>
       <b>Back Up: </b>
       <span
-        key="back"
-        onClick={() => {
-          console.log("clicked on back", directory?.parent_path);
-          if (directory) fetch_directory(directory.parent_path);
+        onClick={async () => {
+          await check_and_fetch();
         }}
       >
         Back

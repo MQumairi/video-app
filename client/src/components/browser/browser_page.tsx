@@ -33,7 +33,9 @@ const BrowserPage = () => {
       {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} textContent="Tag" />}
       {!edit_mode && directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
       {!edit_mode && directory && <DirectoryVideos video_paths={directory.video_paths} />}
-      {edit_mode && directory && <BrowserEditMode video_paths={directory.video_paths} tag_popover_visible={tag_popover_visible} />}
+      {edit_mode && directory && (
+        <BrowserEditMode video_paths={directory.video_paths} tag_popover_visible={tag_popover_visible} set_tag_popover_visible={set_tag_popover_visible} />
+      )}
     </div>
   );
 };

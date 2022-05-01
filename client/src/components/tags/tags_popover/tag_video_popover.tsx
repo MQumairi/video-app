@@ -17,11 +17,11 @@ export const TagVideoPopover = (props: any) => {
   };
 
   const send_video = async () => {
-    const video_meta = props.video;
+    const videos = props.videos;
     const updated_tag: ITag = {
       id: selected_tag_id,
       name: "",
-      videos: [video_meta],
+      videos: videos,
     };
     await Tag.add_video(updated_tag);
   };
@@ -29,7 +29,7 @@ export const TagVideoPopover = (props: any) => {
   return (
     <div style={style}>
       <TagDropDown selected_tag_id={selected_tag_id} set_selected_tag_id={set_selected_tag_id} />
-      <p>Associate the video with the selected tag.</p>
+      <p>Associate the videos with the selected tag.</p>
       <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} textContent="Cancel" />
       <FunctionButton fn={send_video} textContent="Submit" />
     </div>

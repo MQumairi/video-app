@@ -1,11 +1,21 @@
 import BrowserPage from "./browser/browser_page";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PlayerPage } from "./player/player_page";
+import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect } from "react";
 
 const App = () => {
   return (
-    // <BrowserPage dir_path="data" />
-    <BrowserRouter></BrowserRouter>
+    <div>
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<BrowserPage />} />
+          <Route path="browser/:dir_path" element={<BrowserPage />} />
+          <Route path="player/:vid_path" element={<PlayerPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 

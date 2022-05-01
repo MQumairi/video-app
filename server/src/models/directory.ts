@@ -19,12 +19,14 @@ export class Directory {
     return directory;
   }
 
+  name: string;
   path: string;
   parent_path: string;
   video_paths: VideoMeta[];
   directory_paths: string[];
 
   constructor(path_: string) {
+    this.name = path.basename(path_);
     this.path = path.join(path_);
     this.parent_path = path.dirname(path_);
     if (this.parent_path == ".") {

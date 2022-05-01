@@ -7,6 +7,7 @@ export interface IDirectory {
 import fs from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
+import { VideoMeta } from "./video_meta";
 
 export class Directory {
   static async from_path(path: string): Promise<Directory | undefined> {
@@ -19,7 +20,7 @@ export class Directory {
   }
 
   path: string;
-  video_paths: string[];
+  video_paths: VideoMeta[];
   directory_paths: string[];
 
   constructor(path_: string) {
@@ -43,13 +44,13 @@ export class Directory {
     return directory_paths;
   }
 
-  async list_video_paths(): Promise<string[]> {
+  async list_video_paths(): Promise<VideoMeta[]> {
     let all_file_paths = await this.list_file_paths();
-    let video_paths: string[] = [];
+    let video_paths: VideoMeta[] = [];
     for (let file of all_file_paths) {
       let full_file_path = path.join(this.path, file);
       if (Directory.is_video(full_file_path)) {
-        video_paths.push(full_file_path);
+        video_paths.push(new VideoMeta(full_file_path));
       }
     }
     return video_paths;

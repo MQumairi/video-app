@@ -1,4 +1,5 @@
 import { Directory } from "../models/directory";
+import { VideoMeta } from "../models/video_meta";
 
 let root_directory = new Directory("./data");
 let dir_1 = new Directory("./data/dir_1");
@@ -7,13 +8,19 @@ let sub_dir = new Directory("./data/dir_1/sub_dir");
 
 export const root_dir_object = {
   path: "data",
-  video_paths: ["data/vid.mov", "data/vid.mp4"],
+  video_paths: [
+    { name: "vid.mov", path: "data/vid.mov" },
+    { name: "vid.mp4", path: "data/vid.mp4" },
+  ],
   directory_paths: ["data/dir_1", "data/dir_2"],
 };
 
 export const dir_1_object = {
   path: "data/dir_1",
-  video_paths: ["data/dir_1/vid.mov", "data/dir_1/vid.mp4"],
+  video_paths: [
+    { name: "vid.mov", path: "data/dir_1/vid.mov" },
+    { name: "vid.mp4", path: "data/dir_1/vid.mp4" },
+  ],
   directory_paths: ["data/dir_1/sub_dir"],
 };
 
@@ -43,15 +50,15 @@ test("can list sub directories", async () => {
 });
 
 test("can list vidoes", async () => {
-  let root_vid_1 = "data/vid.mov";
-  let root_vid_2 = "data/vid.mp4";
+  let root_vid_1 = new VideoMeta("data/vid.mov");
+  let root_vid_2 = new VideoMeta("data/vid.mp4");
   let root_vids = [root_vid_1, root_vid_2];
   expect(await root_directory.list_video_paths()).toStrictEqual(root_vids);
-  let dir_1_vid_1 = "data/dir_1/vid.mov";
-  let dir_1_vid_2 = "data/dir_1/vid.mp4";
+  let dir_1_vid_1 = new VideoMeta("data/dir_1/vid.mov");
+  let dir_1_vid_2 = new VideoMeta("data/dir_1/vid.mp4");
   let dir_1_vids = [dir_1_vid_1, dir_1_vid_2];
   expect(await dir_1.list_video_paths()).toStrictEqual(dir_1_vids);
-  let dir_2_vids: string[] = [];
+  let dir_2_vids: VideoMeta[] = [];
   expect(await dir_2.list_video_paths()).toStrictEqual(dir_2_vids);
 });
 

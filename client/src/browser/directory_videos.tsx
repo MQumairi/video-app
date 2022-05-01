@@ -5,6 +5,7 @@ export const DirectoryVideos = (props: any) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
+    flexWrap: "wrap",
     padding: "15px",
     marginTop: "20px",
   };

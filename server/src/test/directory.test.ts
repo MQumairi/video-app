@@ -5,6 +5,24 @@ let dir_1 = new Directory("./data/dir_1");
 let dir_2 = new Directory("./data/dir_2");
 let sub_dir = new Directory("./data/dir_1/sub_dir");
 
+export const root_dir_object = {
+  path: "data",
+  video_paths: ["data/vid.mov", "data/vid.mp4"],
+  directory_paths: ["data/dir_1", "data/dir_2"],
+};
+
+export const dir_1_object = {
+  path: "data/dir_1",
+  video_paths: ["data/dir_1/vid.mov", "data/dir_1/vid.mp4"],
+  directory_paths: ["data/dir_1/sub_dir"],
+};
+
+export const sub_dir_object = {
+  path: "data/dir_1/sub_dir",
+  video_paths: [],
+  directory_paths: [],
+};
+
 test("path is correct", () => {
   expect(root_directory.path).toBe("data");
   expect(dir_1.path).toBe("data/dir_1");
@@ -61,22 +79,7 @@ test("can find parent", () => {
 });
 
 test("can build directory from path", async () => {
-  let expected_root_object = {
-    path: "data",
-    video_paths: ["data/vid.mov", "data/vid.mp4"],
-    directory_paths: ["data/dir_1", "data/dir_2"],
-  };
-  expect(await Directory.from_path("data")).toMatchObject(expected_root_object);
-  let expected_dir_1_object = {
-    path: "data/dir_1",
-    video_paths: ["data/dir_1/vid.mov", "data/dir_1/vid.mp4"],
-    directory_paths: ["data/dir_1/sub_dir"],
-  };
-  expect(await Directory.from_path("data/dir_1")).toMatchObject(expected_dir_1_object);
-  let expected_sub_dir_object = {
-    path: "data/dir_1/sub_dir",
-    video_paths: [],
-    directory_paths: [],
-  };
-  expect(await Directory.from_path("data/dir_1/sub_dir")).toMatchObject(expected_sub_dir_object);
+  expect(await Directory.from_path("data")).toMatchObject(root_dir_object);
+  expect(await Directory.from_path("data/dir_1")).toMatchObject(dir_1_object);
+  expect(await Directory.from_path("data/dir_1/sub_dir")).toMatchObject(sub_dir_object);
 });

@@ -48,7 +48,7 @@ app.use("/api/playlists", playlist_controller);
 app.use("/api/directories", directory_controller);
 
 app.get("*", (req: Request, res: Response) => {
-  res.json({ message: "page not found" });
+  res.status(404).json({ message: "page not found" });
 });
 
 export default app;

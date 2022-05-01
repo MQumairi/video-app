@@ -47,8 +47,10 @@ app.use("/api/videos", videoController);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/directories", directory_controller);
 
+export const not_found_error = { message: "page not found" };
+
 app.get("*", (req: Request, res: Response) => {
-  res.status(404).json({ message: "page not found" });
+  res.status(404).json(not_found_error);
 });
 
 export default app;

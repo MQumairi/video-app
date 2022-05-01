@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: user
       POSTGRES_DB: videodb
     restart: always
+    volumes:
+      - "./pg:/var/lib/postgresql/data"
   server:
     build:
       context: ./server

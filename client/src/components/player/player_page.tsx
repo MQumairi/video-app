@@ -3,7 +3,6 @@ import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
 import { Video } from "../../api/agent";
 import { useEffect, useState } from "react";
-import { Box } from "@mui/system";
 import { BackButton } from "../browser/back_button";
 import { VideoPlayer } from "./video_player";
 
@@ -21,26 +20,16 @@ export const PlayerPage = () => {
     fetch_video_meta(vid_path);
   }, []);
 
-  const box_style = {
-    backgroundColor: "#000f17",
-    width: "80%",
-    height: "min-content",
-    margin: "auto",
-    marginTop: "50px",
-    borderRadius: "10px",
-    padding: "25px",
-  };
-
   const get_parent_path = () => {
     const query = (video_meta && PathConverter.to_query(video_meta.parent_path)) ?? "/";
     return `/browser/${query}`;
   };
 
   return (
-    <Box sx={box_style}>
+    <div>
       <h1>{video_meta?.name}</h1>
       <BackButton href={get_parent_path()} />
       <VideoPlayer vid_path={vid_path} />
-    </Box>
+    </div>
   );
 };

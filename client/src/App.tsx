@@ -4,10 +4,20 @@ import { PlayerPage } from "./components/player/player_page";
 import CssBaseline from "@mui/material/CssBaseline";
 import { TagsIndexPage } from "./components/tags/tags_index/tags_index_page";
 import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
+import { Box } from "@mui/material";
 
 const App = () => {
+  const box_style = {
+    backgroundColor: "#000f17",
+    width: "80%",
+    margin: "auto",
+    marginTop: "50px",
+    borderRadius: "10px",
+    padding: "25px",
+  };
+
   return (
-    <div>
+    <Box component="div" sx={box_style}>
       <CssBaseline />
       <a href="/">Browser</a>
       <a href="/tags">Tags</a>
@@ -20,7 +30,7 @@ const App = () => {
           <Route path="tags/new" element={<TagsCreatePage />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </Box>
   );
 };
 

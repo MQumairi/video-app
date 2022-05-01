@@ -20,11 +20,16 @@ export class Directory {
   }
 
   path: string;
+  parent_path: string;
   video_paths: VideoMeta[];
   directory_paths: string[];
 
   constructor(path_: string) {
     this.path = path.join(path_);
+    this.parent_path = path.dirname(path_);
+    if (this.parent_path == ".") {
+      this.parent_path = this.path;
+    }
   }
 
   async read_contents() {

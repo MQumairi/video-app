@@ -1,4 +1,4 @@
-import { VideoMeta } from "../models/video_meta";
+import { VideoMeta } from "../src/models/video_meta";
 
 let video_meta = new VideoMeta("data/dir_1/vid.mov");
 

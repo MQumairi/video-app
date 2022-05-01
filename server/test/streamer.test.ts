@@ -1,4 +1,4 @@
-import { Streamer } from "../models/streamer";
+import { Streamer } from "../src/models/streamer";
 
 const sample_streamer = new Streamer("data/dir_1/vid.mov", "bytes=0-386253");
 

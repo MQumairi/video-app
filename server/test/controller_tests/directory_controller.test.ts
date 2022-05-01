@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app, { not_found_error } from "../../app";
+import app, { not_found_error } from "../../src/app";
 import { root_dir_object, dir_1_object, sub_dir_object } from "../directory.test";
 
 const request = supertest(app);

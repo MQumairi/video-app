@@ -1,5 +1,5 @@
-import { Directory } from "../models/directory";
-import { VideoMeta } from "../models/video_meta";
+import { Directory } from "../src/models/directory";
+import { VideoMeta } from "../src/models/video_meta";
 
 let root_directory = new Directory("./data");
 let dir_1 = new Directory("./data/dir_1");
@@ -35,6 +35,12 @@ test("path is correct", () => {
   expect(dir_1.path).toBe("data/dir_1");
   let root_directory_2 = new Directory("data");
   expect(root_directory_2.path).toBe("data");
+});
+
+test("parent path is correct", () => {
+  expect(root_directory.parent_path).toBe("data");
+  expect(dir_1.parent_path).toBe("./data");
+  expect(sub_dir.parent_path).toBe("./data/dir_1");
 });
 
 test("can list sub directories", async () => {

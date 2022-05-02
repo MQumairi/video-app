@@ -1,23 +1,18 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
 import { TagVideoPopover } from "../../tags/tags_popover/tag_video_popover";
 import { EditModeVideoItem } from "./edit_mode_video_item";
 
-export const BrowserEditMode = (props: any) => {
-  const [checked_videos, set_checked_videos] = useState<Set<IVideoMeta>>(new Set<IVideoMeta>());
+const checked_videos = new Set<IVideoMeta>();
 
+export const BrowserEditMode = (props: any) => {
   const modify_set = (vid: IVideoMeta) => {
-    let checked_videos_copy = new Set<IVideoMeta>(checked_videos);
-    if (checked_videos_copy.has(vid)) {
-      checked_videos_copy.delete(vid);
-      set_checked_videos(checked_videos_copy);
+    if (checked_videos.has(vid)) {
+      checked_videos.delete(vid);
       return;
     }
-    checked_videos_copy.add(vid);
-    set_checked_videos(checked_videos_copy);
-    console.log("Set is now:", Array.from(checked_videos));
+    checked_videos.add(vid);
   };
 
   const box_style = {

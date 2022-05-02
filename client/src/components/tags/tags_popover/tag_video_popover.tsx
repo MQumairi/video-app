@@ -18,6 +18,7 @@ export const TagVideoPopover = (props: any) => {
 
   const send_video = async () => {
     const videos = props.videos;
+    console.log("videos are", videos);
     const updated_tag: ITag = {
       id: selected_tag_id,
       name: "",

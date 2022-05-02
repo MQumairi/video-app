@@ -28,7 +28,6 @@ export const EditModeVideoItem = (props: any) => {
   };
 
   useEffect(() => {
-    console.log("rendering item");
     if (props.check_all) {
       set_checked(true);
       props.modify_set(props.vid);

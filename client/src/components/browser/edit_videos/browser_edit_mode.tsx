@@ -8,13 +8,10 @@ const checked_videos = new Set<IVideoMeta>();
 
 export const BrowserEditMode = (props: any) => {
   const modify_set = (vid: IVideoMeta) => {
-    console.log("called modify_set");
     if (checked_videos.has(vid) && !props.check_all) {
-      console.log("deleting...");
       checked_videos.delete(vid);
       return;
     }
-    console.log("adding...");
     checked_videos.add(vid);
   };
 

@@ -8,10 +8,13 @@ const checked_videos = new Set<IVideoMeta>();
 
 export const BrowserEditMode = (props: any) => {
   const modify_set = (vid: IVideoMeta) => {
-    if (checked_videos.has(vid)) {
+    console.log("called modify_set");
+    if (checked_videos.has(vid) && !props.check_all) {
+      console.log("deleting...");
       checked_videos.delete(vid);
       return;
     }
+    console.log("adding...");
     checked_videos.add(vid);
   };
 
@@ -31,7 +34,15 @@ export const BrowserEditMode = (props: any) => {
       )}
       <Box component="div" sx={box_style}>
         {props.video_paths?.map((vid: any) => {
-          return <EditModeVideoItem modify_set={modify_set} href={`/player/${PathConverter.to_query(vid.path)}`} vid={vid} key={vid.name} />;
+          return (
+            <EditModeVideoItem
+              modify_set={modify_set}
+              href={`/player/${PathConverter.to_query(vid.path)}`}
+              vid={vid}
+              key={vid.name}
+              check_all={props.check_all}
+            />
+          );
         })}
       </Box>
     </div>

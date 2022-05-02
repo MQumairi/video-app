@@ -27,6 +27,14 @@ export const EditModeVideoItem = (props: any) => {
     props.modify_set(props.vid);
   };
 
+  useEffect(() => {
+    console.log("rendering item");
+    if (props.check_all) {
+      set_checked(true);
+      props.modify_set(props.vid);
+    }
+  });
+
   return (
     <div style={card_style}>
       <VideoFileIcon sx={icon_style} />

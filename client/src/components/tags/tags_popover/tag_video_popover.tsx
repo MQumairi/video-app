@@ -31,7 +31,7 @@ export const TagVideoPopover = (props: any) => {
     <div style={style}>
       <TagDropDown selected_tag_id={selected_tag_id} set_selected_tag_id={set_selected_tag_id} />
       <p>Associate the videos with the selected tag.</p>
-      <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} textContent="Cancel" />
+      <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} trueText="Cancel" />
       <FunctionButton fn={send_video} textContent="Submit" />
     </div>
   );

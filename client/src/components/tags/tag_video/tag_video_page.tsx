@@ -30,7 +30,7 @@ export const TagVideoPage = () => {
     <div>
       <h1>{video_meta?.name}</h1>
       <HrefButton href={`/tags/${tag_id}`} textContent="Back" />
-      <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} textContent={"Tag"} />
+      <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} trueText={"Tag"} />
       {!tag_toggled && <VideoPlayer vid_path={vid_path} />}
       {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} videos={[video_meta]} />}
       <VideoTags tags={video_meta?.tags ?? []} />

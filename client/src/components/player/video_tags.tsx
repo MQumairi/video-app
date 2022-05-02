@@ -17,7 +17,7 @@ export const VideoTags = (props: any) => {
       <div style={video_tags}>
         {props.tags?.map((tag: any) => {
           return (
-            <a href={`/tags/${tag.id}`}>
+            <a key={tag.name} href={`/tags/${tag.id}`}>
               <div style={tag_pill_style}>{tag.name}</div>
             </a>
           );

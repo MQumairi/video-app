@@ -6,7 +6,8 @@ export const ToggleButton = (props: any) => {
   };
   return (
     <Button variant="contained" onClick={handle_click} sx={{ marginTop: "20px" }}>
-      {props.textContent}
+      {props.toggle && props.trueText}
+      {!props.toggle && (props.falseText ?? props.trueText)}
     </Button>
   );
 };

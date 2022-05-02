@@ -2,7 +2,9 @@ import axios from "axios";
 import ITag from "../models/tag";
 import IVideoMeta from "../models/video_meta";
 
-export const base_url = "http://localhost:5000/api";
+const server_host = process.env.REACT_APP_SERVER_HOST ?? "localhost";
+const server_port = process.env.REACT_APP_SERVER_PORT ?? 5000;
+export const base_url = `http://${server_host}:${server_port}/api`;
 
 axios.defaults.baseURL = base_url;
 

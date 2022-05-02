@@ -31,8 +31,8 @@ const BrowserPage = () => {
       <h1>{directory?.name}</h1>
       <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
       <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
-      {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
       {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
+      {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
       {!edit_mode && directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
       {!edit_mode && directory && <DirectoryVideos video_paths={directory.video_paths} />}
       {edit_mode && directory && (

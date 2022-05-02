@@ -36,8 +36,8 @@ export const PlayerPage = () => {
       <HrefButton href={get_parent_path()} textContent="Back" />
       <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} textContent={"Tag"} />
       {!tag_toggled && <VideoPlayer vid_path={vid_path} />}
-      {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} video={video_meta} />}
-      <VideoTags tags={video_meta?.tags ?? []}/>
+      {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} videos={[video_meta]} />}
+      <VideoTags tags={video_meta?.tags ?? []} />
     </div>
   );
 };

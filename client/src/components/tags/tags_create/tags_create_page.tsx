@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Tag } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
+import { FunctionButton } from "../../misc/function_button";
 import { HrefButton } from "../../misc/href_button";
-import { SubmitButton } from "../../misc/submit_button";
 
 export const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
@@ -15,7 +15,10 @@ export const TagsCreatePage = () => {
       path: "",
       parent_path: "",
     };
-    await Tag.post(video_object);
+    console.log("sending: ", video_object);
+    const response = await Tag.post(video_object);
+    console.log(response);
+    set_tag_name("");
   };
   return (
     <div>
@@ -26,7 +29,7 @@ export const TagsCreatePage = () => {
           Name:
           <input type="text" name="name" value={tag_name} onChange={handle_change} />
         </label>
-        <SubmitButton />
+        <FunctionButton textContent="Submit" fn={on_submit} />
       </form>
     </div>
   );

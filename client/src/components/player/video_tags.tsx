@@ -9,7 +9,6 @@ export const VideoTags = (props: any) => {
     background: "#064669",
     borderRadius: "10px",
     padding: "5px 10px 5px 10px",
-    width: "min-content",
     margin: "10px",
   };
   return (
@@ -18,7 +17,7 @@ export const VideoTags = (props: any) => {
       <div style={video_tags}>
         {props.tags?.map((tag: any) => {
           return (
-            <a href={`/tags/${tag.id}`}>
+            <a key={tag.name} href={`/tags/${tag.id}`}>
               <div style={tag_pill_style}>{tag.name}</div>
             </a>
           );

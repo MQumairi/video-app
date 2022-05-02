@@ -6,6 +6,7 @@ import { PathConverter } from "../../../util/path_converter";
 import { HrefButton } from "../../misc/href_button";
 import { ToggleButton } from "../../misc/toggle_button";
 import { VideoPlayer } from "../../player/video_player";
+import { VideoTags } from "../../player/video_tags";
 import { TagVideoPopover } from "../tags_popover/tag_video_popover";
 
 export const TagVideoPage = () => {
@@ -32,6 +33,7 @@ export const TagVideoPage = () => {
       <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} textContent={"Tag"} />
       {!tag_toggled && <VideoPlayer vid_path={vid_path} />}
       {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} videos={[video_meta]} />}
+      <VideoTags tags={video_meta?.tags ?? []} />
     </div>
   );
 };

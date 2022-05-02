@@ -9,7 +9,6 @@ export const VideoTags = (props: any) => {
     background: "#064669",
     borderRadius: "10px",
     padding: "5px 10px 5px 10px",
-    width: "min-content",
     margin: "10px",
   };
   return (

@@ -14,6 +14,7 @@ const BrowserPage = () => {
   const [directory, set_directory] = useState<IDirectory | null>(null);
   const [edit_mode, set_edit_mode] = useState<boolean>(false);
   const [tag_popover_visible, set_tag_popover_visible] = useState<boolean>(false);
+  const [check_all, set_check_all] = useState<boolean>(false);
 
   const fetch_directory = async (query: string) => {
     const api_query = PathConverter.to_query(query);
@@ -31,6 +32,7 @@ const BrowserPage = () => {
       <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
       <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} textContent="Edit" />
       {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} textContent="Tag" />}
+      {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} textContent="Check All" />}
       {!edit_mode && directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
       {!edit_mode && directory && <DirectoryVideos video_paths={directory.video_paths} />}
       {edit_mode && directory && (

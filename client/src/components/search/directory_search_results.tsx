@@ -1,27 +1,27 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Directory } from "../../api/agent";
-import IDirectory from "../../models/directory";
-import { PathConverter } from "../../util/path_converter";
-import { DirectoryVideos } from "./directory_videos";
-import { SubDirectoryList } from "./sub_directory_list";
-import { HrefButton } from "../misc/href_button";
-import { ToggleButton } from "../misc/toggle_button";
-import { BrowserEditMode } from "./edit_videos/browser_edit_mode";
 import { ButtonGroup, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Directory } from "../../api/agent";
+import IDirectorySearchResult from "../../models/directory_search_result";
+import { DirectoryVideos } from "../browser/directory_videos";
+import { BrowserEditMode } from "../browser/edit_videos/browser_edit_mode";
+import { SubDirectoryList } from "../browser/sub_directory_list";
+import { ToggleButton } from "../misc/toggle_button";
 
-const BrowserPage = () => {
-  let dir_path = useParams().dir_path ?? "videos";
-  const [directory, set_directory] = useState<IDirectory | null>(null);
+export const DirectorySearchResults = () => {
+  let query = useParams().query ?? "";
+  const [search_results, set_search_results] = useState<IDirectorySearchResult | null>(null);
   const [search_query, set_search_query] = useState<string>("");
   const [edit_mode, set_edit_mode] = useState<boolean>(false);
   const [tag_popover_visible, set_tag_popover_visible] = useState<boolean>(false);
   const [check_all, set_check_all] = useState<boolean>(false);
 
-  const fetch_directory = async (query: string) => {
-    const api_query = PathConverter.to_query(query);
-    const responded_directory: IDirectory = (await Directory.get(api_query)).data;
-    set_directory(responded_directory);
+  const fetch_directory_search_result = async () => {
+    console.log("fetching results...");
+    const responded_directory = await Directory.search(query);
+    console.log("response is:", responded_directory);
+    console.log("results are:", responded_directory);
+    set_search_results(responded_directory.data);
   };
 
   const handle_change = (event: any) => {
@@ -35,12 +35,13 @@ const BrowserPage = () => {
   };
 
   useEffect(() => {
-    fetch_directory(dir_path);
-  }, [dir_path]);
+    console.log("use effect started");
+    fetch_directory_search_result();
+  }, []);
 
   return (
     <div>
-      <h1>{directory?.name}</h1>
+      <h1>{search_results?.query}</h1>
       <TextField
         InputProps={{ style: { color: "black", background: "white", height: "50px" } }}
         InputLabelProps={{ style: { color: "grey" } }}
@@ -54,16 +55,15 @@ const BrowserPage = () => {
         onKeyDown={handle_submit}
       />
       <ButtonGroup>
-        <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
         {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
       </ButtonGroup>
-      {!edit_mode && directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
-      {!edit_mode && directory && <DirectoryVideos video_paths={directory.video_paths} />}
-      {edit_mode && directory && (
+      {!edit_mode && search_results && <SubDirectoryList fetch_directory={fetch_directory_search_result} directory_paths={search_results.directories} />}
+      {!edit_mode && search_results && <DirectoryVideos video_paths={search_results.videos} />}
+      {edit_mode && search_results && (
         <BrowserEditMode
-          video_paths={directory.video_paths}
+          video_paths={search_results.videos}
           tag_popover_visible={tag_popover_visible}
           set_tag_popover_visible={set_tag_popover_visible}
           check_all={check_all}
@@ -72,5 +72,3 @@ const BrowserPage = () => {
     </div>
   );
 };
-
-export default BrowserPage;

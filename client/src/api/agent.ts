@@ -10,6 +10,7 @@ axios.defaults.baseURL = base_url;
 
 export const Directory = {
   get: async (dir_path: string) => axios.get(`directories/${dir_path}`),
+  search: async (query: string) => axios.get(`directories/search/${query}`),
 };
 
 export const Video = {

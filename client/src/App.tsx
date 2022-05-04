@@ -7,6 +7,7 @@ import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
 import { TagDetailsPage } from "./components/tags/tag_details/tag_details_page";
 import { TagVideoPage } from "./components/tags/tag_video/tag_video_page";
+import { DirectorySearchResults } from "./components/search/directory_search_results";
 
 const App = () => {
   const box_style = {
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           {/* Main Browser */}
           <Route index element={<BrowserPage />} />
+          <Route path="browser/search/:query" element={<DirectorySearchResults />} />
           <Route path="browser/:dir_path" element={<BrowserPage />} />
           <Route path="player/:vid_path" element={<PlayerPage />} />
           {/* Tag System */}

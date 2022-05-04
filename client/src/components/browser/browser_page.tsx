@@ -24,7 +24,7 @@ const BrowserPage = () => {
 
   useEffect(() => {
     fetch_directory(dir_path);
-  }, []);
+  }, [dir_path]);
 
   return (
     <div>

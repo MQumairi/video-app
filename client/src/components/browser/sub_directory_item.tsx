@@ -1,12 +1,6 @@
 import FolderIcon from "@mui/icons-material/Folder";
 import { PathConverter } from "../../util/path_converter";
 
-const get_base_name = (file: string) => {
-  let split_arr = file.split("/");
-  let base_file = split_arr.pop();
-  return base_file;
-};
-
 export const SubDirectoryItem = (props: any) => {
   const card_style = {
     margin: "30px",
@@ -24,7 +18,7 @@ export const SubDirectoryItem = (props: any) => {
     <a href={`/browser/${PathConverter.to_query(props.dir)}`} key={props.dir}>
       <div style={card_style}>
         <FolderIcon sx={icon_style} />
-        <h4 style={{ textAlign: "center" }}>{get_base_name(props.dir)}</h4>
+        <h4 style={{ textAlign: "center" }}>{PathConverter.get_base_name(props.dir)}</h4>
       </div>
     </a>
   );

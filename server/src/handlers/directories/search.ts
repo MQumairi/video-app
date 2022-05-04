@@ -19,7 +19,7 @@ const Search = async (req: Request, res: Response): Promise<Directory | undefine
       continue;
     }
     if (await Directory.is_directory(result)) {
-      const dir_to_add = await Directory.from_path(result);
+      const dir_to_add = new Directory(result);
       if (dir_to_add) {
         directories.push(dir_to_add);
       }

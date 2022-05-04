@@ -8,6 +8,7 @@ import { SubDirectoryList } from "./sub_directory_list";
 import { HrefButton } from "../misc/href_button";
 import { ToggleButton } from "../misc/toggle_button";
 import { BrowserEditMode } from "./edit_videos/browser_edit_mode";
+import { ButtonGroup, TextField } from "@mui/material";
 
 const BrowserPage = () => {
   let dir_path = useParams().dir_path ?? "videos";
@@ -29,10 +30,21 @@ const BrowserPage = () => {
   return (
     <div>
       <h1>{directory?.name}</h1>
-      <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
-      <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
-      {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
-      {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
+      <TextField
+        InputProps={{ style: { color: "black", background: "white", height: "50px" } }}
+        InputLabelProps={{ style: { color: "grey" } }}
+        id="outlined-basic"
+        label="Search"
+        variant="filled"
+        color="primary"
+        fullWidth={true}
+      />
+      <ButtonGroup>
+        <HrefButton href={(directory && PathConverter.to_query(directory.parent_path)) ?? "data"} textContent="Back" />
+        <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
+        {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
+        {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
+      </ButtonGroup>
       {!edit_mode && directory && <SubDirectoryList fetch_directory={fetch_directory} directory_paths={directory.directory_paths} />}
       {!edit_mode && directory && <DirectoryVideos video_paths={directory.video_paths} />}
       {edit_mode && directory && (

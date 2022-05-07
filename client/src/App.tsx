@@ -7,6 +7,7 @@ import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
 import { TagDetailsPage } from "./components/tags/tag_details/tag_details_page";
 import { TagVideoPage } from "./components/tags/tag_video/tag_video_page";
+import { NavBar } from "./components/nav_bar";
 
 const App = () => {
   const box_style = {
@@ -21,8 +22,7 @@ const App = () => {
   return (
     <Box component="div" sx={box_style}>
       <CssBaseline />
-      <a href="/">Browser</a>
-      <a href="/tags">Tags</a>
+      <NavBar />
       <BrowserRouter>
         <Routes>
           {/* Main Browser */}

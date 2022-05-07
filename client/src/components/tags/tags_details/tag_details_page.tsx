@@ -30,6 +30,7 @@ export const TagDetailsPage = () => {
   return (
     <div>
       {tag && <h1>Tag: {tag?.name}</h1>}
+      <HrefButton href={`/tags/${tag_id}/delete`} textContent={"Delete"} />
       {random_vid && <HrefButton textContent="Random" href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
       <TagVideoList tag_id={tag_id} videos={tag?.videos} />
     </div>

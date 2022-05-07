@@ -5,8 +5,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { TagsIndexPage } from "./components/tags/tags_index/tags_index_page";
 import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
-import { TagDetailsPage } from "./components/tags/tag_details/tag_details_page";
+import { TagDetailsPage } from "./components/tags/tags_details/tag_details_page";
 import { NavBar } from "./components/nav_bar";
+import { TagsDeletePage } from "./components/tags/tags_delete/tags_delete_page";
 
 const App = () => {
   const box_style = {
@@ -34,7 +35,7 @@ const App = () => {
           <Route path="tags" element={<TagsIndexPage />} />
           <Route path="tags/new" element={<TagsCreatePage />} />
           <Route path="tags/:tag_id/video/:vid_path" element={<PlayerPage />} />
-          <Route path="tags/:tag_id/delete" element={<TagDetailsPage />} />
+          <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
           <Route path="tags/:tag_id" element={<TagDetailsPage />} />
         </Routes>
       </BrowserRouter>

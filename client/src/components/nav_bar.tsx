@@ -18,6 +18,9 @@ export const NavBar = () => {
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/tags">Tags</a>
         </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/playlists">Playlists</a>
+        </Typography>
       </Toolbar>
     </AppBar>
   );

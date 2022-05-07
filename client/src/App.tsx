@@ -11,6 +11,7 @@ import { TagsDeletePage } from "./components/tags/tags_delete/tags_delete_page";
 import { PlaylistsIndexPage } from "./components/playlists/playlists_index/playlists_index_page";
 import { PlaylistCreatePage } from "./components/playlists/playlists_create/playlists_create_page";
 import { PlaylistsDeletePage } from "./components/playlists/playlists_delete/playlists_delete_page";
+import { PlaylistsDetailsPage } from "./components/playlists/playlists_details/playlists_details_page";
 
 const App = () => {
   const box_style = {
@@ -45,7 +46,7 @@ const App = () => {
           <Route path="playlists/new" element={<PlaylistCreatePage />} />
           <Route path="playlists/:playlist_id/video/:vid_path" element={<PlayerPage />} />
           <Route path="playlists/:playlist_id/delete" element={<PlaylistsDeletePage />} />
-          <Route path="playlists/:playlist_id" element={<PlaylistsDeletePage />} />
+          <Route path="playlists/:playlist_id" element={<PlaylistsDetailsPage />} />
         </Routes>
       </BrowserRouter>
     </Box>

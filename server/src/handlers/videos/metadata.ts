@@ -4,7 +4,7 @@ import { Directory } from "../../models/directory";
 import { not_found_error } from "../../app";
 import { getRepository } from "typeorm";
 
-const Metadata = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
+const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   const vid_path = req.params.filepath;
   if (!Directory.is_video(vid_path)) {
     res.status(404).send(not_found_error);
@@ -19,6 +19,14 @@ const Metadata = async (req: Request, res: Response): Promise<VideoMeta | undefi
   }
   res.status(200).send(vid_meta);
   return vid_meta;
+};
+
+const Metadata = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
+  try {
+    return await get_video_meta(req, res);
+  } catch (error) {
+    console.log("error is:", error);
+  }
 };
 
 export default Metadata;

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
 import path from "path";
 import { Tag } from "./tag";
+import { Playlist } from "./playlist";
 
 @Entity()
 export class VideoMeta {
@@ -18,6 +19,9 @@ export class VideoMeta {
 
   @ManyToMany((type) => Tag, (tag) => tag.videos)
   tags: Tag[];
+
+  @ManyToMany((type) => Playlist, (playlist) => playlist.videos)
+  playlists: Playlist[];
 
   constructor(path_: any) {
     if (!path_) {

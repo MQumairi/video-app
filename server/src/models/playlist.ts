@@ -9,7 +9,7 @@ export class Playlist {
   @Column("text")
   name: string;
 
-  @ManyToMany((type) => VideoMeta, (video) => video.tags, { cascade: true })
+  @ManyToMany((type) => VideoMeta, (video) => video.playlists, { cascade: true })
   @JoinTable()
   videos: VideoMeta[];
 }

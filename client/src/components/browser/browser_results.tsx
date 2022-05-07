@@ -16,6 +16,7 @@ interface IProps {
 export const BrowserResults = (props: IProps) => {
   const [edit_mode, set_edit_mode] = useState<boolean>(false);
   const [tag_popover_visible, set_tag_popover_visible] = useState<boolean>(false);
+  const [playlist_popover_visible, set_playlist_popover_visible] = useState<boolean>(false);
   const [check_all, set_check_all] = useState<boolean>(false);
 
   return (
@@ -25,6 +26,7 @@ export const BrowserResults = (props: IProps) => {
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
         {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
+        {edit_mode && <ToggleButton toggle={playlist_popover_visible} set_toggle={set_playlist_popover_visible} trueText="Playlist" />}
       </ButtonGroup>
       {!edit_mode && props.directory_paths.length > 0 && <SubDirectoryList directory_paths={props.directory_paths} />}
       {!edit_mode && <DirectoryVideos video_paths={props.videos} />}
@@ -33,6 +35,8 @@ export const BrowserResults = (props: IProps) => {
           video_paths={props.videos}
           tag_popover_visible={tag_popover_visible}
           set_tag_popover_visible={set_tag_popover_visible}
+          playlist_popover_visible={playlist_popover_visible}
+          set_playlist_popover_visible={set_playlist_popover_visible}
           check_all={check_all}
         />
       )}

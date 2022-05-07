@@ -8,6 +8,7 @@ import { ToggleButton } from "../misc/toggle_button";
 import { VideoPlayer } from "./video_player";
 import { TagVideoPopover } from "../tags/tags_popover/tag_video_popover";
 import { VideoTags } from "./video_tags";
+import { PlaylistVideoPopover } from "../playlists/playlists_popover/playlists_video_popover";
 
 export const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -16,6 +17,7 @@ export const PlayerPage = () => {
 
   const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [tag_toggled, set_tag_toggled] = useState<boolean>(false);
+  const [playlist_popover_visible, set_playlist_popover_visible] = useState<boolean>(false);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
 
   const fetch_video_meta = async (query: string) => {
@@ -50,9 +52,11 @@ export const PlayerPage = () => {
       <h1>{video_meta?.name}</h1>
       <HrefButton href={get_parent_path()} textContent="Back" />
       <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} trueText={"Tag"} />
+      <ToggleButton toggle={playlist_popover_visible} set_toggle={set_playlist_popover_visible} trueText="Playlist" />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
-      {!tag_toggled && <VideoPlayer vid_path={vid_path} />}
       {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} videos={[video_meta]} />}
+      {playlist_popover_visible && <PlaylistVideoPopover toggle={playlist_popover_visible} set_toggle={set_playlist_popover_visible} videos={[video_meta]} />}
+      <VideoPlayer vid_path={vid_path} />
       <VideoTags tags={video_meta?.tags ?? []} />
     </div>
   );

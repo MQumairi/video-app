@@ -29,6 +29,7 @@ export const PlaylistVideoPopover = (props: any) => {
 
   return (
     <div style={style}>
+      <h2>Add to Playlist</h2>
       <PlaylistDropDown selected_playlist_id={selected_playlist_id} set_selected_playlist_id={set_selected_playlist_id} />
       <p>Associate the videos with the selected playlist.</p>
       <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} trueText="Cancel" />

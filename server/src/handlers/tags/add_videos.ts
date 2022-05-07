@@ -3,7 +3,7 @@ import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 
-const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
+const add_tag_video = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
@@ -23,6 +23,14 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
   await tag_repo.save(found_tag);
   res.status(201).send(found_tag);
   return found_tag;
+};
+
+const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
+  try {
+    return add_tag_video(req, res);
+  } catch (error) {
+    console.log("Error:", error);
+  }
 };
 
 export default AddVideo;

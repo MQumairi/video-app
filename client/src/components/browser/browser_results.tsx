@@ -1,0 +1,41 @@
+import { ButtonGroup } from "@mui/material";
+import { useState } from "react";
+import IVideoMeta from "../../models/video_meta";
+import { HrefButton } from "../misc/href_button";
+import { ToggleButton } from "../misc/toggle_button";
+import { DirectoryVideos } from "./directory_videos";
+import { BrowserEditMode } from "./edit_videos/browser_edit_mode";
+import { SubDirectoryList } from "./sub_directory_list";
+
+interface IProps {
+  directory_paths: string[];
+  videos: IVideoMeta[];
+  back_url: string;
+}
+
+export const BrowserResults = (props: IProps) => {
+  const [edit_mode, set_edit_mode] = useState<boolean>(false);
+  const [tag_popover_visible, set_tag_popover_visible] = useState<boolean>(false);
+  const [check_all, set_check_all] = useState<boolean>(false);
+
+  return (
+    <div>
+      <ButtonGroup>
+        <HrefButton href={props.back_url} textContent="Back" />
+        <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
+        {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
+        {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
+      </ButtonGroup>
+      {!edit_mode && <SubDirectoryList directory_paths={props.directory_paths} />}
+      {!edit_mode && <DirectoryVideos video_paths={props.videos} />}
+      {edit_mode && (
+        <BrowserEditMode
+          video_paths={props.videos}
+          tag_popover_visible={tag_popover_visible}
+          set_tag_popover_visible={set_tag_popover_visible}
+          check_all={check_all}
+        />
+      )}
+    </div>
+  );
+};

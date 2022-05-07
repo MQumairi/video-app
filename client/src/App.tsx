@@ -27,6 +27,8 @@ const App = () => {
         <Routes>
           {/* Main Browser */}
           <Route index element={<BrowserPage />} />
+          <Route path="browser/search/:query/directory/:dir_path" element={<BrowserPage />} />
+          <Route path="browser/search/:query" element={<BrowserPage />} />
           <Route path="browser/:dir_path" element={<BrowserPage />} />
           <Route path="player/:vid_path" element={<PlayerPage />} />
           {/* Tag System */}

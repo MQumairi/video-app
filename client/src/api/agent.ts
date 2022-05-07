@@ -1,4 +1,6 @@
 import axios from "axios";
+import IDirectory from "../models/directory";
+import IDirectorySearchResult from "../models/directory_search_result";
 import ITag from "../models/tag";
 import IVideoMeta from "../models/video_meta";
 
@@ -9,7 +11,8 @@ export const base_url = `http://${server_host}:${server_port}/api`;
 axios.defaults.baseURL = base_url;
 
 export const Directory = {
-  get: async (dir_path: string) => axios.get(`directories/${dir_path}`),
+  get: async (dir_path: string): Promise<IDirectory> => (await axios.get(`directories/${dir_path}`)).data,
+  search: async (query: string): Promise<IDirectorySearchResult> => (await axios.get(`directories/search/${query}`)).data,
 };
 
 export const Video = {

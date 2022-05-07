@@ -14,7 +14,7 @@ export const DirectoryVideos = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.video_paths.map((vid: any) => {
-        return <VideoItem href={`/player/${PathConverter.to_query(vid.path)}`} vid={vid} key={vid.name} />;
+        return <VideoItem href={`/player/${PathConverter.to_query(vid.path)}`} vid={vid} key={vid.path} />;
       })}
     </Box>
   );

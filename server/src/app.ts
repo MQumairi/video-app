@@ -39,6 +39,8 @@ app.use("/api/directories", directory_controller);
 app.use("/api/tags", tag_controller);
 
 export const not_found_error = { message: "page not found" };
+export const data_dir = process.env.DATADIR;
+export const test_data_dir = process.env.TESTDATADIR;
 
 app.get("*", (req: Request, res: Response) => {
   res.status(404).json(not_found_error);

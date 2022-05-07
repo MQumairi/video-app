@@ -26,7 +26,7 @@ export const BrowserResults = (props: IProps) => {
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
         {edit_mode && <ToggleButton toggle={tag_popover_visible} set_toggle={set_tag_popover_visible} trueText="Tag" />}
       </ButtonGroup>
-      {!edit_mode && <SubDirectoryList directory_paths={props.directory_paths} />}
+      {!edit_mode && props.directory_paths.length > 0 && <SubDirectoryList directory_paths={props.directory_paths} />}
       {!edit_mode && <DirectoryVideos video_paths={props.videos} />}
       {edit_mode && (
         <BrowserEditMode

@@ -8,7 +8,7 @@ import { HrefButton } from "../../misc/href_button";
 import { TagVideoList } from "./tag_video_list";
 
 export const TagDetailsPage = () => {
-  let tag_id = useParams().id ?? 1;
+  let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
 

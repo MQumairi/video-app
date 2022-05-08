@@ -3,8 +3,6 @@ import { PathConverter } from "../../util/path_converter";
 
 export const VideoPlayer = (props: any) => {
   const box_style = {
-    width: "100%",
-    height: "auto",
     margin: "auto",
     display: "flex",
     justifyContent: "center",
@@ -12,8 +10,8 @@ export const VideoPlayer = (props: any) => {
   };
 
   const video_style = {
-    width: "90%",
-    height: "auto",
+    maxWidth: "100%",
+    maxHeight: "100vh",
   };
 
   return (

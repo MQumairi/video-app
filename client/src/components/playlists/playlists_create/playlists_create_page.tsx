@@ -22,7 +22,7 @@ export const PlaylistCreatePage = () => {
   };
   return (
     <div>
-      <h1>New Tag </h1>
+      <h1>New Playlist </h1>
       <HrefButton href="/playlists" textContent="Back" />
       <form onSubmit={on_submit}>
         <label>

@@ -17,7 +17,7 @@ export class VideoMeta {
   @Column("text")
   parent_path: string;
 
-  @ManyToMany((type) => Tag, (tag) => tag.videos)
+  @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];
 
   @ManyToMany((type) => Playlist, (playlist) => playlist.videos)

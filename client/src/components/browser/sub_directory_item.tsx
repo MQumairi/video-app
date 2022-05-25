@@ -9,8 +9,6 @@ export const SubDirectoryItem = (props: any) => {
 
   const [sub_dir_url, set_sub_dir_url] = useState<string>("/");
 
-  // <Route path="browser/search/:query/directory/:dir_path" element={<BrowserPage />} />
-  // <Route path="browser/:dir_path" element={<BrowserPage />} />
   const card_style = {
     margin: "30px",
     width: "100px",

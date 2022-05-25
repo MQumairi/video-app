@@ -8,7 +8,7 @@ import { HrefButton } from "../../misc/href_button";
 import { TagVideoList } from "./tag_video_list";
 
 export const TagDetailsPage = () => {
-  let tag_id = useParams().id ?? 1;
+  let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
 
@@ -30,6 +30,7 @@ export const TagDetailsPage = () => {
   return (
     <div>
       {tag && <h1>Tag: {tag?.name}</h1>}
+      <HrefButton href={`/tags/${tag_id}/delete`} textContent={"Delete"} />
       {random_vid && <HrefButton textContent="Random" href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
       <TagVideoList tag_id={tag_id} videos={tag?.videos} />
     </div>

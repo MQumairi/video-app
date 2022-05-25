@@ -1,18 +1,24 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Video } from "../../api/agent";
+import { Playlist, Tag, Video } from "../../api/agent";
 import { useEffect, useState } from "react";
 import { HrefButton } from "../misc/href_button";
 import { ToggleButton } from "../misc/toggle_button";
 import { VideoPlayer } from "./video_player";
 import { TagVideoPopover } from "../tags/tags_popover/tag_video_popover";
 import { VideoTags } from "./video_tags";
+import { PlaylistVideoPopover } from "../playlists/playlists_popover/playlists_video_popover";
 
 export const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
+  let tag_id = useParams().tag_id;
+  let playlist_id = useParams().playlist_id;
+
   const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [tag_toggled, set_tag_toggled] = useState<boolean>(false);
+  const [playlist_popover_visible, set_playlist_popover_visible] = useState<boolean>(false);
+  const [random_vid_url, set_random_vid_url] = useState<string>("");
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
@@ -21,8 +27,19 @@ export const PlayerPage = () => {
     console.log(received_video);
   };
 
+  const fetch_random_tag_video = async () => {
+    if (tag_id) {
+      let response: IVideoMeta = (await Tag.shuffle(+tag_id)).data;
+      set_random_vid_url(`/tags/${tag_id}/video/${PathConverter.to_query(response.path)}`);
+    } else if (playlist_id) {
+      let response: IVideoMeta = (await Playlist.shuffle(+playlist_id)).data;
+      set_random_vid_url(`/playlists/${playlist_id}/video/${PathConverter.to_query(response.path)}`);
+    }
+  };
+
   useEffect(() => {
     fetch_video_meta(vid_path);
+    fetch_random_tag_video();
   }, []);
 
   const get_parent_path = () => {
@@ -35,8 +52,11 @@ export const PlayerPage = () => {
       <h1>{video_meta?.name}</h1>
       <HrefButton href={get_parent_path()} textContent="Back" />
       <ToggleButton toggle={tag_toggled} set_toggle={set_tag_toggled} trueText={"Tag"} />
-      {!tag_toggled && <VideoPlayer vid_path={vid_path} />}
+      <ToggleButton toggle={playlist_popover_visible} set_toggle={set_playlist_popover_visible} trueText="Playlist" />
+      {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
       {tag_toggled && <TagVideoPopover toggle={tag_toggled} set_toggle={set_tag_toggled} videos={[video_meta]} />}
+      {playlist_popover_visible && <PlaylistVideoPopover toggle={playlist_popover_visible} set_toggle={set_playlist_popover_visible} videos={[video_meta]} />}
+      <VideoPlayer vid_path={vid_path} />
       <VideoTags tags={video_meta?.tags ?? []} />
     </div>
   );

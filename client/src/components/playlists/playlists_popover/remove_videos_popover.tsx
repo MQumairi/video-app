@@ -1,10 +1,18 @@
-import { useState } from "react";
 import { FunctionButton } from "../../misc/function_button";
 import { ToggleButton } from "../../misc/toggle_button";
+import { Playlist } from "../../../api/agent";
 
 export const RemoveVideosPopover = (props: any) => {
   const delete_videos = async (event: any) => {
-    console.log(props.videos);
+    const videos = props.videos;
+    console.log("videos are", videos);
+    const updated_video_collection = {
+      id: props.collection_id,
+      name: "",
+      videos: videos,
+    };
+    await Playlist.remove_video(updated_video_collection);
+    window.location.reload();
   };
 
   const style = {

@@ -62,6 +62,7 @@ export const PlaylistsDetailsPage = () => {
           delete_mode_visible={delete_mode_visible}
           set_delete_mode_visible={set_delete_mode_visible}
           check_all={check_all}
+          collection_id={playlist_id}
         />
       )}
     </div>

@@ -36,6 +36,6 @@ export const Playlist = {
   details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
   shuffle: async (playlist_id: number) => axios.get(`playlists/${playlist_id}/shuffle`),
   add_video: async (updated_playlist: IPlaylist) => axios.put(`playlists/${updated_playlist.id}/video/add`, updated_playlist),
-  remove_video: async (updated_playlist: IPlaylist) => axios.put(`playlists/${updated_playlist.id}/video/remove`, updated_playlist),
+  remove_video: async (updated_playlist: any) => axios.put(`playlists/${updated_playlist.id}/video/remove`, updated_playlist),
   delete: async (playlist_id: number) => axios.delete(`playlists/${playlist_id}`),
 };

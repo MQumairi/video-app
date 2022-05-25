@@ -35,7 +35,12 @@ export const CollectionEditMode = (props: any) => {
         <PlaylistVideoPopover toggle={props.playlist_popover_visible} set_toggle={props.set_playlist_popover_visible} videos={Array.from(checked_videos)} />
       )}
       {props.delete_mode_visible && (
-        <RemoveVideosPopover toggle={props.delete_mode_visible} set_toggle={props.set_delete_mode_visible} videos={Array.from(checked_videos)} />
+        <RemoveVideosPopover
+          toggle={props.delete_mode_visible}
+          set_toggle={props.set_delete_mode_visible}
+          videos={Array.from(checked_videos)}
+          collection_id={props.collection_id}
+        />
       )}
       <Box component="div" sx={box_style}>
         {props.video_paths?.map((vid: any) => {

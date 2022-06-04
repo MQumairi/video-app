@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import HrefButton from "../misc/href_button";
 import ToggleButton from "../misc/toggle_button";
 import VideoPlayer from "./video_player";
-import TagVideoPopover from "../tags/tags_popover/tag_video_popover";
+import TagVideoPopover from "../popovers/tag_popover/tag_video_popover";
 import VideoTags from "./video_tags";
-import PlaylistVideoPopover from "../playlists/playlists_popover/playlists_video_popover";
+import PlaylistVideoPopover from "../popovers/playlist_popover/playlists_video_popover";
 import { observer } from "mobx-react-lite";
 
 const PlayerPage = () => {

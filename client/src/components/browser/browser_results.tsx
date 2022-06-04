@@ -1,5 +1,5 @@
 import { ButtonGroup } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
 import HrefButton from "../misc/href_button";
@@ -7,8 +7,8 @@ import ToggleButton from "../misc/toggle_button";
 import DirectoryVideos from "./directory_videos";
 import BrowserEditMode from "./edit_videos/browser_edit_mode";
 import SubDirectoryList from "./sub_directory_list";
-import SelectedVideosStore from "../../store/selected_videos_store";
 import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
+import TagPopoverButton from "../popovers/tag_popover/tag_popover_button";
 
 interface IProps {
   directory_paths: string[];
@@ -19,7 +19,6 @@ interface IProps {
 const BrowserResults = (props: IProps) => {
   const [edit_mode, set_edit_mode] = useState<boolean>(false);
   const [check_all, set_check_all] = useState<boolean>(false);
-  const selectedVideoStore = useContext(SelectedVideosStore);
 
   return (
     <div>
@@ -27,7 +26,7 @@ const BrowserResults = (props: IProps) => {
         <HrefButton href={props.back_url} textContent="Back" />
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
-        {edit_mode && <ToggleButton toggle={selectedVideoStore.tag_popover_visible} set_toggle={selectedVideoStore.toggle_tag_popover} trueText="Tag" />}
+        {edit_mode && <TagPopoverButton />}
         {edit_mode && <PlaylistPopoverButton />}
       </ButtonGroup>
       {!edit_mode && props.directory_paths.length > 0 && <SubDirectoryList directory_paths={props.directory_paths} />}

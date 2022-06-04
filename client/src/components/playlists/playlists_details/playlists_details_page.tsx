@@ -11,6 +11,9 @@ import ToggleButton from "../../misc/toggle_button";
 import PlaylistVideoList from "./playlists_video_list";
 import SelectedVideosStore from "../../../store/selected_videos_store";
 import { observer } from "mobx-react-lite";
+import PlaylistPopoverButton from "../../popovers/playlist_popover/playlist_popover_button";
+import TagPopoverButton from "../../popovers/tag_popover/tag_popover_button";
+import RemoveVideosPopoverButton from "../../popovers/remove_video_popover/remove_videos_popover_button";
 
 const PlaylistsDetailsPage = () => {
   let playlist_id = useParams().playlist_id ?? 1;
@@ -43,17 +46,9 @@ const PlaylistsDetailsPage = () => {
       <ButtonGroup>
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
-        {edit_mode && <ToggleButton toggle={selectedVideoStore.tag_popover_visible} set_toggle={selectedVideoStore.toggle_tag_popover} trueText="Tag" />}
-        {edit_mode && (
-          <ToggleButton toggle={selectedVideoStore.playlist_popover_visible} set_toggle={selectedVideoStore.toggle_playlist_popover} trueText="Playlist" />
-        )}
-        {edit_mode && (
-          <ToggleButton
-            toggle={selectedVideoStore.remove_vid_popover_visible}
-            set_toggle={selectedVideoStore.toggle_remove_vid_popover}
-            trueText="Remove Videos"
-          />
-        )}
+        {edit_mode && <TagPopoverButton />}
+        {edit_mode && <PlaylistPopoverButton />}
+        {edit_mode && <RemoveVideosPopoverButton />}
         {!edit_mode && <HrefButton href={`/playlists/${playlist_id}/delete`} textContent={"Delete"} />}
         {!edit_mode && random_vid && <HrefButton textContent="Random" href={`/playlists/${playlist_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
       </ButtonGroup>

@@ -29,11 +29,12 @@ const PlaylistDropDown = (props: any) => {
     <div>
       {playlists.length > 0 && (
         <Select
+          defaultValue={""}
           sx={selector_style}
           labelId="playlist-dropdown"
           id="playlist-dropdown"
           label="playlists"
-          value={props.selected_playlist_id ?? 1}
+          value={props.selected_playlist_id}
           onChange={handle_change}
         >
           {playlists.map((playlist) => {

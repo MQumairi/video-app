@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
+import { observer } from "mobx-react-lite";
 
-export const ToggleButton = (props: any) => {
+const ToggleButton = (props: any) => {
   const handle_click = (event: any) => {
     props.set_toggle(!props.toggle);
   };
@@ -11,3 +12,5 @@ export const ToggleButton = (props: any) => {
     </Button>
   );
 };
+
+export default observer(ToggleButton);

@@ -1,12 +1,15 @@
-import { FunctionButton } from "../../misc/function_button";
-import { ToggleButton } from "../../misc/toggle_button";
-import { PlaylistDropDown } from "./playlists_dropdown";
-import { useState } from "react";
+import FunctionButton from "../../misc/function_button";
+import ToggleButton from "../../misc/toggle_button";
+import PlaylistDropDown from "./playlists_dropdown";
+import { useContext, useState } from "react";
 import IPlaylist from "../../../models/playlist";
 import { Playlist } from "../../../api/agent";
+import SelectedVideosStore from "../../../store/selected_videos_store";
+import { observer } from "mobx-react-lite";
 
-export const PlaylistVideoPopover = (props: any) => {
+const PlaylistVideoPopover = (props: any) => {
   const [selected_playlist_id, set_selected_playlist_id] = useState<number>(1);
+  const selectedVideoStore = useContext(SelectedVideosStore);
 
   const style = {
     background: "#022a40",
@@ -17,7 +20,7 @@ export const PlaylistVideoPopover = (props: any) => {
   };
 
   const send_video = async () => {
-    const videos = props.videos;
+    const videos = Array.from(selectedVideoStore.selected_videos);
     console.log("videos are", videos);
     const updated_playlist: IPlaylist = {
       id: selected_playlist_id,
@@ -32,8 +35,10 @@ export const PlaylistVideoPopover = (props: any) => {
       <h2>Add to Playlist</h2>
       <PlaylistDropDown selected_playlist_id={selected_playlist_id} set_selected_playlist_id={set_selected_playlist_id} />
       <p>Associate the videos with the selected playlist.</p>
-      <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} trueText="Cancel" />
+      <ToggleButton toggle={selectedVideoStore.playlist_popover_visible} set_toggle={selectedVideoStore.toggle_playlist_popover} trueText="Cancel" />
       <FunctionButton fn={send_video} textContent="Submit" />
     </div>
   );
 };
+
+export default observer(PlaylistVideoPopover);

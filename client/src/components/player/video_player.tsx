@@ -1,7 +1,8 @@
+import { observer } from "mobx-react-lite";
 import { base_url } from "../../api/agent";
 import { PathConverter } from "../../util/path_converter";
 
-export const VideoPlayer = (props: any) => {
+const VideoPlayer = (props: any) => {
   const box_style = {
     margin: "auto",
     display: "flex",
@@ -22,3 +23,5 @@ export const VideoPlayer = (props: any) => {
     </div>
   );
 };
+
+export default observer(VideoPlayer);

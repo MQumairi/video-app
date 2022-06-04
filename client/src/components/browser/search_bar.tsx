@@ -1,7 +1,8 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
+import { observer } from "mobx-react-lite";
 
-export const SearchBar = () => {
+const SearchBar = () => {
   const [search_query, set_search_query] = useState<string>("");
 
   const handle_search_change = (event: any) => {
@@ -29,3 +30,5 @@ export const SearchBar = () => {
     />
   );
 };
+
+export default observer(SearchBar);

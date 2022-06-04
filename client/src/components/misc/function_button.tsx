@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
+import { observer } from "mobx-react-lite";
 
-export const FunctionButton = (props: any) => {
+const FunctionButton = (props: any) => {
   const handle_click = async (event: any) => {
     await props.fn();
   };
@@ -10,3 +11,5 @@ export const FunctionButton = (props: any) => {
     </Button>
   );
 };
+
+export default observer(FunctionButton);

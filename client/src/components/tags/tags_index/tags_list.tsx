@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import { TagItem } from "./tag_item";
+import { observer } from "mobx-react-lite";
+import TagItem from "./tag_item";
 
-export const TagsList = (props: any) => {
+const TagsList = (props: any) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -12,8 +13,10 @@ export const TagsList = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.tags?.map((tag: any) => {
-        return <TagItem key={tag.name} tag={tag}/>;
+        return <TagItem key={tag.name} tag={tag} />;
       })}
     </Box>
   );
 };
+
+export default observer(TagsList);

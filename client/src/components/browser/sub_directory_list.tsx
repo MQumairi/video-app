@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import { SubDirectoryItem } from "./sub_directory_item";
+import SubDirectoryItem from "./sub_directory_item";
+import { observer } from "mobx-react-lite";
 
-export const SubDirectoryList = (props: any) => {
+const SubDirectoryList = (props: any) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -17,3 +18,5 @@ export const SubDirectoryList = (props: any) => {
     </Box>
   );
 };
+
+export default observer(SubDirectoryList);

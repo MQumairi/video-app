@@ -1,8 +1,9 @@
-import { FunctionButton } from "../../misc/function_button";
-import { ToggleButton } from "../../misc/toggle_button";
+import FunctionButton from "../../misc/function_button";
+import ToggleButton from "../../misc/toggle_button";
 import { Playlist } from "../../../api/agent";
+import { observer } from "mobx-react-lite";
 
-export const RemoveVideosPopover = (props: any) => {
+const RemoveVideosPopover = (props: any) => {
   const delete_videos = async (event: any) => {
     const videos = props.videos;
     console.log("videos are", videos);
@@ -31,3 +32,5 @@ export const RemoveVideosPopover = (props: any) => {
     </div>
   );
 };
+
+export default observer(RemoveVideosPopover);

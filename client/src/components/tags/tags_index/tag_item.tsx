@@ -1,4 +1,6 @@
-export const TagItem = (props: any) => {
+import { observer } from "mobx-react-lite";
+
+const TagItem = (props: any) => {
   const card_style = {
     background: "#032a40",
     padding: "15px",
@@ -13,3 +15,5 @@ export const TagItem = (props: any) => {
     </a>
   );
 };
+
+export default observer(TagItem);

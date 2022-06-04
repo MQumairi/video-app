@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { PathConverter } from "../../../util/path_converter";
-import { VideoItem } from "../../browser/video_item";
+import VideoItem from "../../browser/video_item";
 
-export const TagVideoList = (props: any) => {
+const TagVideoList = (props: any) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -19,3 +20,5 @@ export const TagVideoList = (props: any) => {
     </Box>
   );
 };
+
+export default observer(TagVideoList);

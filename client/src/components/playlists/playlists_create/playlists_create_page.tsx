@@ -1,10 +1,11 @@
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { Playlist } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
-import { FunctionButton } from "../../misc/function_button";
-import { HrefButton } from "../../misc/href_button";
+import FunctionButton from "../../misc/function_button";
+import HrefButton from "../../misc/href_button";
 
-export const PlaylistCreatePage = () => {
+const PlaylistCreatePage = () => {
   const [playlist_name, set_playlist_name] = useState("");
   const handle_change = (input: any) => {
     set_playlist_name(input.target.value);
@@ -34,3 +35,5 @@ export const PlaylistCreatePage = () => {
     </div>
   );
 };
+
+export default observer(PlaylistCreatePage);

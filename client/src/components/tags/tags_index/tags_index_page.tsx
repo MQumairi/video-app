@@ -1,10 +1,11 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
-import { HrefButton } from "../../misc/href_button";
-import { TagsList } from "./tags_list";
+import HrefButton from "../../misc/href_button";
+import TagsList from "./tags_list";
 
-export const TagsIndexPage = () => {
+const TagsIndexPage = () => {
   const [tags, set_tags] = useState<ITag[]>([]);
   const fetch_tags = async () => {
     let received_tags = (await Tag.get()).data;
@@ -21,3 +22,5 @@ export const TagsIndexPage = () => {
     </div>
   );
 };
+
+export default observer(TagsIndexPage);

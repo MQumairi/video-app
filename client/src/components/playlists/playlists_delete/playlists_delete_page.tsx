@@ -1,12 +1,13 @@
 import { ButtonGroup } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Playlist } from "../../../api/agent";
 import IPlaylist from "../../../models/playlist";
-import { FunctionButton } from "../../misc/function_button";
-import { HrefButton } from "../../misc/href_button";
+import FunctionButton from "../../misc/function_button";
+import HrefButton from "../../misc/href_button";
 
-export const PlaylistsDeletePage = () => {
+const PlaylistsDeletePage = () => {
   let playlist_id = useParams().playlist_id;
   const [playlist, set_playlist] = useState<IPlaylist | null>(null);
 
@@ -39,3 +40,5 @@ export const PlaylistsDeletePage = () => {
     </div>
   );
 };
+
+export default observer(PlaylistsDeletePage);

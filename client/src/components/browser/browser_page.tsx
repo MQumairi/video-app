@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { Directory } from "../../api/agent";
 import IDirectory from "../../models/directory";
 import { PathConverter } from "../../util/path_converter";
-import { BrowserResults } from "./browser_results";
+import BrowserResults from "./browser_results";
 import IVideoMeta from "../../models/video_meta";
-import { SearchBar } from "./search_bar";
+import SearchBar from "./search_bar";
+import { observer } from "mobx-react-lite";
 
 const BrowserPage = () => {
   let dir_path = useParams().dir_path;
@@ -57,4 +58,4 @@ const BrowserPage = () => {
   );
 };
 
-export default BrowserPage;
+export default observer(BrowserPage);

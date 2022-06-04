@@ -1,6 +1,7 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
 
-export const NavBar = () => {
+const NavBar = () => {
   const bar_style = {
     borderRadius: "10px",
     marginBottom: "30px",
@@ -25,3 +26,5 @@ export const NavBar = () => {
     </AppBar>
   );
 };
+
+export default observer(NavBar);

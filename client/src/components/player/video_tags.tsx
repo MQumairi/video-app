@@ -1,4 +1,6 @@
-export const VideoTags = (props: any) => {
+import { observer } from "mobx-react-lite";
+
+const VideoTags = (props: any) => {
   const video_tags = {
     background: "#01141f",
     display: "flex",
@@ -26,3 +28,5 @@ export const VideoTags = (props: any) => {
     </div>
   );
 };
+
+export default observer(VideoTags);

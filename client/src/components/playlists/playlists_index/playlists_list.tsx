@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import { PlaylistItem } from "./playlist_item";
+import { observer } from "mobx-react-lite";
+import PlaylistItem from "./playlist_item";
 
-export const PlaylistsList = (props: any) => {
+const PlaylistsList = (props: any) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -12,8 +13,10 @@ export const PlaylistsList = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       {props.playlists?.map((playlist: any) => {
-        return <PlaylistItem key={playlist.name} playlist={playlist}/>;
+        return <PlaylistItem key={playlist.name} playlist={playlist} />;
       })}
     </Box>
   );
 };
+
+export default observer(PlaylistsList);

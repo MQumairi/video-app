@@ -2,8 +2,9 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
+import { observer } from "mobx-react-lite";
 
-export const SubDirectoryItem = (props: any) => {
+const SubDirectoryItem = (props: any) => {
   let dir_path = useParams().dir_path;
   let url_query = useParams().query;
 
@@ -39,3 +40,5 @@ export const SubDirectoryItem = (props: any) => {
     </a>
   );
 };
+
+export default observer(SubDirectoryItem);

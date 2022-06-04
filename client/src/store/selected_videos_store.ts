@@ -1,13 +1,38 @@
 import { observable, action } from "mobx";
 import { createContext } from "react";
 import IVideoMeta from "../models/video_meta";
+import { makeObservable } from "mobx";
 
 class SelectedVideosStore {
-  @observable title = "Hello from MobX";
+  constructor() {
+    makeObservable(this);
+  }
+  // Toggles
+  @observable tag_popover_visible = false;
+  @action toggle_tag_popover = () => {
+    this.tag_popover_visible = !this.tag_popover_visible;
+  };
+
+  @observable playlist_popover_visible = false;
+  @action toggle_playlist_popover = () => {
+    this.playlist_popover_visible = !this.playlist_popover_visible;
+  };
+
+  @observable remove_vid_popover_visible = false;
+  @action toggle_remove_vid_popover = () => {
+    this.remove_vid_popover_visible = !this.remove_vid_popover_visible;
+  };
+
+  // Selected videos
+
   @observable selected_videos = new Set<IVideoMeta>();
 
   @action add_selected_video = (video: IVideoMeta) => {
     this.selected_videos.add(video);
+  };
+
+  @action remove_selected_video = (video: IVideoMeta) => {
+    this.selected_videos.delete(video);
   };
 
   @action clear_selected_videos = () => {

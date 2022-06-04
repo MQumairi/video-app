@@ -1,17 +1,18 @@
 import BrowserPage from "./components/browser/browser_page";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PlayerPage } from "./components/player/player_page";
+import PlayerPage from "./components/player/player_page";
 import CssBaseline from "@mui/material/CssBaseline";
-import { TagsIndexPage } from "./components/tags/tags_index/tags_index_page";
-import { TagsCreatePage } from "./components/tags/tags_create/tags_create_page";
+import TagsIndexPage from "./components/tags/tags_index/tags_index_page";
+import TagsCreatePage from "./components/tags/tags_create/tags_create_page";
 import { Box } from "@mui/material";
-import { TagDetailsPage } from "./components/tags/tags_details/tag_details_page";
-import { NavBar } from "./components/nav_bar";
-import { TagsDeletePage } from "./components/tags/tags_delete/tags_delete_page";
-import { PlaylistsIndexPage } from "./components/playlists/playlists_index/playlists_index_page";
-import { PlaylistCreatePage } from "./components/playlists/playlists_create/playlists_create_page";
-import { PlaylistsDeletePage } from "./components/playlists/playlists_delete/playlists_delete_page";
-import { PlaylistsDetailsPage } from "./components/playlists/playlists_details/playlists_details_page";
+import TagDetailsPage from "./components/tags/tags_details/tag_details_page";
+import NavBar from "./components/nav_bar";
+import TagsDeletePage from "./components/tags/tags_delete/tags_delete_page";
+import PlaylistsIndexPage from "./components/playlists/playlists_index/playlists_index_page";
+import PlaylistCreatePage from "./components/playlists/playlists_create/playlists_create_page";
+import PlaylistsDeletePage from "./components/playlists/playlists_delete/playlists_delete_page";
+import PlaylistsDetailsPage from "./components/playlists/playlists_details/playlists_details_page";
+import { observer } from "mobx-react-lite";
 
 const App = () => {
   const box_style = {
@@ -53,4 +54,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);

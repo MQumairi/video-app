@@ -1,7 +1,7 @@
 import { observable, action } from "mobx";
 import { createContext } from "react";
 import IVideoMeta from "../models/video_meta";
-import { makeObservable } from "mobx";
+import { makeObservable, toJS } from "mobx";
 
 class SelectedVideosStore {
   constructor() {
@@ -25,14 +25,14 @@ class SelectedVideosStore {
 
   // Selected videos
 
-  @observable selected_videos = new Set<IVideoMeta>();
+  @observable selected_videos = new Map<string, IVideoMeta>();
 
   @action add_selected_video = (video: IVideoMeta) => {
-    this.selected_videos.add(video);
+    this.selected_videos.set(video.name, video)
   };
 
   @action remove_selected_video = (video: IVideoMeta) => {
-    this.selected_videos.delete(video);
+    this.selected_videos.delete(video.name);
   };
 
   @action clear_selected_videos = () => {

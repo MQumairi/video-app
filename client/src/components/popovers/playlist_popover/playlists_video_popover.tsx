@@ -20,7 +20,7 @@ const PlaylistVideoPopover = (props: any) => {
   };
 
   const send_video = async () => {
-    const videos = Array.from(selectedVideoStore.selected_videos);
+    const videos = Array.from(selectedVideoStore.selected_videos.values());
     console.log("videos are", videos);
     const updated_playlist: IPlaylist = {
       id: selected_playlist_id,

@@ -20,7 +20,7 @@ const TagVideoPopover = (props: any) => {
   };
 
   const send_video = async () => {
-    const videos = Array.from(selectedVideoStore.selected_videos);
+    const videos = Array.from(selectedVideoStore.selected_videos.values());
     const updated_tag: ITag = {
       id: selected_tag_id,
       name: "",

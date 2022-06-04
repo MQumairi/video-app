@@ -27,10 +27,13 @@ const EditModeVideoItem = (props: any) => {
 
   const handle_change = (_: any) => {
     if (!checked) {
+      console.log("Adding video:", props.vid);
       selectedVideoStore.add_selected_video(props.vid);
     } else {
+      console.log("Removing video:", props.vid);
       selectedVideoStore.remove_selected_video(props.vid);
     }
+    console.log("Videos selected:", selectedVideoStore.selected_videos);
     set_checked(!checked);
   };
 

@@ -1,12 +1,13 @@
 import { ButtonGroup } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
-import { FunctionButton } from "../../misc/function_button";
-import { HrefButton } from "../../misc/href_button";
+import FunctionButton from "../../misc/function_button";
+import HrefButton from "../../misc/href_button";
 
-export const TagsDeletePage = () => {
+const TagsDeletePage = () => {
   let tag_id = useParams().tag_id;
   const [tag, set_tag] = useState<ITag | null>(null);
 
@@ -39,3 +40,5 @@ export const TagsDeletePage = () => {
     </div>
   );
 };
+
+export default observer(TagsDeletePage);

@@ -1,9 +1,13 @@
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import { Checkbox } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import SelectedVideosStore from "../../../store/selected_videos_store";
+import { observer } from "mobx-react-lite";
 
-export const EditModeVideoItem = (props: any) => {
+const EditModeVideoItem = (props: any) => {
   const [checked, set_checked] = useState<boolean>(false);
+  const selectedVideoStore = useContext(SelectedVideosStore);
+
   const card_style = {
     margin: "30px",
     width: "100px",
@@ -21,16 +25,22 @@ export const EditModeVideoItem = (props: any) => {
     margin: "auto",
   };
 
-  const handle_change = (event: any) => {
+  const handle_change = (_: any) => {
+    if (!checked) {
+      console.log("Adding video:", props.vid);
+      selectedVideoStore.add_selected_video(props.vid);
+    } else {
+      console.log("Removing video:", props.vid);
+      selectedVideoStore.remove_selected_video(props.vid);
+    }
+    console.log("Videos selected:", selectedVideoStore.selected_videos);
     set_checked(!checked);
-    console.log("checked ", props.vid);
-    props.modify_set(props.vid);
   };
 
   useEffect(() => {
     if (props.check_all) {
       set_checked(true);
-      props.modify_set(props.vid);
+      selectedVideoStore.add_selected_video(props.vid);
     }
   });
 
@@ -44,3 +54,5 @@ export const EditModeVideoItem = (props: any) => {
     </div>
   );
 };
+
+export default observer(EditModeVideoItem);

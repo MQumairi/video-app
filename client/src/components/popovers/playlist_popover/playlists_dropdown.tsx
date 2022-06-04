@@ -1,9 +1,10 @@
 import { MenuItem, Select } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Playlist } from "../../../api/agent";
 import IPlaylist from "../../../models/playlist";
 
-export const PlaylistDropDown = (props: any) => {
+const PlaylistDropDown = (props: any) => {
   const [playlists, set_playlists] = useState<IPlaylist[]>([]);
 
   const fetch_playlists = async () => {
@@ -27,7 +28,15 @@ export const PlaylistDropDown = (props: any) => {
   return (
     <div>
       {playlists.length > 0 && (
-        <Select sx={selector_style} labelId="playlist-dropdown" id="playlist-dropdown" label="playlists" value={props.selected_playlist_id ?? 1} onChange={handle_change}>
+        <Select
+          defaultValue={""}
+          sx={selector_style}
+          labelId="playlist-dropdown"
+          id="playlist-dropdown"
+          label="playlists"
+          value={props.selected_playlist_id}
+          onChange={handle_change}
+        >
           {playlists.map((playlist) => {
             return (
               <MenuItem key={playlist.id} value={playlist.id}>
@@ -40,3 +49,5 @@ export const PlaylistDropDown = (props: any) => {
     </div>
   );
 };
+
+export default observer(PlaylistDropDown);

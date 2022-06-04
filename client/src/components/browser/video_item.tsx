@@ -1,6 +1,7 @@
 import VideoFileIcon from "@mui/icons-material/VideoFile";
+import { observer } from "mobx-react-lite";
 
-export const VideoItem = (props: any) => {
+const VideoItem = (props: any) => {
   const card_style = {
     margin: "30px",
     width: "100px",
@@ -26,3 +27,5 @@ export const VideoItem = (props: any) => {
     </a>
   );
 };
+
+export default observer(VideoItem);

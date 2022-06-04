@@ -1,20 +1,15 @@
 import { Box } from "@mui/material";
-import IVideoMeta from "../../../models/video_meta";
+import { useContext } from "react";
 import { PathConverter } from "../../../util/path_converter";
-import { PlaylistVideoPopover } from "../../playlists/playlists_popover/playlists_video_popover";
-import { TagVideoPopover } from "../../tags/tags_popover/tag_video_popover";
-import { EditModeVideoItem } from "./edit_mode_video_item";
+import PlaylistVideoPopover from "../../popovers/playlist_popover/playlists_video_popover";
+import TagVideoPopover from "../../popovers/tag_popover/tag_video_popover";
+import EditModeVideoItem from "./edit_mode_video_item";
+import SelectedVideosStore from "../../../store/selected_videos_store";
+import { observer } from "mobx-react-lite";
+import RemoveVideosPopover from "../../popovers/remove_video_popover/remove_videos_popover";
 
-const checked_videos = new Set<IVideoMeta>();
-
-export const BrowserEditMode = (props: any) => {
-  const modify_set = (vid: IVideoMeta) => {
-    if (checked_videos.has(vid) && !props.check_all) {
-      checked_videos.delete(vid);
-      return;
-    }
-    checked_videos.add(vid);
-  };
+const BrowserEditMode = (props: any) => {
+  const selectedVideoStore = useContext(SelectedVideosStore);
 
   const box_style = {
     background: "#01141f",
@@ -26,26 +21,17 @@ export const BrowserEditMode = (props: any) => {
 
   return (
     <div>
-      <h2 style={{ marginTop: "20px" }}>Editing</h2>
-      {props.tag_popover_visible && (
-        <TagVideoPopover toggle={props.tag_popover_visible} set_toggle={props.set_tag_popover_visible} videos={Array.from(checked_videos)} />
-      )}
-      {props.playlist_popover_visible && (
-        <PlaylistVideoPopover toggle={props.playlist_popover_visible} set_toggle={props.set_playlist_popover_visible} videos={Array.from(checked_videos)} />
-      )}
+      <h2 style={{ marginTop: "20px" }}>Editing, visible tagpopover: {selectedVideoStore.tag_popover_visible}</h2>
+      {selectedVideoStore.tag_popover_visible && <TagVideoPopover />}
+      {selectedVideoStore.playlist_popover_visible && <PlaylistVideoPopover />}
+      {selectedVideoStore.remove_vid_popover_visible && <RemoveVideosPopover />}
       <Box component="div" sx={box_style}>
         {props.video_paths?.map((vid: any) => {
-          return (
-            <EditModeVideoItem
-              modify_set={modify_set}
-              href={`/player/${PathConverter.to_query(vid.path)}`}
-              vid={vid}
-              key={vid.name}
-              check_all={props.check_all}
-            />
-          );
+          return <EditModeVideoItem href={`/player/${PathConverter.to_query(vid.path)}`} vid={vid} key={vid.name} check_all={props.check_all} />;
         })}
       </Box>
     </div>
   );
 };
+
+export default observer(BrowserEditMode);

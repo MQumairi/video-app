@@ -1,4 +1,6 @@
-export const PlaylistItem = (props: any) => {
+import { observer } from "mobx-react-lite";
+
+const PlaylistItem = (props: any) => {
   const card_style = {
     background: "#032a40",
     padding: "15px",
@@ -13,3 +15,5 @@ export const PlaylistItem = (props: any) => {
     </a>
   );
 };
+
+export default observer(PlaylistItem);

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { PathConverter } from "../../util/path_converter";
-import { VideoItem } from "./video_item";
+import VideoItem from "./video_item";
+import { observer } from "mobx-react-lite";
 
 export const DirectoryVideos = (props: any) => {
   const box_style = {
@@ -19,3 +20,5 @@ export const DirectoryVideos = (props: any) => {
     </Box>
   );
 };
+
+export default observer(DirectoryVideos);

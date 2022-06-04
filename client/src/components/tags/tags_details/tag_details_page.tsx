@@ -1,13 +1,14 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
-import { HrefButton } from "../../misc/href_button";
-import { TagVideoList } from "./tag_video_list";
+import HrefButton from "../../misc/href_button";
+import TagVideoList from "./tag_video_list";
 
-export const TagDetailsPage = () => {
+const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
@@ -36,3 +37,5 @@ export const TagDetailsPage = () => {
     </div>
   );
 };
+
+export default observer(TagDetailsPage);

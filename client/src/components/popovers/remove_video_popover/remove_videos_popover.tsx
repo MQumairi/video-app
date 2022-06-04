@@ -1,10 +1,15 @@
-import { FunctionButton } from "../../misc/function_button";
-import { ToggleButton } from "../../misc/toggle_button";
+import FunctionButton from "../../misc/function_button";
+import ToggleButton from "../../misc/toggle_button";
 import { Playlist } from "../../../api/agent";
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
+import SelectedVideosStore from "../../../store/selected_videos_store";
 
-export const RemoveVideosPopover = (props: any) => {
+const RemoveVideosPopover = (props: any) => {
+  const selectedVideoStore = useContext(SelectedVideosStore);
+
   const delete_videos = async (event: any) => {
-    const videos = props.videos;
+    const videos = Array.from(selectedVideoStore.selected_videos);
     console.log("videos are", videos);
     const updated_video_collection = {
       id: props.collection_id,
@@ -25,9 +30,11 @@ export const RemoveVideosPopover = (props: any) => {
 
   return (
     <div style={style}>
-      <h2>Remove {props.videos.length} Videos from this Collection?</h2>
+      <h2>Remove {selectedVideoStore.selected_videos.size} Videos from this Collection?</h2>
       <FunctionButton fn={delete_videos} textContent="Yes" />
       <ToggleButton toggle={props.toggle} set_toggle={props.set_toggle} trueText="Cancel" />
     </div>
   );
 };
+
+export default observer(RemoveVideosPopover);

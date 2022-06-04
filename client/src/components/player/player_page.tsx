@@ -3,14 +3,15 @@ import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
 import { Playlist, Tag, Video } from "../../api/agent";
 import { useEffect, useState } from "react";
-import { HrefButton } from "../misc/href_button";
-import { ToggleButton } from "../misc/toggle_button";
-import { VideoPlayer } from "./video_player";
-import { TagVideoPopover } from "../tags/tags_popover/tag_video_popover";
-import { VideoTags } from "./video_tags";
-import { PlaylistVideoPopover } from "../playlists/playlists_popover/playlists_video_popover";
+import HrefButton from "../misc/href_button";
+import ToggleButton from "../misc/toggle_button";
+import VideoPlayer from "./video_player";
+import TagVideoPopover from "../popovers/tag_popover/tag_video_popover";
+import VideoTags from "./video_tags";
+import PlaylistVideoPopover from "../popovers/playlist_popover/playlists_video_popover";
+import { observer } from "mobx-react-lite";
 
-export const PlayerPage = () => {
+const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
   let tag_id = useParams().tag_id;
   let playlist_id = useParams().playlist_id;
@@ -61,3 +62,5 @@ export const PlayerPage = () => {
     </div>
   );
 };
+
+export default observer(PlayerPage);

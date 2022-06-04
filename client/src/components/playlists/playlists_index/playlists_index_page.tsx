@@ -1,10 +1,11 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Playlist } from "../../../api/agent";
 import IPlaylist from "../../../models/playlist";
-import { HrefButton } from "../../misc/href_button";
-import { PlaylistsList } from "./playlists_list";
+import HrefButton from "../../misc/href_button";
+import PlaylistsList from "./playlists_list";
 
-export const PlaylistsIndexPage = () => {
+const PlaylistsIndexPage = () => {
   const [playlists, set_playlists] = useState<IPlaylist[]>([]);
   const fetch_playlists = async () => {
     let received_playlists = (await Playlist.get()).data;
@@ -21,3 +22,5 @@ export const PlaylistsIndexPage = () => {
     </div>
   );
 };
+
+export default observer(PlaylistsIndexPage);

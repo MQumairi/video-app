@@ -1,9 +1,10 @@
 import { MenuItem, Select } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 
-export const TagDropDown = (props: any) => {
+const TagDropDown = (props: any) => {
   const [tags, set_tags] = useState<ITag[]>([]);
 
   const fetch_tags = async () => {
@@ -40,3 +41,5 @@ export const TagDropDown = (props: any) => {
     </div>
   );
 };
+
+export default observer(TagDropDown);

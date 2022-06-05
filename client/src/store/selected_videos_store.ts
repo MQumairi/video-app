@@ -28,7 +28,7 @@ class SelectedVideosStore {
   @observable selected_videos = new Map<string, IVideoMeta>();
 
   @action add_selected_video = (video: IVideoMeta) => {
-    this.selected_videos.set(video.name, video)
+    this.selected_videos.set(video.name, video);
   };
 
   @action remove_selected_video = (video: IVideoMeta) => {
@@ -37,6 +37,12 @@ class SelectedVideosStore {
 
   @action clear_selected_videos = () => {
     this.selected_videos.clear();
+  };
+
+  @action set_single_selection = (video: IVideoMeta) => {
+    this.selected_videos.clear();
+    this.selected_videos.set(video.name, video);
+    console.log(toJS(this.selected_videos));
   };
 }
 

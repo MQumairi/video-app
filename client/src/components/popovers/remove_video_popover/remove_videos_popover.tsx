@@ -4,15 +4,17 @@ import { Playlist } from "../../../api/agent";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import SelectedVideosStore from "../../../store/selected_videos_store";
+import { useParams } from "react-router-dom";
 
 const RemoveVideosPopover = (props: any) => {
   const selectedVideoStore = useContext(SelectedVideosStore);
+  let playlist_id = useParams().playlist_id ?? 1;
 
   const delete_videos = async (event: any) => {
-    const videos = Array.from(selectedVideoStore.selected_videos);
+    const videos = Array.from(selectedVideoStore.selected_videos.values());
     console.log("videos are", videos);
     const updated_video_collection = {
-      id: props.collection_id,
+      id: playlist_id,
       name: "",
       videos: videos,
     };

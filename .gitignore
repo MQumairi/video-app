@@ -2,4 +2,5 @@
 /server/videos
 /videos
 /pg
+/test.sh
 .DS_Store

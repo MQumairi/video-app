@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import path from "path";
 import { Tag } from "./tag";
 import { Playlist } from "./playlist";
@@ -16,6 +16,9 @@ export class VideoMeta {
 
   @Column("text")
   parent_path: string;
+
+  @Column("int", {default: 0})
+  rating: number;
 
   @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];

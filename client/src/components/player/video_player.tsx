@@ -11,8 +11,8 @@ const VideoPlayer = (props: any) => {
   };
 
   const video_style = {
-    maxWidth: "100%",
-    maxHeight: "100vh",
+    minWidth: "100%",
+    height: "auto"
   };
 
   return (

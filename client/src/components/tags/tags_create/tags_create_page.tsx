@@ -15,6 +15,7 @@ const TagsCreatePage = () => {
       name: tag_name,
       path: "",
       parent_path: "",
+      rating: 0,
     };
     console.log("sending: ", video_object);
     const response = await Tag.post(video_object);

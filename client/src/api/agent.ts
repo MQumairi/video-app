@@ -19,6 +19,7 @@ export const Directory = {
 export const Video = {
   // /:filepath/metadata
   get: async (vid_path: string) => axios.get(`videos/${vid_path}/metadata`),
+  rate: async (vid_path: string, video_meta: IVideoMeta) => axios.put(`videos/${vid_path}/rate`, video_meta),
 };
 
 export const Tag = {

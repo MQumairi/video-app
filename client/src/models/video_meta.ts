@@ -5,4 +5,5 @@ export default interface IVideoMeta {
   path: string;
   parent_path: string;
   tags?: ITag[];
+  rating: number;
 }

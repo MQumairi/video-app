@@ -15,7 +15,6 @@ const VideoTags = (props: any) => {
   };
   return (
     <div style={{ marginTop: "20px" }}>
-      <h2>Tags</h2>
       <div style={video_tags}>
         {props.tags?.map((tag: any) => {
           return (

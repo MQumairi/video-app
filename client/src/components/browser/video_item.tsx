@@ -20,6 +20,7 @@ const VideoItem = (props: any) => {
         onClick={() => {
           props.fetch_directory(props.dir);
         }}
+        key={props.vid.name}
       >
         <VideoFileIcon sx={icon_style} />
         <h4 style={{ textAlign: "center" }}>{props.vid.name}</h4>

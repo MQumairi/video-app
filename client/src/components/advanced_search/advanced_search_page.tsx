@@ -1,0 +1,30 @@
+import { observer } from "mobx-react-lite";
+import { useContext, useEffect, useState } from "react";
+import { Tag } from "../../api/agent";
+import ITag from "../../models/tag";
+import AdvancedSearchForm from "./advanced_search_form";
+import SelectedVideosStore from "../../store/selected_videos_store";
+import Advanced_search_results from "./advanced_search_results";
+
+const AdvancedSearchPage = () => {
+  const selectedVideoStore = useContext(SelectedVideosStore);
+
+  const [tags, set_tags] = useState<ITag[]>([]);
+
+  const fetch_tags = async () => {
+    let received_tags = (await Tag.get()).data;
+    set_tags(received_tags);
+  };
+
+  useEffect(() => {
+    fetch_tags();
+  }, []);
+  return (
+    <div>
+      {tags.length > 0 && <AdvancedSearchForm tags={tags} />}
+      <Advanced_search_results videos={selectedVideoStore.adv_search_results} />
+    </div>
+  );
+};
+
+export default observer(AdvancedSearchPage);

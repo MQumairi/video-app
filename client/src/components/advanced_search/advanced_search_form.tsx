@@ -17,7 +17,7 @@ interface IProps {
 const AdvancedSearchForm = (props: IProps) => {
   const selectedVideoStore = useContext(SelectedVideosStore);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
-  const [min_rating, set_min_rating] = useState<number>(1);
+  const [min_rating, set_min_rating] = useState<number>(0);
 
   const on_submit = async (input: any) => {
     const selected_tags = selectedVideoStore.searched_for_tags;
@@ -57,7 +57,7 @@ const AdvancedSearchForm = (props: IProps) => {
         value={min_rating}
         onChange={handle_rating_change}
       >
-        {[1, 2, 3, 4, 5].map((rating) => {
+        {[0, 1, 2, 3, 4, 5].map((rating) => {
           return (
             <MenuItem key={rating} value={rating}>
               {rating}

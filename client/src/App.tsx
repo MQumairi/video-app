@@ -13,6 +13,8 @@ import PlaylistCreatePage from "./components/playlists/playlists_create/playlist
 import PlaylistsDeletePage from "./components/playlists/playlists_delete/playlists_delete_page";
 import PlaylistsDetailsPage from "./components/playlists/playlists_details/playlists_details_page";
 import { observer } from "mobx-react-lite";
+import AdvancedSearchPage from "./components/advanced_search/advanced_search_page";
+import AdvancedSearchForm from "./components/advanced_search/advanced_search_form";
 
 const App = () => {
   const box_style = {
@@ -48,6 +50,8 @@ const App = () => {
           <Route path="playlists/:playlist_id/video/:vid_path" element={<PlayerPage />} />
           <Route path="playlists/:playlist_id/delete" element={<PlaylistsDeletePage />} />
           <Route path="playlists/:playlist_id" element={<PlaylistsDetailsPage />} />
+          {/* Advanced Search */}
+          <Route path="advanced-search" element={<AdvancedSearchPage />} />
         </Routes>
       </BrowserRouter>
     </Box>

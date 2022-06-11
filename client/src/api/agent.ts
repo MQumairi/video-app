@@ -1,4 +1,5 @@
 import axios from "axios";
+import IAdvancedSearchQuery from "../models/advanced_search_query";
 import IDirectory from "../models/directory";
 import IDirectorySearchResult from "../models/directory_search_result";
 import IPlaylist from "../models/playlist";
@@ -14,6 +15,8 @@ axios.defaults.baseURL = base_url;
 export const Directory = {
   get: async (dir_path: string): Promise<IDirectory> => (await axios.get(`directories/${dir_path}`)).data,
   search: async (query: string): Promise<IDirectorySearchResult> => (await axios.get(`directories/search/${query}`)).data,
+  adv_search: async (query: IAdvancedSearchQuery): Promise<IVideoMeta[]> => (await axios.post(`directories/advanced-search`, query)).data,
+  adv_search_shuffle: async (): Promise<IVideoMeta> => (await axios.get(`directories/advanced-search-shuffle`)).data,
 };
 
 export const Video = {

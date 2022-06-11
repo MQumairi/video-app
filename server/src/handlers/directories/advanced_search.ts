@@ -25,9 +25,9 @@ const query_tags = (query: SelectQueryBuilder<VideoMeta>, included_tags: Tag[]):
   if (included_tags.length == 0) return query;
   const tag_names: string[] = [];
   for (const tag_to_include of included_tags) {
-    tag_names.push(tag_to_include.name);
+    let tag_name = tag_to_include.name.replace(/\r?\n|\r/g, "");
+    tag_names.push(tag_name);
   }
-  console.log("tag names:", tag_names);
   query.where("tag.name IN (:...tags_to_include)", { tags_to_include: tag_names });
   return query;
 };

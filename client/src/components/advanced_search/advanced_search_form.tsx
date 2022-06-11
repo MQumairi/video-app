@@ -46,25 +46,34 @@ const AdvancedSearchForm = (props: IProps) => {
 
   return (
     <form onSubmit={on_submit}>
-      <label>Selected Tags:</label>
-      <AutoCompleteHook options={props.tags} />
-      <label>Minimum Rating:</label>
-      <Select
-        sx={{ background: "#064669", color: "white" }}
-        labelId="tag-dropdown"
-        id="tag-dropdown"
-        label="tags"
-        value={min_rating}
-        onChange={handle_rating_change}
-      >
-        {[0, 1, 2, 3, 4, 5].map((rating) => {
-          return (
-            <MenuItem key={rating} value={rating}>
-              {rating}
-            </MenuItem>
-          );
-        })}
-      </Select>
+      <div style={{ display: "flex" }}>
+        <div>
+          <label>Selected Tags:</label>
+          <AutoCompleteHook options={props.tags} />
+        </div>
+        <div>
+          <label>
+            Minimum Rating:
+            <br />
+          </label>
+          <Select
+            sx={{ background: "#064669", color: "white", marginTop: "15px", marginLeft: "10px" }}
+            labelId="tag-dropdown"
+            id="tag-dropdown"
+            label="tags"
+            value={min_rating}
+            onChange={handle_rating_change}
+          >
+            {[0, 1, 2, 3, 4, 5].map((rating) => {
+              return (
+                <MenuItem key={rating} value={rating}>
+                  {rating}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </div>
+      </div>
       <FunctionButton textContent="Submit" fn={on_submit} />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
     </form>

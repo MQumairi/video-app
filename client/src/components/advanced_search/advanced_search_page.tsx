@@ -21,6 +21,7 @@ const AdvancedSearchPage = () => {
   }, []);
   return (
     <div>
+      <h1>Advanced Search</h1>
       {tags.length > 0 && <AdvancedSearchForm tags={tags} />}
       <Advanced_search_results videos={selectedVideoStore.adv_search_results} />
     </div>

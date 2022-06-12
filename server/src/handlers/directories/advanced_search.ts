@@ -12,7 +12,7 @@ const AdvancedSearch = async (req: Request, res: Response): Promise<Directory | 
   const min_rating: number = req.body.min_rating ?? 0;
   // Build query
   const video_meta_repo = getRepository(VideoMeta);
-  let query = video_meta_repo.createQueryBuilder("video").innerJoinAndSelect("video.tags", "tag");
+  let query = video_meta_repo.createQueryBuilder("video").innerJoin("video.tags", "tag");
   query = query_tags(query, included_tags);
   query = query_rating(query, min_rating);
   const videos = await query.getMany();
@@ -29,6 +29,8 @@ const query_tags = (query: SelectQueryBuilder<VideoMeta>, included_tags: Tag[]):
     tag_names.push(tag_name);
   }
   query.where("tag.name IN (:...tags_to_include)", { tags_to_include: tag_names });
+  query.groupBy("video.id, video.name");
+  query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: tag_names.length });
   return query;
 };
 

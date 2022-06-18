@@ -25,7 +25,6 @@ directory_controller.get("/:filepath", async (req: Request, res: Response) => {
 });
 
 directory_controller.post("/advanced-search", async (req: Request, res: Response) => {
-  console.log(req.body);
   // Note: forward slashes need to be convered to %2F by the client
   // Such that data/dir_1 => data%2Fdir_1, see directory_controller tests
   await AdvancedSearch(req, res);

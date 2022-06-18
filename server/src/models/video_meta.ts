@@ -17,13 +17,13 @@ export class VideoMeta {
   @Column("text")
   parent_path: string;
 
-  @Column("int", {default: 0})
+  @Column("int", { default: 0 })
   rating: number;
 
   @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];
 
-  @ManyToMany((type) => Playlist, (playlist) => playlist.videos)
+  @ManyToMany((type) => Playlist, (playlist) => playlist.videos, { onDelete: "CASCADE" })
   playlists: Playlist[];
 
   constructor(path_: any) {

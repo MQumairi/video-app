@@ -6,6 +6,12 @@ const Create = async (req: Request, res: Response): Promise<Tag | undefined> => 
   try {
     let tag: Tag = req.body;
     const tag_repo = getRepository(Tag);
+    const found_tag = await tag_repo.findOne({ where: { name: tag.name } });
+    if (found_tag) {
+      console.log("Tag already exists.");
+      res.status(201).send(found_tag);
+      return found_tag;
+    }
     await tag_repo.save(tag);
     res.status(201).send(tag);
     return tag;

@@ -14,7 +14,6 @@ video_controller.get("/:filepath", async (req: Request, res: Response) => {
 });
 
 video_controller.put("/:filepath/rate", async (req: Request, res: Response) => {
-  console.log("triggered rating");
   await Rate(req, res);
 });
 

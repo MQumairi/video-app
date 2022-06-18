@@ -45,14 +45,18 @@ class SelectedVideosStore {
     this.selected_videos.set(video.name, video);
     console.log(toJS(this.selected_videos));
   };
+  
+  // Player
+
+  @observable running_video: IVideoMeta | null = null;
+
+  @action set_running_video = (video: IVideoMeta | null) => {
+    this.running_video = video;
+  }
 
   // Advanced search results
 
   @observable searched_for_tags: ITag[] = [];
-
-  @action set_searched_for_tags = (tags: ITag[]) => {
-    this.searched_for_tags = tags;
-  };
 
   @action add_searched_for_tag = (tag_name: string) => {
     const tag_to_add: ITag = {
@@ -61,6 +65,14 @@ class SelectedVideosStore {
       videos: [],
     };
     this.searched_for_tags.push(tag_to_add);
+  };
+
+  @action remove_searched_for_tag = (tag_name: string) => {
+    for(let i = 0; i < this.searched_for_tags.length; i++) {
+      if(this.searched_for_tags[i].name == tag_name) {
+        this.searched_for_tags.splice(i, 1);
+      }
+    }
   };
 
   @observable adv_search_results: IVideoMeta[] = [];

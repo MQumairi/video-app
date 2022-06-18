@@ -9,6 +9,7 @@ import SelectedVideosStore from "../../store/selected_videos_store";
 import IAdvancedSearchQuery from "../../models/advanced_search_query";
 import { Directory } from "../../api/agent";
 import { PathConverter } from "../../util/path_converter";
+import RatingSelector from "./rating_selector";
 
 interface IProps {
   tags: ITag[];
@@ -18,6 +19,7 @@ const AdvancedSearchForm = (props: IProps) => {
   const selectedVideoStore = useContext(SelectedVideosStore);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [min_rating, set_min_rating] = useState<number>(0);
+  const [max_rating, set_max_rating] = useState<number>(5);
 
   const on_submit = async (input: any) => {
     const selected_tags = selectedVideoStore.searched_for_tags;
@@ -25,6 +27,7 @@ const AdvancedSearchForm = (props: IProps) => {
     const query: IAdvancedSearchQuery = {
       included_tags: selected_tags,
       min_rating: min_rating,
+      max_rating: max_rating,
     };
     console.log("THE QUERY IS:", query);
     const res = await Directory.adv_search(query);
@@ -38,33 +41,28 @@ const AdvancedSearchForm = (props: IProps) => {
     set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
   };
 
-  const handle_rating_change = async (event: any) => {
+  const handle_min_rating_change = async (event: any) => {
     const new_rating = event.target.value;
     console.log("new rating:", new_rating);
     set_min_rating(new_rating);
   };
 
+  const handle_max_rating_change = async (event: any) => {
+    const new_rating = event.target.value;
+    console.log("new rating:", new_rating);
+    set_max_rating(new_rating);
+  };
+
   return (
     <form onSubmit={on_submit}>
-      <label>Selected Tags:</label>
-      <AutoCompleteHook options={props.tags} />
-      <label>Minimum Rating:</label>
-      <Select
-        sx={{ background: "#064669", color: "white" }}
-        labelId="tag-dropdown"
-        id="tag-dropdown"
-        label="tags"
-        value={min_rating}
-        onChange={handle_rating_change}
-      >
-        {[0, 1, 2, 3, 4, 5].map((rating) => {
-          return (
-            <MenuItem key={rating} value={rating}>
-              {rating}
-            </MenuItem>
-          );
-        })}
-      </Select>
+      <div style={{ display: "flex" }}>
+        <div>
+          <label>Selected Tags:</label>
+          <AutoCompleteHook options={props.tags} />
+        </div>
+        <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />
+        <RatingSelector label={"Max"} rating={max_rating} handle_rating_change={handle_max_rating_change} />
+      </div>
       <FunctionButton textContent="Submit" fn={on_submit} />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
     </form>

@@ -45,6 +45,14 @@ class SelectedVideosStore {
     this.selected_videos.set(video.name, video);
     console.log(toJS(this.selected_videos));
   };
+  
+  // Player
+
+  @observable running_video: IVideoMeta | null = null;
+
+  @action set_running_video = (video: IVideoMeta | null) => {
+    this.running_video = video;
+  }
 
   // Advanced search results
 

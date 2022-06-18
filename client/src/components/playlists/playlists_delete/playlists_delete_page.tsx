@@ -20,7 +20,7 @@ const PlaylistsDeletePage = () => {
   };
 
   const handle_playlist_delete = async () => {
-    window.location.replace(`/playlists/`);
+    console.log("attempting to delete playlist");
     if (playlist_id) {
       await Playlist.delete(+playlist_id);
     }

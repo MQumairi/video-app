@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Streamer } from "../../models/streamer";
 import { not_found_error } from "../../app";
 import { Directory } from "../../models/directory";
+import { getRepository } from "typeorm";
+import { VideoMeta } from "../../models/video_meta";
 
 const Stream = async (req: Request, res: Response): Promise<boolean> => {
   try {
@@ -29,8 +31,19 @@ const Stream = async (req: Request, res: Response): Promise<boolean> => {
     const video_stream = streamer.create_stream();
     video_stream.pipe(res);
     return true;
-  } catch (error) {
-    console.log("error:", error);
+  } catch (error: any) {
+    if (error.code == "ENOENT") {
+      console.log("Missing file");
+      const video_repo = getRepository(VideoMeta);
+      const video_meta = await video_repo.findOne({ where: { path: req.params.filepath } });
+      if (video_meta) {
+        const deleted_video = await video_repo.remove(video_meta);
+        console.log("deleted video_meta for:", deleted_video);
+        res.status(404).json({ message: "file not found." });
+      }
+    } else {
+      console.log("error:", error);
+    }
     return false;
   }
 };

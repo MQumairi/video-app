@@ -10,13 +10,16 @@ const AdvancedSearch = async (req: Request, res: Response): Promise<Directory | 
   // Object includes included_tags, min_rating
   const included_tags: Tag[] = req.body.included_tags ?? [];
   const min_rating: number = req.body.min_rating ?? 0;
+  const max_rating: number = req.body.max_rating ?? 5;
   // Build query
   const video_meta_repo = getRepository(VideoMeta);
   let query = video_meta_repo.createQueryBuilder("video").innerJoin("video.tags", "tag");
   query = query_tags(query, included_tags);
-  query = query_rating(query, min_rating);
+  query = query_min_rating(query, min_rating);
+  query = query_max_rating(query, max_rating);
   const videos = await query.getMany();
   advanced_search_results = videos;
+  console.log("videos found:", videos.length);
   res.json(videos);
   return undefined;
 };
@@ -34,9 +37,15 @@ const query_tags = (query: SelectQueryBuilder<VideoMeta>, included_tags: Tag[]):
   return query;
 };
 
-const query_rating = (query: SelectQueryBuilder<VideoMeta>, rating: number): SelectQueryBuilder<VideoMeta> => {
-  if (rating == 0) return query;
-  query.andWhere("video.rating >= :rating", { rating: rating });
+const query_min_rating = (query: SelectQueryBuilder<VideoMeta>, min_rating: number): SelectQueryBuilder<VideoMeta> => {
+  if (min_rating == 0) return query;
+  query.andWhere("video.rating >= :min_rating", { min_rating: min_rating });
+  return query;
+};
+
+const query_max_rating = (query: SelectQueryBuilder<VideoMeta>, max_rating: number): SelectQueryBuilder<VideoMeta> => {
+  if (max_rating == 5) return query;
+  query.andWhere("video.rating <= :max_rating", { max_rating: max_rating });
   return query;
 };
 

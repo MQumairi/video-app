@@ -30,6 +30,7 @@ const PlayerPage = () => {
     const api_query = PathConverter.to_query(query);
     const received_video: IVideoMeta = (await Video.get(api_query)).data;
     console.log("received:", received_video);
+    selectedVideoStore.set_running_video(received_video);
     selectedVideoStore.set_single_selection(received_video);
     set_video_meta(received_video);
     set_video_rating(received_video.rating);

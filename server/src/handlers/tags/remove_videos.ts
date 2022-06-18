@@ -13,13 +13,16 @@ const RemoveVideo = async (req: Request, res: Response): Promise<Tag | undefined
   }
   const videos_to_remove: VideoMeta[] = req.body.videos;
   for (let received_video of videos_to_remove) {
-    const found_in_tag = found_tag.videos.find((v) => v.path == received_video.path);
-    if (found_in_tag) {
-      const index_to_remove = found_tag.videos.indexOf(found_in_tag);
-      found_tag.videos.splice(index_to_remove, 1);
-    }
+    const video_repo = getRepository(VideoMeta);
+    let found_video = await video_repo.findOne({ relations: ["tags"], where: { id: received_video.id } });
+    if (!found_video) continue;
+    let video_tags = found_video.tags;
+    video_tags = video_tags.filter(function (t) {
+      return t.name !== found_tag?.name;
+    });
+    found_video.tags = video_tags;
+    video_repo.save(found_video);
   }
-  await tag_repo.save(found_tag);
   res.status(201).send(found_tag);
   return found_tag;
 };

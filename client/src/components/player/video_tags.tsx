@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import TagCapsule from "../tags/tag_capsule";
 
 const VideoTags = (props: any) => {
   const video_tags = {
@@ -17,11 +18,7 @@ const VideoTags = (props: any) => {
     <div style={{ marginTop: "20px" }}>
       <div style={video_tags}>
         {props.tags?.map((tag: any) => {
-          return (
-            <a key={tag.name} href={`/tags/${tag.id}`}>
-              <div style={tag_pill_style}>{tag.name}</div>
-            </a>
-          );
+          return <TagCapsule tag={tag} />;
         })}
       </div>
     </div>

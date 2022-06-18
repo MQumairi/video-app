@@ -6,7 +6,7 @@ import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
 import HrefButton from "../../misc/href_button";
-import TagVideoList from "./tag_video_list";
+import BrowserResults from "../../browser/browser_results";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
@@ -33,7 +33,7 @@ const TagDetailsPage = () => {
       {tag && <h1>Tag: {tag?.name}</h1>}
       <HrefButton href={`/tags/${tag_id}/delete`} textContent={"Delete"} />
       {random_vid && <HrefButton textContent="Random" href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
-      <TagVideoList tag_id={tag_id} videos={tag?.videos} />
+      {tag && <BrowserResults videos={tag.videos} directory_paths={[]} back_url={"/tags"} />}
     </div>
   );
 };

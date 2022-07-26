@@ -150,8 +150,6 @@ const Listbox = styled("ul")(
 );
 
 interface IProps {
-  //List props here in the form:
-  //propName: propType;
   tags: ITag[];
   selected_tags: ITag[]
   add_tag: (tag_name: string) => void;
@@ -171,7 +169,6 @@ const TagSearcher: React.FC<IProps> = (props: IProps) => {
   return (
     <Root>
       <div {...getRootProps()}>
-        <Label {...getInputLabelProps()}>Customized hook</Label>
         <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
           {value.map((option: ITag, index: number) => (
             <StyledTag label={option.name} {...getTagProps({ index })} />

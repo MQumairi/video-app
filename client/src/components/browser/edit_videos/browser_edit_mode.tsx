@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useContext } from "react";
 import { PathConverter } from "../../../util/path_converter";
 import PlaylistVideoPopover from "../../popovers/playlist_popover/playlists_video_popover";
-import TagVideoPopover from "../../popovers/tag_popover/tag_video_popover";
+import TagVideoPopover from "../../tags/tag_popover/tag_video_popover";
 import EditModeVideoItem from "./edit_mode_video_item";
 import SelectedVideosStore from "../../../store/selected_videos_store";
 import { observer } from "mobx-react-lite";

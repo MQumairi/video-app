@@ -4,15 +4,16 @@ import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 
 const add_tag_video = async (req: Request, res: Response): Promise<Tag | undefined> => {
-  const id = +req.params.id;
+  const updated_tag: Tag = req.body;
+  console.log("updated tag is:", updated_tag);
   const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
-  let found_tag = await tag_repo.findOne({ relations: ["videos"], where: { id: id } });
+  let found_tag = await tag_repo.findOne({ relations: ["videos"], where: { name: updated_tag.name } });
   if (!found_tag) {
     res.status(404).send("Tag not found");
     return undefined;
   }
-  const videos_to_add: VideoMeta[] = req.body.videos ?? [];
+  const videos_to_add: VideoMeta[] = updated_tag.videos ?? [];
   for (let received_video of videos_to_add) {
     const found_in_tag = found_tag.videos.find((vid) => vid.path == received_video.path);
     if (!found_in_tag) {
@@ -30,6 +31,8 @@ const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> =
     return add_tag_video(req, res);
   } catch (error) {
     console.log("Error:", error);
+    res.status(400).send(error);
+    return undefined;
   }
 };
 

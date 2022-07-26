@@ -12,7 +12,7 @@ import PlaylistVideoList from "./playlists_video_list";
 import SelectedVideosStore from "../../../store/selected_videos_store";
 import { observer } from "mobx-react-lite";
 import PlaylistPopoverButton from "../../popovers/playlist_popover/playlist_popover_button";
-import TagPopoverButton from "../../popovers/tag_popover/tag_popover_button";
+import TagPopoverButton from "../../tags/tag_popover/tag_popover_button";
 import RemoveVideosPopoverButton from "../../popovers/remove_video_popover/remove_videos_popover_button";
 
 const PlaylistsDetailsPage = () => {

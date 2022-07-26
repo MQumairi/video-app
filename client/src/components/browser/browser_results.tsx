@@ -8,7 +8,7 @@ import DirectoryVideos from "./directory_videos";
 import BrowserEditMode from "./edit_videos/browser_edit_mode";
 import SubDirectoryList from "./sub_directory_list";
 import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
-import TagPopoverButton from "../popovers/tag_popover/tag_popover_button";
+import TagPopoverButton from "../tags/tag_popover/tag_popover_button";
 
 interface IProps {
   directory_paths: string[];

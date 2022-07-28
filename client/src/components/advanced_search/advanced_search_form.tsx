@@ -23,15 +23,12 @@ const AdvancedSearchForm = (props: IProps) => {
 
   const on_submit = async (input: any) => {
     const selected_tags = selectedVideoStore.searched_for_tags;
-    console.log("searching for:", selected_tags);
     const query: IAdvancedSearchQuery = {
       included_tags: selected_tags,
       min_rating: min_rating,
       max_rating: max_rating,
     };
-    console.log("THE QUERY IS:", query);
     const res = await Directory.adv_search(query);
-    console.log("result:", res);
     selectedVideoStore.set_adv_search_results(res);
     await fetch_random_video();
   };
@@ -63,6 +60,7 @@ const AdvancedSearchForm = (props: IProps) => {
         <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />
         <RatingSelector label={"Max"} rating={max_rating} handle_rating_change={handle_max_rating_change} />
       </div>
+      <h4>{selectedVideoStore.adv_search_results.length} results found.</h4>
       <FunctionButton textContent="Submit" fn={on_submit} />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
     </form>

@@ -5,7 +5,6 @@ import { VideoMeta } from "../../models/video_meta";
 
 const add_tag_video = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const updated_tag: Tag = req.body;
-  console.log("updated tag is:", updated_tag);
   const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
   let found_tag = await tag_repo.findOne({ relations: ["videos"], where: { name: updated_tag.name } });

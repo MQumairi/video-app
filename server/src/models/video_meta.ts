@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import path from "path";
 import { Tag } from "./tag";
-import { Playlist } from "./playlist";
 
 @Entity()
 export class VideoMeta {
@@ -22,9 +21,6 @@ export class VideoMeta {
 
   @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];
-
-  @ManyToMany((type) => Playlist, (playlist) => playlist.videos, { onDelete: "CASCADE" })
-  playlists: Playlist[];
 
   constructor(path_: any) {
     if (!path_) {

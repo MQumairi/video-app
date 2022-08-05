@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Playlist } from "../../models/playlist";
+import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 
-const add_playlist_video = async (req: Request, res: Response): Promise<Playlist | undefined> => {
+const add_playlist_video = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const id = +req.params.id;
-  const playlist_repo = getRepository(Playlist);
+  const tag_repo = getRepository(Tag);
   const video_repo = getRepository(VideoMeta);
-  let found_playlist = await playlist_repo.findOne({ relations: ["videos"], where: { id: id } });
+  let found_playlist = await tag_repo.findOne({ relations: ["videos"], where: { id: id, is_playlist: true } });
   if (!found_playlist) {
     res.status(404).send("Playlist not found");
     return undefined;
@@ -20,12 +20,12 @@ const add_playlist_video = async (req: Request, res: Response): Promise<Playlist
       found_playlist.videos.push(added_video ?? (await video_repo.save(new VideoMeta(received_video.path))));
     }
   }
-  await playlist_repo.save(found_playlist);
+  await tag_repo.save(found_playlist);
   res.status(201).send(found_playlist);
   return found_playlist;
 };
 
-const AddVideo = async (req: Request, res: Response): Promise<Playlist | undefined> => {
+const AddVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
   try {
     return add_playlist_video(req, res);
   } catch (error) {

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Playlist } from "../../models/playlist";
+import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 
-const remove_video = async (req: Request, res: Response): Promise<Playlist | undefined> => {
+const remove_video = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const id = +req.params.id;
-  const playlist_repo = getRepository(Playlist);
-  let found_playlist = await playlist_repo.findOne({ relations: ["videos"], where: { id: id } });
+  const tag_repo = getRepository(Tag);
+  let found_playlist = await tag_repo.findOne({ relations: ["videos"], where: { id: id, is_playlist: true } });
   console.log("found playlist:", found_playlist?.id);
   if (!found_playlist) {
     res.status(404).send("Playlist not found");
@@ -23,12 +23,12 @@ const remove_video = async (req: Request, res: Response): Promise<Playlist | und
   }
   const new_size = found_playlist.videos.length;
   console.log("Successfully removed", old_size - new_size, "videos");
-  await playlist_repo.save(found_playlist);
+  await tag_repo.save(found_playlist);
   res.status(201).send(found_playlist);
   return found_playlist;
 };
 
-const RemoveVideo = async (req: Request, res: Response): Promise<Playlist | undefined> => {
+const RemoveVideo = async (req: Request, res: Response): Promise<Tag | undefined> => {
   try {
     return remove_video(req, res);
   } catch (error) {

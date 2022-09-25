@@ -38,7 +38,7 @@ const Stream = async (req: Request, res: Response): Promise<boolean> => {
       const video_meta = await video_repo.findOne({ where: { path: req.params.filepath } });
       if (video_meta) {
         const deleted_video = await video_repo.remove(video_meta);
-        console.log("deleted video_meta for:", deleted_video);
+        console.log("deleted video_meta for:", deleted_video.id);
         res.status(404).json({ message: "file not found." });
       }
     } else {

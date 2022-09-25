@@ -45,14 +45,18 @@ class SelectedVideosStore {
     this.selected_videos.set(video.name, video);
     console.log(toJS(this.selected_videos));
   };
-  
+
+  @action get_selected_videos = (): IVideoMeta[] => {
+    return Array.from(this.selected_videos.values());
+  };
+
   // Player
 
   @observable running_video: IVideoMeta | null = null;
 
   @action set_running_video = (video: IVideoMeta | null) => {
     this.running_video = video;
-  }
+  };
 
   // Advanced search results
 
@@ -68,8 +72,8 @@ class SelectedVideosStore {
   };
 
   @action remove_searched_for_tag = (tag_name: string) => {
-    for(let i = 0; i < this.searched_for_tags.length; i++) {
-      if(this.searched_for_tags[i].name == tag_name) {
+    for (let i = 0; i < this.searched_for_tags.length; i++) {
+      if (this.searched_for_tags[i].name === tag_name) {
         this.searched_for_tags.splice(i, 1);
       }
     }

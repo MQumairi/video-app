@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index } from "typeorm";
 import path from "path";
 import { Tag } from "./tag";
 
@@ -7,9 +7,11 @@ export class VideoMeta {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index()
   @Column("text")
   name: string;
 
+  @Index()
   @Column("text")
   path: string;
 

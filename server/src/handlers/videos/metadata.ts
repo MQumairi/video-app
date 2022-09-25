@@ -3,19 +3,29 @@ import { VideoMeta } from "../../models/video_meta";
 import { Directory } from "../../models/directory";
 import { not_found_error } from "../../app";
 import { getRepository } from "typeorm";
+import { existsSync } from "fs";
 
 const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
+  console.log("entered get_video_meta");
   const vid_path = req.params.filepath;
+  let vid_meta = new VideoMeta(vid_path);
+  const video_repo = getRepository(VideoMeta);
+  const found_video = await video_repo.findOne({ relations: ["tags"], where: { path: vid_meta.path } });
+  if (found_video) {
+    console.log("found in db");
+    if (!existsSync(found_video.path)) {
+      console.log("video path doesn't exist. Removing from database");
+      await video_repo.remove(found_video);
+      res.status(404).send(not_found_error);
+      return undefined;
+    }
+    res.status(200).send(found_video);
+    return found_video;
+  }
+  console.log("did not find in db");
   if (!Directory.is_video(vid_path)) {
     res.status(404).send(not_found_error);
     return undefined;
-  }
-  let vid_meta = new VideoMeta(vid_path);
-  const video_repo = getRepository(VideoMeta);
-  const found_video = await video_repo.findOne({ relations: ["tags"], where: { name: vid_meta.name } });
-  if (found_video) {
-    res.status(200).send(found_video);
-    return found_video;
   }
   res.status(200).send(vid_meta);
   return vid_meta;

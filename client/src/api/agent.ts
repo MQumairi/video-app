@@ -30,8 +30,9 @@ export const Tag = {
   post: async (video_meta: IVideoMeta) => axios.post(`tags`, video_meta),
   details: async (tag_id: number) => axios.get(`tags/${tag_id}`),
   shuffle: async (tag_id: number) => axios.get(`tags/${tag_id}/shuffle`),
-  add_video: async (updated_tag: ITag) => axios.put(`tags/${updated_tag.id}/video/add`, updated_tag),
   remove_video: async (updated_tag: ITag) => axios.put(`tags/${updated_tag.id}/video/remove`, updated_tag),
+  tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: tags }),
+  tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
   delete: async (tag_id: number) => axios.delete(`tags/${tag_id}`),
 };
 

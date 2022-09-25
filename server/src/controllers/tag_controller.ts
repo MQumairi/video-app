@@ -7,6 +7,8 @@ import Edit from "../handlers/tags/edit";
 import List from "../handlers/tags/list";
 import RemoveVideo from "../handlers/tags/remove_videos";
 import Shuffle from "../handlers/tags/shuffle";
+import TagAll from "../handlers/tags/tag_all";
+import TagVideos from "../handlers/tags/tag_videos";
 
 const tag_controller = Router();
 
@@ -16,6 +18,10 @@ tag_controller.get("/", async (req: Request, res: Response) => {
 
 tag_controller.post("/", async (req: Request, res: Response) => {
   await Create(req, res);
+});
+
+tag_controller.get("/tag-all", async (req: Request, res: Response) => {
+  await TagAll(req, res);
 });
 
 tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {
@@ -28,6 +34,10 @@ tag_controller.get("/:id", async (req: Request, res: Response) => {
 
 tag_controller.delete("/:id", async (req: Request, res: Response) => {
   await Delete(req, res);
+});
+
+tag_controller.put("/tag-videos", async (req: Request, res: Response) => {
+  await TagVideos(req, res);
 });
 
 tag_controller.put("/:id/video/add", async (req: Request, res: Response) => {

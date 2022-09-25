@@ -24,6 +24,7 @@ const VideoItem = (props: any) => {
       >
         <VideoFileIcon sx={icon_style} />
         <h4 style={{ textAlign: "center" }}>{props.vid.name}</h4>
+        <h5 style={{ textAlign: "center" }}>{props.vid.id}</h5>
       </div>
     </a>
   );

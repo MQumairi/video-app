@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Playlist } from "../../models/playlist";
+import { Tag } from "../../models/tag";
 
-const Details = async (req: Request, res: Response): Promise<Playlist | undefined> => {
+const Details = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const id = +req.params.id;
-  const playlist_repo = getRepository(Playlist);
-  const playlist = await playlist_repo.findOne({ relations: ["videos"], where: { id: id } });
-  if (playlist === undefined) {
+  const tag_repo = getRepository(Tag);
+  const playlist = await tag_repo.findOne({ relations: ["videos"], where: { id: id, is_playlist: true } });
+  if (!playlist) {
     res.status(404).send("Playlist not found");
     return undefined;
   }

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Playlist } from "../../models/playlist";
+import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
 import get_random_int from "../../util/shuffle_method";
 
 const Shuffle = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   const id = +req.params.id;
-  const playlist_repo = getRepository(Playlist);
-  const playlist = await playlist_repo.findOne({ relations: ["videos"], where: { id: id } });
+  const tag_repo = getRepository(Tag);
+  const playlist = await tag_repo.findOne({ relations: ["videos"], where: { id: id, is_playlist: true } });
   if (!playlist) {
     res.status(404).send("Playlist not found");
     return undefined;

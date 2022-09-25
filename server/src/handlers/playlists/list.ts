@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Playlist } from "../../models/playlist";
+import { Tag } from "../../models/tag";
 
-const List = async (req: Request, res: Response): Promise<Playlist[]> => {
-  const playlist_repo = getRepository(Playlist);
-  const playlists = await playlist_repo.find({ order: { name: "ASC" } });
+const List = async (req: Request, res: Response): Promise<Tag[]> => {
+  const tag_repo = getRepository(Tag);
+  const playlists = await tag_repo.find({ where: { is_playlist: true }, order: { name: "ASC" } });
   res.json(playlists);
   return playlists;
 };

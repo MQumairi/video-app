@@ -24,6 +24,9 @@ const find_video = async (path: string): Promise<VideoMeta | null> => {
     found_video = await video_repo.save(new VideoMeta(path));
     console.log("new vid:", found_video);
   }
+  if (found_video.tags == null) {
+    found_video.tags = [];
+  }
   return found_video;
 };
 

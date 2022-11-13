@@ -8,6 +8,8 @@ import fs from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
 import { VideoMeta } from "./video_meta";
+import { getRepository } from "typeorm";
+import { Tag } from "./tag";
 
 export class Directory {
   static async from_path(path: string): Promise<Directory | undefined> {
@@ -49,6 +51,32 @@ export class Directory {
       }
     }
     return directory_paths;
+  }
+
+  async process_sub_dirs(directories: string[]): Promise<void> {
+    const tag_repo = getRepository(Tag);
+    directories.forEach(async (d) => {
+      // Create tags if tag corresponding to sub_dir doesn't exist
+      let tag_name = path.basename(d);
+      const tag = new Tag();
+      tag.name = tag_name;
+      const found_tag = await tag_repo.findOne({ where: { name: tag_name } });
+      if (!found_tag) {
+        tag_repo.save(tag);
+      }
+      // Associated this tag with all files in the sub_dir
+      let sub_dir = new Directory(d);
+      await sub_dir.read_contents();
+      // Not async to not block
+      await sub_dir.apply_tags_to_videos(tag, sub_dir.video_paths);
+    });
+  }
+
+  async apply_tags_to_videos(tag: Tag, videos: VideoMeta[]): Promise<void> {
+    videos.forEach(async (v) => {
+      console.log("video is:", v.name);
+      await VideoMeta.apply_tag(v, tag);
+    });
   }
 
   async list_video_paths(): Promise<VideoMeta[]> {

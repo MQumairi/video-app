@@ -41,12 +41,7 @@ const build_tags_to_add = async (tag_set: Set<string>): Promise<Tag[]> => {
   return tags;
 };
 
-const TagVideos = async (req: Request, res: Response): Promise<void> => {
-  console.log("entered tag vides");
-  const videos: VideoMeta[] = req.body.videos;
-  console.log("videos:", videos.length);
-  const tags: Tag[] = req.body.tags;
-  console.log("tags:", tags.length);
+export const apply_tags_to_videos = async (videos: VideoMeta[], tags: Tag[]): Promise<void> => {
   videos.forEach(async (v) => {
     const tags_set = build_tag_set(tags);
     console.log("tags_set is", tags_set.size);
@@ -66,6 +61,15 @@ const TagVideos = async (req: Request, res: Response): Promise<void> => {
     video_to_tag.tags = new_tags;
     await getRepository(VideoMeta).save(video_to_tag);
   });
+};
+
+const TagVideos = async (req: Request, res: Response): Promise<void> => {
+  console.log("entered tag vides");
+  const videos: VideoMeta[] = req.body.videos;
+  console.log("videos:", videos.length);
+  const tags: Tag[] = req.body.tags;
+  console.log("tags:", tags.length);
+  await apply_tags_to_videos(videos, tags);
   res.status(200).json({ message: "done" });
 };
 

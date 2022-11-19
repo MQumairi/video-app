@@ -74,7 +74,6 @@ export class Directory {
 
   async apply_tags_to_videos(tag: Tag, videos: VideoMeta[]): Promise<void> {
     videos.forEach(async (v) => {
-      console.log("video is:", v.name);
       await VideoMeta.apply_tag(v, tag);
     });
   }

@@ -41,6 +41,7 @@ class SelectedVideosStore {
   };
 
   @action set_single_selection = (video: IVideoMeta) => {
+    this.selected_tag = null;
     this.selected_videos.clear();
     this.selected_videos.set(video.name, video);
     console.log(toJS(this.selected_videos));
@@ -84,6 +85,15 @@ class SelectedVideosStore {
   @action set_adv_search_results = (videos: IVideoMeta[]) => {
     this.adv_search_results = videos;
   };
+
+  // Tags
+  @observable selected_tag: ITag | null = null;
+
+  @action set_single_tag_selection = (tag: ITag) => {
+    this.selected_tag = tag;
+    console.log(toJS(this.selected_tag));
+  };
+
 }
 
 export default createContext(new SelectedVideosStore());

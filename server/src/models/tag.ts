@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, OneToMany } from "typeorm";
 import { VideoMeta } from "./video_meta";
 
 @Entity()
@@ -21,4 +21,8 @@ export class Tag {
   @ManyToMany((type) => VideoMeta, (video) => video.tags, { cascade: true })
   @JoinTable()
   videos: VideoMeta[];
+
+  @ManyToMany((type) => Tag)
+  @JoinTable()
+  child_tags: Tag[];
 }

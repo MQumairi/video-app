@@ -14,15 +14,27 @@ const TagCapsule = (props: IProps) => {
   const [chip_display, set_chip_display] = useState<string>("");
 
   const handle_delete = async (event: any) => {
+    console.log("entered handle delete");
     const video = selectedVideoStore.running_video;
-    if (!video) return;
     const updated_tag: ITag = {
       id: props.tag.id,
       name: props.tag.name,
-      videos: [video],
+      videos: [],
     };
+    if (selectedVideoStore.selected_tag) {
+      return await handle_child_tag_delete(updated_tag);
+    }
+    if (!video) return;
+    updated_tag.videos = [video];
     await Tag.remove_video(updated_tag);
     set_chip_display("none");
+  };
+
+  const handle_child_tag_delete = async (tag_to_remove: ITag) => {
+    console.log("handling child tag removal");
+    const parent_tag = selectedVideoStore.selected_tag;
+    if (!parent_tag) return;
+    await Tag.remove_children(parent_tag, [tag_to_remove]);
   };
 
   return (

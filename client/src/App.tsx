@@ -14,7 +14,7 @@ import PlaylistsDeletePage from "./components/playlists/playlists_delete/playlis
 import PlaylistsDetailsPage from "./components/playlists/playlists_details/playlists_details_page";
 import { observer } from "mobx-react-lite";
 import AdvancedSearchPage from "./components/advanced_search/advanced_search_page";
-import AdvancedSearchForm from "./components/advanced_search/advanced_search_form";
+import TagEditPage from "./components/tags/tags_edit/tag_edit_page";
 
 const App = () => {
   const box_style = {
@@ -43,6 +43,7 @@ const App = () => {
           <Route path="tags/new" element={<TagsCreatePage />} />
           <Route path="tags/:tag_id/video/:vid_path" element={<PlayerPage />} />
           <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
+          <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
           <Route path="tags/:tag_id" element={<TagDetailsPage />} />
           {/* Playlist System */}
           <Route path="playlists" element={<PlaylistsIndexPage />} />

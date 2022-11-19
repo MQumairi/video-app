@@ -7,6 +7,7 @@ import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
 import HrefButton from "../../misc/href_button";
 import BrowserResults from "../../browser/browser_results";
+import VideoTags from "../../player/video_tags";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
@@ -33,6 +34,8 @@ const TagDetailsPage = () => {
       {tag && <h1>Tag: {tag?.name}</h1>}
       <HrefButton href={`/tags/${tag_id}/delete`} textContent={"Delete"} />
       {random_vid && <HrefButton textContent="Random" href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
+      <HrefButton href={`/tags/${tag_id}/edit`} textContent={"Edit Tag"} />
+      {tag?.child_tags && <VideoTags tags={tag?.child_tags ?? []} />}
       {tag && <BrowserResults videos={tag.videos} directory_paths={[]} back_url={"/tags"} />}
     </div>
   );

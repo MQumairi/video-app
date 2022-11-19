@@ -29,11 +29,22 @@ const TagVideoPopover = (props: any) => {
   };
 
   const send_video = async () => {
+    if (selectedVideoStore.selected_tag) {
+      console.log("sending child tags");
+      return await send_tag();
+    }
     const videos: IVideoMeta[] = selectedVideoStore.get_selected_videos();
     const tags: ITag[] = selected_tags;
     console.log("videos:", videos);
     console.log("tags:", tags);
     await Tag.tag_videos(videos, tags);
+  };
+
+  const send_tag = async () => {
+    const parent_tag = selectedVideoStore.selected_tag;
+    if (!parent_tag) return;
+    const child_tags: ITag[] = selected_tags;
+    await Tag.add_children(parent_tag, child_tags);
   };
 
   useEffect(() => {

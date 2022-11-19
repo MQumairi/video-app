@@ -9,6 +9,7 @@ import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
 import tag_controller from "./controllers/tag_controller";
 import playlist_controller from "./controllers/playlist_controller";
+import { Directory } from "./models/directory";
 
 dotenv.config();
 
@@ -23,8 +24,11 @@ createConnection({
   synchronize: true,
   logging: false,
 })
-  .then(() => {
+  .then(async () => {
     pg_connected = true;
+    const main_dir = new Directory("videos");
+    await main_dir.read_contents();
+    await main_dir.process_sub_dirs(main_dir.directory_paths);
   })
   .catch((error) => {
     console.log(error);

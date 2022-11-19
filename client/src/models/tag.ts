@@ -4,4 +4,5 @@ export default interface ITag {
   id: number;
   name: string;
   videos: IVideoMeta[];
+  child_tags?: ITag[];
 }

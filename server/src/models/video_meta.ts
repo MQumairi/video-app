@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne } from "typeorm";
 import path from "path";
 import { Tag } from "./tag";
 import { apply_tags_to_videos } from "../handlers/tags/tag_videos";
+import { Series } from "./series";
 
 @Entity()
 export class VideoMeta {
@@ -24,6 +25,12 @@ export class VideoMeta {
 
   @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];
+
+  @ManyToOne(() => Series, (series) => series.videos, { nullable: true })
+  series: Series;
+
+  @Column("int", { default: 1 })
+  series_order: number;
 
   constructor(path_: any) {
     if (!path_) {

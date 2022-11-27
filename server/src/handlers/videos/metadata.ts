@@ -10,7 +10,8 @@ const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | 
   const vid_path = req.params.filepath;
   let vid_meta = new VideoMeta(vid_path);
   const video_repo = getRepository(VideoMeta);
-  const found_video = await video_repo.findOne({ relations: ["tags"], where: { path: vid_meta.path } });
+  const found_video = await video_repo.findOne({ relations: ["tags", "series"], where: { path: vid_meta.path } });
+  console.log("found:", found_video);
   if (found_video) {
     console.log("found in db");
     if (!existsSync(found_video.path)) {

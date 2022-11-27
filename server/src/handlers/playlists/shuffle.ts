@@ -1,22 +1,20 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
-import get_random_int from "../../util/shuffle_method";
 
 const Shuffle = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   const id = +req.params.id;
-  const tag_repo = getRepository(Tag);
-  const playlist = await tag_repo.findOne({ relations: ["videos"], where: { id: id, is_playlist: true } });
-  if (!playlist) {
-    res.status(404).send("Playlist not found");
-    return undefined;
-  }
-  const videos = playlist.videos;
-  const random_index = get_random_int(videos.length);
-  const random_video = videos[random_index];
-  res.status(200).send(random_video);
-  return random_video;
+  const video_repo = getRepository(VideoMeta);
+  const random_db_video = await video_repo
+  .createQueryBuilder("video")
+  .innerJoin("video.tags", "tag")
+  .select()
+  .where("tag.id = :tag_id", { tag_id: id })
+  .andWhere("video.series_order = 1")
+  .orderBy("RANDOM()")
+  .getOne();
+  res.status(200).send(random_db_video);
+  return random_db_video;
 };
 
 export default Shuffle;

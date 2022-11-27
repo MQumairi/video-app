@@ -10,6 +10,8 @@ import directory_controller from "./controllers/directory_controller";
 import tag_controller from "./controllers/tag_controller";
 import playlist_controller from "./controllers/playlist_controller";
 import { Directory } from "./models/directory";
+import { Series } from "./models/series";
+import series_controller from "./controllers/series_controller";
 
 dotenv.config();
 
@@ -20,7 +22,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [VideoMeta, Tag],
+  entities: [VideoMeta, Tag, Series],
   synchronize: true,
   logging: false,
 })
@@ -43,6 +45,7 @@ app.use("/api/videos", video_controller);
 app.use("/api/directories", directory_controller);
 app.use("/api/tags", tag_controller);
 app.use("/api/playlists", playlist_controller);
+app.use("/api/series", series_controller);
 
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;

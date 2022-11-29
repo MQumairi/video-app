@@ -53,7 +53,7 @@ const PlaylistsDetailsPage = () => {
         {!edit_mode && random_vid && <HrefButton textContent="Random" href={`/playlists/${playlist_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
       </ButtonGroup>
 
-      {!edit_mode && <PlaylistVideoList playlist_id={playlist_id} videos={playlist?.videos} />}
+      {!edit_mode && playlist && <PlaylistVideoList playlist_id={+playlist_id} videos={playlist.videos} />}
 
       {edit_mode && <BrowserEditMode video_paths={playlist?.videos} check_all={check_all} />}
     </div>

@@ -29,7 +29,7 @@ const SeriesDetailsPage = () => {
 
   return (
     <div>
-      {series && <h1>Playlist: {series?.name}</h1>}
+      {series && <h1>Series: {series?.name}</h1>}
 
       <ButtonGroup>
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
@@ -37,7 +37,7 @@ const SeriesDetailsPage = () => {
         {edit_mode && <TagPopoverButton />}
         {edit_mode && <PlaylistPopoverButton />}
         {edit_mode && <RemoveVideosPopoverButton />}
-        {!edit_mode && <HrefButton href={`/playlists/${series_id}/delete`} textContent={"Delete"} />}
+        {!edit_mode && <HrefButton href={`/series/${series_id}/delete`} textContent={"Delete"} />}
       </ButtonGroup>
 
       {!edit_mode && series && <SeriesVideoList videos={series.videos} />}

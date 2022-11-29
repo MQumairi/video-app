@@ -20,7 +20,7 @@ const SeriesVideoList = (props: IProps) => {
   return (
     <Box component="div" sx={box_style}>
       {props.videos.map((vid) => {
-        return <VideoItem href={`/player/${PathConverter.to_query(vid.path)}`} key={vid.name} vid={vid} />;
+        return <VideoItem url={`/player/${PathConverter.to_query(vid.path)}`} key={vid.name} video={vid} />;
       })}
     </Box>
   );

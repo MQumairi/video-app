@@ -30,7 +30,7 @@ const BrowserResults = (props: IProps) => {
         {edit_mode && <PlaylistPopoverButton />}
       </ButtonGroup>
       {!edit_mode && props.directory_paths.length > 0 && <SubDirectoryList directory_paths={props.directory_paths} />}
-      {!edit_mode && <DirectoryVideos video_paths={props.videos} />}
+      {!edit_mode && <DirectoryVideos videos={props.videos} />}
       {edit_mode && <BrowserEditMode video_paths={props.videos} check_all={check_all} />}
     </div>
   );

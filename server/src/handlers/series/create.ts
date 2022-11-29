@@ -7,6 +7,11 @@ const Create = async (req: Request, res: Response): Promise<Series | undefined> 
   try {
     let series: Series = req.body;
     const seriesRepo = getRepository(Series);
+    const duplicate_found = await seriesRepo.findOne({ where: { name: series.name } });
+    if (duplicate_found) {
+      res.status(400).send({ message: "failed to create" });
+      return duplicate_found;
+    }
     await seriesRepo.save(series);
     res.status(201).send(series);
     return series;

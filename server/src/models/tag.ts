@@ -22,7 +22,7 @@ export class Tag {
   @JoinTable()
   videos: VideoMeta[];
 
-  @ManyToMany((type) => Tag)
+  @ManyToMany((type) => Tag, { cascade: true })
   @JoinTable()
   child_tags: Tag[];
 }

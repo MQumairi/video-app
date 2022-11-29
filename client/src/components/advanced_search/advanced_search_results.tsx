@@ -2,8 +2,13 @@ import { Box } from "@mui/material";
 import { PathConverter } from "../../util/path_converter";
 import VideoItem from "../browser/video_item";
 import { observer } from "mobx-react-lite";
+import IVideoMeta from "../../models/video_meta";
 
-const AdvancedSearchResults = (props: any) => {
+interface IProps {
+  videos: IVideoMeta[]
+}
+
+const AdvancedSearchResults = (props: IProps) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -15,8 +20,8 @@ const AdvancedSearchResults = (props: any) => {
   return (
     <Box component="div" sx={box_style}>
       Video n: {props.videos.length}
-      {props.videos?.map((vid: any) => {
-        return <VideoItem href={`/player/${PathConverter.to_query(vid.path)}`} key={vid.name} vid={vid} />;
+      {props.videos && props.videos.map((vid) => {
+        return <VideoItem url={`/player/${PathConverter.to_query(vid.path)}`} key={vid.name} video={vid} />;
       })}
     </Box>
   );

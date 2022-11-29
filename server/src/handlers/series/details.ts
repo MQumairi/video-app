@@ -13,6 +13,11 @@ const Details = async (req: Request, res: Response): Promise<Series | undefined>
     .getOne();
 
   if (!series) {
+    const empty_series = await series_repo.findOne(id);
+    if (empty_series) {
+      res.status(200).send(empty_series);
+      return empty_series;
+    }
     res.status(404).send("Series not found");
     return undefined;
   }

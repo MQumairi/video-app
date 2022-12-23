@@ -26,7 +26,7 @@ export class VideoMeta {
   @ManyToMany((type) => Tag, (tag) => tag.videos, { onDelete: "CASCADE" })
   tags: Tag[];
 
-  @ManyToOne(() => Series, (series) => series.videos, { nullable: true })
+  @ManyToOne(() => Series, (series) => series.videos, { nullable: true, onDelete: "CASCADE" })
   series: Series;
 
   @Column("int", { default: 1 })

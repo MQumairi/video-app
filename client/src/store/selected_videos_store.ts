@@ -24,8 +24,12 @@ class SelectedVideosStore {
     this.remove_vid_popover_visible = !this.remove_vid_popover_visible;
   };
 
+  @observable edit_video_toggle = false;
+  @action toggle_edit_video = () => {
+    this.edit_video_toggle = !this.edit_video_toggle;
+  };
+  
   // Selected videos
-
   @observable selected_videos = new Map<string, IVideoMeta>();
 
   @action add_selected_video = (video: IVideoMeta) => {
@@ -52,7 +56,6 @@ class SelectedVideosStore {
   };
 
   // Player
-
   @observable running_video: IVideoMeta | null = null;
 
   @action set_running_video = (video: IVideoMeta | null) => {
@@ -60,7 +63,6 @@ class SelectedVideosStore {
   };
 
   // Advanced search results
-
   @observable searched_for_tags: ITag[] = [];
 
   @action add_searched_for_tag = (tag_name: string) => {

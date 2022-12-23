@@ -15,6 +15,10 @@ import PlaylistsDetailsPage from "./components/playlists/playlists_details/playl
 import { observer } from "mobx-react-lite";
 import AdvancedSearchPage from "./components/advanced_search/advanced_search_page";
 import TagEditPage from "./components/tags/tags_edit/tag_edit_page";
+import SeriesIndexPage from "./components/series/series_index/series_index_page";
+import SeriesCreatePage from "./components/series/series_create/series_create_page";
+import SeriesDetailsPage from "./components/series/series_details/series_details_page";
+import SeriesDeletePage from "./components/series/series_delete/series_delete_page";
 
 const App = () => {
   const box_style = {
@@ -51,6 +55,11 @@ const App = () => {
           <Route path="playlists/:playlist_id/video/:vid_path" element={<PlayerPage />} />
           <Route path="playlists/:playlist_id/delete" element={<PlaylistsDeletePage />} />
           <Route path="playlists/:playlist_id" element={<PlaylistsDetailsPage />} />
+          {/* Series System */}
+          <Route path="series" element={<SeriesIndexPage />} />
+          <Route path="series/new" element={<SeriesCreatePage />} />
+          <Route path="series/:series_id" element={<SeriesDetailsPage />} />
+          <Route path="series/:series_id/delete" element={<SeriesDeletePage />} />
           {/* Advanced Search */}
           <Route path="advanced-search" element={<AdvancedSearchPage />} />
         </Routes>

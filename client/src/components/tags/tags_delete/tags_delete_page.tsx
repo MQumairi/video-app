@@ -20,7 +20,7 @@ const TagsDeletePage = () => {
   };
 
   const handle_tag_delete = async () => {
-    window.location.replace(`/tags/`);
+    // window.location.replace(`/tags/`);
     if (tag_id) {
       await Tag.delete(+tag_id);
     }

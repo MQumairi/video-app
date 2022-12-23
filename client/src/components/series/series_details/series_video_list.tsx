@@ -5,11 +5,10 @@ import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
 
 interface IProps {
-  videos: IVideoMeta[]
-  playlist_id: number
+    videos: IVideoMeta[]
 }
 
-const PlaylistVideoList = (props: IProps) => {
+const SeriesVideoList = (props: IProps) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -20,11 +19,11 @@ const PlaylistVideoList = (props: IProps) => {
 
   return (
     <Box component="div" sx={box_style}>
-      {props.videos && props.videos.map((vid) => {
-        return <VideoItem url={`/playlists/${props.playlist_id}/video/${PathConverter.to_query(vid.path)}`} key={vid.id} video={vid} />;
+      {props.videos.map((vid) => {
+        return <VideoItem url={`/player/${PathConverter.to_query(vid.path)}`} key={vid.name} video={vid} />;
       })}
     </Box>
   );
 };
 
-export default observer(PlaylistVideoList);
+export default observer(SeriesVideoList);

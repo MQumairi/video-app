@@ -23,6 +23,9 @@ const NavBar = () => {
           <a href="/playlists">Playlists</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/series">Series</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/advanced-search">Advanced Search</a>
         </Typography>
       </Toolbar>

@@ -10,10 +10,11 @@ import VideoTags from "./video_tags";
 import PlaylistVideoPopover from "../popovers/playlist_popover/playlists_video_popover";
 import { observer } from "mobx-react-lite";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import TagPopoverButton from "../tags/tag_popover/tag_popover_button";
-import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
 import { Rating } from "@mui/material";
 import { Star } from "@mui/icons-material";
+import EditVideoButton from "./edit_video_button";
+import SeriesPanel from "../series/series_panel/series_panel";
+import SeriesCapsule from "../series/series_capsule";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -73,11 +74,8 @@ const PlayerPage = () => {
     <div>
       <h1>{video_meta?.name}</h1>
       <HrefButton href={get_parent_path()} textContent="Back" />
-      <TagPopoverButton />
-      <PlaylistPopoverButton />
+      <EditVideoButton />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
-      {selectedVideoStore.tag_popover_visible && <TagVideoPopover />}
-      {selectedVideoStore.playlist_popover_visible && <PlaylistVideoPopover />}
       <VideoPlayer vid_path={vid_path} />
       <Rating
         name="simple-controlled"
@@ -91,7 +89,24 @@ const PlayerPage = () => {
         emptyIcon={<Star style={{ opacity: 0.8, color: "grey", fontSize: "50px" }} fontSize="inherit" />}
         icon={<Star style={{ opacity: 0.8, color: "#ffcc00", fontSize: "50px" }} fontSize="inherit" />}
       />
-      <VideoTags tags={video_meta?.tags ?? []} />
+      <div>
+        <h2>Tags</h2>
+        <VideoTags tags={video_meta?.tags ?? []} />
+      </div>
+      {video_meta && video_meta.series && (
+        <div>
+          <h2>Series</h2>
+          <h4>Part {video_meta.series_order}</h4>
+          <SeriesCapsule series={video_meta.series} />
+        </div>
+      )}
+      {selectedVideoStore.edit_video_toggle && (
+        <div>
+          <TagVideoPopover />
+          <PlaylistVideoPopover />
+          {video_meta && <SeriesPanel running_video={video_meta} />}
+        </div>
+      )}
     </div>
   );
 };

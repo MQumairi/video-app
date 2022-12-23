@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { Tag } from "../../../api/agent";
-import IVideoMeta from "../../../models/video_meta";
 import FunctionButton from "../../misc/function_button";
 import HrefButton from "../../misc/href_button";
 
@@ -11,14 +10,7 @@ const TagsCreatePage = () => {
     set_tag_name(input.target.value);
   };
   const on_submit = async (input: any) => {
-    const video_object: IVideoMeta = {
-      name: tag_name,
-      path: "",
-      parent_path: "",
-      rating: 0,
-    };
-    console.log("sending: ", video_object);
-    const response = await Tag.post(video_object);
+    const response = await Tag.post(tag_name);
     console.log(response);
     set_tag_name("");
   };

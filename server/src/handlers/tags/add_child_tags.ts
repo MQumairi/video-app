@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 
 const AddChildTags = async (req: Request, res: Response): Promise<void> => {
+  console.log("entered AddChildTags");
   try {
     const tag: Tag = req.body.tag;
     const child_tags: Tag[] = req.body.child_tags;
@@ -25,8 +26,8 @@ const AddChildTags = async (req: Request, res: Response): Promise<void> => {
       found_tag.child_tags = [];
     }
     console.log("before set length:", found_tag.child_tags.length);
-    const new_tags = found_tag.child_tags.concat(children_to_add);
-    found_tag.child_tags = new_tags;
+    const new_tags = new Set(found_tag.child_tags.concat(children_to_add));
+    found_tag.child_tags = Array.from(new_tags);
     console.log("after set length:", found_tag.child_tags.length);
     await tag_repo.save(found_tag);
   } catch (err) {

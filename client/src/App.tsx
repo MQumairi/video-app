@@ -19,6 +19,7 @@ import SeriesIndexPage from "./components/series/series_index/series_index_page"
 import SeriesCreatePage from "./components/series/series_create/series_create_page";
 import SeriesDetailsPage from "./components/series/series_details/series_details_page";
 import SeriesDeletePage from "./components/series/series_delete/series_delete_page";
+import CleanupPage from "./components/cleanup/cleanup_page";
 
 const App = () => {
   const box_style = {
@@ -62,6 +63,8 @@ const App = () => {
           <Route path="series/:series_id/delete" element={<SeriesDeletePage />} />
           {/* Advanced Search */}
           <Route path="advanced-search" element={<AdvancedSearchPage />} />
+          {/* Cleanup */}
+          <Route path="cleanup" element={<CleanupPage />} />
         </Routes>
       </BrowserRouter>
     </Box>

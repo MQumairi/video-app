@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 const NavBar = () => {
@@ -27,6 +27,9 @@ const NavBar = () => {
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/advanced-search">Advanced Search</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/cleanup">Cleanup</a>
         </Typography>
       </Toolbar>
     </AppBar>

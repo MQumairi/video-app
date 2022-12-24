@@ -52,6 +52,7 @@ export const data_dir = process.env.DATADIR;
 export const test_data_dir = process.env.TESTDATADIR;
 
 app.get("*", (req: Request, res: Response) => {
+  console.log("page not found");
   res.status(404).json(not_found_error);
 });
 

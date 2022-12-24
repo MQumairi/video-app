@@ -63,3 +63,9 @@ export const Series = {
   remove_video: async (updated_series: any) => axios.put(`series/${updated_series.id}/video/remove`, updated_series),
   delete: async (series_id: number) => axios.delete(`series/${series_id}`),
 };
+
+export const Cleanup = {
+  delete_missing_videos: async () => axios.get(`cleanup/missing-videos`),
+  tag_videos: async () => axios.get(`cleanup/tag-videos`),
+  delete_duplicate_tags: async () => axios.get(`cleanup/duplicate-tags`),
+};

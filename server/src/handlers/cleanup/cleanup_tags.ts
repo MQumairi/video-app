@@ -6,7 +6,9 @@ import { Tag } from "../../models/tag";
 import VideoTagger from "../../models/video_tagger";
 
 const CleanupTags = async (req: Request, res: Response): Promise<void> => {
+  console.log("Applying tags to all videos based on their path");
   await LibraryIterator.iterate(apply_tags);
+  console.log("done tagging videos");
   res.status(200).json({ message: "done" });
 };
 

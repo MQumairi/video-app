@@ -16,15 +16,20 @@ axios.defaults.baseURL = base_url;
 export const Directory = {
   get: async (dir_path: string): Promise<IDirectory> => (await axios.get(`directories/${dir_path}`)).data,
   search: async (query: string): Promise<IDirectorySearchResult> => (await axios.get(`directories/search/${query}`)).data,
-  adv_search: async (query: IAdvancedSearchQuery): Promise<IVideoMeta[]> => (await axios.post(`directories/advanced-search`, query)).data,
-  adv_search_shuffle: async (): Promise<IVideoMeta> => (await axios.get(`directories/advanced-search-shuffle`)).data,
 };
 
 export const Video = {
   // /:filepath/metadata
   get: async (vid_path: string) => axios.get(`videos/${vid_path}/metadata`),
   rate: async (vid_path: string, video_meta: IVideoMeta) => axios.put(`videos/${vid_path}/rate`, video_meta),
-  edit: async (updated_video: IVideoMeta) => axios.put(`videos/${updated_video.id}`, updated_video)
+  edit: async (updated_video: IVideoMeta) => axios.put(`videos/${updated_video.id}`, updated_video),
+};
+
+export const Search = {
+  set_query: async (query: IAdvancedSearchQuery): Promise<IAdvancedSearchQuery> => (await axios.post(`search/queries`, query)).data,
+  get_query: async (): Promise<IAdvancedSearchQuery> => await axios.get(`search/queries`),
+  search_vidoes: async (): Promise<IVideoMeta[]> => (await axios.get(`search`)).data,
+  shuffle: async (): Promise<IVideoMeta> => (await axios.get(`search/shuffle`)).data,
 };
 
 export const Tag = {

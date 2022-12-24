@@ -1,24 +1,21 @@
+import { SearchQuery } from "./search_query";
 import { Tag } from "./tag";
 import { VideoMeta } from "./video_meta";
 import { getRepository, SelectQueryBuilder } from "typeorm";
 
-export class AdvancedSearcher {
-  included_tags: Tag[];
-  min_rating: number = 0;
-  max_rating: number = 0;
+export class MediaSearcher {
+  query: SearchQuery;
 
-  constructor(included_tags: Tag[], min_rating: number = 0, max_rating: number = 0) {
-    this.included_tags = included_tags;
-    this.min_rating = min_rating;
-    this.max_rating = max_rating;
+  constructor(query: SearchQuery) {
+    this.query = query;
   }
 
   build_query = (): SelectQueryBuilder<VideoMeta> => {
     const video_meta_repo = getRepository(VideoMeta);
     let query = video_meta_repo.createQueryBuilder("video").innerJoin("video.tags", "tag");
-    query = this.query_tags(query, this.included_tags);
-    query = this.query_min_rating(query, this.min_rating);
-    query = this.query_max_rating(query, this.max_rating);
+    query = this.query_tags(query, this.query.included_tags);
+    query = this.query_min_rating(query, this.query.min_rating);
+    query = this.query_max_rating(query, this.query.max_rating);
     return query;
   };
 

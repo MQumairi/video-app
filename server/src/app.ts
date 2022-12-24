@@ -13,6 +13,7 @@ import { Directory } from "./models/directory";
 import { Series } from "./models/series";
 import series_controller from "./controllers/series_controller";
 import { existsSync } from "fs";
+import search_controller from "./controllers/search_controller";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/videos", video_controller);
 app.use("/api/directories", directory_controller);
+app.use("/api/search", search_controller);
 app.use("/api/tags", tag_controller);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/series", series_controller);

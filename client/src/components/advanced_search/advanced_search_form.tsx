@@ -1,13 +1,12 @@
 import { observer } from "mobx-react-lite";
 import HrefButton from "../misc/href_button";
 import FunctionButton from "../misc/function_button";
-import { Autocomplete, MenuItem, Select, TextField } from "@mui/material";
 import AutoCompleteHook from "../misc/auto_complete_input";
 import ITag from "../../models/tag";
 import { useContext, useState } from "react";
 import SelectedVideosStore from "../../store/selected_videos_store";
 import IAdvancedSearchQuery from "../../models/advanced_search_query";
-import { Directory } from "../../api/agent";
+import { Directory, Search } from "../../api/agent";
 import { PathConverter } from "../../util/path_converter";
 import RatingSelector from "./rating_selector";
 
@@ -28,13 +27,18 @@ const AdvancedSearchForm = (props: IProps) => {
       min_rating: min_rating,
       max_rating: max_rating,
     };
-    const res = await Directory.adv_search(query);
-    selectedVideoStore.set_adv_search_results(res);
+    const res = await Search.set_query(query);
+    await fetch_search_results();
     await fetch_random_video();
   };
 
+  const fetch_search_results = async () => {
+    let response = await Search.search_vidoes();
+    selectedVideoStore.set_adv_search_results(response);
+  };
+
   const fetch_random_video = async () => {
-    let response = await Directory.adv_search_shuffle();
+    let response = await Search.shuffle();
     set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
   };
 

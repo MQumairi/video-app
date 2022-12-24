@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Directory, Playlist, Tag, Video } from "../../api/agent";
+import { Directory, Playlist, Search, Tag, Video } from "../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import HrefButton from "../misc/href_button";
 import VideoPlayer from "./video_player";
@@ -46,7 +46,7 @@ const PlayerPage = () => {
       set_random_vid_url(`/playlists/${playlist_id}/video/${PathConverter.to_query(response.path)}`);
     } else {
       // Advanced Search query
-      let response = await Directory.adv_search_shuffle();
+      let response = await Search.shuffle();
       set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
     }
   };

@@ -14,6 +14,7 @@ import { Series } from "./models/series";
 import series_controller from "./controllers/series_controller";
 import { existsSync } from "fs";
 import search_controller from "./controllers/search_controller";
+import cleanup_controller from "./controllers/cleanup_controller";
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ createConnection({
     pg_connected = true;
     const main_dir = new Directory("videos");
     await main_dir.read_contents();
-    await main_dir.process_sub_dirs(main_dir.directory_paths);
+    // await main_dir.process_sub_dirs(main_dir.directory_paths);
   })
   .catch((error) => {
     console.log(error);
@@ -49,6 +50,7 @@ app.use("/api/search", search_controller);
 app.use("/api/tags", tag_controller);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/series", series_controller);
+app.use("/api/cleanup", cleanup_controller);
 
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;

@@ -2,17 +2,15 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import "reflect-metadata";
-import { createConnection, getRepository } from "typeorm";
+import { createConnection } from "typeorm";
 import { VideoMeta } from "./models/video_meta";
 import { Tag } from "./models/tag";
 import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
 import tag_controller from "./controllers/tag_controller";
 import playlist_controller from "./controllers/playlist_controller";
-import { Directory } from "./models/directory";
 import { Series } from "./models/series";
 import series_controller from "./controllers/series_controller";
-import { existsSync } from "fs";
 import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
 
@@ -31,9 +29,6 @@ createConnection({
 })
   .then(async () => {
     pg_connected = true;
-    const main_dir = new Directory("videos");
-    await main_dir.read_contents();
-    // await main_dir.process_sub_dirs(main_dir.directory_paths);
   })
   .catch((error) => {
     console.log(error);
@@ -55,20 +50,6 @@ app.use("/api/cleanup", cleanup_controller);
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;
 export const test_data_dir = process.env.TESTDATADIR;
-
-app.get("/api/clean-database", async (req: Request, res: Response) => {
-  let video_repo = getRepository(VideoMeta);
-  let videos = await video_repo.find();
-  let result = new Map<string, boolean>();
-  for (let v of videos) {
-    let path_exists = existsSync(v.path);
-    result.set(v.name, path_exists);
-    if (!path_exists) {
-      await video_repo.remove(v);
-    }
-  }
-  res.status(200).json(Object.fromEntries(result));
-});
 
 app.get("*", (req: Request, res: Response) => {
   res.status(404).json(not_found_error);

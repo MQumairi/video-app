@@ -16,17 +16,11 @@ const TagCapsule = (props: IProps) => {
   const handle_delete = async (event: any) => {
     console.log("entered handle delete");
     const video = selectedVideoStore.running_video;
-    const updated_tag: ITag = {
-      id: props.tag.id,
-      name: props.tag.name,
-      videos: [],
-    };
     if (selectedVideoStore.selected_tag) {
-      return await handle_child_tag_delete(updated_tag);
+      return await handle_child_tag_delete(props.tag);
     }
     if (!video) return;
-    updated_tag.videos = [video];
-    await Tag.remove_video(updated_tag);
+    await Tag.untag_video([video], props.tag);
     set_chip_display("none");
   };
 

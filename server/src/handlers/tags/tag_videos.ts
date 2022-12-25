@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Tag } from "../../models/tag";
 import { VideoMeta } from "../../models/video_meta";
-import VideoTagger from "../../models/video_tagger";
+import VideoTagger from "../../lib/video_tagger";
 
 const TagVideos = async (req: Request, res: Response): Promise<void> => {
   console.log("entered tag videos");

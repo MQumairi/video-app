@@ -1,6 +1,6 @@
 import { SearchQuery } from "./search_query";
-import { Tag } from "./tag";
-import { VideoMeta } from "./video_meta";
+import { Tag } from "../models/tag";
+import { VideoMeta } from "../models/video_meta";
 import { getRepository, SelectQueryBuilder } from "typeorm";
 
 export class MediaSearcher {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SearchQuery } from "../../models/search_query";
+import { SearchQuery } from "../../lib/search_query";
 import { Tag } from "../../models/tag";
 
 export let cached_query = new SearchQuery();

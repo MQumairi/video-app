@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Directory } from "../../models/directory";
+import { Directory } from "../../lib/directory";
 import { not_found_error } from "../../app";
 
 const Browse = async (req: Request, res: Response): Promise<Directory | undefined> => {

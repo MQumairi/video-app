@@ -1,5 +1,5 @@
 import { existsSync } from "fs";
-import { VideoMeta } from "./video_meta";
+import { VideoMeta } from "../models/video_meta";
 import { getRepository } from "typeorm";
 
 export default class VideoFinder {

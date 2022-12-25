@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MediaSearcher } from "../../models/media_searcher";
+import { MediaSearcher } from "../../lib/media_searcher";
 import { VideoMeta } from "../../models/video_meta";
 import { cached_query } from "./cached_search_query";
 

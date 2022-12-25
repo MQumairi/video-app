@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Directory } from "../../models/directory";
+import { Directory } from "../../lib/directory";
 import { VideoMeta } from "../../models/video_meta";
 import { data_dir } from "../../app";
 import { promisify } from "util";

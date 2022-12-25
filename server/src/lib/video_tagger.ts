@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
-import { Tag } from "./tag";
-import { VideoMeta } from "./video_meta";
+import { Tag } from "../models/tag";
+import { VideoMeta } from "../models/video_meta";
 import VideoFinder from "./video_finder";
 
 export default class VideoTagger {

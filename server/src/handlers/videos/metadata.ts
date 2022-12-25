@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { VideoMeta } from "../../models/video_meta";
-import { Directory } from "../../models/directory";
+import { Directory } from "../../lib/directory";
 import { not_found_error } from "../../app";
 import { getRepository } from "typeorm";
 import { existsSync } from "fs";

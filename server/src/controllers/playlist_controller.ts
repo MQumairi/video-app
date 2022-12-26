@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
-import AddVideo from "../handlers/playlists/add_videos";
+import AddVideo from "../handlers/playlists/videos_add";
 import Create from "../handlers/playlists/create";
 import Delete from "../handlers/playlists/delete";
 import Details from "../handlers/playlists/details";
 import Edit from "../handlers/playlists/edit";
 import List from "../handlers/playlists/list";
-import RemoveVideo from "../handlers/playlists/remove_videos";
+import RemoveVideo from "../handlers/playlists/videos_remove";
 import Shuffle from "../handlers/playlists/shuffle";
 
 const playlist_controller = Router();

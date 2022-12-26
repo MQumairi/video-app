@@ -6,9 +6,9 @@ import VideoTagger from "../../lib/video_tagger";
 const TagVideos = async (req: Request, res: Response): Promise<void> => {
   console.log("entered tag videos");
   const videos: VideoMeta[] = req.body.videos;
-  console.log("videos:", videos.length);
+  console.log(`request videos: ${videos.length}`);
   const tags: Tag[] = req.body.tags;
-  console.log("tags:", tags.length);
+  console.log(`request tags ${tags.length}`);
   try {
     console.log("applying tags");
     const video_tagger = new VideoTagger(videos, tags);

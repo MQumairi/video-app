@@ -50,8 +50,10 @@ export const Playlist = {
   post: async (playlist_name: string) => axios.post(`playlists`, { name: playlist_name }),
   details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
   shuffle: async (playlist_id: number) => axios.get(`playlists/${playlist_id}/shuffle`),
-  add_video: async (updated_playlist: IPlaylist) => axios.put(`playlists/${updated_playlist.id}/video/add`, updated_playlist),
-  remove_video: async (updated_playlist: any) => axios.put(`playlists/${updated_playlist.id}/video/remove`, updated_playlist),
+  add_video: async (video: IVideoMeta, playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: playlist }),
+  add_videos: async (videos: IVideoMeta[], playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: playlist }),
+  // TODO: Logic related to this call needs fixing on the front end (currently shared between playlists and series)
+  remove_videos: async (videos: IVideoMeta[], playlist: IPlaylist) => axios.put(`tags/untag-videos`, { videos: videos, tag: playlist }),
   delete: async (playlist_id: number) => axios.delete(`playlists/${playlist_id}`),
 };
 

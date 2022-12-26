@@ -3,7 +3,7 @@ import { getRepository } from "typeorm";
 import { Series } from "../../models/series";
 import { VideoMeta } from "../../models/video_meta";
 
-const remove_video = async (req: Request, res: Response): Promise<Series | undefined> => {
+const remove_series_video = async (req: Request, res: Response): Promise<Series | undefined> => {
   const id = +req.params.id;
   const series_repo = getRepository(Series);
   let found_series = await series_repo.findOne({ relations: ["videos"], where: { id: id } });
@@ -29,7 +29,7 @@ const remove_video = async (req: Request, res: Response): Promise<Series | undef
 
 const RemoveVideo = async (req: Request, res: Response): Promise<Series | undefined> => {
   try {
-    return remove_video(req, res);
+    return remove_series_video(req, res);
   } catch (error) {
     console.log("Error:", error);
   }

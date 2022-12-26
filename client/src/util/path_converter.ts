@@ -17,7 +17,6 @@ export class PathConverter {
     let split_arr = PathConverter.split_url(file);
     console.log("split arr is:", split_arr);
     split_arr.pop();
-    let parent_file = split_arr.join("-");
     return split_arr.pop() ?? "";
   }
 }

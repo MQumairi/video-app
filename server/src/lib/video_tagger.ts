@@ -13,14 +13,15 @@ export default class VideoTagger {
   }
 
   apply_tags_to_videos = async (): Promise<void> => {
-    this.videos.forEach(async (v) => {
+    for (let v of this.videos) {
       let tags_set = await this.build_tags_set(this.tags);
       const finder = new VideoFinder(v.path);
       const video_to_tag = await finder.find();
       if (video_to_tag == null) return;
+      console.log(`found video: ${video_to_tag.id}`);
       console.log(`applying tags to video ${video_to_tag.id}`);
       console.log(`originally has ${video_to_tag.tags.length}`);
-      tags_set = this.filter_for_relevant_tags(v, tags_set);
+      tags_set = this.filter_for_relevant_tags(video_to_tag, tags_set);
       const tags_to_add = await this.build_tags_list(tags_set);
       console.log(`adding ${tags_to_add.length} tags`);
       const new_tags = video_to_tag.tags.concat(tags_to_add);
@@ -28,11 +29,11 @@ export default class VideoTagger {
       video_to_tag.tags = new_tags;
       await getRepository(VideoMeta).save(video_to_tag);
       console.log(`Done applying tags to video ${video_to_tag.id}`);
-    });
+    }
   };
 
   remove_tags_from_videos = async (): Promise<void> => {
-    this.videos.forEach(async (v) => {
+    for (let v of this.videos) {
       const finder = new VideoFinder(v.path);
       const video_to_untag = await finder.find();
       if (video_to_untag == null) return;
@@ -45,7 +46,7 @@ export default class VideoTagger {
       video_to_untag.tags = new_tags;
       await getRepository(VideoMeta).save(video_to_untag);
       console.log(`Done removing from video ${video_to_untag.id}`);
-    });
+    }
   };
 
   build_tags_set = async (tags: Tag[], include_children: boolean = true): Promise<Set<string>> => {

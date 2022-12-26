@@ -14,10 +14,10 @@ export default class VideoFinder {
   find = async (): Promise<VideoMeta> => {
     this.file_system_check();
     let video = new VideoMeta(this.path);
-    video.tags = [];
     if (this.check_database) {
       video = await this.database_check(video);
     }
+    if (!video.tags) video.tags = [];
     return video;
   };
 

@@ -6,7 +6,7 @@ export interface IDirectory {
 
 import fs from "fs/promises";
 import path from "path";
-import { Dir, existsSync } from "fs";
+import { existsSync } from "fs";
 import { VideoMeta } from "../models/video_meta";
 import { VideoScript } from "../models/video_script";
 
@@ -72,7 +72,7 @@ export class Directory {
 
   async list_script_paths(): Promise<VideoScript[]> {
     let all_file_paths = await this.list_file_paths();
-    let script_paths: VideoScript[] = [];
+    let script_paths: VideoScript[] = this.scripts || [];
     for (let file of all_file_paths) {
       let full_file_path = path.join(this.path, file);
       if (await Directory.is_script(full_file_path)) {

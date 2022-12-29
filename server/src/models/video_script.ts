@@ -11,6 +11,7 @@ export class VideoScript {
   @Column("text")
   name: string;
 
+  @Index()
   @Column("text")
   path: string;
 
@@ -27,6 +28,6 @@ export class VideoScript {
     }
     this.name = path.basename(path_);
     this.path = path.join(path_);
-    this.command = command ?? "./" + this.path;
+    this.command = command ?? this.path;
   }
 }

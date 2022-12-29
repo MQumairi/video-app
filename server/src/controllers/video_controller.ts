@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import Stream from "../handlers/videos/stream";
 import Metadata from "../handlers/videos/metadata";
 import Rate from "../handlers/videos/rate";
 import Edit from "../handlers/videos/edit";
+import Stream from "../handlers/videos/stream";
 
 const video_controller = Router();
 

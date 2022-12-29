@@ -19,8 +19,8 @@ const video_is_missing = async (video: VideoMeta, res: Response): Promise<boolea
 
 const execute_video_scripts = async (video: VideoMeta): Promise<void> => {
   const scripts = video.scripts;
-  console.log("video scripts:", scripts);
   for (const script of scripts) {
+    if (!script.auto_exec_on_start) continue;
     const cmd_res = await ScriptManager.execute(script);
     console.log("command result:", cmd_res);
   }

@@ -18,6 +18,10 @@ export class VideoScript {
   @Column("text")
   command: string;
 
+  @Index()
+  @Column("bool", { default: false })
+  auto_exec_on_start: boolean;
+
   @ManyToMany((type) => VideoMeta, (video) => video.scripts, { cascade: true })
   @JoinTable()
   videos: VideoMeta[];

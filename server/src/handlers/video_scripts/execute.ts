@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { VideoScript } from "../../models/video_script";
-import { exec as exec_sync } from "child_process";
-import { promisify } from "util";
-const exec = promisify(exec_sync);
+import { ScriptManager } from "../../lib/script_manager";
 
 const Execute = async (req: Request, res: Response): Promise<VideoScript | undefined> => {
   const id = +req.params.id;
@@ -12,9 +10,9 @@ const Execute = async (req: Request, res: Response): Promise<VideoScript | undef
     res.status(404).send("VideoScript not found");
     return;
   }
-  const command = req.body.command ?? `./${script.command}`;
+  const command = req.body.command ?? script.command;
   console.log(`executing ${command}`);
-  const cmd_res = await exec(command);
+  const cmd_res = ScriptManager.execute(script, command);
   console.log("command result:", cmd_res);
   res.status(200).json(cmd_res);
   return script;

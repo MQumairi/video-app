@@ -29,7 +29,7 @@ export class ScriptManager {
   }
 
   static async execute(video_script: VideoScript, exec_command: string | null = null): Promise<ICommandRes> {
-    const command = exec_command ?? `./${video_script.command}`;
+    const command = `./${exec_command}` ?? `./${video_script.command}`;
     console.log(`executing ${video_script.name}`);
     return await exec(command);
   }

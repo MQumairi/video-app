@@ -35,7 +35,7 @@ const TagDetailsPage = () => {
       {random_vid && <HrefButton textContent="Random" href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`} />}
       <HrefButton href={`/tags/${tag_id}/edit`} textContent={"Edit Tag"} />
       {tag?.child_tags && <VideoTags tags={tag?.child_tags ?? []} />}
-      {tag && <BrowserResults videos={tag.videos} directory_paths={[]} back_url={"/tags"} />}
+      {tag && <BrowserResults videos={tag.videos} directories={[]} back_url={"/tags"} />}
     </div>
   );
 };

@@ -24,7 +24,7 @@ const AdvancedSearchPage = () => {
     <div>
       <h1>Advanced Search</h1>
       {tags.length > 0 && <AdvancedSearchForm tags={tags} />}
-      <BrowserResults back_url={"/advanced-search"} directory_paths={[]} videos={selectedVideoStore.adv_search_results} />
+      <BrowserResults back_url={"/advanced-search"} directories={[]} videos={selectedVideoStore.adv_search_results} />
     </div>
   );
 };

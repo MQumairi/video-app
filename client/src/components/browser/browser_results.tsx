@@ -9,9 +9,10 @@ import BrowserEditMode from "./edit_videos/browser_edit_mode";
 import SubDirectoryList from "./sub_directory_list";
 import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
 import TagPopoverButton from "../tags/tag_popover/tag_popover_button";
+import IDirectory from "../../models/directory";
 
 interface IProps {
-  directory_paths: string[];
+  directories: IDirectory[];
   videos: IVideoMeta[];
   back_url: string;
 }
@@ -29,7 +30,7 @@ const BrowserResults = (props: IProps) => {
         {edit_mode && <TagPopoverButton />}
         {edit_mode && <PlaylistPopoverButton />}
       </ButtonGroup>
-      {!edit_mode && props.directory_paths.length > 0 && <SubDirectoryList directory_paths={props.directory_paths} />}
+      {!edit_mode && props.directories.length > 0 && <SubDirectoryList directories={props.directories} />}
       {!edit_mode && <DirectoryVideos videos={props.videos} />}
       {edit_mode && <BrowserEditMode video_paths={props.videos} check_all={check_all} />}
     </div>

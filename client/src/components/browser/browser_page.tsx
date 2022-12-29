@@ -13,7 +13,7 @@ const BrowserPage = () => {
   let url_query = useParams().query;
   const [title, set_title] = useState<string>("");
   const [parent_page, set_parent_page] = useState<string>("");
-  const [directories, set_directories] = useState<string[]>([]);
+  const [directories, set_directories] = useState<IDirectory[]>([]);
   const [videos, set_videos] = useState<IVideoMeta[]>([]);
 
   const fetch_data = async () => {
@@ -53,7 +53,7 @@ const BrowserPage = () => {
     <div>
       <h1>{title}</h1>
       <SearchBar />
-      <BrowserResults back_url={parent_page} directory_paths={directories} videos={videos} />
+      <BrowserResults back_url={parent_page} directories={directories} videos={videos} />
     </div>
   );
 };

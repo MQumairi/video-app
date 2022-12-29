@@ -22,6 +22,7 @@ import SeriesDeletePage from "./components/series/series_delete/series_delete_pa
 import CleanupPage from "./components/cleanup/cleanup_page";
 import ScriptsPage from "./components/video_scripts/scripts_index/scripts_page";
 import ScriptsDetailsPage from "./components/video_scripts/scripts_details/scripts_details_page";
+import ScriptsDeletePage from "./components/video_scripts/scripts_delete/scripts_delete_page";
 
 const App = () => {
   const box_style = {
@@ -68,7 +69,7 @@ const App = () => {
           {/* Scripts */}
           <Route path="scripts" element={<ScriptsPage />} />
           <Route path="scripts/:script_id" element={<ScriptsDetailsPage />} />
-          <Route path="scripts/:script_id/delete" element={<ScriptsPage />} />
+          <Route path="scripts/:script_id/delete" element={<ScriptsDeletePage />} />
           {/* Cleanup */}
           <Route path="cleanup" element={<CleanupPage />} />
         </Routes>

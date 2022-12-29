@@ -1,4 +1,4 @@
-import { Directory } from "../src/models/directory";
+import { Directory } from "../src/lib/directory";
 import { VideoMeta } from "../src/models/video_meta";
 
 let root_directory = new Directory("./test/data");

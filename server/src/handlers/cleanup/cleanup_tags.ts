@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { VideoMeta } from "../../models/video_meta";
-import LibraryIterator from "../../models/library_iterator";
+import LibraryIterator from "../../lib/library_iterator";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
-import VideoTagger from "../../models/video_tagger";
+import VideoTagger from "../../lib/video_tagger";
 
 const CleanupTags = async (req: Request, res: Response): Promise<void> => {
   console.log("Applying tags to all videos based on their path");

@@ -37,9 +37,9 @@ export const Tag = {
   post: async (tag_name: string) => axios.post(`tags`, { name: tag_name }),
   details: async (tag_id: number) => axios.get(`tags/${tag_id}`),
   shuffle: async (tag_id: number) => axios.get(`tags/${tag_id}/shuffle`),
-  remove_video: async (updated_tag: ITag) => axios.put(`tags/${updated_tag.id}/video/remove`, updated_tag),
   tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: tags }),
   tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
+  untag_video: async (videos: IVideoMeta[], tag: ITag) => axios.put(`tags/untag-videos`, { videos: videos, tag: tag }),
   add_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/add`, { tag: tag, child_tags: child_tags }),
   remove_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/remove`, { tag: tag, child_tags: child_tags }),
   delete: async (tag_id: number) => axios.delete(`tags/${tag_id}`),
@@ -50,8 +50,10 @@ export const Playlist = {
   post: async (playlist_name: string) => axios.post(`playlists`, { name: playlist_name }),
   details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
   shuffle: async (playlist_id: number) => axios.get(`playlists/${playlist_id}/shuffle`),
-  add_video: async (updated_playlist: IPlaylist) => axios.put(`playlists/${updated_playlist.id}/video/add`, updated_playlist),
-  remove_video: async (updated_playlist: any) => axios.put(`playlists/${updated_playlist.id}/video/remove`, updated_playlist),
+  add_video: async (video: IVideoMeta, playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: playlist }),
+  add_videos: async (videos: IVideoMeta[], playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: playlist }),
+  // TODO: Logic related to this call needs fixing on the front end (currently shared between playlists and series)
+  remove_videos: async (videos: IVideoMeta[], playlist: IPlaylist) => axios.put(`tags/untag-videos`, { videos: videos, tag: playlist }),
   delete: async (playlist_id: number) => axios.delete(`playlists/${playlist_id}`),
 };
 

@@ -7,7 +7,7 @@ export interface IDirectory {
 import fs from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
-import { VideoMeta } from "./video_meta";
+import { VideoMeta } from "../models/video_meta";
 
 export class Directory {
   static async from_path(path: string): Promise<Directory | undefined> {

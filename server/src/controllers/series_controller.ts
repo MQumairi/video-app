@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
-import AddVideo from "../handlers/series/add_videos";
 import Create from "../handlers/series/create";
 import Delete from "../handlers/series/delete";
 import Details from "../handlers/series/details";
 import Edit from "../handlers/series/edit";
 import List from "../handlers/series/list";
-import RemoveVideo from "../handlers/series/remove_videos";
+import AddVideo from "../handlers/series/videos_add";
+import RemoveVideo from "../handlers/series/videos_remove";
 
 const series_controller = Router();
 

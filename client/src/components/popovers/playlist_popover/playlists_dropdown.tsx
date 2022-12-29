@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { Playlist } from "../../../api/agent";
 import IPlaylist from "../../../models/playlist";
 
-const PlaylistDropDown = (props: any) => {
+interface IProps {
+  selected_playlist: IPlaylist;
+  set_selected_playlist: (id: IPlaylist) => void;
+}
+
+const PlaylistDropDown = (props: IProps) => {
   const [playlists, set_playlists] = useState<IPlaylist[]>([]);
 
   const fetch_playlists = async () => {
@@ -13,7 +18,11 @@ const PlaylistDropDown = (props: any) => {
   };
 
   const handle_change = async (event: any) => {
-    props.set_selected_playlist_id(event.target.value);
+    const playlist_id = event.target.value;
+    for (let p of playlists) {
+      if (p.id != playlist_id) continue;
+      props.set_selected_playlist(p);
+    }
   };
 
   useEffect(() => {
@@ -34,7 +43,7 @@ const PlaylistDropDown = (props: any) => {
           labelId="playlist-dropdown"
           id="playlist-dropdown"
           label="playlists"
-          value={props.selected_playlist_id}
+          value={props.selected_playlist.id.toString()}
           onChange={handle_change}
         >
           {playlists.map((playlist) => {

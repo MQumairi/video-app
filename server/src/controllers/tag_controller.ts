@@ -1,16 +1,14 @@
 import { Router, Request, Response } from "express";
-import AddChildTags from "../handlers/tags/add_child_tags";
-import AddVideo from "../handlers/tags/add_videos";
+import AddChildTags from "../handlers/tags/child_tags_add";
 import Create from "../handlers/tags/create";
 import Delete from "../handlers/tags/delete";
 import Details from "../handlers/tags/details";
 import Edit from "../handlers/tags/edit";
 import List from "../handlers/tags/list";
-import RemoveChildTags from "../handlers/tags/remove_child_tags";
-import RemoveVideo from "../handlers/tags/remove_videos";
+import RemoveChildTags from "../handlers/tags/child_tags_remove";
+import UntagVideos from "../handlers/tags/videos_untag";
 import Shuffle from "../handlers/tags/shuffle";
-import TagAll from "../handlers/tags/tag_all";
-import TagVideos from "../handlers/tags/tag_videos";
+import TagVideos from "../handlers/tags/videos_tag";
 
 const tag_controller = Router();
 
@@ -20,10 +18,6 @@ tag_controller.get("/", async (req: Request, res: Response) => {
 
 tag_controller.post("/", async (req: Request, res: Response) => {
   await Create(req, res);
-});
-
-tag_controller.get("/tag-all", async (req: Request, res: Response) => {
-  await TagAll(req, res);
 });
 
 tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {
@@ -42,12 +36,8 @@ tag_controller.put("/tag-videos", async (req: Request, res: Response) => {
   await TagVideos(req, res);
 });
 
-tag_controller.put("/:id/video/add", async (req: Request, res: Response) => {
-  await AddVideo(req, res);
-});
-
-tag_controller.put("/:id/video/remove", async (req: Request, res: Response) => {
-  await RemoveVideo(req, res);
+tag_controller.put("/untag-videos", async (req: Request, res: Response) => {
+  await UntagVideos(req, res);
 });
 
 tag_controller.put("/:id/children/add", async (req: Request, res: Response) => {

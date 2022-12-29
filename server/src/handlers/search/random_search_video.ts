@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { VideoMeta } from "../../models/video_meta";
-import { MediaSearcher } from "../../models/media_searcher";
+import { MediaSearcher } from "../../lib/media_searcher";
 import { cached_query } from "./cached_search_query";
 
 const RandomSearchVideo = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {

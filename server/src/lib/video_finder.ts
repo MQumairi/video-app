@@ -1,5 +1,5 @@
 import { existsSync } from "fs";
-import { VideoMeta } from "./video_meta";
+import { VideoMeta } from "../models/video_meta";
 import { getRepository } from "typeorm";
 
 export default class VideoFinder {
@@ -14,10 +14,10 @@ export default class VideoFinder {
   find = async (): Promise<VideoMeta> => {
     this.file_system_check();
     let video = new VideoMeta(this.path);
-    video.tags = [];
     if (this.check_database) {
       video = await this.database_check(video);
     }
+    if (!video.tags) video.tags = [];
     return video;
   };
 

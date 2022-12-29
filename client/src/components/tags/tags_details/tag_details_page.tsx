@@ -14,17 +14,16 @@ const TagDetailsPage = () => {
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
 
-  const fetch_tag = async () => {
-    let response: ITag = (await Tag.details(+tag_id)).data;
-    set_tag(response);
-  };
-
-  const fetch_random_tag_video = async () => {
-    let response: IVideoMeta = (await Tag.shuffle(+tag_id)).data;
-    set_random_vid(response);
-  };
-
   useEffect(() => {
+    const fetch_tag = async () => {
+      let response: ITag = (await Tag.details(+tag_id)).data;
+      set_tag(response);
+    };
+
+    const fetch_random_tag_video = async () => {
+      let response: IVideoMeta = (await Tag.shuffle(+tag_id)).data;
+      set_random_vid(response);
+    };
     fetch_tag();
     fetch_random_tag_video();
   }, []);

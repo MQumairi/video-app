@@ -1,4 +1,4 @@
-import { Tag } from "./tag";
+import { Tag } from "../models/tag";
 
 export class SearchQuery {
   included_tags: Tag[];

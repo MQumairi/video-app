@@ -14,13 +14,13 @@ const TagEditPage = () => {
 
   const selectedVideoStore = useContext(SelectedVideosStore);
 
-  const fetch_tag = async () => {
-    let response: ITag = (await Tag.details(+tag_id)).data;
-    set_tag(response);
-    selectedVideoStore.set_single_tag_selection(response);
-  };
-
   useEffect(() => {
+    const fetch_tag = async () => {
+      let response: ITag = (await Tag.details(+tag_id)).data;
+      set_tag(response);
+      selectedVideoStore.set_single_tag_selection(response);
+    };
+
     fetch_tag();
   }, []);
 

@@ -1,5 +1,5 @@
 import { Directory } from "./directory";
-import { VideoMeta } from "./video_meta";
+import { VideoMeta } from "../models/video_meta";
 
 export default class LibraryIterator {
   // Iterate over entire library, for each video found, perform callback function

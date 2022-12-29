@@ -58,7 +58,11 @@ const apply_scripts = async (video: VideoMeta, scripts: VideoScript[]): Promise<
       console.log("encounterde error:", error);
     }
   }
-  video.scripts = scripts;
+  if (video.scripts) {
+    video.scripts.push(...scripts);
+  } else {
+    video.scripts = scripts;
+  }
   return video;
 };
 

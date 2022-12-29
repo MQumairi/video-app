@@ -10,7 +10,9 @@ const Execute = async (req: Request, res: Response): Promise<VideoScript | undef
     res.status(404).send("VideoScript not found");
     return;
   }
-  const command = req.body.command ?? script.command;
+  let command = req.body.command ?? script.command;
+  command = command + ` ${process.env.SCRIPT_SECRET}`;
+  console.log("command is:", command);
   console.log(`executing ${command}`);
   const cmd_res = await ScriptManager.execute(script, command);
   console.log("command result:", cmd_res);

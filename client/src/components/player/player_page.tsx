@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Directory, Playlist, Search, Tag, Video } from "../../api/agent";
+import { Directory, Playlist, Scripts, Search, Tag, Video } from "../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import HrefButton from "../misc/href_button";
 import VideoPlayer from "./video_player";
@@ -15,6 +15,9 @@ import { Star } from "@mui/icons-material";
 import EditVideoButton from "./edit_video_button";
 import SeriesPanel from "../series/series_panel/series_panel";
 import SeriesCapsule from "../series/series_capsule";
+import ScriptsDropdown from "../video_scripts/scripts_dropdown/scripts_dropdown";
+import IVideoScript from "../../models/video_script";
+import FunctionButton from "../misc/function_button";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -26,6 +29,7 @@ const PlayerPage = () => {
   const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [video_rating, set_video_rating] = useState<number>(0);
+  const [selected_script, set_selected_script] = useState<IVideoScript | null>(null);
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
@@ -70,6 +74,13 @@ const PlayerPage = () => {
     return `/browser/${query}`;
   };
 
+  const execute_script = async () => {
+    if (!selected_script || !video_meta) return;
+    console.log("executing script:", selected_script);
+    const command = selected_script.command + ` \"${video_meta.path}\"`;
+    await Scripts.execute(selected_script.id, command);
+  };
+
   return (
     <div>
       <h1>{video_meta?.name}</h1>
@@ -98,6 +109,13 @@ const PlayerPage = () => {
           <h2>Series</h2>
           <h4>Part {video_meta.series_order}</h4>
           <SeriesCapsule series={video_meta.series} />
+        </div>
+      )}
+      {video_meta && video_meta.scripts && video_meta.scripts.length > 0 && (
+        <div>
+          <h2>Scripts</h2>
+          <ScriptsDropdown scripts={video_meta.scripts} selected_script={selected_script} set_selected_script={set_selected_script} />
+          <FunctionButton textContent="Execute" fn={execute_script} />
         </div>
       )}
       {selectedVideoStore.edit_video_toggle && (

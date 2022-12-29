@@ -66,6 +66,14 @@ export const Series = {
   delete: async (series_id: number) => axios.delete(`series/${series_id}`),
 };
 
+export const Scripts = {
+  get: async () => axios.get(`scripts`),
+  details: async (script_id: number) => axios.get(`scripts/${script_id}`),
+  edit: async (script_id: number, command: string, auto_exec_on_start: boolean) => axios.put(`scripts/${script_id}`, { command, auto_exec_on_start }),
+  execute: async (script_id: number, command: string) => axios.put(`scripts/${script_id}/execute`, { command }),
+  delete: async (script_id: number) => axios.delete(`scripts/${script_id}`),
+};
+
 export const Cleanup = {
   delete_missing_videos: async () => axios.get(`cleanup/missing-videos`),
   tag_videos: async () => axios.get(`cleanup/tag-videos`),

@@ -1,8 +1,13 @@
 import { Box } from "@mui/material";
 import SubDirectoryItem from "./sub_directory_item";
 import { observer } from "mobx-react-lite";
+import IDirectory from "../../models/directory";
 
-const SubDirectoryList = (props: any) => {
+interface IProps {
+  directories: IDirectory[]
+}
+
+const SubDirectoryList = (props: IProps) => {
   const box_style = {
     background: "#01141f",
     display: "flex",
@@ -12,8 +17,8 @@ const SubDirectoryList = (props: any) => {
   };
   return (
     <Box component="div" sx={box_style}>
-      {props.directory_paths.map((dir: string) => {
-        return <SubDirectoryItem dir={dir} key={dir} />;
+      {props.directories.map((dir) => {
+        return <SubDirectoryItem directory={dir} key={dir.path} />;
       })}
     </Box>
   );

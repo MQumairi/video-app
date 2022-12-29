@@ -3,8 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import { observer } from "mobx-react-lite";
+import IDirectory from "../../models/directory";
 
-const SubDirectoryItem = (props: any) => {
+interface IProps {
+  directory: IDirectory;
+}
+
+const SubDirectoryItem = (props: IProps) => {
   let dir_path = useParams().dir_path;
   let url_query = useParams().query;
 
@@ -25,17 +30,17 @@ const SubDirectoryItem = (props: any) => {
 
   useEffect(() => {
     if (!url_query) {
-      set_sub_dir_url(`/browser/${PathConverter.to_query(props.dir)}`);
+      set_sub_dir_url(`/browser/${PathConverter.to_query(props.directory.path)}`);
     } else {
-      set_sub_dir_url(`/browser/search/${url_query}/directory/${PathConverter.to_query(props.dir)}`);
+      set_sub_dir_url(`/browser/search/${url_query}/directory/${PathConverter.to_query(props.directory.path)}`);
     }
   }, []);
 
   return (
-    <a href={`${sub_dir_url}`} key={props.dir}>
+    <a href={`${sub_dir_url}`} key={props.directory.path}>
       <div style={card_style}>
         <FolderIcon sx={icon_style} />
-        <h4 style={{ textAlign: "center" }}>{PathConverter.get_base_name(props.dir)}</h4>
+        <h4 style={{ textAlign: "center" }}>{PathConverter.get_base_name(props.directory.path)}</h4>
       </div>
     </a>
   );

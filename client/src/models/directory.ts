@@ -5,5 +5,5 @@ export default interface IDirectory {
   path: string;
   parent_path: string;
   video_paths?: IVideoMeta[];
-  directory_paths?: string[];
+  directory_paths?: IDirectory[];
 }

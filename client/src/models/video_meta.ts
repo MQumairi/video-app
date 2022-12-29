@@ -1,5 +1,6 @@
 import ISeries from "./series";
 import ITag from "./tag";
+import IVideoScript from "./video_script";
 
 export default interface IVideoMeta {
   id: number;
@@ -10,4 +11,5 @@ export default interface IVideoMeta {
   rating: number;
   series_order: number;
   series?: ISeries;
+  scripts?: IVideoScript[];
 }

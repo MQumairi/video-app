@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Tag } from "../../api/agent";
 import ITag from "../../models/tag";
-import AdvancedSearchForm from "./advanced_search_form";
+import AdvancedSearchForm from "./search_form";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import Advanced_search_results from "./advanced_search_results";
+import Advanced_search_results from "./search_results";
 import BrowserResults from "../browser/browser_results";
 
 const AdvancedSearchPage = () => {
@@ -22,9 +22,9 @@ const AdvancedSearchPage = () => {
   }, []);
   return (
     <div>
-      <h1>Advanced Search</h1>
+      <h1>Search</h1>
       {tags.length > 0 && <AdvancedSearchForm tags={tags} />}
-      <BrowserResults back_url={"/advanced-search"} directory_paths={[]} videos={selectedVideoStore.adv_search_results} />
+      <BrowserResults back_url={"/advanced-search"} directories={[]} videos={selectedVideoStore.adv_search_results} />
     </div>
   );
 };

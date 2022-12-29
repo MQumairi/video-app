@@ -13,6 +13,8 @@ import { Series } from "./models/series";
 import series_controller from "./controllers/series_controller";
 import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
+import { VideoScript } from "./models/video_script";
+import scripts_controller from "./controllers/scripts_controller";
 
 dotenv.config();
 
@@ -23,7 +25,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [VideoMeta, Tag, Series],
+  entities: [VideoMeta, Tag, Series, VideoScript],
   synchronize: true,
   logging: false,
 })
@@ -45,6 +47,7 @@ app.use("/api/search", search_controller);
 app.use("/api/tags", tag_controller);
 app.use("/api/playlists", playlist_controller);
 app.use("/api/series", series_controller);
+app.use("/api/scripts", scripts_controller);
 app.use("/api/cleanup", cleanup_controller);
 
 export const not_found_error = { message: "page not found" };

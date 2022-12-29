@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepositor
 import path from "path";
 import { Tag } from "./tag";
 import { Series } from "./series";
+import { VideoScript } from "./video_script";
 
 @Entity()
 export class VideoMeta {
@@ -30,6 +31,9 @@ export class VideoMeta {
 
   @Column("int", { default: 1 })
   series_order: number;
+
+  @ManyToMany((type) => VideoScript, (script) => script.videos, { onDelete: "CASCADE" })
+  scripts: VideoScript[];
 
   constructor(path_: any) {
     if (!path_) {

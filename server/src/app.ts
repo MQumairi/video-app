@@ -13,6 +13,7 @@ import { Series } from "./models/series";
 import series_controller from "./controllers/series_controller";
 import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
+import { VideoScript } from "./models/video_script";
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [VideoMeta, Tag, Series],
+  entities: [VideoMeta, Tag, Series, VideoScript],
   synchronize: true,
   logging: false,
 })

@@ -13,13 +13,14 @@ import PlaylistCreatePage from "./components/playlists/playlists_create/playlist
 import PlaylistsDeletePage from "./components/playlists/playlists_delete/playlists_delete_page";
 import PlaylistsDetailsPage from "./components/playlists/playlists_details/playlists_details_page";
 import { observer } from "mobx-react-lite";
-import AdvancedSearchPage from "./components/advanced_search/advanced_search_page";
+import AdvancedSearchPage from "./components/search/search_page";
 import TagEditPage from "./components/tags/tags_edit/tag_edit_page";
 import SeriesIndexPage from "./components/series/series_index/series_index_page";
 import SeriesCreatePage from "./components/series/series_create/series_create_page";
 import SeriesDetailsPage from "./components/series/series_details/series_details_page";
 import SeriesDeletePage from "./components/series/series_delete/series_delete_page";
 import CleanupPage from "./components/cleanup/cleanup_page";
+import ScriptsPage from "./components/video_scripts/scripts_page";
 
 const App = () => {
   const box_style = {
@@ -61,8 +62,10 @@ const App = () => {
           <Route path="series/new" element={<SeriesCreatePage />} />
           <Route path="series/:series_id" element={<SeriesDetailsPage />} />
           <Route path="series/:series_id/delete" element={<SeriesDeletePage />} />
-          {/* Advanced Search */}
-          <Route path="advanced-search" element={<AdvancedSearchPage />} />
+          {/* Search */}
+          <Route path="search" element={<AdvancedSearchPage />} />
+          {/* Scripts */}
+          <Route path="scripts" element={<ScriptsPage />} />
           {/* Cleanup */}
           <Route path="cleanup" element={<CleanupPage />} />
         </Routes>

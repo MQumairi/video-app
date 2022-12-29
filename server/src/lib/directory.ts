@@ -8,6 +8,7 @@ import fs from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
 import { VideoMeta } from "../models/video_meta";
+import { VideoScript } from "../models/video_script";
 
 export class Directory {
   static async from_path(path: string): Promise<Directory | undefined> {
@@ -24,6 +25,7 @@ export class Directory {
   parent_path: string;
   video_paths: VideoMeta[];
   directory_paths: string[];
+  script_paths: VideoScript[];
 
   constructor(path_: string) {
     this.name = path.basename(path_);
@@ -35,6 +37,7 @@ export class Directory {
   }
 
   async read_contents() {
+    this.script_paths = await this.list_script_paths();
     this.video_paths = await this.list_video_paths();
     this.directory_paths = await this.list_directory_paths();
   }
@@ -57,10 +60,24 @@ export class Directory {
     for (let file of all_file_paths) {
       let full_file_path = path.join(this.path, file);
       if (Directory.is_video(full_file_path)) {
-        video_paths.push(new VideoMeta(full_file_path));
+        const video = new VideoMeta(full_file_path);
+        video.scripts = this.script_paths;
+        video_paths.push(video);
       }
     }
     return video_paths;
+  }
+
+  async list_script_paths(): Promise<VideoScript[]> {
+    let all_file_paths = await this.list_file_paths();
+    let script_paths: VideoScript[] = [];
+    for (let file of all_file_paths) {
+      let full_file_path = path.join(this.path, file);
+      if (await Directory.is_script(full_file_path)) {
+        script_paths.push(new VideoScript(full_file_path));
+      }
+    }
+    return script_paths;
   }
 
   async list_file_paths(): Promise<string[]> {
@@ -70,6 +87,10 @@ export class Directory {
 
   static async is_directory(file_path: string): Promise<boolean> {
     return (await fs.stat(file_path)).isDirectory();
+  }
+
+  static async is_script(file_path: string): Promise<boolean> {
+    return file_path.endsWith(".sh");
   }
 
   static video_extensions = [".mp4", ".mov"];

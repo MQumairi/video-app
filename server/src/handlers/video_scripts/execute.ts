@@ -12,7 +12,7 @@ const Execute = async (req: Request, res: Response): Promise<VideoScript | undef
   }
   const command = req.body.command ?? script.command;
   console.log(`executing ${command}`);
-  const cmd_res = ScriptManager.execute(script, command);
+  const cmd_res = await ScriptManager.execute(script, command);
   console.log("command result:", cmd_res);
   res.status(200).json(cmd_res);
   return script;

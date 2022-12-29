@@ -3,14 +3,15 @@ import { observer } from "mobx-react-lite";
 import IVideoScript from "../../../models/video_script";
 import HrefButton from "../../misc/href_button";
 import FunctionButton from "../../misc/function_button";
+import { Scripts } from "../../../api/agent";
 
 interface IProps {
   script: IVideoScript;
 }
 
 const ScriptsListRow = (props: IProps) => {
-  const exec_script = () => {
-    console.log("executing", props.script);
+  const exec_script = async () => {
+    await Scripts.execute(props.script.id, props.script.command);
   };
   return (
     <TableRow key={props.script.id}>

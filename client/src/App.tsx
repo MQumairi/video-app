@@ -20,7 +20,8 @@ import SeriesCreatePage from "./components/series/series_create/series_create_pa
 import SeriesDetailsPage from "./components/series/series_details/series_details_page";
 import SeriesDeletePage from "./components/series/series_delete/series_delete_page";
 import CleanupPage from "./components/cleanup/cleanup_page";
-import ScriptsPage from "./components/video_scripts/scripts_page";
+import ScriptsPage from "./components/video_scripts/scripts_index/scripts_page";
+import ScriptsDetailsPage from "./components/video_scripts/scripts_details/scripts_details_page";
 
 const App = () => {
   const box_style = {
@@ -66,6 +67,8 @@ const App = () => {
           <Route path="search" element={<AdvancedSearchPage />} />
           {/* Scripts */}
           <Route path="scripts" element={<ScriptsPage />} />
+          <Route path="scripts/:script_id" element={<ScriptsDetailsPage />} />
+          <Route path="scripts/:script_id/delete" element={<ScriptsPage />} />
           {/* Cleanup */}
           <Route path="cleanup" element={<CleanupPage />} />
         </Routes>

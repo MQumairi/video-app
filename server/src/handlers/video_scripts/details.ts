@@ -4,7 +4,7 @@ import { VideoScript } from "../../models/video_script";
 
 const Details = async (req: Request, res: Response): Promise<VideoScript | undefined> => {
   const id = +req.params.id;
-  const script = await getRepository(VideoScript).findOne(id);
+  const script = await getRepository(VideoScript).findOne(id, { relations: ["videos"] });
   if (!script) {
     res.status(404).send("VideoScript not found");
     return;

@@ -76,7 +76,7 @@ const PlayerPage = () => {
 
   const execute_script = async () => {
     if (!selected_script || !video_meta) return;
-    console.log("executing script:", selected_script);
+    console.log("executing script:", selected_script.id);
     const command = selected_script.command + ` \"${video_meta.path}\"`;
     await Scripts.execute(selected_script.id, command);
   };

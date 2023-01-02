@@ -78,4 +78,5 @@ export const Cleanup = {
   delete_missing_videos: async () => axios.get(`cleanup/missing-videos`),
   tag_videos: async () => axios.get(`cleanup/tag-videos`),
   delete_duplicate_tags: async () => axios.get(`cleanup/duplicate-tags`),
+  cleanup_scripts: async () => axios.get(`cleanup/scripts`),
 };

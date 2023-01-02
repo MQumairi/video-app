@@ -12,11 +12,13 @@ const Execute = async (req: Request, res: Response): Promise<VideoScript | undef
   }
   let command = req.body.command ?? script.command;
   command = command + ` ${process.env.SCRIPT_SECRET}`;
-  console.log("command is:", command);
-  console.log(`executing ${command}`);
-  const cmd_res = await ScriptManager.execute(script, command);
-  console.log("command result:", cmd_res);
-  res.status(200).json(cmd_res);
+  try {
+    const cmd_res = await ScriptManager.execute(script, command);
+    console.log("command result:", cmd_res);
+    res.status(200).json(cmd_res);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
   return script;
 };
 

@@ -14,6 +14,10 @@ const CleanupPage = () => {
     await Cleanup.delete_duplicate_tags();
   };
 
+  const script_cleanup = async () => {
+    await Cleanup.cleanup_scripts();
+  };
+
   return (
     <div>
       <h1>Cleanup Page</h1>
@@ -26,6 +30,9 @@ const CleanupPage = () => {
         </Button>
         <Button size="large" onClick={delete_duplicate_tags}>
           Duplicate Tags
+        </Button>
+        <Button size="large" onClick={script_cleanup}>
+          Script Cleanup
         </Button>
       </ButtonGroup>
     </div>

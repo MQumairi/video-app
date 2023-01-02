@@ -20,6 +20,7 @@ const BrowserPage = () => {
     if (!url_query) {
       await fetch_browser_data();
     } else if (url_query) {
+      console.log("fetching search data");
       await fetch_search_data(url_query);
     }
   };
@@ -39,6 +40,8 @@ const BrowserPage = () => {
 
   const fetch_search_data = async (url_query: string) => {
     const response = await Directory.search(url_query);
+    console.log("search response:");
+    console.log(response);
     set_directories(response.directories);
     set_videos(response.videos);
     set_title(url_query);

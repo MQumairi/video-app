@@ -2,6 +2,7 @@ version: "3.9"
 services:
   database:
     image: postgres:14
+    container_name: va_database
     ports:
       - "5432:5432"
     environment:
@@ -15,6 +16,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    container_name: va_server
     volumes:
       - "/app/node_modules"
       - ./server:/app
@@ -26,6 +28,7 @@ services:
     build: 
       context: ./client
       dockerfile: Dockerfile
+    container_name: va_client
     volumes:
       - "/app/node_modules"
       - ./client:/app

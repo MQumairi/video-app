@@ -20,8 +20,6 @@ const process_video = async (video: VideoMeta, scripts: VideoScript[]): Promise<
   if (!found_video) {
     found_video = await video_repo.save(video);
   }
-  // Apply Script
-  found_video = await apply_scripts(found_video, scripts);
   // Apply Tags
   const video_tags = await save_dir_tags(found_video);
   const video_tagger = new VideoTagger([found_video!], video_tags);
@@ -43,23 +41,6 @@ const save_dir_tags = async (video: VideoMeta): Promise<Tag[]> => {
     tags.push(found_tag);
   }
   return tags;
-};
-
-const apply_scripts = async (video: VideoMeta, scripts: VideoScript[]): Promise<VideoMeta> => {
-  const script_repo = getRepository(VideoScript);
-  for (const script of scripts) {
-    let found_script = await script_repo.findOne({ relations: ["videos"], where: { path: script.path } });
-    if (!found_script) continue;
-    found_script.videos = found_script.videos ?? [];
-    found_script.videos.push(video);
-    try {
-      await script_repo.save(found_script);
-    } catch (error) {
-      console.log("encounterde error:", error);
-    }
-  }
-  video.scripts = scripts;
-  return video;
 };
 
 export default CleanupTags;

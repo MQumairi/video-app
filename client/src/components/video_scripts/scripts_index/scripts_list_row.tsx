@@ -11,7 +11,7 @@ interface IProps {
 
 const ScriptsListRow = (props: IProps) => {
   const exec_script = async () => {
-    await Scripts.execute(props.script.id, props.script.command);
+    await Scripts.execute(props.script.id, props.script.command + " ALL");
   };
   return (
     <TableRow key={props.script.id}>

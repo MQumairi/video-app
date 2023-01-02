@@ -6,7 +6,8 @@ import { getRepository } from "typeorm";
 import { existsSync } from "fs";
 import { ScriptManager } from "../../lib/script_manager";
 
-const video_is_missing = async (video: VideoMeta, res: Response): Promise<boolean> => {
+const video_file_is_missing = async (video: VideoMeta, res: Response): Promise<boolean> => {
+  if (video.scripts && video.scripts.length > 0) return false;
   const video_repo = getRepository(VideoMeta);
   if (!existsSync(video.path)) {
     console.log("video path doesn't exist. Removing from database");
@@ -44,7 +45,7 @@ const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | 
   if (!is_video) return undefined;
   if (found_video) {
     console.log(`found video of id ${found_video.id} in db`);
-    if (await video_is_missing(found_video, res)) return undefined;
+    if (await video_file_is_missing(found_video, res)) return undefined;
     await execute_video_scripts(found_video);
     res.status(200).send(found_video);
     return found_video;

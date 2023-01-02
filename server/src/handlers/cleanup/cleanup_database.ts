@@ -6,9 +6,13 @@ import { existsSync } from "fs";
 const CleanupDatabase = async (req: Request, res: Response): Promise<void> => {
   console.log("cleaning database from missing videos");
   let video_repo = getRepository(VideoMeta);
-  let videos = await video_repo.find();
+  let videos = await video_repo.find({ relations: ["scripts"] });
   let result = new Map<string, boolean>();
   for (let v of videos) {
+    if (v.scripts && v.scripts.length > 0) {
+      console.log(`${v.id} has a script. Not deleting.`);
+      continue;
+    }
     console.log(`checking videos ${v.id}`);
     let path_exists = existsSync(v.path);
     result.set(v.name, path_exists);

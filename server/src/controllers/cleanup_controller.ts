@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import CleanupDatabase from "../handlers/cleanup/cleanup_database";
 import CleanupTags from "../handlers/cleanup/cleanup_tags";
 import CleanupDuplicateTags from "../handlers/cleanup/cleanup_duplicate_tags";
+import CleanupScripts from "../handlers/cleanup/cleanup_scripts";
 
 const cleanup_controller = Router();
 
@@ -18,6 +19,11 @@ cleanup_controller.get("/tag-videos", async (req: Request, res: Response) => {
 // Cleanup from duplicate tags
 cleanup_controller.get("/duplicate-tags", async (req: Request, res: Response) => {
   await CleanupDuplicateTags(req, res);
+});
+
+// Cleanup scripts
+cleanup_controller.get("/scripts", async (req: Request, res: Response) => {
+  await CleanupScripts(req, res);
 });
 
 export default cleanup_controller;

@@ -12,7 +12,7 @@ const Edit = async (req: Request, res: Response): Promise<VideoScript | undefine
   }
   console.log("req body:", req.body);
   found_script.command = req.body.command ?? found_script.command;
-  found_script.auto_exec_on_start = req.body.auto_exec ?? found_script.auto_exec_on_start;
+  found_script.auto_exec_on_start = req.body.auto_exec_on_start ?? found_script.auto_exec_on_start;
   await script_repo.save(found_script!);
   res.status(201).send(found_script);
   return found_script;

@@ -18,7 +18,7 @@ const AdvancedSearchForm = (props: IProps) => {
   const selectedVideoStore = useContext(SelectedVideosStore);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [min_rating, set_min_rating] = useState<number>(0);
-  const [max_rating, set_max_rating] = useState<number>(5);
+  const [max_rating, set_max_rating] = useState<number>(10);
 
   const on_submit = async (input: any) => {
     const selected_tags = selectedVideoStore.searched_for_tags;

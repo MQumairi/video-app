@@ -99,6 +99,7 @@ const PlayerPage = () => {
         }}
         emptyIcon={<Star style={{ opacity: 0.8, color: "grey", fontSize: "50px" }} fontSize="inherit" />}
         icon={<Star style={{ opacity: 0.8, color: "#ffcc00", fontSize: "50px" }} fontSize="inherit" />}
+        max={10}
       />
       <div>
         <h2>Tags</h2>

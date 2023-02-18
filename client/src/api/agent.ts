@@ -80,3 +80,7 @@ export const Cleanup = {
   delete_duplicate_tags: async () => axios.get(`cleanup/duplicate-tags`),
   cleanup_scripts: async () => axios.get(`cleanup/scripts`),
 };
+
+export const Thumbnails = {
+  upload: async (data: FormData) => axios.post(`thumbnails/upload`, data),
+};

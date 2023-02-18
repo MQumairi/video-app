@@ -15,6 +15,7 @@ import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
 import { VideoScript } from "./models/video_script";
 import scripts_controller from "./controllers/scripts_controller";
+import thumbnail_controller from "./controllers/thumbnail_controller";
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use("/api/playlists", playlist_controller);
 app.use("/api/series", series_controller);
 app.use("/api/scripts", scripts_controller);
 app.use("/api/cleanup", cleanup_controller);
+app.use("/api/thumbnails", thumbnail_controller);
 
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;

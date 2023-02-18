@@ -18,6 +18,7 @@ import SeriesCapsule from "../series/series_capsule";
 import ScriptsDropdown from "../video_scripts/scripts_dropdown/scripts_dropdown";
 import IVideoScript from "../../models/video_script";
 import FunctionButton from "../misc/function_button";
+import ThumbnailUpload from "./thumbnail_upload";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -126,6 +127,7 @@ const PlayerPage = () => {
           {video_meta && <SeriesPanel running_video={video_meta} />}
         </div>
       )}
+      {selectedVideoStore.edit_video_toggle && video_meta && <ThumbnailUpload running_video={video_meta} />}
     </div>
   );
 };

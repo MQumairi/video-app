@@ -7,7 +7,7 @@ const Rate = async (req: Request, res: Response): Promise<VideoMeta | undefined>
   const videoMetaRepo = getRepository(VideoMeta);
   let video = await videoMetaRepo.findOne({ where: { path: filepath } });
   if (!video) {
-    video = new VideoMeta(filepath);
+    video = VideoMeta.create_from_path(filepath);
     if (!video) return undefined;
   }
   video.rating = req.body.rating ?? 0;

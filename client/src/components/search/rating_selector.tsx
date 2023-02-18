@@ -1,4 +1,4 @@
-import { MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 interface IProps {
@@ -9,19 +9,9 @@ interface IProps {
 
 const RatingSelector = (props: IProps) => {
   return (
-    <div>
-      <label>
-        {props.label}
-        <br />
-      </label>
-      <Select
-        sx={{ background: "#064669", color: "white", marginTop: "15px", marginLeft: "10px" }}
-        labelId="tag-dropdown"
-        id="tag-dropdown"
-        label="tags"
-        value={props.rating}
-        onChange={props.handle_rating_change}
-      >
+    <FormControl sx={{ marginLeft: "1em" }}>
+      <InputLabel>{props.label}</InputLabel>
+      <Select labelId="tag-dropdown" id="tag-dropdown" label="tags" value={props.rating} onChange={props.handle_rating_change}>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => {
           return (
             <MenuItem key={rating} value={rating}>
@@ -30,7 +20,7 @@ const RatingSelector = (props: IProps) => {
           );
         })}
       </Select>
-    </div>
+    </FormControl>
   );
 };
 

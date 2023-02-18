@@ -2,37 +2,33 @@ import { Button, ButtonGroup } from "@mui/material";
 import { Cleanup } from "../../api/agent";
 
 const CleanupPage = () => {
-  const delete_missing_videos = async () => {
-    await Cleanup.delete_missing_videos();
-  };
-
-  const tag_videos = async () => {
-    await Cleanup.tag_videos();
-  };
-
-  const delete_duplicate_tags = async () => {
-    await Cleanup.delete_duplicate_tags();
-  };
-
-  const script_cleanup = async () => {
-    await Cleanup.cleanup_scripts();
-  };
-
   return (
     <div>
       <h1>Cleanup Page</h1>
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
-        <Button size="large" onClick={delete_missing_videos}>
+        <Button size="large" onClick={async () => await Cleanup.delete_missing_videos()}>
           Delete Videos
         </Button>
-        <Button size="large" onClick={tag_videos}>
+        <Button size="large" onClick={async () => await Cleanup.tag_videos()}>
           Tag Videos
         </Button>
-        <Button size="large" onClick={delete_duplicate_tags}>
+        <Button size="large" onClick={async () => await Cleanup.delete_duplicate_tags()}>
           Duplicate Tags
         </Button>
-        <Button size="large" onClick={script_cleanup}>
-          Script Cleanup
+        <Button size="large" onClick={async () => await Cleanup.cleanup_thumbs()}>
+          Thumbnail Cleanup
+        </Button>
+        <Button size="large" onClick={async () => await Cleanup.cleanup_video_file_meta()}>
+          Video File Meta
+        </Button>
+        <Button size="large" onClick={async () => await Cleanup.cleanup_file_scripts()}>
+          File Scripts
+        </Button>
+        <Button size="large" onClick={async () => await Cleanup.cleanup_galleries()}>
+          Galleries
+        </Button>
+        <Button size="large" onClick={async () => await Cleanup.cleanup_images()}>
+          Images
         </Button>
       </ButtonGroup>
     </div>

@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, OneToMany, getRepository } from "typeorm";
 import { VideoMeta } from "./video_meta";
+import { ImageGallery } from "./image_gallery";
+import { Directory } from "../lib/directory";
 
 @Entity()
 export class Tag {
@@ -22,7 +24,35 @@ export class Tag {
   @JoinTable()
   videos: VideoMeta[];
 
+  @ManyToMany((type) => ImageGallery, (gallery) => gallery.tags, { cascade: true })
+  @JoinTable()
+  galleries: ImageGallery[];
+
   @ManyToMany((type) => Tag, { cascade: true })
   @JoinTable()
   child_tags: Tag[];
+
+  static create(name: string): Tag {
+    const tag = new Tag();
+    tag.name = name;
+    return tag;
+  }
+
+  static async tags_from_path(path: string): Promise<Tag[]> {
+    const tags: Tag[] = [];
+    if (!(await Directory.is_directory(path))) tags;
+    const tag_names = path.split("/");
+    const tag_repo = getRepository(Tag);
+    for (let name of tag_names) {
+      let found_tag = await tag_repo.findOne({ where: { name: name } });
+      if (found_tag) {
+        tags.push(found_tag);
+        continue;
+      }
+      const new_tag = Tag.create(name);
+      const saved_tag = await tag_repo.save(new_tag);
+      tags.push(saved_tag);
+    }
+    return tags;
+  }
 }

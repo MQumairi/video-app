@@ -4,11 +4,10 @@ import { Directory } from "../../lib/directory";
 import { not_found_error } from "../../app";
 import { getRepository } from "typeorm";
 import { existsSync } from "fs";
-import { ScriptManager } from "../../lib/script_manager";
+import { FileScript } from "../../models/file_script";
 
 const video_file_is_missing = async (video: VideoMeta, res: Response): Promise<boolean> => {
-  if (video.scripts && video.scripts.length > 0) {
-    console.log("video file has a script");
+  if (video.file_scripts && video.file_scripts.length > 0) {
     return false;
   }
   const video_repo = getRepository(VideoMeta);
@@ -22,15 +21,10 @@ const video_file_is_missing = async (video: VideoMeta, res: Response): Promise<b
 };
 
 const execute_video_scripts = async (video: VideoMeta): Promise<void> => {
-  const scripts = video.scripts;
-  console.log({ scripts });
+  const scripts = video.file_scripts;
   for (const script of scripts) {
-    if (!script.auto_exec_on_start) continue;
-    console.log("executing", script);
-    let command = `${script.command} '${video.path}'`;
-    command = command + ` ${process.env.SCRIPT_SECRET}`;
-    const cmd_res = await ScriptManager.execute(script, command);
-    console.log("command result:", cmd_res);
+    if (!script.is_start_script) continue;
+    await FileScript.execute_script(script, video.path);
   }
 };
 
@@ -45,9 +39,9 @@ const is_video = (vid_path: string, res: Response): boolean => {
 const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   console.log("entered get_video_meta");
   const vid_path = req.params.filepath;
-  let vid_meta = new VideoMeta(vid_path);
+  let vid_meta = VideoMeta.create_from_path(vid_path);
   const video_repo = getRepository(VideoMeta);
-  const found_video = await video_repo.findOne({ relations: ["tags", "series", "scripts"], where: { path: vid_meta.path } });
+  const found_video = await video_repo.findOne({ relations: ["tags", "series", "file_scripts"], where: { path: vid_meta.path } });
   if (!is_video) {
     console.log("is not a video");
     return undefined;
@@ -58,6 +52,9 @@ const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | 
     await execute_video_scripts(found_video);
     res.status(200).send(found_video);
     return found_video;
+  } else {
+    console.log("video not in db... saving");
+    vid_meta = await VideoMeta.save_new_video(vid_meta.path);
   }
   res.status(200).send(vid_meta);
   return vid_meta;
@@ -65,7 +62,9 @@ const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | 
 
 const Metadata = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   try {
-    return await get_video_meta(req, res);
+    const video_meta = await get_video_meta(req, res);
+    console.log("done video meta preprocessing");
+    return video_meta;
   } catch (error) {
     console.log("error is:", error);
   }

@@ -56,12 +56,12 @@ test("can list sub directories", async () => {
 });
 
 test("can list vidoes", async () => {
-  let root_vid_1 = new VideoMeta("test/data/vid.mov");
-  let root_vid_2 = new VideoMeta("test/data/vid.mp4");
+  let root_vid_1 = VideoMeta.create_from_path("test/data/vid.mov");
+  let root_vid_2 = VideoMeta.create_from_path("test/data/vid.mp4");
   let root_vids = [root_vid_1, root_vid_2];
   expect(await root_directory.list_video_paths()).toStrictEqual(root_vids);
-  let dir_1_vid_1 = new VideoMeta("test/data/dir_1/vid.mov");
-  let dir_1_vid_2 = new VideoMeta("test/data/dir_1/vid.mp4");
+  let dir_1_vid_1 = VideoMeta.create_from_path("test/data/dir_1/vid.mov");
+  let dir_1_vid_2 = VideoMeta.create_from_path("test/data/dir_1/vid.mp4");
   let dir_1_vids = [dir_1_vid_1, dir_1_vid_2];
   expect(await dir_1.list_video_paths()).toStrictEqual(dir_1_vids);
   let dir_2_vids: VideoMeta[] = [];

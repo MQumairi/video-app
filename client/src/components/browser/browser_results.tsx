@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
 import HrefButton from "../misc/href_button";
 import ToggleButton from "../misc/toggle_button";
-import DirectoryVideos from "./directory_videos";
+import VideoList from "../videos/video_list";
 import BrowserEditMode from "./edit_videos/browser_edit_mode";
 import SubDirectoryList from "./sub_directory_list";
 import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
@@ -31,7 +31,7 @@ const BrowserResults = (props: IProps) => {
         {edit_mode && <PlaylistPopoverButton />}
       </ButtonGroup>
       {!edit_mode && props.directories.length > 0 && <SubDirectoryList directories={props.directories} />}
-      {!edit_mode && <DirectoryVideos videos={props.videos} />}
+      {!edit_mode && <VideoList base="/player" videos={props.videos} />}
       {edit_mode && <BrowserEditMode video_paths={props.videos} check_all={check_all} />}
     </div>
   );

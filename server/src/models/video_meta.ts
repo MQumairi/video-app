@@ -1,8 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne } from "typeorm";
-import path from "path";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { basename, dirname } from "path";
 import { Tag } from "./tag";
 import { Series } from "./series";
-import { VideoScript } from "./video_script";
+import { ImageGallery } from "./image_gallery";
+import { ImageMeta } from "./image_meta";
+import { FileTrasher } from "../lib/file_trasher";
+import { FileScript } from "./file_script";
+import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
+import VideoTagger from "../lib/videos_lib/video_tagger";
 
 @Entity()
 export class VideoMeta {
@@ -32,15 +37,63 @@ export class VideoMeta {
   @Column("int", { default: 1 })
   series_order: number;
 
-  @ManyToMany((type) => VideoScript, (script) => script.videos, { onDelete: "CASCADE" })
-  scripts: VideoScript[];
+  @ManyToMany((type) => FileScript, (script) => script.videos, { onDelete: "CASCADE" })
+  file_scripts: FileScript[];
 
-  constructor(path_: any) {
-    if (!path_) {
-      return;
+  @OneToOne(() => ImageMeta, { nullable: true, eager: true, onDelete: "SET NULL" })
+  @JoinColumn()
+  thumbnail: ImageMeta;
+
+  @OneToOne(() => ImageGallery, { nullable: true, eager: false, onDelete: "SET NULL" })
+  @JoinColumn()
+  gallery: ImageGallery;
+
+  @Column("decimal", { nullable: true })
+  duration_sec: number;
+
+  @Column("decimal", { nullable: true })
+  width: number;
+
+  @Column("decimal", { nullable: true })
+  height: number;
+
+  static create_from_path(path: string): VideoMeta {
+    const video_meta = new VideoMeta();
+    video_meta.path = path;
+    video_meta.name = basename(path);
+    video_meta.parent_path = dirname(path);
+    return video_meta;
+  }
+
+  static async save_new_video(path: string): Promise<VideoMeta> {
+    const video_meta = VideoMeta.create_from_path(path);
+    const prober = new VideoFileProber(path);
+    const resolution = await prober.get_video_resolution();
+    if (resolution) {
+      video_meta.width = resolution.width;
+      video_meta.height = resolution.height;
     }
-    this.name = path.basename(path_);
-    this.path = path.join(path_);
-    this.parent_path = path.dirname(path_);
+    video_meta.duration_sec = await prober.get_video_duration();
+    const video_repo = getRepository(VideoMeta);
+    const saved_video = await video_repo.save(video_meta);
+    const tags = await Tag.tags_from_path(saved_video.parent_path);
+    const video_tagger = new VideoTagger([saved_video], tags);
+    await video_tagger.apply_tags_to_videos();
+    return saved_video;
+  }
+
+  static async delete_video(video: VideoMeta): Promise<Boolean> {
+    try {
+      // Trash the file
+      const trash_res = await FileTrasher.trash(video.path);
+      console.log("delete video trash res:", trash_res);
+      if (!trash_res) return false;
+      // Remove from db
+      await getRepository(VideoMeta).remove(video);
+      return true;
+    } catch (err) {
+      console.log("rescued error:", err);
+      return false;
+    }
   }
 }

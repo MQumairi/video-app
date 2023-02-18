@@ -3,21 +3,31 @@ import { VideoMeta } from "../../models/video_meta";
 import LibraryIterator from "../../lib/library_iterator";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
-import VideoTagger from "../../lib/video_tagger";
-import { VideoScript } from "../../models/video_script";
+import VideoTagger from "../../lib/videos_lib/video_tagger";
+import { VideoFileProber } from "../../lib/videos_lib/video_file_probber";
 
 const CleanupTags = async (req: Request, res: Response): Promise<void> => {
   console.log("Applying tags to all videos based on their path");
-  await LibraryIterator.iterate(process_video);
+  await LibraryIterator.iterate_videos(process_video);
   console.log("done tagging videos");
   res.status(200).json({ message: "done" });
 };
 
-const process_video = async (video: VideoMeta, scripts: VideoScript[]): Promise<void> => {
+const process_video = async (video: VideoMeta): Promise<void> => {
   // Save video if it doesn't exist
   const video_repo = getRepository(VideoMeta);
   let found_video = await video_repo.findOne({ where: { path: video.path } });
   if (!found_video) {
+    const video_prober = new VideoFileProber(video.path);
+    const resolution = await video_prober.get_video_resolution();
+    if (resolution) {
+      video.width = resolution.width;
+      video.height = resolution.height;
+    }
+    const duration = await video_prober.get_video_duration();
+    if (duration) {
+      video.duration_sec = duration;
+    }
     found_video = await video_repo.save(video);
   }
   // Apply Tags

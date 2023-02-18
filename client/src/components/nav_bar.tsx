@@ -29,7 +29,10 @@ const NavBar = () => {
           <a href="/search">Search</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
-          <a href="/scripts">Scripts</a>
+          <a href="/galleries">Galleries</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/file-scripts">Scripts</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/cleanup">Cleanup</a>

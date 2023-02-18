@@ -1,6 +1,7 @@
+import IImageGallery from "./image_gallery";
+import IImageMeta from "./image_meta";
 import ISeries from "./series";
 import ITag from "./tag";
-import IVideoScript from "./video_script";
 
 export default interface IVideoMeta {
   id: number;
@@ -11,5 +12,9 @@ export default interface IVideoMeta {
   rating: number;
   series_order: number;
   series?: ISeries;
-  scripts?: IVideoScript[];
+  gallery?: IImageGallery;
+  thumbnail?: IImageMeta;
+  duration_sec?: number;
+  width?: number;
+  height?: number;
 }

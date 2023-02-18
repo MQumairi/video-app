@@ -1,21 +1,23 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
+import { SearchQuery } from "../../lib/search_query";
+import { MediaSearcher } from "../../lib/media_searcher";
 
 const Details = async (req: Request, res: Response): Promise<Tag | undefined> => {
   console.log("entered tag details");
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
-  const tag = await tag_repo.findOne(id, { relations: ["videos", "child_tags"] });
+  const tag = await tag_repo.findOne(id, { relations: ["child_tags"] });
   if (!tag) {
     res.status(404).send("Tag not found");
     return undefined;
   }
-  tag.videos.sort((v1, v2) => {
-    return v1.name.localeCompare(v2.name);
-  });
-  console.log("tag videos size:", tag.videos.length);
-  res.status(200).send(tag);
+  const query = await SearchQuery.from_tag(req, tag);
+  const seacher = new MediaSearcher(query);
+  const [videos, count] = await seacher.video_search_results();
+  tag.videos = videos;
+  res.status(200).send({ tag, count });
   return tag;
 };
 

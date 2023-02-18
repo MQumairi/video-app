@@ -9,6 +9,7 @@ import RemoveChildTags from "../handlers/tags/child_tags_remove";
 import UntagVideos from "../handlers/tags/videos_untag";
 import Shuffle from "../handlers/tags/shuffle";
 import TagVideos from "../handlers/tags/videos_tag";
+import GenerateVideoThumbnails from "../handlers/tags/generate_video_thumbnails";
 
 const tag_controller = Router();
 
@@ -38,6 +39,10 @@ tag_controller.put("/tag-videos", async (req: Request, res: Response) => {
 
 tag_controller.put("/untag-videos", async (req: Request, res: Response) => {
   await UntagVideos(req, res);
+});
+
+tag_controller.put("/generate-video-thumbnails", async (req: Request, res: Response) => {
+  await GenerateVideoThumbnails(req, res);
 });
 
 tag_controller.put("/:id/children/add", async (req: Request, res: Response) => {

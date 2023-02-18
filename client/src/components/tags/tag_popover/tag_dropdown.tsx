@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 
-const TagDropDown = (props: any) => {
+interface IProps {
+  set_selected_tag_id: (id: number) => void;
+  selected_tag_id: number;
+}
+
+const TagDropDown = (props: IProps) => {
   const [tags, set_tags] = useState<ITag[]>([]);
 
   const fetch_tags = async () => {

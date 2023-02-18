@@ -23,7 +23,7 @@ const Search = async (req: Request, res: Response): Promise<Directory | undefine
       }
     }
     if (Directory.is_video(result)) {
-      const vid_to_add = new VideoMeta(result);
+      const vid_to_add = VideoMeta.create_from_path(result);
       videos.push(vid_to_add);
     }
   }

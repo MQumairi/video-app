@@ -17,7 +17,7 @@ const add_series_video = async (req: Request, res: Response): Promise<Series | u
     const found_in_series = found_series.videos.find((vid) => vid.path == received_video.path);
     if (!found_in_series) {
       let added_video = await video_repo.findOne({ where: { name: received_video.name } });
-      found_series.videos.push(added_video ?? (await video_repo.save(new VideoMeta(received_video.path))));
+      found_series.videos.push(added_video ?? (await video_repo.save(VideoMeta.create_from_path(received_video.path))));
     }
   }
   await series_repo.save(found_series);

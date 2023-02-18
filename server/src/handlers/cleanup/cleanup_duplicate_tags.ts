@@ -8,6 +8,7 @@ const CleanupDuplicateTags = async (req: Request, res: Response): Promise<void> 
   const tags = await tags_repo.find();
   const seen = new Set<string>();
   const duplicates: Tag[] = [];
+  const counter = { deleted: 0, kept: 0 };
   for (let t of tags) {
     console.log(`checking tag ${t.id}`);
     if (seen.has(t.name)) {
@@ -17,8 +18,10 @@ const CleanupDuplicateTags = async (req: Request, res: Response): Promise<void> 
       seen.add(t.name);
     }
   }
+  counter.deleted = duplicates.length;
+  counter.kept = seen.size;
   await tags_repo.remove(duplicates);
-  console.log("done cleanup duplicate tags");
+  console.log("done cleanup duplicate tags:", counter);
   res.json(duplicates);
 };
 

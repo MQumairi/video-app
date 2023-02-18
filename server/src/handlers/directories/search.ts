@@ -10,7 +10,7 @@ const Search = async (req: Request, res: Response): Promise<Directory | undefine
   const search_query = req.params.query;
   const find_command = `find ${data_dir} -iname "*${search_query}*"`;
   const find_results = (await exec(find_command)).stdout.split("\n");
-  const directories: string[] = [];
+  const directories: Directory[] = [];
   const videos: VideoMeta[] = [];
   for (const result of find_results) {
     if (result == "") {
@@ -19,7 +19,7 @@ const Search = async (req: Request, res: Response): Promise<Directory | undefine
     if (await Directory.is_directory(result)) {
       const dir_to_add = new Directory(result);
       if (dir_to_add) {
-        directories.push(result);
+        directories.push(dir_to_add);
       }
     }
     if (Directory.is_video(result)) {

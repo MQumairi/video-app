@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Directory, Playlist, Scripts, Search, Tag, Video } from "../../api/agent";
+import { Playlist, Scripts, Search, Tag, Video } from "../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import HrefButton from "../misc/href_button";
 import VideoPlayer from "./video_player";
@@ -87,7 +87,7 @@ const PlayerPage = () => {
       <HrefButton href={get_parent_path()} textContent="Back" />
       <EditVideoButton />
       {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
-      <VideoPlayer vid_path={vid_path} />
+      {video_meta && <VideoPlayer vid_path={vid_path} />}
       <Rating
         name="simple-controlled"
         value={video_rating}
@@ -99,6 +99,7 @@ const PlayerPage = () => {
         }}
         emptyIcon={<Star style={{ opacity: 0.8, color: "grey", fontSize: "50px" }} fontSize="inherit" />}
         icon={<Star style={{ opacity: 0.8, color: "#ffcc00", fontSize: "50px" }} fontSize="inherit" />}
+        max={10}
       />
       <div>
         <h2>Tags</h2>

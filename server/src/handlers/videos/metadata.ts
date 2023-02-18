@@ -7,7 +7,10 @@ import { existsSync } from "fs";
 import { ScriptManager } from "../../lib/script_manager";
 
 const video_file_is_missing = async (video: VideoMeta, res: Response): Promise<boolean> => {
-  if (video.scripts && video.scripts.length > 0) return false;
+  if (video.scripts && video.scripts.length > 0) {
+    console.log("video file has a script");
+    return false;
+  }
   const video_repo = getRepository(VideoMeta);
   if (!existsSync(video.path)) {
     console.log("video path doesn't exist. Removing from database");
@@ -20,9 +23,13 @@ const video_file_is_missing = async (video: VideoMeta, res: Response): Promise<b
 
 const execute_video_scripts = async (video: VideoMeta): Promise<void> => {
   const scripts = video.scripts;
+  console.log({ scripts });
   for (const script of scripts) {
     if (!script.auto_exec_on_start) continue;
-    const cmd_res = await ScriptManager.execute(script);
+    console.log("executing", script);
+    let command = `${script.command} '${video.path}'`;
+    command = command + ` ${process.env.SCRIPT_SECRET}`;
+    const cmd_res = await ScriptManager.execute(script, command);
     console.log("command result:", cmd_res);
   }
 };
@@ -38,11 +45,13 @@ const is_video = (vid_path: string, res: Response): boolean => {
 const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
   console.log("entered get_video_meta");
   const vid_path = req.params.filepath;
-  console.log("did not find video in db");
   let vid_meta = new VideoMeta(vid_path);
   const video_repo = getRepository(VideoMeta);
   const found_video = await video_repo.findOne({ relations: ["tags", "series", "scripts"], where: { path: vid_meta.path } });
-  if (!is_video) return undefined;
+  if (!is_video) {
+    console.log("is not a video");
+    return undefined;
+  }
   if (found_video) {
     console.log(`found video of id ${found_video.id} in db`);
     if (await video_file_is_missing(found_video, res)) return undefined;

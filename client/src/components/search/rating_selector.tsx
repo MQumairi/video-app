@@ -22,7 +22,7 @@ const RatingSelector = (props: IProps) => {
         value={props.rating}
         onChange={props.handle_rating_change}
       >
-        {[0, 1, 2, 3, 4, 5].map((rating) => {
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => {
           return (
             <MenuItem key={rating} value={rating}>
               {rating}

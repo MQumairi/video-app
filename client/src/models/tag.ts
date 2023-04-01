@@ -17,3 +17,12 @@ export interface ITagCreate {
   is_character: boolean;
   is_studio: boolean;
 }
+
+export interface ITagEdit {
+  id: number;
+  name: string;
+  child_tags: ITag[];
+  is_playlist: boolean;
+  is_character: boolean;
+  is_studio: boolean;
+}

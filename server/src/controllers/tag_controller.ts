@@ -17,10 +17,6 @@ tag_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);
 });
 
-tag_controller.post("/", async (req: Request, res: Response) => {
-  await Create(req, res);
-});
-
 tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {
   await Shuffle(req, res);
 });
@@ -29,8 +25,8 @@ tag_controller.get("/:id", async (req: Request, res: Response) => {
   await Details(req, res);
 });
 
-tag_controller.delete("/:id", async (req: Request, res: Response) => {
-  await Delete(req, res);
+tag_controller.post("/", async (req: Request, res: Response) => {
+  await Create(req, res);
 });
 
 tag_controller.put("/tag-videos", async (req: Request, res: Response) => {
@@ -42,6 +38,7 @@ tag_controller.put("/untag-videos", async (req: Request, res: Response) => {
 });
 
 tag_controller.put("/generate-video-thumbnails", async (req: Request, res: Response) => {
+  console.log("entered generate thumbs for tag");
   await GenerateVideoThumbnails(req, res);
 });
 
@@ -55,6 +52,10 @@ tag_controller.put("/:id/children/remove", async (req: Request, res: Response) =
 
 tag_controller.put("/:id", async (req: Request, res: Response) => {
   await Edit(req, res);
+});
+
+tag_controller.delete("/:id", async (req: Request, res: Response) => {
+  await Delete(req, res);
 });
 
 export default tag_controller;

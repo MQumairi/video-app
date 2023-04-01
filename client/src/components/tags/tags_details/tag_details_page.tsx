@@ -57,11 +57,11 @@ const TagDetailsPage = () => {
 
   return (
     <div>
-      <h1>Tag: {tag.name}</h1>
+      <h1>{tag.name}</h1>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href="/tags">Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`}>Random</Button>}
-        <Button href={`/tags/${tag_id}/edit`}>Edit Tag</Button>
+        <Button href={`/tags/${tag_id}/edit`}>Edit</Button>
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>
       {tag.child_tags && tag.child_tags.length > 0 && <VideoTags tags={tag.child_tags} />}

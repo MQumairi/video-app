@@ -20,6 +20,10 @@ export class Tag {
   @Column("bool", { default: false })
   is_character: boolean;
 
+  @Index()
+  @Column("bool", { default: false })
+  is_studio: boolean;
+
   @ManyToMany((type) => VideoMeta, (video) => video.tags, { cascade: true })
   @JoinTable()
   videos: VideoMeta[];

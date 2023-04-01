@@ -9,11 +9,14 @@ import VideoTags from "../../player/video_tags";
 import VideoList from "../../videos/video_list";
 import { Button, ButtonGroup } from "@mui/material";
 import PageSelector from "../../search/page_selector";
+import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
+import { TagType, get_tag_type } from "../../../lib/tag_util";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
+  const [tag_type, set_tag_type] = useState<TagType>(TagType.Default);
 
   const [search_params, set_search_params] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
@@ -22,7 +25,9 @@ const TagDetailsPage = () => {
   const fetch_tag = async () => {
     const res = await Tag.details(+tag_id, search_params.toString());
     if (res.status != 200) return;
-    set_tag(res.data.tag);
+    const fetched_tag = res.data.tag;
+    set_tag(fetched_tag);
+    set_tag_type(get_tag_type(fetched_tag));
     set_videos_count(res.data.count);
   };
 
@@ -57,7 +62,13 @@ const TagDetailsPage = () => {
 
   return (
     <div>
-      <h1>{tag.name}</h1>
+      <div style={{ display: "flex", gap: "10px" }}>
+        {tag_type === TagType.Default && <LocalOffer fontSize="large" />}
+        {tag_type === TagType.Character && <Person fontSize="large" />}
+        {tag_type === TagType.Studio && <MovieCreation fontSize="large" />}
+        {tag_type === TagType.Playlist && <Subscriptions fontSize="large" />}
+        <h2>{tag.name}</h2>
+      </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href="/tags">Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`}>Random</Button>}

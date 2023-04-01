@@ -6,17 +6,19 @@ import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
 import VideoTags from "../../player/video_tags";
-import VideoList from "../../videos/util/video_list";
 import { Button, ButtonGroup } from "@mui/material";
-import PageSelector from "../../search/page_selector";
 import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
+import IImageGallery from "../../../models/image_gallery";
+import TagDetailsTabs from "./tag_details_tabs";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
   const [tag_type, set_tag_type] = useState<TagType>(TagType.Default);
+
+  const [tag_temp_gallery, set_tag_temp_gallery] = useState<IImageGallery | undefined>(undefined);
 
   const [search_params, set_search_params] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
@@ -29,6 +31,14 @@ const TagDetailsPage = () => {
     set_tag(fetched_tag);
     set_tag_type(get_tag_type(fetched_tag));
     set_videos_count(res.data.count);
+    const image_res = await Tag.random_images(fetched_tag);
+    if (image_res.status !== 200) return;
+    const temp_gallery: IImageGallery = {
+      id: 0,
+      images: image_res.data,
+      name: fetched_tag.name,
+    };
+    set_tag_temp_gallery(temp_gallery);
   };
 
   const fetch_random_tag_video = async () => {
@@ -77,8 +87,7 @@ const TagDetailsPage = () => {
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>
       {tag.child_tags && tag.child_tags.length > 0 && <VideoTags tags={tag.child_tags} />}
-      <VideoList base={`/tags/${tag.id}/video`} videos={tag.videos} />
-      {videos_count > 0 && <PageSelector pages={calc_page_numbers()} current_page={current_page} set_current_page={handle_page_change} />}
+      <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
     </div>
   );
 };

@@ -50,6 +50,7 @@ export const Tag = {
   studios: async () => axios.get(`tags/studios`),
   other: async () => axios.get(`tags/uncategorized`),
   playlists: async () => axios.get(`tags/playlists`),
+  random_images: async (tag: ITag) => axios.get(`tags/${tag.id}/images`),
   post: async (tag: ITagCreate) => axios.post(`tags`, tag),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
   edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),

@@ -1,12 +1,11 @@
 import { observer } from "mobx-react-lite";
 import IImageGallery from "../../../models/image_gallery";
 import { useContext, useState } from "react";
-import { Box, ImageList } from "@mui/material";
 import { Video } from "../../../api/agent";
 import IImageMeta from "../../../models/image_meta";
 import SelectedVideosStore from "../../../store/selected_videos_store";
 import GalleryModal from "./gallery_modal";
-import GalleryImageThumb from "./gallery_image_thumb";
+import GalleryImages from "./gallery_images";
 
 interface IProps {
   gallery: IImageGallery;
@@ -65,20 +64,13 @@ const GalleryViewer = (props: IProps) => {
           back={prev_image}
         />
       )}
-      <Box sx={{ width: "100%", height: props.viewer_height, overflowY: "scroll" }}>
-        <ImageList variant="masonry" cols={3} gap={8}>
-          {props.gallery.images.map((image, index) => (
-            <GalleryImageThumb
-              image={image}
-              onClick={() => {
-                set_selected_image(image);
-                set_selected_index(index);
-                handle_open();
-              }}
-            />
-          ))}
-        </ImageList>
-      </Box>
+      <GalleryImages
+        images={props.gallery.images}
+        viewer_height={props.viewer_height}
+        set_selected_image={set_selected_image}
+        set_selected_index={set_selected_index}
+        handle_open={handle_open}
+      />
     </div>
   );
 };

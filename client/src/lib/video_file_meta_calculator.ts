@@ -8,8 +8,6 @@ export const resolution_from_height = (height: number): string => {
 
 export const calculate_resolution = (video: IVideoMeta | null): string => {
   if (!video || !video.height) return "";
-  console.log("video");
-  console.log(`height is ${video.height} ${video.height === 2160}`);
   return resolution_from_height(video.height);
 };
 

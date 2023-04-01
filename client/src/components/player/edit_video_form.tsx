@@ -1,11 +1,9 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
-import TagSearcher from "../tags/tag_popover/tag_searcher";
+import TagSearcher from "../tags/util/searcher/tag_searcher";
 import { useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
-import PlaylistsDropdown from "../popovers/playlist_popover/playlists_dropdown";
-import IPlaylist from "../../models/playlist";
-import { Gallery, Playlist, Tag, Video } from "../../api/agent";
+import { Gallery, Tag, Video } from "../../api/agent";
 import ITag from "../../models/tag";
 
 interface IProps {
@@ -14,7 +12,6 @@ interface IProps {
 
 const EditVideoForm = (props: IProps) => {
   const [selected_tags, set_selected_tags] = useState<ITag[]>([]);
-  const [selected_playlist, set_selected_playlist] = useState<IPlaylist>({ id: 0, name: "select", videos: [] });
   const [selected_files, set_selected_files] = useState<FileList | null>(null);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
   const [should_re_process, set_should_re_process] = useState<boolean>(false);
@@ -24,7 +21,7 @@ const EditVideoForm = (props: IProps) => {
   };
 
   const on_file_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files == undefined) return;
+    if (e.target.files === undefined) return;
     set_selected_files(e.target.files);
   };
 
@@ -40,8 +37,6 @@ const EditVideoForm = (props: IProps) => {
     const video = props.video;
     // Handle Tags
     await handle_tags(video);
-    // Handle Playlist
-    await handle_playlists(video);
     // Handle Upload
     await handle_upload(video);
     // Handle Generate
@@ -53,18 +48,12 @@ const EditVideoForm = (props: IProps) => {
   };
 
   const handle_tags = async (video: IVideoMeta) => {
-    if (selected_tags.length == 0) return;
+    if (selected_tags.length === 0) return;
     console.log("handling tags");
     const videos: IVideoMeta[] = [video];
     console.log("videos:", videos);
     console.log("tags:", selected_tags);
     await Tag.tag_videos(videos, selected_tags);
-  };
-
-  const handle_playlists = async (video: IVideoMeta) => {
-    if (selected_playlist.id == 0) return;
-    console.log("handling playlists");
-    await Playlist.add_video(video, [selected_playlist]);
   };
 
   const handle_upload = async (video: IVideoMeta) => {
@@ -99,12 +88,6 @@ const EditVideoForm = (props: IProps) => {
         <h3>Tag Video</h3>
         <p>Associate video with the selected tags</p>
         {props.video.tags && <TagSearcher selected_tags={selected_tags} set_selected_tags={set_selected_tags} />}
-      </div>
-      <div style={form_section_style}>
-        {/* Playlists */}
-        <h3>Add to Playlist</h3>
-        <p>Associate video with the selected playlist</p>
-        <PlaylistsDropdown selected_playlist={selected_playlist} set_selected_playlist={set_selected_playlist} />
       </div>
       <div style={form_section_style}>
         {/* Uplaod */}

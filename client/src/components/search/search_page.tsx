@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import SearchForm from "./search_form";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import VideoList from "../videos/video_list";
+import VideoList from "../videos/util/video_list";
 import { useSearchParams } from "react-router-dom";
 import PageSelector from "./page_selector";
 import { Search } from "../../api/agent";
@@ -25,7 +25,7 @@ const AdvancedSearchPage = () => {
 
   const fetch_search_results = async () => {
     let res = await Search.search_vidoes(search_params.toString());
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     selectedVideoStore.set_adv_search_results(res.data.videos);
     set_videos_count(res.data.count);
   };
@@ -44,7 +44,7 @@ const AdvancedSearchPage = () => {
   };
 
   const calc_page_numbers = (): number => {
-    if (videos_count == 0) return 0;
+    if (videos_count === 0) return 0;
     const page_numbers = Math.floor(videos_count / 12);
     console.log("page numbers are", page_numbers);
     if (videos_count % 12 === 0) return page_numbers;
@@ -56,6 +56,7 @@ const AdvancedSearchPage = () => {
     if (!search_params.toString()) return;
     fetch_search_results();
     fetch_random_video();
+    // eslint-disable-next-line
   }, []);
 
   return (

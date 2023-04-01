@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Playlist, Search, Tag, Video } from "../../api/agent";
+import { Search, Video } from "../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import VideoPlayer from "./video_player";
 import { observer } from "mobx-react-lite";
@@ -14,7 +14,6 @@ import { calculate_resolution } from "../../lib/video_file_meta_calculator";
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
   let tag_id = useParams().tag_id;
-  let playlist_id = useParams().playlist_id;
 
   const selectedVideoStore = useContext(SelectedVideosStore);
 
@@ -22,7 +21,7 @@ const PlayerPage = () => {
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [back_url, set_back_url] = useState<string>("");
   const [video_rating, set_video_rating] = useState<number>(0);
-  const [search_params, _] = useSearchParams({});
+  const [search_params,] = useSearchParams({});
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
@@ -47,12 +46,6 @@ const PlayerPage = () => {
       set_random_vid_url(`/tags/${tag_id}/video/${PathConverter.to_query(res.path)}`);
       set_back_url(`/tags/${tag_id}`);
     }
-    // If we came from /playlists/x
-    else if (playlist_id) {
-      let response: IVideoMeta = (await Playlist.shuffle(+playlist_id)).data;
-      set_random_vid_url(`/playlists/${playlist_id}/video/${PathConverter.to_query(response.path)}`);
-      set_back_url(`/playlists/${playlist_id}`);
-    }
     // If we came from /search?x
     else if (params) {
       let response = await Search.shuffle(params);
@@ -73,6 +66,7 @@ const PlayerPage = () => {
   useEffect(() => {
     fetch_video_meta(vid_path);
     set_button_urls();
+    // eslint-disable-next-line
   }, [back_url]);
 
   if (!video_meta) {
@@ -90,7 +84,7 @@ const PlayerPage = () => {
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         <Button href={back_url}>Back</Button>
-        {random_vid_url != "" && <Button href={random_vid_url}>Random</Button>}
+        {random_vid_url !== "" && <Button href={random_vid_url}>Random</Button>}
       </ButtonGroup>
       <VideoPlayer vid_path={vid_path} />{" "}
       <Rating

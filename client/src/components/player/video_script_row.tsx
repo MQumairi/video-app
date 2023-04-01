@@ -1,7 +1,6 @@
-import { Button, Chip } from "@mui/material";
+import { Button } from "@mui/material";
 import IFileScript from "../../models/file_script";
 import StartIcon from "@mui/icons-material/Start";
-import PublicIcon from "@mui/icons-material/Public";
 import PlumbingIcon from "@mui/icons-material/Plumbing";
 import { FileScripts } from "../../api/agent";
 import IVideoMeta from "../../models/video_meta";

@@ -9,7 +9,7 @@ const FileScriptsIndex = () => {
 
   const fetch_scripts = async () => {
     const res = await FileScripts.get();
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_scripts(res.data);
   };
 

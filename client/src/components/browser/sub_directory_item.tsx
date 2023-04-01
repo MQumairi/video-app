@@ -10,7 +10,6 @@ interface IProps {
 }
 
 const SubDirectoryItem = (props: IProps) => {
-  let dir_path = useParams().dir_path;
   let url_query = useParams().query;
 
   const [sub_dir_url, set_sub_dir_url] = useState<string>("/");
@@ -34,6 +33,7 @@ const SubDirectoryItem = (props: IProps) => {
     } else {
       set_sub_dir_url(`/browser/search/${url_query}/directory/${PathConverter.to_query(props.directory.path)}`);
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

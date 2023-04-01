@@ -14,12 +14,13 @@ const ScriptsPanel = (props: IProps) => {
 
   const fetch_scripts = async () => {
     const res = await Video.scripts(props.video);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_scripts(res.data);
   };
 
   useEffect(() => {
     fetch_scripts();
+    // eslint-disable-next-line
   }, []);
 
   return (

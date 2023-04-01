@@ -31,7 +31,7 @@ const BrowserPage = () => {
     set_directories(response.directory_paths ?? []);
     set_videos(response.video_paths ?? []);
     set_title(response.name);
-    if (api_query == "videos") {
+    if (api_query === "videos") {
       set_parent_page("/browser/videos");
     } else {
       set_parent_page(PathConverter.to_query(response.parent_path));
@@ -50,6 +50,7 @@ const BrowserPage = () => {
 
   useEffect(() => {
     fetch_data();
+    // eslint-disable-next-line
   }, [dir_path, url_query]);
 
   return (

@@ -14,12 +14,13 @@ const TagsPanel = (props: IProps) => {
 
   const fetch_scripts = async () => {
     const res = await Video.tags(props.video);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_tags(res.data);
   };
 
   useEffect(() => {
     fetch_scripts();
+    // eslint-disable-next-line
   }, []);
 
   return <VideoTags tags={tags} />;

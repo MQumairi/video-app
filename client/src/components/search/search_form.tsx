@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import ITag from "../../models/tag";
 import { useEffect, useState } from "react";
 import RatingSelector from "./rating_selector";
-import TagSearcher from "../tags/tag_popover/tag_searcher";
-import Resolution_selector from "./resolution_selector";
+import TagSearcher from "../tags/util/searcher/tag_searcher";
+import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup } from "@mui/material";
 
@@ -65,6 +65,7 @@ const SearchForm = (props: IProps) => {
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);
     if (resolution) set_min_resolution(+resolution);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -73,11 +74,11 @@ const SearchForm = (props: IProps) => {
         <TagSearcher selected_tags={selected_tags} set_selected_tags={handle_tags_change} />
         <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />
         <RatingSelector label={"Max"} rating={max_rating} handle_rating_change={handle_max_rating_change} />
-        <Resolution_selector label={"Quality"} resolution={min_resolution} handle_resolution_change={handle_resolution_change} />
+        <ResolutionSelector label={"Quality"} resolution={min_resolution} handle_resolution_change={handle_resolution_change} />
       </FormGroup>
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         <Button onClick={props.on_submit}>Submit</Button>
-        {props.random_vid_url != "" && <Button href={`${props.random_vid_url}?${search_params}`}>Random</Button>}
+        {props.random_vid_url !== "" && <Button href={`${props.random_vid_url}?${search_params}`}>Random</Button>}
       </ButtonGroup>
     </div>
   );

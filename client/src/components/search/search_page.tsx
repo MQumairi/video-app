@@ -1,30 +1,70 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
-import { Tag } from "../../api/agent";
-import ITag from "../../models/tag";
-import AdvancedSearchForm from "./search_form";
+import SearchForm from "./search_form";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import Advanced_search_results from "./search_results";
-import BrowserResults from "../browser/browser_results";
+import VideoList from "../videos/video_list";
+import { useSearchParams } from "react-router-dom";
+import PageSelector from "./page_selector";
+import { Search } from "../../api/agent";
+import { PathConverter } from "../../util/path_converter";
 
 const AdvancedSearchPage = () => {
+  const PAGE_PARAM_KEY = "page";
+
   const selectedVideoStore = useContext(SelectedVideosStore);
 
-  const [tags, set_tags] = useState<ITag[]>([]);
+  const [search_params, set_search_params] = useSearchParams({});
+  const [current_page, set_current_page] = useState<number>(1);
+  const [random_vid_url, set_random_vid_url] = useState<string>("");
+  const [videos_count, set_videos_count] = useState<number>(0);
 
-  const fetch_tags = async () => {
-    let received_tags = (await Tag.get()).data;
-    set_tags(received_tags);
+  const on_submit = async () => {
+    await fetch_search_results();
+    await fetch_random_video();
+  };
+
+  const fetch_search_results = async () => {
+    let res = await Search.search_vidoes(search_params.toString());
+    if (res.status != 200) return;
+    selectedVideoStore.set_adv_search_results(res.data.videos);
+    set_videos_count(res.data.count);
+  };
+
+  const fetch_random_video = async () => {
+    let response = await Search.shuffle(search_params.toString());
+    set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
+  };
+
+  const handle_page_change = (page: number) => {
+    set_current_page(page);
+    const new_search_params = search_params;
+    new_search_params.set(PAGE_PARAM_KEY, page.toString());
+    set_search_params(new_search_params);
+    fetch_search_results();
+  };
+
+  const calc_page_numbers = (): number => {
+    if (videos_count == 0) return 0;
+    const page_numbers = Math.floor(videos_count / 12);
+    console.log("page numbers are", page_numbers);
+    if (videos_count % 12 === 0) return page_numbers;
+    console.log("adding 1....");
+    return page_numbers + 1;
   };
 
   useEffect(() => {
-    fetch_tags();
+    if (!search_params.toString()) return;
+    fetch_search_results();
+    fetch_random_video();
   }, []);
+
   return (
     <div>
       <h1>Search</h1>
-      {tags.length > 0 && <AdvancedSearchForm tags={tags} />}
-      <BrowserResults back_url={"/advanced-search"} directories={[]} videos={selectedVideoStore.adv_search_results} />
+      <SearchForm on_submit={on_submit} random_vid_url={random_vid_url} />
+      {videos_count > 0 && <h4>{videos_count} results found.</h4>}
+      <VideoList base="/player" videos={selectedVideoStore.adv_search_results} params={search_params.toString()} />
+      {videos_count > 0 && <PageSelector pages={calc_page_numbers()} current_page={current_page} set_current_page={handle_page_change} />}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
+import Tagger from "../../lib/tagger";
 
 const RemoveChildTags = async (req: Request, res: Response): Promise<void> => {
   const tag: Tag = req.body.tag;
@@ -11,14 +12,11 @@ const RemoveChildTags = async (req: Request, res: Response): Promise<void> => {
     res.status(409).send("Failed to remove child tags");
     return;
   }
-  for (let child_to_remove of children_to_remove) {
-    let tag_children = found_tag.child_tags;
-    tag_children = tag_children.filter(function (t) {
-      return t.name !== child_to_remove?.name;
-    });
-    found_tag.child_tags = tag_children;
-    await tag_repo.save(found_tag);
-  }
+  console.log(`before removal legnth: ${found_tag.child_tags.length}`);
+  const new_tags = Tagger.remove(children_to_remove, found_tag.child_tags);
+  found_tag.child_tags = new_tags;
+  console.log(`after removal legnth: ${found_tag.child_tags.length}`);
+  await tag_repo.save(found_tag);
   res.status(201).send(found_tag);
 };
 

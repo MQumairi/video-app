@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 import { PathConverter } from "../../../util/path_converter";
-import VideoItem from "../../browser/video_item";
+import VideoItem from "../../videos/video_item";
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
 
 interface IProps {
-    videos: IVideoMeta[]
+  videos: IVideoMeta[];
 }
 
 const SeriesVideoList = (props: IProps) => {

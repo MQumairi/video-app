@@ -1,12 +1,11 @@
 import { Box } from "@mui/material";
-import { PathConverter } from "../../../util/path_converter";
-import VideoItem from "../../browser/video_item";
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
+import VideoList from "../../videos/video_list";
 
 interface IProps {
-  videos: IVideoMeta[]
-  playlist_id: number
+  videos: IVideoMeta[];
+  playlist_id: number;
 }
 
 const PlaylistVideoList = (props: IProps) => {
@@ -20,9 +19,7 @@ const PlaylistVideoList = (props: IProps) => {
 
   return (
     <Box component="div" sx={box_style}>
-      {props.videos && props.videos.map((vid) => {
-        return <VideoItem url={`/playlists/${props.playlist_id}/video/${PathConverter.to_query(vid.path)}`} key={vid.id} video={vid} />;
-      })}
+      <VideoList base={`/playlists/${props.playlist_id}/video`} videos={props.videos} />
     </Box>
   );
 };

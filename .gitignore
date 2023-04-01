@@ -1,5 +1,8 @@
 /**/node_modules
 /server/videos
+/server/images
+/server/trash
+/server/scripts
 /videos
 /pg
 /test.sh

@@ -1,7 +1,12 @@
 import { observer } from "mobx-react-lite";
 import TagCapsule from "../tags/tag_capsule";
+import ITag from "../../models/tag";
 
-const VideoTags = (props: any) => {
+interface IProps {
+  tags: ITag[];
+}
+
+const VideoTags = (props: IProps) => {
   const video_tags = {
     background: "#01141f",
     display: "flex",

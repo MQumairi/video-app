@@ -1,23 +1,15 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { PathConverter } from "../../util/path_converter";
 import IVideoMeta from "../../models/video_meta";
-import { Playlist, Scripts, Search, Tag, Video } from "../../api/agent";
+import { Playlist, Search, Tag, Video } from "../../api/agent";
 import { useContext, useEffect, useState } from "react";
-import HrefButton from "../misc/href_button";
 import VideoPlayer from "./video_player";
-import TagVideoPopover from "../tags/tag_popover/tag_video_popover";
-import VideoTags from "./video_tags";
-import PlaylistVideoPopover from "../popovers/playlist_popover/playlists_video_popover";
 import { observer } from "mobx-react-lite";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import { Rating } from "@mui/material";
+import { Button, ButtonGroup, Chip, Rating, Stack } from "@mui/material";
 import { Star } from "@mui/icons-material";
-import EditVideoButton from "./edit_video_button";
-import SeriesPanel from "../series/series_panel/series_panel";
-import SeriesCapsule from "../series/series_capsule";
-import ScriptsDropdown from "../video_scripts/scripts_dropdown/scripts_dropdown";
-import IVideoScript from "../../models/video_script";
-import FunctionButton from "../misc/function_button";
+import PlayerTabs from "./player_tabs";
+import { calculate_resolution } from "../../lib/video_file_meta_calculator";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -28,12 +20,17 @@ const PlayerPage = () => {
 
   const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
+  const [back_url, set_back_url] = useState<string>("");
   const [video_rating, set_video_rating] = useState<number>(0);
-  const [selected_script, set_selected_script] = useState<IVideoScript | null>(null);
+  const [search_params, _] = useSearchParams({});
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
     const received_video: IVideoMeta = (await Video.get(api_query)).data;
+    if (received_video && back_url === "") {
+      // Set back url if we came from file system
+      set_back_url(`/browser/${PathConverter.to_query(received_video.parent_path)}`);
+    }
     console.log("received:", received_video);
     selectedVideoStore.set_running_video(received_video);
     selectedVideoStore.set_single_selection(received_video);
@@ -41,17 +38,26 @@ const PlayerPage = () => {
     set_video_rating(received_video.rating);
   };
 
-  const fetch_random_tag_video = async () => {
+  const set_button_urls = async () => {
+    // Query parameters used for Search
+    const params = search_params.toString();
+    // If we came from /tag/x
     if (tag_id) {
-      let response: IVideoMeta = (await Tag.shuffle(+tag_id)).data;
-      set_random_vid_url(`/tags/${tag_id}/video/${PathConverter.to_query(response.path)}`);
-    } else if (playlist_id) {
+      let res = await Search.shuffle(`tags=${tag_id}`);
+      set_random_vid_url(`/tags/${tag_id}/video/${PathConverter.to_query(res.path)}`);
+      set_back_url(`/tags/${tag_id}`);
+    }
+    // If we came from /playlists/x
+    else if (playlist_id) {
       let response: IVideoMeta = (await Playlist.shuffle(+playlist_id)).data;
       set_random_vid_url(`/playlists/${playlist_id}/video/${PathConverter.to_query(response.path)}`);
-    } else {
-      // Advanced Search query
-      let response = await Search.shuffle();
-      set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
+      set_back_url(`/playlists/${playlist_id}`);
+    }
+    // If we came from /search?x
+    else if (params) {
+      let response = await Search.shuffle(params);
+      set_random_vid_url(`/player/${PathConverter.to_query(response.path)}?${params}`);
+      set_back_url(`/search?${params}`);
     }
   };
 
@@ -66,66 +72,40 @@ const PlayerPage = () => {
 
   useEffect(() => {
     fetch_video_meta(vid_path);
-    fetch_random_tag_video();
-  }, []);
+    set_button_urls();
+  }, [back_url]);
 
-  const get_parent_path = () => {
-    const query = (video_meta && PathConverter.to_query(video_meta.parent_path)) ?? "/";
-    return `/browser/${query}`;
-  };
-
-  const execute_script = async () => {
-    if (!selected_script || !video_meta) return;
-    console.log("executing script:", selected_script.id);
-    const command = selected_script.command + ` \"${video_meta.path}\"`;
-    await Scripts.execute(selected_script.id, command);
-  };
+  if (!video_meta) {
+    return <h2>Loading video...</h2>;
+  }
 
   return (
     <div>
-      <h1>{video_meta?.name}</h1>
-      <HrefButton href={get_parent_path()} textContent="Back" />
-      <EditVideoButton />
-      {random_vid_url != "" && <HrefButton textContent="Random" href={random_vid_url} />}
-      {video_meta && <VideoPlayer vid_path={vid_path} />}
+      <h1>{video_meta.name}</h1>
+      <div>
+        <Stack direction="row" spacing={1}>
+          <Chip label={video_meta?.id} color="primary" variant="outlined" />
+          <Chip label={calculate_resolution(video_meta)} color="primary" variant="outlined" />
+        </Stack>
+      </div>
+      <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
+        <Button href={back_url}>Back</Button>
+        {random_vid_url != "" && <Button href={random_vid_url}>Random</Button>}
+      </ButtonGroup>
+      <VideoPlayer vid_path={vid_path} />{" "}
       <Rating
         name="simple-controlled"
         value={video_rating}
         size="large"
         style={{ marginTop: "30px", marginBottom: "5px" }}
-        onChange={(event, newValue) => {
-          console.log("new value:", newValue);
+        onChange={(_, newValue) => {
           update_video_rating(newValue);
         }}
         emptyIcon={<Star style={{ opacity: 0.8, color: "grey", fontSize: "50px" }} fontSize="inherit" />}
         icon={<Star style={{ opacity: 0.8, color: "#ffcc00", fontSize: "50px" }} fontSize="inherit" />}
         max={10}
       />
-      <div>
-        <h2>Tags</h2>
-        <VideoTags tags={video_meta?.tags ?? []} />
-      </div>
-      {video_meta && video_meta.series && (
-        <div>
-          <h2>Series</h2>
-          <h4>Part {video_meta.series_order}</h4>
-          <SeriesCapsule series={video_meta.series} />
-        </div>
-      )}
-      {video_meta && video_meta.scripts && video_meta.scripts.length > 0 && (
-        <div>
-          <h2>Scripts</h2>
-          <ScriptsDropdown scripts={video_meta.scripts} selected_script={selected_script} set_selected_script={set_selected_script} />
-          <FunctionButton textContent="Execute" fn={execute_script} />
-        </div>
-      )}
-      {selectedVideoStore.edit_video_toggle && (
-        <div>
-          <TagVideoPopover />
-          <PlaylistVideoPopover />
-          {video_meta && <SeriesPanel running_video={video_meta} />}
-        </div>
-      )}
+      <PlayerTabs video={video_meta} />
     </div>
   );
 };

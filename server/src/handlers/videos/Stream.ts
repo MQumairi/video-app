@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { Streamer } from "../../lib/streamer";
 import { not_found_error } from "../../app";
 import { Directory } from "../../lib/directory";
-import { getRepository } from "typeorm";
-import { VideoMeta } from "../../models/video_meta";
 
 const Stream = async (req: Request, res: Response): Promise<boolean> => {
   try {

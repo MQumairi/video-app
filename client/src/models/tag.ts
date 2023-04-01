@@ -5,4 +5,13 @@ export default interface ITag {
   name: string;
   videos: IVideoMeta[];
   child_tags?: ITag[];
+  is_playlist: boolean;
+  is_character: boolean;
+}
+
+export interface ITagCreate {
+  name: string;
+  child_tags: ITag[];
+  is_playlist: boolean;
+  is_character: boolean;
 }

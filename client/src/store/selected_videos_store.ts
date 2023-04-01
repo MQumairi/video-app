@@ -65,25 +65,22 @@ class SelectedVideosStore {
   // Advanced search results
   @observable searched_for_tags: ITag[] = [];
 
-  @action add_searched_for_tag = (tag_name: string) => {
-    console.log("attempting to add tag:", tag_name);
-    const tag_to_add: ITag = {
-      name: tag_name,
-      id: 0,
-      videos: [],
-    };
-    this.searched_for_tags.push(tag_to_add);
-    console.log("searched_for_tags now:", toJS(this.searched_for_tags));
+  @action add_searched_for_tag = (tag: ITag) => {
+    this.searched_for_tags.push(tag);
   };
 
-  @action remove_searched_for_tag = (tag_name: string) => {
-    console.log("attempting to remove tag:", tag_name);
+  @action remove_searched_for_tag = (tag: ITag) => {
     for (let i = 0; i < this.searched_for_tags.length; i++) {
-      if (this.searched_for_tags[i].name === tag_name) {
-        this.searched_for_tags.splice(i, 1);
+      if (this.searched_for_tags[i].id === tag.id) {
+        return this.searched_for_tags.splice(i, 1);
       }
     }
-    console.log("searched_for_tags now:", toJS(this.searched_for_tags));
+  };
+
+  @action set_searched_for_tags = (tags: ITag[]) => {
+    console.log("tags", tags);
+    this.searched_for_tags = tags;
+    console.log("searched_for_tags", this.searched_for_tags.length);
   };
 
   @observable adv_search_results: IVideoMeta[] = [];

@@ -19,4 +19,10 @@ export class PathConverter {
     split_arr.pop();
     return split_arr.pop() ?? "";
   }
+
+  static remove_base(file: string): string {
+    const path_array = file.split("/");
+    path_array.shift();
+    return path_array.join("/");
+  }
 }

@@ -12,7 +12,8 @@ const Create = async (req: Request, res: Response): Promise<Tag | undefined> => 
       res.status(201).send(found_tag);
       return found_tag;
     }
-    await tag_repo.save(tag);
+    const saved_tag = await tag_repo.save(tag);
+    console.log(saved_tag);
     res.status(201).send(tag);
     return tag;
   } catch (error) {

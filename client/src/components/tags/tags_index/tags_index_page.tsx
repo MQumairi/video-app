@@ -1,24 +1,14 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import { Tag } from "../../../api/agent";
-import ITag from "../../../models/tag";
-import HrefButton from "../../misc/href_button";
-import TagsList from "./tags_list";
+import TagsTabs from "./tags_tabs";
+import { Button } from "@mui/material";
 
 const TagsIndexPage = () => {
-  const [tags, set_tags] = useState<ITag[]>([]);
-  const fetch_tags = async () => {
-    let received_tags = (await Tag.get()).data;
-    set_tags(received_tags);
-  };
-  useEffect(() => {
-    fetch_tags();
-  }, []);
   return (
     <div>
-      <h1>Tags</h1>
-      <HrefButton href="/tags/new" textContent="Create" />
-      <TagsList tags={tags} />
+      <Button href="/tags/new" variant="contained" size="large">
+        Create
+      </Button>
+      <TagsTabs />
     </div>
   );
 };

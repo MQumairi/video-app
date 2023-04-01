@@ -47,6 +47,10 @@ export const Search = {
 
 export const Tag = {
   get: async () => axios.get(`tags`),
+  characters: async () => axios.get(`tags/characters`),
+  studios: async () => axios.get(`tags/studios`),
+  other: async () => axios.get(`tags/uncategorized`),
+  playlists: async () => axios.get(`tags/playlists`),
   post: async (tag: ITagCreate) => axios.post(`tags`, tag),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
   edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),

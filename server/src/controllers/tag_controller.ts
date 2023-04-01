@@ -10,8 +10,28 @@ import UntagVideos from "../handlers/tags/videos_untag";
 import Shuffle from "../handlers/tags/shuffle";
 import TagVideos from "../handlers/tags/videos_tag";
 import GenerateVideoThumbnails from "../handlers/tags/generate_video_thumbnails";
+import Playlists from "../handlers/tags/only_playlists";
+import Characters from "../handlers/tags/only_characters";
+import Studios from "../handlers/tags/only_studios";
+import Uncategorized from "../handlers/tags/only_uncategorized";
 
 const tag_controller = Router();
+
+tag_controller.get("/playlists", async (req: Request, res: Response) => {
+  await Playlists(req, res);
+});
+
+tag_controller.get("/characters", async (req: Request, res: Response) => {
+  await Characters(req, res);
+});
+
+tag_controller.get("/studios", async (req: Request, res: Response) => {
+  await Studios(req, res);
+});
+
+tag_controller.get("/uncategorized", async (req: Request, res: Response) => {
+  await Uncategorized(req, res);
+});
 
 tag_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);

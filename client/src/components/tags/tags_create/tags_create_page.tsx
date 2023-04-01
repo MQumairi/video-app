@@ -10,6 +10,7 @@ const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
   const [is_character, set_is_character] = useState(false);
   const [is_playlist, set_is_playlist] = useState(false);
+  const [is_studio, set_is_studio] = useState(false);
   const [selected_tags, set_selected_tags] = useState<ITag[]>([]);
 
   const handle_name_change = (input: any) => {
@@ -25,14 +26,22 @@ const TagsCreatePage = () => {
       case "default":
         set_is_character(false);
         set_is_playlist(false);
+        set_is_studio(false);
         break;
       case "playlist":
         set_is_character(false);
         set_is_playlist(true);
+        set_is_studio(false);
         break;
       case "character":
         set_is_character(true);
         set_is_playlist(false);
+        set_is_studio(false);
+        break;
+      case "studio":
+        set_is_character(false);
+        set_is_playlist(false);
+        set_is_studio(true);
         break;
     }
   };
@@ -43,6 +52,7 @@ const TagsCreatePage = () => {
       child_tags: selected_tags,
       is_character: is_character,
       is_playlist: is_playlist,
+      is_studio: is_studio,
     };
     const response = await Tag.post(tag);
     console.log(response);
@@ -58,7 +68,7 @@ const TagsCreatePage = () => {
       <FormGroup sx={{ marginTop: "10px", gap: "10px" }}>
         <TextField variant="outlined" type="text" value={tag_name} onChange={handle_name_change} label="Tag Name" />
         <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">Tag Type</FormLabel>
+          <FormLabel>Tag Type</FormLabel>
           <RadioGroup
             row
             defaultValue="default"
@@ -70,8 +80,11 @@ const TagsCreatePage = () => {
             <FormControlLabel value="default" control={<Radio />} label="Default" />
             <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
+            <FormControlLabel value="studio" control={<Radio />} label="Studio" />
           </RadioGroup>
         </FormControl>
+        <FormLabel>Child Tags</FormLabel>
+        <p>Select childs tags that will be applied to any item that this tag is applied to</p>
         <TagSearcher selected_tags={selected_tags} set_selected_tags={handle_tags_change} />
         <Button sx={{ marginTop: "10px" }} variant="contained" onClick={on_submit}>
           Submit

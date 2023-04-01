@@ -7,6 +7,7 @@ export default interface ITag {
   child_tags?: ITag[];
   is_playlist: boolean;
   is_character: boolean;
+  is_studio: boolean;
 }
 
 export interface ITagCreate {
@@ -14,4 +15,5 @@ export interface ITagCreate {
   child_tags: ITag[];
   is_playlist: boolean;
   is_character: boolean;
+  is_studio: boolean;
 }

@@ -3,7 +3,7 @@ import { Tag } from "../models/tag";
 
 export default class Tagger {
   static async combine(tags_1: Tag[], tags_2: Tag[]): Promise<Tag[]> {
-    return await Tagger.include_children([...tags_1, ...tags_2]);
+    return await Tagger.expand_tags_with_children([...tags_1, ...tags_2]);
   }
 
   static remove(tags_to_remove: Tag[], tags_arr: Tag[]): Tag[] {
@@ -20,7 +20,7 @@ export default class Tagger {
     return res;
   }
 
-  private static async include_children(tags_arr: Tag[]): Promise<Tag[]> {
+  static async expand_tags_with_children(tags_arr: Tag[]): Promise<Tag[]> {
     const seen_tag_ids: Set<number> = new Set();
     const res: Tag[] = [];
     const tag_repo = getRepository(Tag);

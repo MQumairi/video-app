@@ -15,6 +15,7 @@ import Characters from "../handlers/tags/only_characters";
 import Studios from "../handlers/tags/only_studios";
 import Uncategorized from "../handlers/tags/only_uncategorized";
 import RandomImages from "../handlers/tags/random_images";
+import TagSingleVideo from "../handlers/tags/single_video_tag";
 
 const tag_controller = Router();
 
@@ -56,6 +57,10 @@ tag_controller.post("/", async (req: Request, res: Response) => {
 
 tag_controller.put("/tag-videos", async (req: Request, res: Response) => {
   await TagVideos(req, res);
+});
+
+tag_controller.put("/tag-single-video", async (req: Request, res: Response) => {
+  await TagSingleVideo(req, res);
 });
 
 tag_controller.put("/untag-videos", async (req: Request, res: Response) => {

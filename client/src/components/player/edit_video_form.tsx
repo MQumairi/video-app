@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
 import TagSearcher from "../tags/util/searcher/tag_searcher";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import { Gallery, Tag, Video } from "../../api/agent";
 import ITag from "../../models/tag";
@@ -50,10 +50,7 @@ const EditVideoForm = (props: IProps) => {
   const handle_tags = async (video: IVideoMeta) => {
     if (selected_tags.length === 0) return;
     console.log("handling tags");
-    const videos: IVideoMeta[] = [video];
-    console.log("videos:", videos);
-    console.log("tags:", selected_tags);
-    await Tag.tag_videos(videos, selected_tags);
+    await Tag.tag_video(video, selected_tags);
   };
 
   const handle_upload = async (video: IVideoMeta) => {
@@ -81,12 +78,23 @@ const EditVideoForm = (props: IProps) => {
     await Video.reprocess(video);
   };
 
+  const lookup_video_tags = async () => {
+    const res = await Video.tags(props.video);
+    if (res.status !== 200) return;
+    set_selected_tags(res.data);
+  };
+
+  useEffect(() => {
+    lookup_video_tags();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div>
       <div style={form_section_style}>
         {/* Tag */}
         <h3>Tag Video</h3>
-        <p>Associate video with the selected tags</p>
+        <p style={{ marginBottom: "10px" }}>Associate video with the selected tags</p>
         {props.video.tags && <TagSearcher selected_tags={selected_tags} set_selected_tags={set_selected_tags} />}
       </div>
       <div style={form_section_style}>

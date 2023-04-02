@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import IVideoMeta from "../../models/video_meta";
 import { Video } from "../../api/agent";
 import ITag from "../../models/tag";
-import VideoTags from "./video_tags";
 import { TagType, get_tag_type } from "../../lib/tag_util";
 import { FormLabel } from "@mui/material";
+import TagsList from "../tags/util/tags_list";
 
 interface IProps {
   video: IVideoMeta;
@@ -61,19 +61,19 @@ const TagsPanel = (props: IProps) => {
     <div>
       <div style={tag_row_style}>
         <FormLabel>Characters</FormLabel>
-        <VideoTags tags={character_tags} />
+        <TagsList tags={character_tags} />
       </div>
       <div style={tag_row_style}>
         <FormLabel>Tags</FormLabel>
-        <VideoTags tags={default_tags} />
+        <TagsList tags={default_tags} />
       </div>
       <div style={tag_row_style}>
         <FormLabel>Studios</FormLabel>
-        <VideoTags tags={studio_tags} />
+        <TagsList tags={studio_tags} />
       </div>
       <div style={tag_row_style}>
         <FormLabel>Playlists</FormLabel>
-        <VideoTags tags={playlist_tags} />
+        <TagsList tags={playlist_tags} />
       </div>
     </div>
   );

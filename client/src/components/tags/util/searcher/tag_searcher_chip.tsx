@@ -10,7 +10,7 @@ interface IProps {
 const TagSearcherChip = (props: IProps) => {
   return (
     <Chip
-      sx={{ marginLeft: "5px" }}
+      sx={{ marginLeft: "5px", marginTop: "5px" }}
       key={props.tag.name}
       label={props.tag.name}
       onDelete={() => {

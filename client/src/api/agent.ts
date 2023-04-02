@@ -54,7 +54,7 @@ export const Tag = {
   post: async (tag: ITagCreate) => axios.post(`tags`, tag),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
   edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),
-  tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: tags }),
+  tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-single-video`, { video, tags }),
   tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
   untag_video: async (videos: IVideoMeta[], tag: ITag) => axios.put(`tags/untag-videos`, { videos: videos, tag: tag }),
   add_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/add`, { tag: tag, child_tags: child_tags }),

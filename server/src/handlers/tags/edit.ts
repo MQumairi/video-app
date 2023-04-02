@@ -17,10 +17,20 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   // Set the tag type
   if (submitted_tag.is_playlist) {
     found_tag.is_playlist = true;
+    found_tag.is_character = false;
+    found_tag.is_studio = false;
   } else if (submitted_tag.is_character) {
+    found_tag.is_playlist = false;
     found_tag.is_character = true;
+    found_tag.is_studio = false;
   } else if (submitted_tag.is_studio) {
+    found_tag.is_playlist = false;
+    found_tag.is_character = false;
     found_tag.is_studio = true;
+  } else {
+    found_tag.is_playlist = false;
+    found_tag.is_character = false;
+    found_tag.is_studio = false;
   }
   // Set tag children
   found_tag.child_tags = submitted_tag.child_tags;

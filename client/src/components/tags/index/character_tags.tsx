@@ -17,6 +17,7 @@ const CharacterTags = () => {
   return (
     <div>
       <h1>Characters</h1>
+      <h4>{tags.length} tags</h4>
       <TagsList tags={tags} />
     </div>
   );

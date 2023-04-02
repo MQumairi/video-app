@@ -18,7 +18,13 @@ export class MediaSearcher {
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
       const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      return await this.build_video_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      const [videos, count] = await this.build_video_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      await this.process_thumbnails(
+        videos.map((v) => {
+          return v.thumbnail;
+        })
+      );
+      return [videos, count];
     } catch (err) {
       console.log("rescued err:", err);
       return [[], 0];
@@ -36,7 +42,13 @@ export class MediaSearcher {
   gallery_search_results = async (): Promise<[ImageGallery[], number]> => {
     try {
       const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      return await this.build_gallery_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      const [galleries, count] = await this.build_gallery_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      await this.process_thumbnails(
+        galleries.map((g) => {
+          return g.thumbnail;
+        })
+      );
+      return [galleries, count];
     } catch (err) {
       console.log("rescued err:", err);
       return [[], 0];

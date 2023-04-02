@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 import { SearchQuery } from "../../lib/search_query";
 import { MediaSearcher } from "../../lib/media_searcher";
+import { GalleryPreProcessor } from "../../lib/images_lib/gallery_preprocessor";
 
 const Details = async (req: Request, res: Response): Promise<Tag | undefined> => {
   console.log("entered tag details");

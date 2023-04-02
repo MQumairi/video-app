@@ -21,7 +21,7 @@ const PlayerPage = () => {
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [back_url, set_back_url] = useState<string>("");
   const [video_rating, set_video_rating] = useState<number>(0);
-  const [search_params,] = useSearchParams({});
+  const [search_params] = useSearchParams({});
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
@@ -86,7 +86,7 @@ const PlayerPage = () => {
         <Button href={back_url}>Back</Button>
         {random_vid_url !== "" && <Button href={random_vid_url}>Random</Button>}
       </ButtonGroup>
-      <VideoPlayer vid_path={vid_path} />{" "}
+      <VideoPlayer vid_path={vid_path} />
       <Rating
         name="simple-controlled"
         value={video_rating}

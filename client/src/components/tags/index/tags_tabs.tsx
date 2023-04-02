@@ -1,4 +1,3 @@
-import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -9,6 +8,8 @@ import CharacterTags from "./character_tags";
 import StudioTags from "./studio_tags";
 import OtherTags from "./other_tags";
 import PlaylistTags from "./playlist_tags";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -38,11 +39,22 @@ const tab_props = (index: number) => {
 };
 
 const TagsTabs = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [search_params, set_search_params] = useSearchParams({});
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    const new_search_params = search_params;
+    new_search_params.set("tags_index_tab", newValue.toString());
+    set_search_params(new_search_params);
   };
+
+  useEffect(() => {
+    const tab_value = search_params.get("tags_index_tab");
+    if (!tab_value) return;
+    setValue(+tab_value);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box sx={{ width: "100%" }}>

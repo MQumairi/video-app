@@ -58,11 +58,8 @@ export class ImageGallery {
     // Otherwise, iterate over images. For each image, trash
     const paths_delete_failure: string[] = [];
     for (let img of gallery.images) {
-      console.log(`deleting... image ${img.id}`);
-      const del_res = await FileTrasher.trash(img.path);
-      if (del_res) continue;
-      console.log(`failed to delete image ${img.id}`);
-      paths_delete_failure.push(img.path);
+      const img_del_res = await ImageMeta.delete_image(img);
+      if (!img_del_res) paths_delete_failure.push(img.path);
     }
     // Fail if some images no deleted
     if (paths_delete_failure.length > 0) {

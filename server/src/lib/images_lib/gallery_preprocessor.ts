@@ -9,6 +9,13 @@ export class GalleryPreProcessor {
       await GalleryPreProcessor.process_image(img);
     }
   }
+
+  static async process_images(images: ImageMeta[]) {
+    for (const img of images) {
+      await GalleryPreProcessor.process_image(img);
+    }
+  }
+
   static async process_image(image: ImageMeta) {
     if (image.file_scripts == null) return;
     for (let script of image.file_scripts) {

@@ -9,7 +9,6 @@ import VideoTags from "../../player/video_tags";
 import { Button, ButtonGroup } from "@mui/material";
 import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
-import IImageGallery from "../../../models/image_gallery";
 import TagDetailsTabs from "./tag_details_tabs";
 
 const TagDetailsPage = () => {
@@ -17,8 +16,6 @@ const TagDetailsPage = () => {
   const [tag, set_tag] = useState<ITag | null>(null);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
   const [tag_type, set_tag_type] = useState<TagType>(TagType.Default);
-
-  const [tag_temp_gallery, set_tag_temp_gallery] = useState<IImageGallery | undefined>(undefined);
 
   const [search_params, set_search_params] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
@@ -31,14 +28,6 @@ const TagDetailsPage = () => {
     set_tag(fetched_tag);
     set_tag_type(get_tag_type(fetched_tag));
     set_videos_count(res.data.count);
-    const image_res = await Tag.random_images(fetched_tag);
-    if (image_res.status !== 200) return;
-    const temp_gallery: IImageGallery = {
-      id: 0,
-      images: image_res.data,
-      name: fetched_tag.name,
-    };
-    set_tag_temp_gallery(temp_gallery);
   };
 
   const fetch_random_tag_video = async () => {
@@ -81,7 +70,7 @@ const TagDetailsPage = () => {
         <h2>{tag.name}</h2>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
-        <Button href="/tags">Back</Button>
+        <Button href={`/tags?${search_params.toString()}`}>Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`}>Random</Button>}
         <Button href={`/tags/${tag_id}/edit`}>Edit</Button>
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>

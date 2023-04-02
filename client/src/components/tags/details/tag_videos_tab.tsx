@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import ITag from "../../../models/tag";
-import IVideoMeta from "../../../models/video_meta";
 import VideoList from "../../videos/util/video_list";
 import PageSelector from "../../search/page_selector";
 

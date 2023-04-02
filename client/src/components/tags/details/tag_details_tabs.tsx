@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 import TagVideosTab from "./tag_videos_tab";
 import ITag from "../../../models/tag";
 import TagImagesTab from "./tag_images_tab";
-import IImageGallery from "../../../models/image_gallery";
 
 interface TabPanelProps {
   children?: React.ReactNode;

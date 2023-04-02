@@ -17,6 +17,7 @@ const StudioTags = () => {
   return (
     <div>
       <h1>Studios</h1>
+      <h4>{tags.length} tags</h4>
       <TagsList tags={tags} />
     </div>
   );

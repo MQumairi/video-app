@@ -16,7 +16,7 @@ interface IProps {
 const GalleryViewer = (props: IProps) => {
   const [selected_image, set_selected_image] = useState<IImageMeta | null>(null);
   const [selected_index, set_selected_index] = useState<number | null>(null);
-  const [faved_image, set_faved_image] = useState<IImageMeta | null>(null);
+  const [, set_faved_image] = useState<IImageMeta | null>(null);
   const [open_modal, set_open_modal] = useState<boolean>(false);
   const handle_open = () => set_open_modal(true);
   const handle_close = () => set_open_modal(false);

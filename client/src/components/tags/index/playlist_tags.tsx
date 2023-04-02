@@ -17,6 +17,7 @@ const PlaylistTags = () => {
   return (
     <div>
       <h1>Playlists</h1>
+      <h4>{tags.length} tags</h4>
       <TagsList tags={tags} />
     </div>
   );

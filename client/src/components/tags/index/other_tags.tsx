@@ -17,6 +17,7 @@ const OtherTags = () => {
   return (
     <div>
       <h1>Other</h1>
+      <h4>{tags.length} tags</h4>
       <TagsList tags={tags} />
     </div>
   );

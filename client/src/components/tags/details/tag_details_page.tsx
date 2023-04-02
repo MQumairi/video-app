@@ -6,7 +6,7 @@ import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
 import VideoTags from "../../player/video_tags";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
 import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
 import TagDetailsTabs from "./tag_details_tabs";
@@ -62,13 +62,17 @@ const TagDetailsPage = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "10px" }}>
+      <Stack direction="row" spacing={1}>
         {tag_type === TagType.Default && <LocalOffer fontSize="large" />}
         {tag_type === TagType.Character && <Person fontSize="large" />}
         {tag_type === TagType.Studio && <MovieCreation fontSize="large" />}
         {tag_type === TagType.Playlist && <Subscriptions fontSize="large" />}
         <h2>{tag.name}</h2>
-      </div>
+      </Stack>
+      <Stack direction="row" spacing={1}>
+        <Chip size="small" variant="outlined" label={tag.id} color="primary" />
+        {tag.default_excluded && <Chip size="small" variant="outlined" label={"Default Excluded"} color="primary" />}
+      </Stack>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href={`/tags?${search_params.toString()}`}>Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`}>Random</Button>}

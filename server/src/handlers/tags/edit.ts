@@ -12,6 +12,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     return undefined;
   }
   const submitted_tag: Tag = req.body;
+  console.log("submitted tag:", submitted_tag);
   // Set the tag name
   found_tag.name = submitted_tag.name;
   // Set the tag type
@@ -34,6 +35,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   }
   // Set tag children
   found_tag.child_tags = submitted_tag.child_tags;
+  found_tag.default_excluded = submitted_tag.default_excluded;
   const saved_tag = await tag_repo.save(found_tag);
   console.log("finished saving...");
   res.status(200).send(saved_tag);

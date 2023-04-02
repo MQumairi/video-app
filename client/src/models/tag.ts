@@ -8,6 +8,7 @@ export default interface ITag {
   is_playlist: boolean;
   is_character: boolean;
   is_studio: boolean;
+  default_excluded: boolean;
 }
 
 export interface ITagCreate {
@@ -16,6 +17,7 @@ export interface ITagCreate {
   is_playlist: boolean;
   is_character: boolean;
   is_studio: boolean;
+  default_excluded: boolean;
 }
 
 export interface ITagEdit {
@@ -25,4 +27,5 @@ export interface ITagEdit {
   is_playlist: boolean;
   is_character: boolean;
   is_studio: boolean;
+  default_excluded: boolean;
 }

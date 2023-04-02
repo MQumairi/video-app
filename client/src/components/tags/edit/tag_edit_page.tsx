@@ -16,6 +16,7 @@ const TagEditPage = () => {
   const [is_playlist, set_is_playlist] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
   const [selected_tags, set_selected_tags] = useState<ITag[]>([]);
+  const [default_excluded, set_default_excluded] = useState<boolean>(false);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
 
   const fetch_tag = async () => {
@@ -35,6 +36,7 @@ const TagEditPage = () => {
     }
     if (tag.child_tags) set_selected_tags(tag.child_tags);
     set_tag(res.data.tag);
+    set_default_excluded(tag.default_excluded);
   };
 
   const handle_name_change = (input: any) => {
@@ -76,6 +78,7 @@ const TagEditPage = () => {
       is_character: is_character,
       is_studio: is_studio,
       child_tags: selected_tags,
+      default_excluded: default_excluded,
     };
     const res = await Tag.edit(edited_tag);
     if (res.status !== 200) return;
@@ -124,6 +127,20 @@ const TagEditPage = () => {
         <FormLabel>Child Tags</FormLabel>
         <p style={{ marginBottom: "10px" }}>Select childs tags that will be applied to any item that this tag is applied to</p>
         <TagSearcher selected_tags={selected_tags} set_selected_tags={set_selected_tags} />
+        <FormLabel>Exclude Items from search unless this tag is explicitly searched for</FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              defaultChecked={default_excluded}
+              style={{ color: "white" }}
+              value={default_excluded}
+              onChange={(_, checked) => {
+                set_default_excluded(checked);
+              }}
+            />
+          }
+          label="Default Excluded from Search"
+        />
         <FormLabel>Generate Thumbs for All Tagged Videos</FormLabel>
         <FormControlLabel
           control={
@@ -133,7 +150,6 @@ const TagEditPage = () => {
               onChange={(_, checked) => {
                 set_should_generate_thumbs(checked);
               }}
-              aria-label="Generate"
             />
           }
           label="Generate"

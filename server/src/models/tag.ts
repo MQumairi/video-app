@@ -36,6 +36,10 @@ export class Tag {
   @JoinTable()
   child_tags: Tag[];
 
+  @Index()
+  @Column("bool", { default: false })
+  default_excluded: boolean;
+
   static create(name: string): Tag {
     const tag = new Tag();
     tag.name = name;

@@ -66,24 +66,19 @@ export class MediaSearcher {
       .addGroupBy("gallery.id")
       .addGroupBy("thumbnail.id")
       .addGroupBy("file_script.id");
-    query = this.query_tags(query, this.query.included_tags);
+    query = this.query_video_tags(query);
     query = this.query_min_rating(query, this.query.min_rating);
     query = this.query_max_rating(query, this.query.max_rating);
     query = this.query_min_resolution(query, this.query.min_resolution);
     return query.addOrderBy("video.path", "ASC");
   };
 
-  private query_tags = (query: SelectQueryBuilder<VideoMeta>, included_tags: Tag[]): SelectQueryBuilder<VideoMeta> => {
-    if (included_tags.length == 0) return query;
-    const tag_names: string[] = [];
-    for (const tag_to_include of included_tags) {
-      let tag_name = tag_to_include.name.replace(/\r?\n|\r/g, "");
-      tag_names.push(tag_name);
-    }
+  private query_video_tags = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
+    const included_tag_ids = Tag.get_ids(this.query.included_tags);
     query.innerJoin("video.tags", "tag");
-    query.where("tag.name IN (:...tags_to_include)", { tags_to_include: tag_names });
+    query.where("tag.id IN (:...included_tag_ids)", { included_tag_ids });
     query.addGroupBy("video.id, video.name");
-    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: tag_names.length });
+    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: included_tag_ids.length });
     return query;
   };
 
@@ -117,19 +112,14 @@ export class MediaSearcher {
       .addGroupBy("image.id")
       .addGroupBy("thumbnail.id")
       .addGroupBy("file_script.id");
-    return this.query_image_tags(query, this.query.included_tags).addOrderBy("gallery.name", "ASC");
+    return this.query_image_tags(query).addOrderBy("gallery.name", "ASC");
   };
 
-  private query_image_tags = (query: SelectQueryBuilder<ImageGallery>, included_tags: Tag[]): SelectQueryBuilder<ImageGallery> => {
-    if (included_tags.length == 0) return query;
-    const tag_names: string[] = [];
-    for (const tag_to_include of included_tags) {
-      let tag_name = tag_to_include.name.replace(/\r?\n|\r/g, "");
-      tag_names.push(tag_name);
-    }
-    query.where("tag.name IN (:...tags_to_include)", { tags_to_include: tag_names });
+  private query_image_tags = (query: SelectQueryBuilder<ImageGallery>): SelectQueryBuilder<ImageGallery> => {
+    const included_tag_ids = Tag.get_ids(this.query.included_tags);
+    query.where("tag.id IN (:...included_tag_ids)", { included_tag_ids });
     query.addGroupBy("gallery.id, gallery.name");
-    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: tag_names.length });
+    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: included_tag_ids.length });
     return query;
   };
 

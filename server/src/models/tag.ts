@@ -63,4 +63,10 @@ export class Tag {
     }
     return tags;
   }
+
+  static get_ids(tags: Tag[]): number[] {
+    return tags.map((t) => {
+      return t.id;
+    });
+  }
 }

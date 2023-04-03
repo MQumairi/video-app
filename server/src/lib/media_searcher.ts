@@ -123,6 +123,18 @@ export class MediaSearcher {
     return query;
   };
 
+  private get_inner_query = (tags: Tag[], include_having: boolean): SelectQueryBuilder<VideoMeta> => {
+    const video_meta_repo = getRepository(VideoMeta);
+    const tag_ids = Tag.get_ids(tags);
+    let query = video_meta_repo
+      .createQueryBuilder("video")
+      .select("video.id", "id")
+      .leftJoin("video.tags", "tag")
+      .where(`tag.id IN (${tag_ids.join(",")})`);
+    if (include_having) return query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: tag_ids.length });
+    return query;
+  };
+
   private async process_thumbnails(thumbnails: ImageMeta[]) {
     for (let thumb of thumbnails) {
       if (thumb === null) continue;

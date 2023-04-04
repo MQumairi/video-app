@@ -1,26 +1,32 @@
 import { FileScript } from "../../models/file_script";
 import { ImageGallery } from "../../models/image_gallery";
 import { ImageMeta } from "../../models/image_meta";
+import { VideoMeta } from "../../models/video_meta";
 
-export class GalleryPreProcessor {
+export class ImagePreprocessor {
   static async process_gallery(gallery: ImageGallery) {
-    console.log("preprocessing gallery...");
     for (let img of gallery.images) {
-      await GalleryPreProcessor.process_image(img);
+      await ImagePreprocessor.process_image(img);
     }
   }
 
   static async process_images(images: ImageMeta[]) {
     for (const img of images) {
-      await GalleryPreProcessor.process_image(img);
+      await ImagePreprocessor.process_image(img);
+    }
+  }
+
+  static async process_video_thumbs(videos: VideoMeta[]) {
+    for (let v of videos) {
+      if (v.thumbnail === null) continue;
+      await ImagePreprocessor.process_image(v.thumbnail);
     }
   }
 
   static async process_image(image: ImageMeta) {
-    if (image.file_scripts == null) return;
+    if (image.file_scripts === null) return;
     for (let script of image.file_scripts) {
       if (!script.is_start_script) continue;
-      console.log(`(${image.id}) found start script: ${script.name}`);
       await FileScript.execute_script(script, image.path);
     }
   }

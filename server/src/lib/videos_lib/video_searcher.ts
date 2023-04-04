@@ -1,30 +1,24 @@
-import { SearchQuery } from "./search_query";
-import { Tag } from "../models/tag";
-import { VideoMeta } from "../models/video_meta";
-import { getRepository, SelectQueryBuilder } from "typeorm";
-import { ImageGallery } from "../models/image_gallery";
-import { ImageMeta } from "../models/image_meta";
-import { ImagePreprocessor } from "./images_lib/image_preprocessor";
+import { SelectQueryBuilder, getRepository } from "typeorm";
+import { SearchQuery } from "../search_query";
+import { VideoMeta } from "../../models/video_meta";
+import { Tag } from "../../models/tag";
+import { ImagePreprocessor } from "../images_lib/image_preprocessor";
 
-export const PAGE_CAPACITY = 12;
-
-export class MediaSearcher {
+export class VideoSearcher {
   query: SearchQuery;
+  page_capacity = 12;
 
   constructor(query: SearchQuery) {
+    console.log("creating VideoSearcher");
     this.query = query;
   }
 
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
-      const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      const video_query = this.build_video_query().skip(skips).take(PAGE_CAPACITY);
+      const skips = (this.query.page - 1) * this.page_capacity;
+      const video_query = this.build_video_query().skip(skips).take(this.page_capacity);
       const [videos, count] = await video_query.getManyAndCount();
-      await this.process_thumbnails(
-        videos.map((v) => {
-          return v.thumbnail;
-        })
-      );
+      await ImagePreprocessor.process_video_thumbs(videos);
       return [videos, count];
     } catch (err) {
       console.log("rescued err:", err);
@@ -37,22 +31,6 @@ export class MediaSearcher {
       return await this.build_video_query().orderBy("RANDOM()").getOne();
     } catch (err) {
       console.log("rescued err:", err);
-    }
-  };
-
-  gallery_search_results = async (): Promise<[ImageGallery[], number]> => {
-    try {
-      const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      const [galleries, count] = await this.build_gallery_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
-      await this.process_thumbnails(
-        galleries.map((g) => {
-          return g.thumbnail;
-        })
-      );
-      return [galleries, count];
-    } catch (err) {
-      console.log("rescued err:", err);
-      return [[], 0];
     }
   };
 
@@ -99,29 +77,6 @@ export class MediaSearcher {
     return query;
   };
 
-  private build_gallery_query = (): SelectQueryBuilder<ImageGallery> => {
-    const gallery_repo = getRepository(ImageGallery);
-    let query = gallery_repo
-      .createQueryBuilder("gallery")
-      .innerJoin("gallery.tags", "tag")
-      .leftJoinAndSelect("gallery.images", "image")
-      .leftJoinAndSelect("gallery.thumbnail", "thumbnail")
-      .leftJoinAndSelect("thumbnail.file_scripts", "file_script")
-      .addGroupBy("gallery.id")
-      .addGroupBy("image.id")
-      .addGroupBy("thumbnail.id")
-      .addGroupBy("file_script.id");
-    return this.query_image_tags(query).addOrderBy("gallery.name", "ASC");
-  };
-
-  private query_image_tags = (query: SelectQueryBuilder<ImageGallery>): SelectQueryBuilder<ImageGallery> => {
-    const included_tag_ids = Tag.get_ids(this.query.included_tags);
-    query.where("tag.id IN (:...included_tag_ids)", { included_tag_ids });
-    query.addGroupBy("gallery.id, gallery.name");
-    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: included_tag_ids.length });
-    return query;
-  };
-
   private get_inner_query = (tags: Tag[], include_having: boolean): SelectQueryBuilder<VideoMeta> => {
     const video_meta_repo = getRepository(VideoMeta);
     const tag_ids = Tag.get_ids(tags);
@@ -133,11 +88,4 @@ export class MediaSearcher {
     if (!include_having) return query;
     return query.addGroupBy("video.id").having(`COUNT(DISTINCT tag.id)=${tag_ids.length}`);
   };
-
-  private async process_thumbnails(thumbnails: ImageMeta[]) {
-    for (let thumb of thumbnails) {
-      if (thumb === null) continue;
-      if (thumb.file_scripts) await ImagePreprocessor.process_image(thumb);
-    }
-  }
 }

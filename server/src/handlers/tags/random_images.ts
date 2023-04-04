@@ -3,7 +3,7 @@ import { getRepository } from "typeorm";
 import { ImageMeta } from "../../models/image_meta";
 import { Tag } from "../../models/tag";
 import { PAGE_CAPACITY } from "../../lib/media_searcher";
-import { GalleryPreProcessor } from "../../lib/images_lib/gallery_preprocessor";
+import { ImagePreprocessor } from "../../lib/images_lib/image_preprocessor";
 
 const RandomImages = async (req: Request, res: Response): Promise<ImageMeta[]> => {
   try {
@@ -28,7 +28,7 @@ const RandomImages = async (req: Request, res: Response): Promise<ImageMeta[]> =
       .orderBy("RANDOM()")
       .limit(PAGE_CAPACITY)
       .getMany();
-    await GalleryPreProcessor.process_images(tag_images);
+    await ImagePreprocessor.process_images(tag_images);
     res.status(200).send(tag_images);
     return tag_images;
   } catch (err) {

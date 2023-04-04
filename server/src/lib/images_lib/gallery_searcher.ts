@@ -2,13 +2,11 @@ import { SelectQueryBuilder, getRepository } from "typeorm";
 import { ImageGallery } from "../../models/image_gallery";
 import { SearchQuery } from "../search_query";
 import { Tag } from "../../models/tag";
-import { ImageMeta } from "../../models/image_meta";
 import { ImagePreprocessor } from "./image_preprocessor";
-
-export const PAGE_CAPACITY = 12;
 
 export class GallerySearcher {
   query: SearchQuery;
+  page_capacity = 12;
 
   constructor(query: SearchQuery) {
     this.query = query;
@@ -16,8 +14,8 @@ export class GallerySearcher {
 
   gallery_search_results = async (): Promise<[ImageGallery[], number]> => {
     try {
-      const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      const [galleries, count] = await this.build_gallery_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      const skips = (this.query.page - 1) * this.page_capacity;
+      const [galleries, count] = await this.build_gallery_query().skip(skips).take(this.page_capacity).getManyAndCount();
       await ImagePreprocessor.process_gallery_thumbs(galleries);
       return [galleries, count];
     } catch (err) {
@@ -30,7 +28,6 @@ export class GallerySearcher {
     const gallery_repo = getRepository(ImageGallery);
     let query = gallery_repo
       .createQueryBuilder("gallery")
-      .innerJoin("gallery.tags", "tag")
       .leftJoinAndSelect("gallery.images", "image")
       .leftJoinAndSelect("gallery.thumbnail", "thumbnail")
       .leftJoinAndSelect("thumbnail.file_scripts", "file_script")
@@ -42,10 +39,9 @@ export class GallerySearcher {
   };
 
   private query_image_tags = (query: SelectQueryBuilder<ImageGallery>): SelectQueryBuilder<ImageGallery> => {
-    const included_tag_ids = Tag.get_ids(this.query.included_tags);
-    query.where("tag.id IN (:...included_tag_ids)", { included_tag_ids });
-    query.addGroupBy("gallery.id, gallery.name");
-    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: included_tag_ids.length });
+    query.innerJoin("gallery.tags", "tag");
+    query.where(`gallery.id IN (${this.get_inner_query(this.query.included_tags, true).getSql()})`);
+    query.andWhere(`gallery.id NOT IN (${this.get_inner_query(this.query.excluded_tags, false).getSql()})`);
     return query;
   };
 

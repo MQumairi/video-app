@@ -16,12 +16,13 @@ const TagsPanel = (props: IProps) => {
   const [character_tags, set_character_tags] = useState<ITag[]>([]);
   const [studio_tags, set_studio_tags] = useState<ITag[]>([]);
   const [default_tags, set_default_tags] = useState<ITag[]>([]);
+  const [tags_count, set_tags_count] = useState<number>(0);
 
-  const fetch_scripts = async () => {
+  const fetch_tags = async () => {
     const res = await Video.tags(props.video);
     if (res.status !== 200) return;
     const tags: ITag[] = res.data;
-
+    set_tags_count(tags.length);
     const res_playlist_tags: ITag[] = [];
     const res_character_tags: ITag[] = [];
     const res_studio_tags: ITag[] = [];
@@ -49,7 +50,7 @@ const TagsPanel = (props: IProps) => {
   };
 
   useEffect(() => {
-    fetch_scripts();
+    fetch_tags();
     // eslint-disable-next-line
   }, []);
 
@@ -57,24 +58,34 @@ const TagsPanel = (props: IProps) => {
     marginTop: "20px",
   };
 
+  if (tags_count === 0) return <h2>No tags associated with this video</h2>;
+
   return (
     <div>
-      <div style={tag_row_style}>
-        <FormLabel>Characters</FormLabel>
-        <TagsList tags={character_tags} />
-      </div>
-      <div style={tag_row_style}>
-        <FormLabel>Tags</FormLabel>
-        <TagsList tags={default_tags} />
-      </div>
-      <div style={tag_row_style}>
-        <FormLabel>Studios</FormLabel>
-        <TagsList tags={studio_tags} />
-      </div>
-      <div style={tag_row_style}>
-        <FormLabel>Playlists</FormLabel>
-        <TagsList tags={playlist_tags} />
-      </div>
+      {character_tags.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Characters</FormLabel>
+          <TagsList tags={character_tags} />
+        </div>
+      )}
+      {default_tags.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Tags</FormLabel>
+          <TagsList tags={default_tags} />
+        </div>
+      )}
+      {studio_tags.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Studios</FormLabel>
+          <TagsList tags={studio_tags} />
+        </div>
+      )}
+      {playlist_tags.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Playlists</FormLabel>
+          <TagsList tags={playlist_tags} />
+        </div>
+      )}
     </div>
   );
 };

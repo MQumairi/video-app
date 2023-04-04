@@ -18,7 +18,8 @@ export class MediaSearcher {
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
       const skips = (this.query.page - 1) * PAGE_CAPACITY;
-      const [videos, count] = await this.build_video_query().skip(skips).take(PAGE_CAPACITY).getManyAndCount();
+      const video_query = this.build_video_query().skip(skips).take(PAGE_CAPACITY);
+      const [videos, count] = await video_query.getManyAndCount();
       await this.process_thumbnails(
         videos.map((v) => {
           return v.thumbnail;
@@ -74,11 +75,9 @@ export class MediaSearcher {
   };
 
   private query_video_tags = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
-    const included_tag_ids = Tag.get_ids(this.query.included_tags);
     query.innerJoin("video.tags", "tag");
-    query.where("tag.id IN (:...included_tag_ids)", { included_tag_ids });
-    query.addGroupBy("video.id, video.name");
-    query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: included_tag_ids.length });
+    query.where(`video.id IN (${this.get_inner_query(this.query.included_tags, true).getSql()})`);
+    query.andWhere(`video.id NOT IN (${this.get_inner_query(this.query.excluded_tags, false).getSql()})`);
     return query;
   };
 
@@ -129,10 +128,10 @@ export class MediaSearcher {
     let query = video_meta_repo
       .createQueryBuilder("video")
       .select("video.id", "id")
-      .leftJoin("video.tags", "tag")
+      .innerJoin("video.tags", "tag")
       .where(`tag.id IN (${tag_ids.join(",")})`);
-    if (include_having) return query.having("COUNT(DISTINCT tag.id) = :ntags", { ntags: tag_ids.length });
-    return query;
+    if (!include_having) return query;
+    return query.addGroupBy("video.id").having(`COUNT(DISTINCT tag.id)=${tag_ids.length}`);
   };
 
   private async process_thumbnails(thumbnails: ImageMeta[]) {

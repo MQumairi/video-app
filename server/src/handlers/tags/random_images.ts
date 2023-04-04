@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { ImageMeta } from "../../models/image_meta";
 import { Tag } from "../../models/tag";
-import { PAGE_CAPACITY } from "../../lib/media_searcher";
 import { ImagePreprocessor } from "../../lib/images_lib/image_preprocessor";
 
 const RandomImages = async (req: Request, res: Response): Promise<ImageMeta[]> => {
@@ -26,7 +25,7 @@ const RandomImages = async (req: Request, res: Response): Promise<ImageMeta[]> =
       .addGroupBy("file_script.id")
       .where("tag.name IN (:found_tag_name)", { found_tag_name: found_tag.name })
       .orderBy("RANDOM()")
-      .limit(PAGE_CAPACITY)
+      .limit(12)
       .getMany();
     await ImagePreprocessor.process_images(tag_images);
     res.status(200).send(tag_images);

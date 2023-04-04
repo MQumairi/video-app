@@ -23,6 +23,13 @@ export class ImagePreprocessor {
     }
   }
 
+  static async process_gallery_thumbs(galleries: ImageGallery[]) {
+    for (let g of galleries) {
+      if (g.thumbnail === null) continue;
+      await ImagePreprocessor.process_image(g.thumbnail);
+    }
+  }
+
   static async process_image(image: ImageMeta) {
     if (image.file_scripts === null) return;
     for (let script of image.file_scripts) {

@@ -13,6 +13,7 @@ import DeleteVideoTab from "./delete_video_tab";
 import { Button } from "@mui/material";
 import ScriptsPanel from "./scripts_panel";
 import TagsPanel from "./tags_panel";
+import { GalleryVariant } from "../../lib/gallery_utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -80,7 +81,7 @@ const PlayerTabs = (props: IProps) => {
             <Button style={{ margin: "10px 0px 10px 0px" }} variant="contained" href={`/galleries/${gallery.id}`} target="_blank">
               Details
             </Button>
-            <GalleryViewer gallery={gallery} viewer_height={600} />
+            <GalleryViewer gallery={gallery} variant={GalleryVariant.Standard} viewer_height={600} />
           </div>
         )}
       </TabPanel>

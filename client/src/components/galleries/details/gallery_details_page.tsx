@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import GalleryViewer from "./gallery_viewer";
 import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import { GalleryVariant } from "../../../lib/gallery_utils";
 
 const GalleryDetailsPage = () => {
   let gallery_id = useParams().gallery_id;
@@ -45,7 +46,7 @@ const GalleryDetailsPage = () => {
           Edit
         </Button>
       </ButtonGroup>
-      <GalleryViewer gallery={gallery} viewer_height={800} />
+      <GalleryViewer gallery={gallery} variant={GalleryVariant.Masonary} viewer_height={800} />
     </div>
   );
 };

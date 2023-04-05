@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ITag from "../../../models/tag";
 import { Tag } from "../../../api/agent";
 import { Button } from "@mui/material";
+import { GalleryVariant } from "../../../lib/gallery_utils";
 
 interface IProps {
   tag: ITag;
@@ -33,7 +34,7 @@ const TagImagesTab = (props: IProps) => {
   return (
     <div>
       <Button onClick={lookup_tag_images}>Reload</Button>
-      <GalleryViewer gallery={tag_temp_gallery} viewer_height={800} />
+      <GalleryViewer gallery={tag_temp_gallery} variant={GalleryVariant.Masonary} viewer_height={800} />
     </div>
   );
 };

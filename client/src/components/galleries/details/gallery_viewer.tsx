@@ -6,9 +6,11 @@ import IImageMeta from "../../../models/image_meta";
 import SelectedVideosStore from "../../../store/selected_videos_store";
 import GalleryModal from "./gallery_modal";
 import GalleryImages from "./gallery_images";
+import { GalleryVariant } from "../../../lib/gallery_utils";
 
 interface IProps {
   gallery: IImageGallery;
+  variant: GalleryVariant;
   viewer_height: number;
   thumb_id?: number;
 }
@@ -66,6 +68,7 @@ const GalleryViewer = (props: IProps) => {
       )}
       <GalleryImages
         images={props.gallery.images}
+        variant={props.variant}
         viewer_height={props.viewer_height}
         set_selected_image={set_selected_image}
         set_selected_index={set_selected_index}

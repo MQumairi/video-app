@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
-import { server_url } from "../../../api/agent";
-import { PathConverter } from "../../../util/path_converter";
 import { Chip, ImageListItem, ImageListItemBar, Stack } from "@mui/material";
 import { calculate_duration, calculate_resolution } from "../../../lib/video_file_meta_calculator";
 import MissingThumbnial from "../../misc/missing_thumbnial";
+import Thumbnail from "../../misc/thumbnail";
 
 interface IProps {
   video: IVideoMeta;
@@ -14,15 +13,7 @@ interface IProps {
 const VideoItem = (props: IProps) => (
   <a href={props.url} key={props.video.name}>
     <ImageListItem key={props.video.id}>
-      {props.video.thumbnail && (
-        <img
-          src={`${server_url}/${PathConverter.remove_base(props.video.thumbnail.path)}`}
-          srcSet={`${server_url}/${PathConverter.remove_base(props.video.thumbnail.path)}`}
-          alt={props.video.name}
-          loading="lazy"
-          style={{ objectFit: "cover", height: "90%" }}
-        />
-      )}
+      {props.video.thumbnail && <Thumbnail image={props.video.thumbnail} />}
       {!props.video.thumbnail && <MissingThumbnial />}
       <ImageListItemBar style={{ height: "10%" }} title={props.video.name} position="below" />
       <Stack direction="row" spacing={1}>

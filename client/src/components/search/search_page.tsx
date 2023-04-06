@@ -19,6 +19,10 @@ const AdvancedSearchPage = () => {
   const [videos_count, set_videos_count] = useState<number>(0);
 
   const on_submit = async () => {
+    const new_search_params = search_params;
+    new_search_params.set(PAGE_PARAM_KEY, "1");
+    set_search_params(new_search_params);
+    set_current_page(1);
     await fetch_search_results();
     await fetch_random_video();
   };
@@ -28,6 +32,9 @@ const AdvancedSearchPage = () => {
     if (res.status !== 200) return;
     selectedVideoStore.set_adv_search_results(res.data.videos);
     set_videos_count(res.data.count);
+    const search_params_page = search_params.get("page");
+    if (!search_params_page) return;
+    set_current_page(+search_params_page);
   };
 
   const fetch_random_video = async () => {

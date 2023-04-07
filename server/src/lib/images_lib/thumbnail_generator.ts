@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
 import { VideoMeta } from "../../models/video_meta";
-import { Timestamper } from "../timestamper";
+import { Timestamper } from "../videos_lib/timestamper";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import ThumbnailSaver from "./thumbnail_saver";

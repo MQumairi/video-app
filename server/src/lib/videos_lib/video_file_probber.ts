@@ -3,7 +3,7 @@ import { promisify } from "util";
 import { VideoMeta } from "../../models/video_meta";
 import { Directory } from "../directory";
 import { existsSync } from "fs";
-import { Timestamper } from "../timestamper";
+import { Timestamper } from "./timestamper";
 const exec = promisify(exec_sync);
 
 interface VideResolution {

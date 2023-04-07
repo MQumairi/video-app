@@ -1,4 +1,4 @@
-import { VideoMeta } from "../models/video_meta";
+import { VideoMeta } from "../../models/video_meta";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 const exec = promisify(exec_sync);

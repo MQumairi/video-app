@@ -14,8 +14,7 @@ const CleanupImages = async (req: Request, res: Response) => {
       counter.unchanged += 1;
       continue;
     }
-    const prober = new ImageFileProbber(img);
-    const dimensions = await prober.get_image_size();
+    const dimensions = await ImageFileProbber.get_image_size(img);
     img.width = dimensions.width;
     img.height = dimensions.height;
     await image_repo.save(img);

@@ -38,8 +38,7 @@ export class ImageMeta {
     image.path = path;
     image.order_number = order_number;
     image.gallery = gallery;
-    const prober = new ImageFileProbber(image);
-    const dimensions = await prober.get_image_size();
+    const dimensions = await ImageFileProbber.get_image_size(image);
     image.width = dimensions.width;
     image.height = dimensions.height;
     return image;

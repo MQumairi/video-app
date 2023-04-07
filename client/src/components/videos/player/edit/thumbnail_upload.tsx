@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
-import SelectedVideosStore from "../../../store/selected_videos_store";
-import ToggleButton from "../../misc/toggle_button";
-import FunctionButton from "../../misc/function_button";
-import { Gallery } from "../../../api/agent";
-import IVideoMeta from "../../../models/video_meta";
+import SelectedVideosStore from "../../../../store/selected_videos_store";
+import ToggleButton from "../../../misc/toggle_button";
+import FunctionButton from "../../../misc/function_button";
+import { Gallery } from "../../../../api/agent";
+import IVideoMeta from "../../../../models/video_meta";
 
 interface IProps {
   running_video: IVideoMeta;

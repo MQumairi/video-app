@@ -29,7 +29,7 @@ const ThumbVideo = async (req: Request, res: Response): Promise<VideoMeta | unde
   }
   const saved_video = await video_repo.save(video);
   console.log("assignment done");
-  res.status(201).send(saved_video);
+  res.status(200).send(saved_video);
   return saved_video;
 };
 

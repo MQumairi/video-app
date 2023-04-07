@@ -3,38 +3,30 @@ import { PathConverter } from "../../../util/path_converter";
 import IVideoMeta from "../../../models/video_meta";
 import { Search, Video } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
-import VideoPlayer from "./video_player";
 import { observer } from "mobx-react-lite";
-import SelectedVideosStore from "../../../store/selected_videos_store";
-import { Button, ButtonGroup, Chip, Rating, Stack } from "@mui/material";
-import { Star } from "@mui/icons-material";
-import PlayerTabs from "./player_tabs";
-import { calculate_resolution } from "../../../lib/video_file_meta_calculator";
+import VideoStore from "../../../store/video_store";
+import Video_details from "./video_details";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
   let tag_id = useParams().tag_id;
 
-  const selectedVideoStore = useContext(SelectedVideosStore);
+  const video_store = useContext(VideoStore);
 
-  const [video_meta, set_video_meta] = useState<IVideoMeta | null>(null);
   const [random_vid_url, set_random_vid_url] = useState<string>("");
   const [back_url, set_back_url] = useState<string>("");
-  const [video_rating, set_video_rating] = useState<number>(0);
   const [search_params] = useSearchParams({});
 
   const fetch_video_meta = async (query: string) => {
     const api_query = PathConverter.to_query(query);
-    const received_video: IVideoMeta = (await Video.get(api_query)).data;
+    const res = await Video.details_from_path(api_query);
+    if (res.status !== 200) return;
+    const received_video: IVideoMeta = res.data;
     if (received_video && back_url === "") {
       // Set back url if we came from file system
       set_back_url(`/browser/${PathConverter.to_query(received_video.parent_path)}`);
     }
-    console.log("received:", received_video);
-    selectedVideoStore.set_running_video(received_video);
-    selectedVideoStore.set_single_selection(received_video);
-    set_video_meta(received_video);
-    set_video_rating(received_video.rating);
+    video_store.set_selected_video(received_video);
   };
 
   const set_button_urls = async () => {
@@ -54,54 +46,13 @@ const PlayerPage = () => {
     }
   };
 
-  const update_video_rating = async (new_rating: number | null) => {
-    const api_query = PathConverter.to_query(vid_path);
-    set_video_rating(new_rating ?? 0);
-    if (video_meta && new_rating != null) {
-      video_meta.rating = new_rating;
-      await Video.rate(api_query, video_meta);
-    }
-  };
-
   useEffect(() => {
     fetch_video_meta(vid_path);
     set_button_urls();
     // eslint-disable-next-line
   }, [back_url]);
 
-  if (!video_meta) {
-    return <h2>Loading video...</h2>;
-  }
-
-  return (
-    <div>
-      <h1>{video_meta.name}</h1>
-      <div>
-        <Stack direction="row" spacing={1}>
-          <Chip label={video_meta?.id} color="primary" variant="outlined" />
-          <Chip label={calculate_resolution(video_meta)} color="primary" variant="outlined" />
-        </Stack>
-      </div>
-      <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
-        <Button href={back_url}>Back</Button>
-        {random_vid_url !== "" && <Button href={random_vid_url}>Random</Button>}
-      </ButtonGroup>
-      <VideoPlayer vid_path={vid_path} />
-      <Rating
-        name="simple-controlled"
-        value={video_rating}
-        size="large"
-        style={{ marginTop: "30px", marginBottom: "5px" }}
-        onChange={(_, newValue) => {
-          update_video_rating(newValue);
-        }}
-        emptyIcon={<Star style={{ opacity: 0.8, color: "grey", fontSize: "50px" }} fontSize="inherit" />}
-        icon={<Star style={{ opacity: 0.8, color: "#ffcc00", fontSize: "50px" }} fontSize="inherit" />}
-        max={10}
-      />
-      <PlayerTabs video={video_meta} />
-    </div>
-  );
+  return <Video_details back_url={back_url} random_url={random_vid_url} />;
 };
 
 export default observer(PlayerPage);

@@ -1,3 +1,4 @@
+import IFileScript from "./file_script";
 import IImageGallery from "./image_gallery";
 import IImageMeta from "./image_meta";
 import ISeries from "./series";
@@ -14,6 +15,7 @@ export default interface IVideoMeta {
   series?: ISeries;
   gallery?: IImageGallery;
   thumbnail?: IImageMeta;
+  file_scripts?: IFileScript[];
   duration_sec?: number;
   width?: number;
   height?: number;

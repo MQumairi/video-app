@@ -1,17 +1,16 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import IVideoMeta from "../../../models/video_meta";
-import { Video } from "../../../api/agent";
-import ITag from "../../../models/tag";
-import { TagType, get_tag_type } from "../../../lib/tag_util";
+import { useContext, useEffect, useState } from "react";
+import IVideoMeta from "../../../../models/video_meta";
+import { Video } from "../../../../api/agent";
+import ITag from "../../../../models/tag";
+import { TagType, get_tag_type } from "../../../../lib/tag_util";
 import { FormLabel } from "@mui/material";
-import TagsList from "../../tags/util/tags_list";
+import TagsList from "../../../tags/util/tags_list";
+import VideoStore from "../../../../store/video_store";
 
-interface IProps {
-  video: IVideoMeta;
-}
+const TagsPanel = () => {
+  const video_store = useContext(VideoStore);
 
-const TagsPanel = (props: IProps) => {
   const [playlist_tags, set_playlist_tags] = useState<ITag[]>([]);
   const [character_tags, set_character_tags] = useState<ITag[]>([]);
   const [studio_tags, set_studio_tags] = useState<ITag[]>([]);
@@ -19,7 +18,8 @@ const TagsPanel = (props: IProps) => {
   const [tags_count, set_tags_count] = useState<number>(0);
 
   const fetch_tags = async () => {
-    const res = await Video.tags(props.video);
+    if (!video_store.selected_video) return;
+    const res = await Video.tags(video_store.selected_video);
     if (res.status !== 200) return;
     const tags: ITag[] = res.data;
     set_tags_count(tags.length);

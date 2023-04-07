@@ -1,9 +1,7 @@
 import { observer } from "mobx-react-lite";
 import IImageGallery from "../../../models/image_gallery";
-import { useContext, useState } from "react";
-import { Video } from "../../../api/agent";
+import { useState } from "react";
 import IImageMeta from "../../../models/image_meta";
-import SelectedVideosStore from "../../../store/selected_videos_store";
 import GalleryModal from "./gallery_modal";
 import GalleryImages from "./gallery_images";
 import { GalleryVariant } from "../../../lib/gallery_utils";
@@ -13,6 +11,7 @@ interface IProps {
   variant: GalleryVariant;
   viewer_height: number;
   thumb_id?: number;
+  set_thumb?: (image: IImageMeta) => Promise<boolean>;
 }
 
 const GalleryViewer = (props: IProps) => {
@@ -23,15 +22,11 @@ const GalleryViewer = (props: IProps) => {
   const handle_open = () => set_open_modal(true);
   const handle_close = () => set_open_modal(false);
 
-  const selectedVideoStore = useContext(SelectedVideosStore);
-
   const handle_thumb_set = async () => {
-    const video = selectedVideoStore.running_video;
-    if (!selected_image || !video) return;
-    const res = await Video.thumb_video(video, selected_image);
-    if (res.status === 200) {
-      set_faved_image(selected_image);
-    }
+    if (!props.set_thumb || !selected_image) return;
+    const set_success = await props.set_thumb(selected_image);
+    if (!set_success) return;
+    set_faved_image(selected_image);
   };
 
   const next_image = () => {

@@ -1,17 +1,15 @@
 import { observer } from "mobx-react-lite";
-import IVideoMeta from "../../../models/video_meta";
-import TagSearcher from "../../tags/util/searcher/tag_searcher";
+import IVideoMeta from "../../../../models/video_meta";
+import TagSearcher from "../../../tags/util/searcher/tag_searcher";
 import { useContext, useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
-import { Gallery, Tag, Video } from "../../../api/agent";
-import TagsStore from "../../../store/tags_store";
+import { Gallery, Tag, Video } from "../../../../api/agent";
+import TagsStore from "../../../../store/tags_store";
+import VideoStore from "../../../../store/video_store";
 
-interface IProps {
-  video: IVideoMeta;
-}
-
-const EditVideoForm = (props: IProps) => {
+const EditVideoForm = () => {
   const tags_store = useContext(TagsStore);
+  const video_store = useContext(VideoStore);
 
   const [selected_files, set_selected_files] = useState<FileList | null>(null);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
@@ -27,7 +25,8 @@ const EditVideoForm = (props: IProps) => {
   };
 
   const submit_edit_video_form = async () => {
-    const video = props.video;
+    const video = video_store.selected_video;
+    if (!video) return;
     // Handle Tags
     await handle_tags(video);
     // Handle Upload
@@ -70,9 +69,8 @@ const EditVideoForm = (props: IProps) => {
   };
 
   const lookup_video_tags = async () => {
-    const res = await Video.tags(props.video);
-    if (res.status !== 200) return;
-    tags_store.set_selected_tags(res.data);
+    await video_store.lookup_selected_video_tags();
+    tags_store.set_selected_tags(video_store.selected_video_tags);
   };
 
   useEffect(() => {
@@ -86,7 +84,7 @@ const EditVideoForm = (props: IProps) => {
         {/* Tag */}
         <h3>Tag Video</h3>
         <p style={{ marginBottom: "10px" }}>Associate video with the selected tags</p>
-        {props.video.tags && <TagSearcher />}
+        <TagSearcher />
       </div>
       <div style={form_section_style}>
         {/* Uplaod */}

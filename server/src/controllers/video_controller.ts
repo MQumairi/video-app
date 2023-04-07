@@ -37,7 +37,7 @@ video_controller.get("/:id", async (req: Request, res: Response) => {
   await Details(req, res);
 });
 
-video_controller.put("/:filepath/rate", async (req: Request, res: Response) => {
+video_controller.put("/:id/rate", async (req: Request, res: Response) => {
   await Rate(req, res);
 });
 

@@ -61,7 +61,7 @@ const GalleryModal = (props: IProps) => {
             <ArrowForward />
           </IconButton>
 
-          <IconButton color="primary" aria-label="upload picture" component="label" onClick={props.handle_thumb_set}>
+          <IconButton color="primary" aria-label="upload picture" component="label">
             <Info onClick={() => set_show_info(!show_info)} />
           </IconButton>
           {show_info && (

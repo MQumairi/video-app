@@ -1,24 +1,22 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Tag } from "../../../api/agent";
 import TextField from "@mui/material/TextField";
 import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from "@mui/material";
 import TagSearcher from "../util/searcher/tag_searcher";
-import ITag, { ITagCreate } from "../../../models/tag";
+import { ITagCreate } from "../../../models/tag";
+import TagsStore from "../../../store/tags_store";
 
 const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
   const [is_character, set_is_character] = useState(false);
   const [is_playlist, set_is_playlist] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
-  const [selected_tags, set_selected_tags] = useState<ITag[]>([]);
+
+  const tags_store = useContext(TagsStore);
 
   const handle_name_change = (input: any) => {
     set_tag_name(input.target.value);
-  };
-
-  const handle_tags_change = (tags: ITag[]) => {
-    set_selected_tags(tags);
   };
 
   const handle_tag_type_change = (value: string) => {
@@ -49,7 +47,7 @@ const TagsCreatePage = () => {
   const on_submit = async (input: any) => {
     const tag: ITagCreate = {
       name: tag_name,
-      child_tags: selected_tags,
+      child_tags: tags_store.selected_tags,
       is_character: is_character,
       is_playlist: is_playlist,
       is_studio: is_studio,
@@ -58,7 +56,7 @@ const TagsCreatePage = () => {
     const response = await Tag.post(tag);
     console.log(response);
     set_tag_name("");
-    set_selected_tags([]);
+    tags_store.set_selected_tags([]);
   };
   return (
     <div>
@@ -86,7 +84,7 @@ const TagsCreatePage = () => {
         </FormControl>
         <FormLabel>Child Tags</FormLabel>
         <p>Select childs tags that will be applied to any item that this tag is applied to</p>
-        <TagSearcher selected_tags={selected_tags} set_selected_tags={handle_tags_change} />
+        <TagSearcher />
         <Button sx={{ marginTop: "10px" }} variant="contained" onClick={on_submit}>
           Submit
         </Button>

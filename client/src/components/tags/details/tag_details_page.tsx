@@ -46,9 +46,7 @@ const TagDetailsPage = () => {
   const calc_page_numbers = (): number => {
     if (videos_count === 0) return 0;
     const page_numbers = Math.floor(videos_count / 12);
-    console.log("page numbers are", page_numbers);
     if (videos_count % 12 === 0) return page_numbers;
-    console.log("adding 1....");
     return page_numbers + 1;
   };
 

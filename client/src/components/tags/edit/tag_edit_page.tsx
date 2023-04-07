@@ -1,21 +1,23 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Tag } from "../../../api/agent";
 import ITag, { ITagEdit } from "../../../models/tag";
 import { Button, ButtonGroup, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import TagSearcher from "../util/searcher/tag_searcher";
+import TagsStore from "../../../store/tags_store";
 
 const TagEditPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
+
+  const tags_store = useContext(TagsStore);
 
   const [tag_name, set_tag_name] = useState("");
   const [tag_type, set_tag_type] = useState("default");
   const [is_character, set_is_character] = useState(false);
   const [is_playlist, set_is_playlist] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
-  const [selected_tags, set_selected_tags] = useState<ITag[]>([]);
   const [default_excluded, set_default_excluded] = useState<boolean>(false);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
 
@@ -34,7 +36,7 @@ const TagEditPage = () => {
       set_is_studio(tag.is_studio);
       set_tag_type("studio");
     }
-    if (tag.child_tags) set_selected_tags(tag.child_tags);
+    if (tag.child_tags) tags_store.set_selected_tags(tag.child_tags);
     set_tag(res.data.tag);
     set_default_excluded(tag.default_excluded);
   };
@@ -77,7 +79,7 @@ const TagEditPage = () => {
       is_playlist: is_playlist,
       is_character: is_character,
       is_studio: is_studio,
-      child_tags: selected_tags,
+      child_tags: tags_store.selected_tags,
       default_excluded: default_excluded,
     };
     const res = await Tag.edit(edited_tag);
@@ -126,7 +128,7 @@ const TagEditPage = () => {
         </FormControl>
         <FormLabel>Child Tags</FormLabel>
         <p style={{ marginBottom: "10px" }}>Select childs tags that will be applied to any item that this tag is applied to</p>
-        <TagSearcher selected_tags={selected_tags} set_selected_tags={set_selected_tags} />
+        <TagSearcher />
         <FormLabel>Exclude Items from search unless this tag is explicitly searched for</FormLabel>
         <FormControlLabel
           control={

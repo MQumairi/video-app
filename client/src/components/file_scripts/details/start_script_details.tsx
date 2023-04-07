@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import IFileScript from "../../../models/file_script";
-import TagsDropdown from "../../tags/tag_popover/tag_dropdown";
+import TagsDropdown from "../../tags/util/tag_dropdown";
 import { useEffect, useState } from "react";
 import { FileScripts } from "../../../api/agent";
 import { Button } from "@mui/material";
@@ -23,13 +23,14 @@ const StartScriptDetails = (props: IProps) => {
 
   const fetch_count = async () => {
     const res = await FileScripts.media_count(props.script);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_video_count(res.data.videos);
     set_image_count(res.data.images);
   };
 
   useEffect(() => {
     fetch_count();
+    // eslint-disable-next-line
   }, []);
 
   return (

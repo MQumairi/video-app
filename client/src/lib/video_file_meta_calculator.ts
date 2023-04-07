@@ -1,15 +1,13 @@
 import IVideoMeta from "../models/video_meta";
 
 export const resolution_from_height = (height: number): string => {
-  if (height == 2160) return "4K";
-  else if (height == 0) return "Any";
+  if (height === 2160) return "4K";
+  else if (height === 0) return "Any";
   else return `${height}p`;
 };
 
 export const calculate_resolution = (video: IVideoMeta | null): string => {
   if (!video || !video.height) return "";
-  console.log("video");
-  console.log(`height is ${video.height} ${video.height == 2160}`);
   return resolution_from_height(video.height);
 };
 

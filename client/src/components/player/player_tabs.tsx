@@ -7,12 +7,13 @@ import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
 import { Video } from "../../api/agent";
 import IImageGallery from "../../models/image_gallery";
-import GalleryViewer from "../galleries/gallery_details/gallery_viewer";
+import GalleryViewer from "../galleries/details/gallery_viewer";
 import EditVideoForm from "./edit_video_form";
 import DeleteVideoTab from "./delete_video_tab";
 import { Button } from "@mui/material";
 import ScriptsPanel from "./scripts_panel";
 import TagsPanel from "./tags_panel";
+import { GalleryVariant } from "../../lib/gallery_utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,7 +56,7 @@ const PlayerTabs = (props: IProps) => {
 
   const load_gallery = async () => {
     const res = await Video.gallery(props.video);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     const gallery: IImageGallery = res.data;
     setGallery(gallery);
   };
@@ -80,7 +81,7 @@ const PlayerTabs = (props: IProps) => {
             <Button style={{ margin: "10px 0px 10px 0px" }} variant="contained" href={`/galleries/${gallery.id}`} target="_blank">
               Details
             </Button>
-            <GalleryViewer gallery={gallery} viewer_height={600} />
+            <GalleryViewer gallery={gallery} variant={GalleryVariant.Standard} viewer_height={600} />
           </div>
         )}
       </TabPanel>

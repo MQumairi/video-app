@@ -1,4 +1,4 @@
-import { In, getRepository } from "typeorm";
+import { In, Not, getRepository } from "typeorm";
 import { Tag } from "../models/tag";
 import { Request } from "express";
 
@@ -8,13 +8,15 @@ export const MIN_RESOLUTION = 0;
 
 export class SearchQuery {
   included_tags: Tag[];
+  excluded_tags: Tag[];
   min_rating: number;
   max_rating: number;
   min_resolution: number;
   page: number;
 
-  constructor(included_tags: Tag[] = [], min_rating: number = 0, max_rating: number = 10, min_resolution = 0, page = 1) {
+  constructor(included_tags: Tag[] = [], excluded_tags: Tag[] = [], min_rating: number = 0, max_rating: number = 10, min_resolution = 0, page = 1) {
     this.included_tags = included_tags;
+    this.excluded_tags = excluded_tags;
     this.min_rating = min_rating;
     this.max_rating = max_rating;
     this.min_resolution = min_resolution;
@@ -22,7 +24,6 @@ export class SearchQuery {
   }
 
   static async from_request(req: Request): Promise<SearchQuery> {
-    console.log("query:", req.query);
     // Parse request
     const raw_tags = req.query.tags?.toString() ?? "";
     const raw_min_rating = req.query.minrate?.toString() ?? "0";
@@ -34,7 +35,8 @@ export class SearchQuery {
       return +i;
     });
     // Find rating range
-    const tags = await getRepository(Tag).find({ where: { id: In(tag_ids) } });
+    const included_tags = await getRepository(Tag).find({ where: { id: In(tag_ids) } });
+    const excluded_tags = await SearchQuery.lookup_excluded_tags(included_tags);
     const min_rating: number = +raw_min_rating;
     const max_rating: number = +raw_max_rating;
     // Find resolution
@@ -42,13 +44,21 @@ export class SearchQuery {
     // Find page
     const page: number = +raw_page;
     // Built query
-    return new SearchQuery(tags, min_rating, max_rating, min_resolution, page);
+    return new SearchQuery(included_tags, excluded_tags, min_rating, max_rating, min_resolution, page);
   }
 
   static async from_tag(req: Request, tag: Tag): Promise<SearchQuery> {
     const raw_page = req.query.page?.toString() ?? "1";
     const page: number = +raw_page;
-    const tags = await getRepository(Tag).find({ where: { id: tag.id } });
-    return new SearchQuery(tags, MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
+    const included_tags = await getRepository(Tag).find({ where: { id: tag.id } });
+    const excluded_tags = await SearchQuery.lookup_excluded_tags(included_tags);
+    return new SearchQuery(included_tags, excluded_tags, MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
+  }
+
+  private static async lookup_excluded_tags(included_tags: Tag[]): Promise<Tag[]> {
+    const tag_repo = getRepository(Tag);
+    const included_tag_ids = Tag.get_ids(included_tags);
+    const tags = await tag_repo.find({ where: { default_excluded: true, id: Not(In(included_tag_ids)) } });
+    return tags;
   }
 }

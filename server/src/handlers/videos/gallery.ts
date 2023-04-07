@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { ImageGallery } from "../../models/image_gallery";
 import { VideoMeta } from "../../models/video_meta";
-import { GalleryPreProcessor } from "../../lib/images_lib/gallery_preprocessor";
+import { ImagePreprocessor } from "../../lib/images_lib/image_preprocessor";
 
 const Gallery = async (req: Request, res: Response): Promise<ImageGallery | undefined> => {
   console.log("entered video gallery");
@@ -21,7 +21,7 @@ const Gallery = async (req: Request, res: Response): Promise<ImageGallery | unde
     return;
   }
   console.log(`found gallery ${gallery.id}`);
-  await GalleryPreProcessor.process_gallery(gallery);
+  await ImagePreprocessor.process_gallery(gallery);
   const images = gallery.images.sort((i1, i2) => {
     return i1.timestamp_secs - i2.timestamp_secs;
   });

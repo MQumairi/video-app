@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import IFileScript from "../../../models/file_script";
 import { FileScripts } from "../../../api/agent";
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button, FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 const FileScriptsEdit = () => {
   let script_id = useParams().script_id;
@@ -13,7 +13,7 @@ const FileScriptsEdit = () => {
   const fetch_script = async () => {
     if (!script_id) return;
     const res = await FileScripts.details(+script_id);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_script(res.data);
     if (!script) return;
     if (script.is_manual_script) set_script_type("manual");
@@ -23,6 +23,7 @@ const FileScriptsEdit = () => {
 
   useEffect(() => {
     fetch_script();
+    // eslint-disable-next-line
   }, []);
 
   if (!script) return <div>Script ({script_id}) not found</div>;

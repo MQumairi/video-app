@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import SearchForm from "./search_form";
 import SelectedVideosStore from "../../store/selected_videos_store";
-import VideoList from "../videos/video_list";
+import VideoList from "../videos/util/video_list";
 import { useSearchParams } from "react-router-dom";
 import PageSelector from "./page_selector";
 import { Search } from "../../api/agent";
@@ -19,15 +19,22 @@ const AdvancedSearchPage = () => {
   const [videos_count, set_videos_count] = useState<number>(0);
 
   const on_submit = async () => {
+    const new_search_params = search_params;
+    new_search_params.set(PAGE_PARAM_KEY, "1");
+    set_search_params(new_search_params);
+    set_current_page(1);
     await fetch_search_results();
     await fetch_random_video();
   };
 
   const fetch_search_results = async () => {
     let res = await Search.search_vidoes(search_params.toString());
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     selectedVideoStore.set_adv_search_results(res.data.videos);
     set_videos_count(res.data.count);
+    const search_params_page = search_params.get("page");
+    if (!search_params_page) return;
+    set_current_page(+search_params_page);
   };
 
   const fetch_random_video = async () => {
@@ -44,11 +51,9 @@ const AdvancedSearchPage = () => {
   };
 
   const calc_page_numbers = (): number => {
-    if (videos_count == 0) return 0;
+    if (videos_count === 0) return 0;
     const page_numbers = Math.floor(videos_count / 12);
-    console.log("page numbers are", page_numbers);
     if (videos_count % 12 === 0) return page_numbers;
-    console.log("adding 1....");
     return page_numbers + 1;
   };
 
@@ -56,6 +61,7 @@ const AdvancedSearchPage = () => {
     if (!search_params.toString()) return;
     fetch_search_results();
     fetch_random_video();
+    // eslint-disable-next-line
   }, []);
 
   return (

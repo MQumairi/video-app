@@ -42,7 +42,8 @@ const EditModeVideoItem = (props: any) => {
       set_checked(true);
       selectedVideoStore.add_selected_video(props.vid);
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div style={card_style}>

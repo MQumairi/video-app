@@ -11,12 +11,12 @@ const ImageDeletePage = () => {
   let image_id = useParams().image_id;
   const [image, set_image] = useState<IImageMeta | null>(null);
   const [delete_input, set_delete_input] = useState<string>("");
-  const [search_params, _] = useSearchParams({});
+  const [search_params] = useSearchParams({});
 
   const fetch_image = async () => {
     if (!image_id) return;
     const res = await Gallery.get_image(+image_id);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_image(res.data);
   };
 
@@ -31,6 +31,7 @@ const ImageDeletePage = () => {
 
   useEffect(() => {
     fetch_image();
+    // eslint-disable-next-line
   }, []);
 
   if (!image_id || !image) return <div>Loading Image...</div>;

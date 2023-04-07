@@ -2,9 +2,8 @@ import axios from "axios";
 import IAdvancedSearchQuery from "../models/advanced_search_query";
 import IDirectory from "../models/directory";
 import IDirectorySearchResult from "../models/directory_search_result";
-import IPlaylist from "../models/playlist";
 import ISeries from "../models/series";
-import ITag, { ITagCreate } from "../models/tag";
+import ITag, { ITagCreate, ITagEdit } from "../models/tag";
 import IVideoMeta from "../models/video_meta";
 import IImageMeta from "../models/image_meta";
 import IImageGallery from "../models/image_gallery";
@@ -47,27 +46,21 @@ export const Search = {
 
 export const Tag = {
   get: async () => axios.get(`tags`),
+  characters: async () => axios.get(`tags/characters`),
+  studios: async () => axios.get(`tags/studios`),
+  other: async () => axios.get(`tags/uncategorized`),
+  playlists: async () => axios.get(`tags/playlists`),
+  random_images: async (tag: ITag) => axios.get(`tags/${tag.id}/images`),
   post: async (tag: ITagCreate) => axios.post(`tags`, tag),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
-  tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: tags }),
+  edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),
+  tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-single-video`, { video, tags }),
   tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
   untag_video: async (videos: IVideoMeta[], tag: ITag) => axios.put(`tags/untag-videos`, { videos: videos, tag: tag }),
   add_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/add`, { tag: tag, child_tags: child_tags }),
   remove_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/remove`, { tag: tag, child_tags: child_tags }),
   delete: async (tag: ITag) => axios.delete(`tags/${tag.id}`),
-  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, { tag: tag.id }),
-};
-
-export const Playlist = {
-  get: async () => axios.get(`playlists`),
-  post: async (playlist_name: string) => axios.post(`playlists`, { name: playlist_name }),
-  details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
-  shuffle: async (playlist_id: number) => axios.get(`playlists/${playlist_id}/shuffle`),
-  add_video: async (video: IVideoMeta, playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: [video], tags: playlist }),
-  add_videos: async (videos: IVideoMeta[], playlist: IPlaylist[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: playlist }),
-  // TODO: Logic related to this call needs fixing on the front end (currently shared between playlists and series)
-  remove_videos: async (videos: IVideoMeta[], playlist: IPlaylist) => axios.put(`tags/untag-videos`, { videos: videos, tag: playlist }),
-  delete: async (playlist_id: number) => axios.delete(`playlists/${playlist_id}`),
+  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, tag),
 };
 
 export const Series = {

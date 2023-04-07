@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 import { SearchQuery } from "../../lib/search_query";
-import { MediaSearcher } from "../../lib/media_searcher";
+import { VideoSearcher } from "../../lib/videos_lib/video_searcher";
 
 const Details = async (req: Request, res: Response): Promise<Tag | undefined> => {
   console.log("entered tag details");
@@ -14,7 +14,7 @@ const Details = async (req: Request, res: Response): Promise<Tag | undefined> =>
     return undefined;
   }
   const query = await SearchQuery.from_tag(req, tag);
-  const seacher = new MediaSearcher(query);
+  const seacher = new VideoSearcher(query);
   const [videos, count] = await seacher.video_search_results();
   tag.videos = videos;
   res.status(200).send({ tag, count });

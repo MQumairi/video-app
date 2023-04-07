@@ -4,11 +4,9 @@ import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../models/video_meta";
 import HrefButton from "../misc/href_button";
 import ToggleButton from "../misc/toggle_button";
-import VideoList from "../videos/video_list";
+import VideoList from "../videos/util/video_list";
 import BrowserEditMode from "./edit_videos/browser_edit_mode";
 import SubDirectoryList from "./sub_directory_list";
-import PlaylistPopoverButton from "../popovers/playlist_popover/playlist_popover_button";
-import TagPopoverButton from "../tags/tag_popover/tag_popover_button";
 import IDirectory from "../../models/directory";
 
 interface IProps {
@@ -27,8 +25,6 @@ const BrowserResults = (props: IProps) => {
         <HrefButton href={props.back_url} textContent="Back" />
         <ToggleButton toggle={edit_mode} set_toggle={set_edit_mode} trueText="Edit" />
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
-        {edit_mode && <TagPopoverButton />}
-        {edit_mode && <PlaylistPopoverButton />}
       </ButtonGroup>
       {!edit_mode && props.directories.length > 0 && <SubDirectoryList directories={props.directories} />}
       {!edit_mode && <VideoList base="/player" videos={props.videos} />}

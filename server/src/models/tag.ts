@@ -20,6 +20,10 @@ export class Tag {
   @Column("bool", { default: false })
   is_character: boolean;
 
+  @Index()
+  @Column("bool", { default: false })
+  is_studio: boolean;
+
   @ManyToMany((type) => VideoMeta, (video) => video.tags, { cascade: true })
   @JoinTable()
   videos: VideoMeta[];
@@ -31,6 +35,10 @@ export class Tag {
   @ManyToMany((type) => Tag, { cascade: true })
   @JoinTable()
   child_tags: Tag[];
+
+  @Index()
+  @Column("bool", { default: false })
+  default_excluded: boolean;
 
   static create(name: string): Tag {
     const tag = new Tag();
@@ -54,5 +62,11 @@ export class Tag {
       tags.push(saved_tag);
     }
     return tags;
+  }
+
+  static get_ids(tags: Tag[]): number[] {
+    return tags.map((t) => {
+      return t.id;
+    });
   }
 }

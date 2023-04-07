@@ -20,9 +20,6 @@ const NavBar = () => {
           <a href="/tags">Tags</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
-          <a href="/playlists">Playlists</a>
-        </Typography>
-        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/series">Series</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>

@@ -4,8 +4,8 @@ import { promisify } from "util";
 const exec = promisify(exec_sync);
 
 export class Timestamper {
-  START_PERCENTILE = 0.25;
-  END_PERCENTILE = 0.75;
+  START_PERCENTILE = 0.2;
+  END_PERCENTILE = 0.8;
 
   video: VideoMeta;
 
@@ -52,7 +52,7 @@ export class Timestamper {
     const current_timestamps = this.get_thumb_timestamps();
     // If video already has timestamps...
     if (current_timestamps.length > 0) {
-      return await this.extra_video_markers(duration_secs, Math.min(this.video.gallery.images.length + 1, 10), current_timestamps);
+      return await this.extra_video_markers(duration_secs, current_timestamps);
     }
     // Otherwise...
     return await this.new_video_markers(duration_secs, n);
@@ -79,30 +79,20 @@ export class Timestamper {
     }
   }
 
-  async extra_video_markers(video_duration: number, n: number, current_timestamps: number[]) {
-    console.log("extra video markers to", current_timestamps);
-    const first_current_timestamp = Math.floor(current_timestamps[0]);
-    const last_current_timestamp = Math.floor(current_timestamps[current_timestamps.length - 1]);
-
-    // First Marker
-    const FIRST_MARKER_SECS = Math.floor(first_current_timestamp / 2);
-    // Last Marker
-    const END_MARKER_SECS = Math.floor((last_current_timestamp + video_duration) / 2);
-    // Number of secs between two consecutive markers
-    const MARKER_INTERVAL = Math.floor((END_MARKER_SECS - FIRST_MARKER_SECS) / (n - 1));
-    console.log({
-      first_current: Timestamper.seconds_to_duration(first_current_timestamp),
-      last_current: Timestamper.seconds_to_duration(last_current_timestamp),
-      first_marker: Timestamper.seconds_to_duration(FIRST_MARKER_SECS),
-      last_marker: Timestamper.seconds_to_duration(END_MARKER_SECS),
-      interval: Timestamper.seconds_to_duration(MARKER_INTERVAL),
-    });
-
-    for (let i = FIRST_MARKER_SECS; i < END_MARKER_SECS; i += MARKER_INTERVAL) {
-      if (this.thumbnail_timestamps.length >= n) break;
-      this.thumbnail_timestamps_secs.push(i);
-      this.thumbnail_timestamps.push(Timestamper.seconds_to_duration(i));
+  async extra_video_markers(video_duration: number, current_timestamps: number[]) {
+    const sorted_timestams = current_timestamps.sort((a, b) => a - b);
+    const min_interval = 5;
+    for (let i = 0; i < sorted_timestams.length - 1; i++) {
+      const min_bound = i === 0 ? 0 : sorted_timestams[i];
+      const max_bound = sorted_timestams[i + 1];
+      const ts = Timestamper.random_int(min_bound, max_bound);
+      if (ts - min_bound <= min_interval || max_bound - ts <= min_interval) continue;
+      this.thumbnail_timestamps_secs.push(ts);
+      this.thumbnail_timestamps.push(Timestamper.seconds_to_duration(ts));
     }
+    const last_ts = Timestamper.random_int(this.thumbnail_timestamps_secs.at(-1)!, video_duration);
+    this.thumbnail_timestamps_secs.push(last_ts);
+    this.thumbnail_timestamps.push(Timestamper.seconds_to_duration(last_ts));
   }
 
   get_timestamps() {
@@ -137,5 +127,14 @@ export class Timestamper {
     // Append random millsecond duration
     duration += `.${Math.floor(Math.random() * 1000)}`;
     return duration;
+  }
+
+  private static random_int(min: number, max: number): number {
+    const diff = max - min;
+    const rand = Math.random();
+    const fixed = +rand.toFixed(3);
+    const factor = Math.floor(fixed * diff);
+    const res = +factor + +min;
+    return res;
   }
 }

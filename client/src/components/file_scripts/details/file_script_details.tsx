@@ -17,12 +17,13 @@ const FileScriptsDetails = () => {
   const fetch_script = async () => {
     if (!script_id) return;
     const res = await FileScripts.details(+script_id);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_script(res.data);
   };
 
   useEffect(() => {
     fetch_script();
+    // eslint-disable-next-line
   }, []);
 
   if (!script) return <div>Script ({script_id}) not found</div>;

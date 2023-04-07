@@ -10,7 +10,7 @@ const SearchBar = () => {
   };
 
   const handle_search_submit = (event: any) => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       window.location.replace(`/browser/search/${search_query}`);
     }
   };

@@ -54,8 +54,8 @@ export class VideoSearcher {
 
   private query_video_tags = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
     query.innerJoin("video.tags", "tag");
-    query.where(`video.id IN (${this.get_inner_query(this.query.included_tags, true).getSql()})`);
-    query.andWhere(`video.id NOT IN (${this.get_inner_query(this.query.excluded_tags, false).getSql()})`);
+    if (this.query.included_tags.length > 0) query.where(`video.id IN (${this.get_inner_query(this.query.included_tags, true).getSql()})`);
+    if (this.query.excluded_tags.length > 0) query.andWhere(`video.id NOT IN (${this.get_inner_query(this.query.excluded_tags, false).getSql()})`);
     return query;
   };
 

@@ -5,7 +5,7 @@ import { Search, Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import { PathConverter } from "../../../util/path_converter";
-import VideoTags from "../../player/video_tags";
+import VideoTags from "../../videos/player/video_tags";
 import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
 import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";

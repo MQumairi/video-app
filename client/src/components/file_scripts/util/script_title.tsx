@@ -1,4 +1,4 @@
-import IFileScript from "../../models/file_script";
+import IFileScript from "../../../models/file_script";
 import StartIcon from "@mui/icons-material/Start";
 import PublicIcon from "@mui/icons-material/Public";
 import PlumbingIcon from "@mui/icons-material/Plumbing";
@@ -19,4 +19,4 @@ const ScriptTitle = (props: IProps) => {
   );
 };
 
-export default observer(ScriptTitle)
+export default observer(ScriptTitle);

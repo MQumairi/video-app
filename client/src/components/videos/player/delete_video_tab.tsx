@@ -1,8 +1,8 @@
 import { useState } from "react";
-import IVideoMeta from "../../models/video_meta";
+import IVideoMeta from "../../../models/video_meta";
 import { Button, Input } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { Video } from "../../api/agent";
+import { Video } from "../../../api/agent";
 
 interface IProps {
   video: IVideoMeta;

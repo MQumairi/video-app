@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import IVideoMeta from "../../models/video_meta";
-import { Video } from "../../api/agent";
-import ITag from "../../models/tag";
-import { TagType, get_tag_type } from "../../lib/tag_util";
+import IVideoMeta from "../../../models/video_meta";
+import { Video } from "../../../api/agent";
+import ITag from "../../../models/tag";
+import { TagType, get_tag_type } from "../../../lib/tag_util";
 import { FormLabel } from "@mui/material";
-import TagsList from "../tags/util/tags_list";
+import TagsList from "../../tags/util/tags_list";
 
 interface IProps {
   video: IVideoMeta;

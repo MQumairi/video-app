@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
-import IVideoMeta from "../../models/video_meta";
-import TagSearcher from "../tags/util/searcher/tag_searcher";
+import IVideoMeta from "../../../models/video_meta";
+import TagSearcher from "../../tags/util/searcher/tag_searcher";
 import { useContext, useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
-import { Gallery, Tag, Video } from "../../api/agent";
-import TagsStore from "../../store/tags_store";
+import { Gallery, Tag, Video } from "../../../api/agent";
+import TagsStore from "../../../store/tags_store";
 
 interface IProps {
   video: IVideoMeta;

@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
-import IFileScript from "../../models/file_script";
+import IFileScript from "../../../models/file_script";
 import { useEffect, useState } from "react";
-import IVideoMeta from "../../models/video_meta";
-import { Video } from "../../api/agent";
+import IVideoMeta from "../../../models/video_meta";
+import { Video } from "../../../api/agent";
 import VideoScriptRow from "./video_script_row";
 
 interface IProps {

@@ -4,16 +4,16 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
-import IVideoMeta from "../../models/video_meta";
-import { Video } from "../../api/agent";
-import IImageGallery from "../../models/image_gallery";
-import GalleryViewer from "../galleries/details/gallery_viewer";
+import IVideoMeta from "../../../models/video_meta";
+import { Video } from "../../../api/agent";
+import IImageGallery from "../../../models/image_gallery";
+import GalleryViewer from "../../galleries/details/gallery_viewer";
 import EditVideoForm from "./edit_video_form";
 import DeleteVideoTab from "./delete_video_tab";
 import { Button } from "@mui/material";
 import ScriptsPanel from "./scripts_panel";
 import TagsPanel from "./tags_panel";
-import { GalleryVariant } from "../../lib/gallery_utils";
+import { GalleryVariant } from "../../../lib/gallery_utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;

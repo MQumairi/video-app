@@ -1,15 +1,15 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { PathConverter } from "../../util/path_converter";
-import IVideoMeta from "../../models/video_meta";
-import { Search, Video } from "../../api/agent";
+import { PathConverter } from "../../../util/path_converter";
+import IVideoMeta from "../../../models/video_meta";
+import { Search, Video } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import VideoPlayer from "./video_player";
 import { observer } from "mobx-react-lite";
-import SelectedVideosStore from "../../store/selected_videos_store";
+import SelectedVideosStore from "../../../store/selected_videos_store";
 import { Button, ButtonGroup, Chip, Rating, Stack } from "@mui/material";
 import { Star } from "@mui/icons-material";
 import PlayerTabs from "./player_tabs";
-import { calculate_resolution } from "../../lib/video_file_meta_calculator";
+import { calculate_resolution } from "../../../lib/video_file_meta_calculator";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";

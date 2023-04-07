@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
-import RatingSelector from "./rating_selector";
-import TagSearcher from "../tags/util/searcher/tag_searcher";
+import RatingSelector from "../../misc/rating_selector";
+import TagSearcher from "../../tags/util/searcher/tag_searcher";
 import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup } from "@mui/material";
-import TagsStore from "../../store/tags_store";
+import TagsStore from "../../../store/tags_store";
 
 interface IProps {
   on_submit: () => void;

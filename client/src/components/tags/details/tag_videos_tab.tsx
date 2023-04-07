@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import ITag from "../../../models/tag";
 import VideoList from "../../videos/util/video_list";
-import PageSelector from "../../search/page_selector";
+import PageSelector from "../../misc/page_selector";
 
 interface IProps {
   tag: ITag;

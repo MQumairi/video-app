@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { base_url } from "../../api/agent";
-import { PathConverter } from "../../util/path_converter";
+import { base_url } from "../../../api/agent";
+import { PathConverter } from "../../../util/path_converter";
 
 const VideoPlayer = (props: any) => {
   const box_style = {

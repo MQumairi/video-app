@@ -7,8 +7,7 @@ import { Button, ButtonGroup } from "@mui/material";
 import ManualScriptDetails from "./manual_script_details";
 import GlobalScriptDetails from "./global_script_details";
 import StartScriptDetails from "./start_script_details";
-import ScriptTitle from "../script_title";
-
+import ScriptTitle from "../util/script_title";
 
 const FileScriptsDetails = () => {
   let script_id = useParams().script_id;
@@ -30,7 +29,7 @@ const FileScriptsDetails = () => {
 
   return (
     <div>
-      <ScriptTitle script={script}/>
+      <ScriptTitle script={script} />
       <ButtonGroup>
         <Button variant="contained" href="/file-scripts">
           Back

@@ -1,15 +1,15 @@
 import BrowserPage from "./components/browser/browser_page";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PlayerPage from "./components/player/player_page";
+import PlayerPage from "./components/videos/player/player_page";
 import CssBaseline from "@mui/material/CssBaseline";
 import TagsIndexPage from "./components/tags/index/tags_index_page";
 import TagsCreatePage from "./components/tags/create/tags_create_page";
 import { Box } from "@mui/material";
 import TagDetailsPage from "./components/tags/details/tag_details_page";
-import NavBar from "./components/nav_bar";
+import NavBar from "./components/misc/nav_bar";
 import TagsDeletePage from "./components/tags/delete/tags_delete_page";
 import { observer } from "mobx-react-lite";
-import AdvancedSearchPage from "./components/search/search_page";
+import AdvancedSearchPage from "./components/videos/index/search_page";
 import TagEditPage from "./components/tags/edit/tag_edit_page";
 import SeriesIndexPage from "./components/series/index/series_index_page";
 import SeriesCreatePage from "./components/series/create/series_create_page";

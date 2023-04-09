@@ -10,7 +10,7 @@ interface IProps {
   params?: string;
 }
 
-export const DirectoryVideos = (props: IProps) => {
+export const VideoList = (props: IProps) => {
   const video_item_url = (video: IVideoMeta): string => {
     const path = `${props.base}/${PathConverter.to_query(video.path)}`;
     if (!props.params) return path;
@@ -28,4 +28,4 @@ export const DirectoryVideos = (props: IProps) => {
   );
 };
 
-export default observer(DirectoryVideos);
+export default observer(VideoList);

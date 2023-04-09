@@ -10,6 +10,7 @@ import Tags from "../handlers/videos/tags";
 import Scripts from "../handlers/videos/scripts";
 import ProcessVideoMeta from "../handlers/videos/process_video_meta";
 import Details from "../handlers/videos/details";
+import Similar from "../handlers/videos/similar";
 
 const video_controller = Router();
 
@@ -23,6 +24,10 @@ video_controller.get("/:id/tags", async (req: Request, res: Response) => {
 
 video_controller.get("/:id/scripts", async (req: Request, res: Response) => {
   await Scripts(req, res);
+});
+
+video_controller.get("/:id/similar", async (req: Request, res: Response) => {
+  await Similar(req, res);
 });
 
 video_controller.get("/:filepath/metadata", async (req: Request, res: Response) => {

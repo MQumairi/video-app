@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import IVideoMeta from "../../../models/video_meta";
 import { Button, Input } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Video } from "../../../api/agent";

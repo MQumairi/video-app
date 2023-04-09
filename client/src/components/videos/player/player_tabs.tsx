@@ -8,8 +8,7 @@ import DeleteVideoTab from "./delete_video_tab";
 import ScriptsPanel from "./scripts/scripts_panel";
 import TagsPanel from "./tags/tags_panel";
 import GalleryPanel from "./gallery/gallery_panel";
-import VideoStore from "../../../store/video_store";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -39,8 +38,6 @@ const tab_props = (index: number) => {
 };
 
 const PlayerTabs = () => {
-  const video_store = useContext(VideoStore);
-
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

@@ -30,6 +30,7 @@ export const Video = {
   gallery: async (video: IVideoMeta) => axios.get(`videos/${video.id}/gallery`),
   delete: async (video: IVideoMeta) => axios.delete(`videos/${video.id}`),
   tags: async (video: IVideoMeta) => axios.get(`videos/${video.id}/tags`),
+  similar: async (video: IVideoMeta) => axios.get(`videos/${video.id}/similar`),
   scripts: async (video: IVideoMeta) => axios.get(`videos/${video.id}/scripts`),
   reprocess: async (video: IVideoMeta) => axios.put(`videos/${video.id}/process-meta-data`),
   // process-meta-data

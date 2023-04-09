@@ -5,7 +5,7 @@ import { Search, Video } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import VideoStore from "../../../store/video_store";
-import Video_details from "./video_details";
+import VideoDetails from "./video_details";
 
 const PlayerPage = () => {
   let vid_path = useParams().vid_path ?? "videos";
@@ -52,7 +52,7 @@ const PlayerPage = () => {
     // eslint-disable-next-line
   }, [back_url]);
 
-  return <Video_details back_url={back_url} random_url={random_vid_url} />;
+  return <VideoDetails back_url={back_url} random_url={random_vid_url} />;
 };
 
 export default observer(PlayerPage);

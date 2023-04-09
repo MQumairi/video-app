@@ -22,6 +22,8 @@ class VideoStore {
 
   @observable selected_video_scripts: IFileScript[] = [];
 
+  @observable selected_video_similiar_videos: IVideoMeta[] = [];
+
   @action set_selected_video = (video: IVideoMeta | undefined) => {
     this.selected_video = video;
     if (video) this.selected_video_rating = video.rating;
@@ -50,6 +52,13 @@ class VideoStore {
     const res = await Video.scripts(this.selected_video);
     if (res.status !== 200) return;
     this.selected_video_scripts = res.data;
+  };
+
+  @action lookup_selected_video_similar_videos = async () => {
+    if (!this.selected_video) return;
+    const res = await Video.similar(this.selected_video);
+    if (res.status !== 200) return;
+    this.selected_video_similiar_videos = res.data;
   };
 }
 

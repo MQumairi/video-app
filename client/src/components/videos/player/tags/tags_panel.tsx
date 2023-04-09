@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
-import IVideoMeta from "../../../../models/video_meta";
 import { Video } from "../../../../api/agent";
 import ITag from "../../../../models/tag";
 import { TagType, get_tag_type } from "../../../../lib/tag_util";
 import { FormLabel } from "@mui/material";
 import TagsList from "../../../tags/util/tags_list";
 import VideoStore from "../../../../store/video_store";
+import VideoList from "../../util/video_list";
 
 const TagsPanel = () => {
   const video_store = useContext(VideoStore);
@@ -51,6 +51,7 @@ const TagsPanel = () => {
 
   useEffect(() => {
     fetch_tags();
+    video_store.lookup_selected_video_similar_videos();
     // eslint-disable-next-line
   }, []);
 
@@ -84,6 +85,12 @@ const TagsPanel = () => {
         <div style={tag_row_style}>
           <FormLabel>Playlists</FormLabel>
           <TagsList tags={playlist_tags} />
+        </div>
+      )}
+      {video_store.selected_video_similiar_videos.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Similar Videos</FormLabel>
+          <VideoList base="/player" videos={video_store.selected_video_similiar_videos} />
         </div>
       )}
     </div>

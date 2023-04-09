@@ -22,6 +22,8 @@ const AssociateTag = async (req: Request, res: Response): Promise<FileScript | u
     .addGroupBy("gallery.id")
     .leftJoinAndSelect("tag.videos", "video")
     .addGroupBy("video.id")
+    .leftJoinAndSelect("tag.file_scripts", "file_script")
+    .addGroupBy("file_script.id")
     .where(`tag.id = ${req_tag_id}`)
     .getOne();
 
@@ -30,17 +32,8 @@ const AssociateTag = async (req: Request, res: Response): Promise<FileScript | u
     res.status(404).send({ message: "tag not found" });
     return;
   }
-  // Associate all tag videos with script
-  for (let v of tag.videos) {
-    console.log(`associating to video: ${v.id}`);
-    await FileScript.associate_script_to_video(script, v);
-  }
-  // Associate all tag galleries with script
-  for (let g of tag.galleries) {
-    console.log(`associating to gallery: ${g.id}`);
-    await FileScript.associate_script_to_gallery(script, g);
-  }
-  console.log(`done associating ${script.name} script to media`);
+  await FileScript.associate_script_to_tag(script, tag);
+  console.log(`finished associating script ${script.id} to tag ${tag.id}`);
   res.status(200).send(script);
   return script;
 };

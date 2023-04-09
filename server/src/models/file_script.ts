@@ -5,6 +5,8 @@ import { basename } from "path";
 import { ImageGallery } from "./image_gallery";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
+import { Tag } from "./tag";
+import Tagger from "../lib/tagger";
 const exec = promisify(exec_sync);
 
 @Entity()
@@ -42,6 +44,9 @@ export class FileScript {
   @ManyToMany((type) => ImageMeta, (image) => image.file_scripts, { cascade: true })
   @JoinTable()
   images: ImageMeta[];
+
+  @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
+  tags: Tag[];
 
   static create_from_path(path: string): FileScript {
     const file_script = new FileScript();
@@ -106,6 +111,28 @@ export class FileScript {
     if (FileScript.script_exists_in(script, found_video.file_scripts)) return;
     found_video.file_scripts.push(script);
     await video_repo.save(found_video);
+  }
+
+  static async associate_script_to_tag(script: FileScript, tag: Tag) {
+    console.log("associated tag to script...");
+    const tag_repo = getRepository(Tag);
+    if (!FileScript.script_exists_in(script, tag.file_scripts)) {
+      tag.file_scripts.push(script);
+      const saved_tag = await tag_repo.save(tag);
+      console.log("saved tag with scripts:", saved_tag.file_scripts);
+    }
+
+    console.log("associated video to script");
+    for (let v of tag.videos) {
+      console.log(`associating to video: ${v.id}`);
+      await FileScript.associate_script_to_video(script, v);
+    }
+
+    console.log("associated gallery to script");
+    for (let g of tag.galleries) {
+      console.log(`associating to gallery: ${g.id}`);
+      await FileScript.associate_script_to_gallery(script, g);
+    }
   }
 
   static async execute_script(script: FileScript, args: string) {

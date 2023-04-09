@@ -2,7 +2,7 @@ import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import { VideoMeta } from "../../models/video_meta";
 import { Directory } from "../directory";
-import { existsSync } from "fs";
+import { existsSync, statSync } from "fs";
 import { Timestamper } from "./timestamper";
 const exec = promisify(exec_sync);
 
@@ -45,5 +45,10 @@ export class VideoFileProber {
     } catch (err) {
       console.log("encountered erro:", err);
     }
+  };
+
+  get_created_time = (): Date => {
+    const stats = statSync(this.video.path);
+    return stats.ctime;
   };
 }

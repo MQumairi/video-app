@@ -5,24 +5,17 @@ import IDirectory from "../../models/directory";
 import { PathConverter } from "../../util/path_converter";
 import BrowserResults from "./browser_results";
 import IVideoMeta from "../../models/video_meta";
-import SearchBar from "./search_bar";
 import { observer } from "mobx-react-lite";
 
 const BrowserPage = () => {
   let dir_path = useParams().dir_path;
-  let url_query = useParams().query;
   const [title, set_title] = useState<string>("");
   const [parent_page, set_parent_page] = useState<string>("");
   const [directories, set_directories] = useState<IDirectory[]>([]);
   const [videos, set_videos] = useState<IVideoMeta[]>([]);
 
   const fetch_data = async () => {
-    if (!url_query) {
-      await fetch_browser_data();
-    } else if (url_query) {
-      console.log("fetching search data");
-      await fetch_search_data(url_query);
-    }
+    await fetch_browser_data();
   };
 
   const fetch_browser_data = async () => {
@@ -38,25 +31,14 @@ const BrowserPage = () => {
     }
   };
 
-  const fetch_search_data = async (url_query: string) => {
-    const response = await Directory.search(url_query);
-    console.log("search response:");
-    console.log(response);
-    set_directories(response.directories);
-    set_videos(response.videos);
-    set_title(url_query);
-    set_parent_page(`${url_query}`);
-  };
-
   useEffect(() => {
     fetch_data();
     // eslint-disable-next-line
-  }, [dir_path, url_query]);
+  }, []);
 
   return (
     <div>
       <h1>{title}</h1>
-      <SearchBar />
       <BrowserResults back_url={parent_page} directories={directories} videos={videos} />
     </div>
   );

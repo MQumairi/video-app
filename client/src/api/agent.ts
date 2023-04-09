@@ -1,5 +1,4 @@
 import axios from "axios";
-import ISearchQuery from "../models/search_query";
 import IDirectory from "../models/directory";
 import IDirectorySearchResult from "../models/directory_search_result";
 import ISeries from "../models/series";

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
+import { Button, ButtonGroup, Chip, FormGroup, FormLabel, Stack } from "@mui/material";
 import { calculate_resolution } from "../../../lib/video_file_meta_calculator";
 import VideoPlayer from "./video_player";
 import PlayerTabs from "./player_tabs";
@@ -40,8 +40,9 @@ const VideoDetails = (props: IProps) => {
       <h1>{video.name}</h1>
       <div>
         <Stack direction="row" spacing={1}>
-          <Chip label={video.id} color="primary" variant="outlined" />
-          <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />
+          {video.id && <Chip label={video.id} color="primary" variant="outlined" />}
+          {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
+          {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
@@ -49,7 +50,9 @@ const VideoDetails = (props: IProps) => {
         {props.random_url && <Button href={props.random_url}>Random</Button>}
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />
-      <RatingStars default_rating={video.rating} rating={video_store.selected_video_rating} set_rating={handle_rating_change} />
+      <FormGroup sx={{ marginTop: "30px" }}>
+        <RatingStars default_rating={video.rating} rating={video_store.selected_video_rating} set_rating={handle_rating_change} />
+      </FormGroup>
       <PlayerTabs />
     </div>
   );

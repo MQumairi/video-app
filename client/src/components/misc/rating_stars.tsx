@@ -14,7 +14,6 @@ const RatingStars = (props: IProps) => {
       value={props.rating}
       defaultValue={props.default_rating}
       size="large"
-      style={{ marginTop: "30px", marginBottom: "5px" }}
       onChange={(_, newValue) => {
         props.set_rating(newValue);
       }}

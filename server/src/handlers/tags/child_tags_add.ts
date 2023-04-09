@@ -9,7 +9,6 @@ const AddChildTags = async (req: Request, res: Response): Promise<void> => {
   try {
     const tag: Tag = req.body.tag;
     const new_child_tags: Tag[] = req.body.child_tags;
-    console.log("new_child_tags:", new_child_tags);
     const tag_repo = getRepository(Tag);
     // Find tags
     const found_tag = await tag_repo.findOne({ where: { name: tag.name }, relations: ["child_tags", "videos"] });

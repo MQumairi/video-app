@@ -12,6 +12,8 @@ export class VideoPreprocessor {
       return false;
     }
     await VideoPreprocessor.execute_start_scripts(video);
+    // Don't await as this doesn't need to block
+    VideoPreprocessor.increment_views(video);
     return true;
   }
 
@@ -20,5 +22,10 @@ export class VideoPreprocessor {
     for (const script of video.file_scripts) {
       if (script.is_start_script) await FileScript.execute_script(script, video.path);
     }
+  }
+
+  static async increment_views(video: VideoMeta) {
+    video.views += 1;
+    await getRepository(VideoMeta).save(video);
   }
 }

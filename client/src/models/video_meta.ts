@@ -19,4 +19,6 @@ export default interface IVideoMeta {
   duration_sec?: number;
   width?: number;
   height?: number;
+  created_at?: Date;
+  views: number;
 }

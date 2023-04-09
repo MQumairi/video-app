@@ -81,7 +81,7 @@ export class Timestamper {
 
   async extra_video_markers(video_duration: number, current_timestamps: number[]) {
     const sorted_timestams = current_timestamps.sort((a, b) => a - b);
-    const min_interval = 5;
+    const min_interval = Math.max(Math.floor(video_duration / 200), 5);
     for (let i = 0; i < sorted_timestams.length - 1; i++) {
       const min_bound = i === 0 ? 0 : sorted_timestams[i];
       const max_bound = sorted_timestams[i + 1];

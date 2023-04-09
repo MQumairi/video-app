@@ -27,7 +27,7 @@ const BrowserResults = (props: IProps) => {
         {edit_mode && <ToggleButton toggle={check_all} set_toggle={set_check_all} falseText="Check All" trueText="Unlock Check" />}
       </ButtonGroup>
       {!edit_mode && props.directories.length > 0 && <SubDirectoryList directories={props.directories} />}
-      {!edit_mode && <VideoList base="/player" videos={props.videos} />}
+      {!edit_mode && <VideoList base="/browser/player" videos={props.videos} />}
       {edit_mode && <BrowserEditMode video_paths={props.videos} check_all={check_all} />}
     </div>
   );

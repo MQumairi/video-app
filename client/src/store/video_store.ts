@@ -5,6 +5,7 @@ import IImageGallery from "../models/image_gallery";
 import ITag from "../models/tag";
 import IFileScript from "../models/file_script";
 import { Video } from "../api/agent";
+import { PathConverter } from "../util/path_converter";
 
 class VideoStore {
   constructor() {
@@ -31,6 +32,23 @@ class VideoStore {
 
   @action set_selected_video_rating = (rating: number | null) => {
     this.selected_video_rating = rating;
+  };
+
+  @action lookup_selected_video = async (id: number): Promise<IVideoMeta | undefined> => {
+    const res = await Video.details(id);
+    if (res.status !== 200) return;
+    const received_video: IVideoMeta = res.data;
+    this.set_selected_video(received_video);
+    return received_video;
+  };
+
+  @action lookup_selected_video_from_path = async (path: string): Promise<IVideoMeta | undefined> => {
+    const api_query = PathConverter.to_query(path);
+    const res = await Video.details_from_path(api_query);
+    if (res.status !== 200) return;
+    const received_video: IVideoMeta = res.data;
+    this.set_selected_video(received_video);
+    return received_video;
   };
 
   @action lookup_selected_video_tags = async () => {

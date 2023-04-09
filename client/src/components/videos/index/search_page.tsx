@@ -6,9 +6,8 @@ import VideoList from "../util/video_list";
 import { useSearchParams } from "react-router-dom";
 import PageSelector from "../../misc/page_selector";
 import { Search } from "../../../api/agent";
-import { PathConverter } from "../../../util/path_converter";
 
-const AdvancedSearchPage = () => {
+const SearchPage = () => {
   const PAGE_PARAM_KEY = "page";
 
   const selectedVideoStore = useContext(SelectedVideosStore);
@@ -38,8 +37,8 @@ const AdvancedSearchPage = () => {
   };
 
   const fetch_random_video = async () => {
-    let response = await Search.shuffle(search_params.toString());
-    set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
+    const random_video = await Search.shuffle(search_params.toString());
+    set_random_vid_url(`/player/${random_video.id}`);
   };
 
   const handle_page_change = (page: number) => {
@@ -75,4 +74,4 @@ const AdvancedSearchPage = () => {
   );
 };
 
-export default observer(AdvancedSearchPage);
+export default observer(SearchPage);

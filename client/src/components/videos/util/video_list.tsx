@@ -12,7 +12,13 @@ interface IProps {
 
 export const VideoList = (props: IProps) => {
   const video_item_url = (video: IVideoMeta): string => {
-    const path = `${props.base}/${PathConverter.to_query(video.path)}`;
+    console.log("video id:", video.id);
+    let path = "";
+    if (video.id) {
+      path = `${props.base}/${video.id}`;
+    } else {
+      path = `${props.base}/${PathConverter.to_query(video.path)}`;
+    }
     if (!props.params) return path;
     return `${path}?${props.params}`;
   };

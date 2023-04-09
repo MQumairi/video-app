@@ -1,5 +1,5 @@
 import axios from "axios";
-import IAdvancedSearchQuery from "../models/advanced_search_query";
+import ISearchQuery from "../models/search_query";
 import IDirectory from "../models/directory";
 import IDirectorySearchResult from "../models/directory_search_result";
 import ISeries from "../models/series";
@@ -37,9 +37,6 @@ export const Video = {
 };
 
 export const Search = {
-  set_query: async (query: IAdvancedSearchQuery): Promise<IAdvancedSearchQuery> => (await axios.post(`search/queries`, query)).data,
-  get_query: async (): Promise<IAdvancedSearchQuery> => await axios.get(`search/queries`),
-  search_cached_query: async (): Promise<IVideoMeta[]> => (await axios.get(`search`)).data,
   search_vidoes: async (search_param: string) => axios.get(`search?${search_param}`),
   search_galleries: async (search_param: string) => await axios.get(`search/galleries?${search_param}`),
   shuffle: async (search_param: string): Promise<IVideoMeta> => (await axios.get(`search/shuffle?${search_param}`)).data,

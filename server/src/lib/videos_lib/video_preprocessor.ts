@@ -5,7 +5,7 @@ import { getRepository } from "typeorm";
 
 export class VideoPreprocessor {
   static async preprocess(video: VideoMeta): Promise<boolean> {
-    if (!existsSync(video.path)) {
+    if (!existsSync(video.path) && !VideoMeta.has_scripts(video)) {
       const video_repo = getRepository(VideoMeta);
       console.log("❌ Video file doesn't exist. Removing from database");
       await video_repo.remove(video);
@@ -18,7 +18,7 @@ export class VideoPreprocessor {
   }
 
   static async execute_start_scripts(video: VideoMeta) {
-    if (!video.file_scripts || video.file_scripts.length === 0) return;
+    if (!VideoMeta.has_scripts(video)) return;
     for (const script of video.file_scripts) {
       if (script.is_start_script) await FileScript.execute_script(script, video.path);
     }

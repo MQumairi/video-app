@@ -112,4 +112,8 @@ export class VideoMeta {
     video.gallery.thumbnail = video.thumbnail;
     await getRepository(ImageGallery).save(video.gallery);
   }
+
+  static has_scripts(video: VideoMeta): boolean {
+    return video.file_scripts && video.file_scripts.length > 0;
+  }
 }

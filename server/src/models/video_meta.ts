@@ -103,4 +103,13 @@ export class VideoMeta {
       return false;
     }
   }
+
+  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta) {
+    video.thumbnail = thumbnail;
+    await getRepository(VideoMeta).save(video);
+    if (!video.gallery || video.gallery.thumbnail) return;
+    console.log("setting gallery thumbnail");
+    video.gallery.thumbnail = video.thumbnail;
+    await getRepository(ImageGallery).save(video.gallery);
+  }
 }

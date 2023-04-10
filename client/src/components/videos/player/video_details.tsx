@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Button, ButtonGroup, Chip, FormGroup, FormLabel, Stack } from "@mui/material";
+import { Button, ButtonGroup, Chip, FormGroup, Stack } from "@mui/material";
 import { calculate_resolution } from "../../../lib/video_file_meta_calculator";
 import VideoPlayer from "./video_player";
 import PlayerTabs from "./player_tabs";

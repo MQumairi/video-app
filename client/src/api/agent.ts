@@ -33,6 +33,9 @@ export const Video = {
   similar: async (video: IVideoMeta) => axios.get(`videos/${video.id}/similar`),
   scripts: async (video: IVideoMeta) => axios.get(`videos/${video.id}/scripts`),
   reprocess: async (video: IVideoMeta) => axios.put(`videos/${video.id}/process-meta-data`),
+  popular: async () => axios.get(`videos/popular`),
+  latest: async () => axios.get(`videos/latest`),
+  discover: async () => axios.get(`videos/discover`),
   // process-meta-data
 };
 

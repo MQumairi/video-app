@@ -14,19 +14,22 @@ const NavBar = () => {
     <AppBar position="static" sx={bar_style}>
       <Toolbar variant="dense">
         <Typography variant="h6" color="inherit" component="div">
-          <a href="/">Browser</a>
+          <a href="/">Home</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/browser">Browser</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/tags">Tags</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
-          <a href="/series">Series</a>
-        </Typography>
-        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
-          <a href="/search">Videos</a>
+          <a href="/search">Search</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/galleries">Galleries</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/series">Series</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/file-scripts">Scripts</a>

@@ -9,7 +9,7 @@ import TagDetailsPage from "./components/tags/details/tag_details_page";
 import NavBar from "./components/misc/nav_bar";
 import TagsDeletePage from "./components/tags/delete/tags_delete_page";
 import { observer } from "mobx-react-lite";
-import SearchPage from "./components/videos/index/search_page";
+import SearchPage from "./components/videos/search/search_page";
 import TagEditPage from "./components/tags/edit/tag_edit_page";
 import SeriesIndexPage from "./components/series/index/series_index_page";
 import SeriesCreatePage from "./components/series/create/series_create_page";
@@ -24,6 +24,7 @@ import FileScriptDetails from "./components/file_scripts/details/file_script_det
 import FileScriptEdit from "./components/file_scripts/edit/file_script_edit";
 import ImageDeletePage from "./components/galleries/image_delete/image_delete_page";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import HomePage from "./components/videos/index/home_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -49,10 +50,11 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             {/* Video System */}
+            <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="player/:vid_id" element={<PlayerPage />} />
             {/* Browser System */}
-            <Route index element={<BrowserPage />} />
+            <Route path="browser" element={<BrowserPage />} />
             <Route path="browser/search/:query/directory/:dir_path" element={<BrowserPage />} />
             <Route path="browser/search/:query" element={<BrowserPage />} />
             <Route path="browser/:dir_path" element={<BrowserPage />} />

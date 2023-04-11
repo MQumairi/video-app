@@ -93,7 +93,7 @@ const TagsPanel = () => {
           <div> {video_store.selected_video.created_at.toString().slice(0, 10).replace(/-/g, "/")}</div>
         </div>
       )}
-      {video_store.selected_video_similiar_videos.length > 1 && (
+      {video_store.selected_video_similiar_videos.length > 0 && (
         <div style={tag_row_style}>
           <FormLabel>Similar Videos</FormLabel>
           <VideoList base="/player" videos={video_store.selected_video_similiar_videos} />

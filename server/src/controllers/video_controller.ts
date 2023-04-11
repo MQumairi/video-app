@@ -11,8 +11,23 @@ import Scripts from "../handlers/videos/scripts";
 import ProcessVideoMeta from "../handlers/videos/process_video_meta";
 import Details from "../handlers/videos/details";
 import Similar from "../handlers/videos/similar";
+import Latest from "../handlers/videos/latest";
+import Discover from "../handlers/videos/discover";
+import Popular from "../handlers/videos/popular";
 
 const video_controller = Router();
+
+video_controller.get("/latest", async (req: Request, res: Response) => {
+  await Latest(req, res);
+});
+
+video_controller.get("/popular", async (req: Request, res: Response) => {
+  await Popular(req, res);
+});
+
+video_controller.get("/discover", async (req: Request, res: Response) => {
+  await Discover(req, res);
+});
 
 video_controller.get("/:id/gallery", async (req: Request, res: Response) => {
   await Gallery(req, res);

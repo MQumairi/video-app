@@ -12,7 +12,6 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     return undefined;
   }
   const submitted_tag: Tag = req.body;
-  console.log("submitted tag:", submitted_tag);
   // Set the tag name
   found_tag.name = submitted_tag.name;
   // Set the tag type

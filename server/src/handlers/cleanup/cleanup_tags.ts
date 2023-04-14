@@ -17,19 +17,7 @@ const process_video = async (video: VideoMeta): Promise<void> => {
   // Save video if it doesn't exist
   const video_repo = getRepository(VideoMeta);
   let found_video = await video_repo.findOne({ where: { path: video.path } });
-  if (!found_video) {
-    const video_prober = new VideoFileProber(video.path);
-    const resolution = await video_prober.get_video_resolution();
-    if (resolution) {
-      video.width = resolution.width;
-      video.height = resolution.height;
-    }
-    const duration = await video_prober.get_video_duration();
-    if (duration) {
-      video.duration_sec = duration;
-    }
-    found_video = await video_repo.save(video);
-  }
+  if (!found_video) found_video = await VideoMeta.save_new_video(video.path);
   // Apply Tags
   const video_tags = await save_dir_tags(found_video);
   const video_tagger = new VideoTagger([found_video!], video_tags);

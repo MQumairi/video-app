@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { resolution_from_height } from "../../lib/video_file_meta_calculator";
+import { resolution_from_height } from "../../../lib/video_file_meta_calculator";
 
 interface IProps {
   label: string;

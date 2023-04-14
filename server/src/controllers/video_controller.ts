@@ -9,8 +9,25 @@ import Delete from "../handlers/videos/delete";
 import Tags from "../handlers/videos/tags";
 import Scripts from "../handlers/videos/scripts";
 import ProcessVideoMeta from "../handlers/videos/process_video_meta";
+import Details from "../handlers/videos/details";
+import Similar from "../handlers/videos/similar";
+import Latest from "../handlers/videos/latest";
+import Discover from "../handlers/videos/discover";
+import Popular from "../handlers/videos/popular";
 
 const video_controller = Router();
+
+video_controller.get("/latest", async (req: Request, res: Response) => {
+  await Latest(req, res);
+});
+
+video_controller.get("/popular", async (req: Request, res: Response) => {
+  await Popular(req, res);
+});
+
+video_controller.get("/discover", async (req: Request, res: Response) => {
+  await Discover(req, res);
+});
 
 video_controller.get("/:id/gallery", async (req: Request, res: Response) => {
   await Gallery(req, res);
@@ -24,15 +41,23 @@ video_controller.get("/:id/scripts", async (req: Request, res: Response) => {
   await Scripts(req, res);
 });
 
+video_controller.get("/:id/similar", async (req: Request, res: Response) => {
+  await Similar(req, res);
+});
+
 video_controller.get("/:filepath/metadata", async (req: Request, res: Response) => {
   await Metadata(req, res);
 });
 
-video_controller.get("/:filepath", async (req: Request, res: Response) => {
+video_controller.get("/stream/:filepath", async (req: Request, res: Response) => {
   await Stream(req, res);
 });
 
-video_controller.put("/:filepath/rate", async (req: Request, res: Response) => {
+video_controller.get("/:id", async (req: Request, res: Response) => {
+  await Details(req, res);
+});
+
+video_controller.put("/:id/rate", async (req: Request, res: Response) => {
   await Rate(req, res);
 });
 

@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
-import SelectedVideosStore from "../../store/selected_videos_store";
+import SelectedVideosStore from "../../../store/selected_videos_store";
 
 const EditVideoButton = (props: any) => {
   const selectedVideoStore = useContext(SelectedVideosStore);

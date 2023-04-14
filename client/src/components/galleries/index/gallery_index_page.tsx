@@ -6,7 +6,7 @@ import IImageGallery from "../../../models/image_gallery";
 import { Button } from "@mui/material";
 import GalleryList from "./gallery_list";
 import { useSearchParams } from "react-router-dom";
-import PageSelector from "../../search/page_selector";
+import PageSelector from "../../misc/page_selector";
 import TagsStore from "../../../store/tags_store";
 
 const GalleryIndexPage = () => {

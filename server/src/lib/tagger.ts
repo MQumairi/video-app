@@ -20,6 +20,17 @@ export default class Tagger {
     return res;
   }
 
+  static add(tags_to_add: Tag[], tags_arr: Tag[]): Tag[] {
+    const seen_tag_ids: Set<number> = new Set();
+    const res: Tag[] = [];
+    for (let t of tags_arr) {
+      if (seen_tag_ids.has(t.id)) continue;
+      res.push(t);
+      seen_tag_ids.add(t.id);
+    }
+    return res;
+  }
+
   static async expand_tags_with_children(tags_arr: Tag[]): Promise<Tag[]> {
     const seen_tag_ids: Set<number> = new Set();
     const res: Tag[] = [];

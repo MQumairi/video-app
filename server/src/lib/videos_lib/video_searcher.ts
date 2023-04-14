@@ -5,17 +5,17 @@ import { Tag } from "../../models/tag";
 import { ImagePreprocessor } from "../images_lib/image_preprocessor";
 
 export class VideoSearcher {
-  query: SearchQuery;
+  search_query: SearchQuery;
   page_capacity = 12;
 
   constructor(query: SearchQuery) {
     console.log("creating VideoSearcher");
-    this.query = query;
+    this.search_query = query;
   }
 
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
-      const skips = (this.query.page - 1) * this.page_capacity;
+      const skips = (this.search_query.page - 1) * this.page_capacity;
       const video_query = this.build_video_query().skip(skips).take(this.page_capacity);
       const [videos, count] = await video_query.getManyAndCount();
       await ImagePreprocessor.process_video_thumbs(videos);
@@ -46,16 +46,25 @@ export class VideoSearcher {
       .addGroupBy("thumbnail.id")
       .addGroupBy("file_script.id");
     query = this.query_video_tags(query);
-    query = this.query_min_rating(query, this.query.min_rating);
-    query = this.query_max_rating(query, this.query.max_rating);
-    query = this.query_min_resolution(query, this.query.min_resolution);
+    query = this.query_searched_text(query);
+    query = this.query_min_rating(query, this.search_query.min_rating);
+    query = this.query_max_rating(query, this.search_query.max_rating);
+    query = this.query_min_resolution(query, this.search_query.min_resolution);
     return query.addOrderBy("video.path", "ASC");
+  };
+
+  private query_searched_text = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
+    const searched_text = this.search_query.searched_text;
+    if (searched_text.length === 0) return query;
+    query.andWhere(`video.path LIKE '%${searched_text}%'`);
+    return query;
   };
 
   private query_video_tags = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
     query.innerJoin("video.tags", "tag");
-    if (this.query.included_tags.length > 0) query.where(`video.id IN (${this.get_inner_query(this.query.included_tags, true).getSql()})`);
-    if (this.query.excluded_tags.length > 0) query.andWhere(`video.id NOT IN (${this.get_inner_query(this.query.excluded_tags, false).getSql()})`);
+    if (this.search_query.included_tags.length > 0) query.where(`video.id IN (${this.get_inner_query(this.search_query.included_tags, true).getSql()})`);
+    if (this.search_query.excluded_tags.length > 0)
+      query.andWhere(`video.id NOT IN (${this.get_inner_query(this.search_query.excluded_tags, false).getSql()})`);
     return query;
   };
 

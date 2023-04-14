@@ -3,14 +3,16 @@ import { getRepository } from "typeorm";
 import { VideoMeta } from "../../models/video_meta";
 
 const Rate = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
-  const filepath = req.params.filepath;
+  console.log("entered rate");
+  const id = req.params.id;
   const videoMetaRepo = getRepository(VideoMeta);
-  let video = await videoMetaRepo.findOne({ where: { path: filepath } });
+  let video = await videoMetaRepo.findOne(+id);
   if (!video) {
-    video = VideoMeta.create_from_path(filepath);
-    if (!video) return undefined;
+    res.status(404).send({ message: "video not found" });
+    return;
   }
   video.rating = req.body.rating ?? 0;
+  res.status(200).send({ message: `"changed rating to ${video.rating}` });
   return await videoMetaRepo.save(video);
 };
 

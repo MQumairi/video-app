@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Streamer } from "../../lib/streamer";
+import { Streamer } from "../../lib/videos_lib/streamer";
 import { not_found_error } from "../../app";
 import { Directory } from "../../lib/directory";
 

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, O
 import { VideoMeta } from "./video_meta";
 import { ImageGallery } from "./image_gallery";
 import { Directory } from "../lib/directory";
+import { FileScript } from "./file_script";
 
 @Entity()
 export class Tag {
@@ -35,6 +36,10 @@ export class Tag {
   @ManyToMany((type) => Tag, { cascade: true })
   @JoinTable()
   child_tags: Tag[];
+
+  @ManyToMany((type) => FileScript, (script) => script.tags, { cascade: true })
+  @JoinTable()
+  file_scripts: FileScript[];
 
   @Index()
   @Column("bool", { default: false })

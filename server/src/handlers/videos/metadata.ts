@@ -61,6 +61,7 @@ const get_video_meta = async (req: Request, res: Response): Promise<VideoMeta | 
 };
 
 const Metadata = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
+  console.log("getting video from path...");
   try {
     const video_meta = await get_video_meta(req, res);
     console.log("done video meta preprocessing");

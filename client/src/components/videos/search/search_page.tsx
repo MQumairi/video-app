@@ -1,14 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import SearchForm from "./search_form";
-import SelectedVideosStore from "../../store/selected_videos_store";
-import VideoList from "../videos/util/video_list";
+import SelectedVideosStore from "../../../store/selected_videos_store";
+import VideoList from "../util/video_list";
 import { useSearchParams } from "react-router-dom";
-import PageSelector from "./page_selector";
-import { Search } from "../../api/agent";
-import { PathConverter } from "../../util/path_converter";
+import PageSelector from "../../misc/page_selector";
+import { Search } from "../../../api/agent";
 
-const AdvancedSearchPage = () => {
+const SearchPage = () => {
   const PAGE_PARAM_KEY = "page";
 
   const selectedVideoStore = useContext(SelectedVideosStore);
@@ -38,8 +37,8 @@ const AdvancedSearchPage = () => {
   };
 
   const fetch_random_video = async () => {
-    let response = await Search.shuffle(search_params.toString());
-    set_random_vid_url(`/player/${PathConverter.to_query(response.path)}`);
+    const random_video = await Search.shuffle(search_params.toString());
+    set_random_vid_url(`/player/${random_video.id}`);
   };
 
   const handle_page_change = (page: number) => {
@@ -66,7 +65,7 @@ const AdvancedSearchPage = () => {
 
   return (
     <div>
-      <h1>Search</h1>
+      <h1>Videos</h1>
       <SearchForm on_submit={on_submit} random_vid_url={random_vid_url} />
       {videos_count > 0 && <h4>{videos_count} results found.</h4>}
       <VideoList base="/player" videos={selectedVideoStore.adv_search_results} params={search_params.toString()} />
@@ -75,4 +74,4 @@ const AdvancedSearchPage = () => {
   );
 };
 
-export default observer(AdvancedSearchPage);
+export default observer(SearchPage);

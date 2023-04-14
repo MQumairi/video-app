@@ -4,7 +4,7 @@ import { mkdirSync } from "fs";
 
 export class DestinationGuider {
   static IMAGE_ROOT: Directory = new Directory("images/");
-  static IMAGE_PER_DIR = 100;
+  static IMAGE_PER_DIR = 500;
 
   static async find_or_create_destination(): Promise<Directory> {
     // sub directories of IMAGE_ROOT will be where the images are stored

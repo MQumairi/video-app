@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import TagCapsule from "../tags/util/tag_capsule";
-import ITag from "../../models/tag";
+import TagCapsule from "../../../tags/util/tag_capsule";
+import ITag from "../../../../models/tag";
 
 interface IProps {
   tags: ITag[];

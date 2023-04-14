@@ -1,11 +1,10 @@
 import { existsSync } from "fs";
 import { VideoMeta } from "../../models/video_meta";
-import { Timestamper } from "../timestamper";
+import { Timestamper } from "../videos_lib/timestamper";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import ThumbnailSaver from "./thumbnail_saver";
 import { getRepository } from "typeorm";
-import { ImageGallery } from "../../models/image_gallery";
 const exec = promisify(exec_sync);
 
 export default class ThumbnailGenerator {
@@ -16,8 +15,10 @@ export default class ThumbnailGenerator {
       const video = await getRepository(VideoMeta).findOne({ where: { id: v.id }, relations: ["gallery", "thumbnail", "tags", "file_scripts"] });
       if (!video) continue;
       if (video.gallery && video.gallery.images.length >= thumbs_per_video) {
-        console.log(`video already has ${video.gallery.images.length} images in its associated gallery... skipping`);
-        continue;
+        console.log(`video already has ${video.gallery.images.length} images in its associated gallery...`);
+        if (video.thumbnail) continue;
+        console.log("🌅 missing thumbnail!");
+        await VideoMeta.thumb_video(video, video.gallery.images[0]);
       }
       await ThumbnailGenerator.thumb_video(video, thumbs_per_video);
     }
@@ -84,14 +85,6 @@ export default class ThumbnailGenerator {
     console.log(`generated thumb: ${thumbnail_path}`);
     const image = await ThumbnailSaver.save_thumbnail_with_timestamp(thumbnail_path, video, marker_sec);
     if (!image || video.thumbnail) return;
-    video.thumbnail = image;
-    await getRepository(VideoMeta).save(video);
-    if (!video.gallery) {
-      console.log("video has no gallery");
-      return;
-    }
-    console.log("setting gallery thumbnail");
-    video.gallery.thumbnail = video.thumbnail;
-    await getRepository(ImageGallery).save(video.gallery);
+    await VideoMeta.thumb_video(video, image);
   }
 }

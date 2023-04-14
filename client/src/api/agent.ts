@@ -1,5 +1,4 @@
 import axios from "axios";
-import IAdvancedSearchQuery from "../models/advanced_search_query";
 import IDirectory from "../models/directory";
 import IDirectorySearchResult from "../models/directory_search_result";
 import ISeries from "../models/series";
@@ -23,22 +22,24 @@ export const Directory = {
 
 export const Video = {
   // /:filepath/metadata
-  get: async (vid_path: string) => axios.get(`videos/${vid_path}/metadata`),
-  rate: async (vid_path: string, video_meta: IVideoMeta) => axios.put(`videos/${vid_path}/rate`, video_meta),
+  details_from_path: async (video_path: string) => axios.get(`videos/${video_path}/metadata`),
+  details: async (video_id: number) => axios.get(`videos/${video_id}`),
+  rate: async (video: IVideoMeta, rating: number) => axios.put(`videos/${video.id}/rate`, { rating }),
   edit: async (updated_video: IVideoMeta) => axios.put(`videos/${updated_video.id}`, updated_video),
   thumb_video: async (video: IVideoMeta, image: IImageMeta) => axios.put(`videos/${video.id}/add-thumbnail`, { image_id: image.id }),
   gallery: async (video: IVideoMeta) => axios.get(`videos/${video.id}/gallery`),
   delete: async (video: IVideoMeta) => axios.delete(`videos/${video.id}`),
   tags: async (video: IVideoMeta) => axios.get(`videos/${video.id}/tags`),
+  similar: async (video: IVideoMeta) => axios.get(`videos/${video.id}/similar`),
   scripts: async (video: IVideoMeta) => axios.get(`videos/${video.id}/scripts`),
   reprocess: async (video: IVideoMeta) => axios.put(`videos/${video.id}/process-meta-data`),
+  popular: async () => axios.get(`videos/popular`),
+  latest: async () => axios.get(`videos/latest`),
+  discover: async () => axios.get(`videos/discover`),
   // process-meta-data
 };
 
 export const Search = {
-  set_query: async (query: IAdvancedSearchQuery): Promise<IAdvancedSearchQuery> => (await axios.post(`search/queries`, query)).data,
-  get_query: async (): Promise<IAdvancedSearchQuery> => await axios.get(`search/queries`),
-  search_cached_query: async (): Promise<IVideoMeta[]> => (await axios.get(`search`)).data,
   search_vidoes: async (search_param: string) => axios.get(`search?${search_param}`),
   search_galleries: async (search_param: string) => await axios.get(`search/galleries?${search_param}`),
   shuffle: async (search_param: string): Promise<IVideoMeta> => (await axios.get(`search/shuffle?${search_param}`)).data,

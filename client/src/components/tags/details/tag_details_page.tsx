@@ -4,8 +4,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { Search, Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
-import { PathConverter } from "../../../util/path_converter";
-import VideoTags from "../../player/video_tags";
+import VideoTags from "../../videos/player/tags/video_tags";
 import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
 import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
@@ -73,7 +72,7 @@ const TagDetailsPage = () => {
       </Stack>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href={`/tags?${search_params.toString()}`}>Back</Button>
-        {random_vid && <Button href={`/tags/${tag_id}/video/${PathConverter.to_query(random_vid.path)}`}>Random</Button>}
+        {random_vid && <Button href={`/tags/${tag_id}/video/${random_vid.id}`}>Random</Button>}
         <Button href={`/tags/${tag_id}/edit`}>Edit</Button>
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>

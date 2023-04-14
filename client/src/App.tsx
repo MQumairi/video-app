@@ -1,15 +1,15 @@
 import BrowserPage from "./components/browser/browser_page";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PlayerPage from "./components/player/player_page";
+import PlayerPage from "./components/videos/player/player_page";
 import CssBaseline from "@mui/material/CssBaseline";
 import TagsIndexPage from "./components/tags/index/tags_index_page";
 import TagsCreatePage from "./components/tags/create/tags_create_page";
 import { Box } from "@mui/material";
 import TagDetailsPage from "./components/tags/details/tag_details_page";
-import NavBar from "./components/nav_bar";
+import NavBar from "./components/misc/nav_bar";
 import TagsDeletePage from "./components/tags/delete/tags_delete_page";
 import { observer } from "mobx-react-lite";
-import AdvancedSearchPage from "./components/search/search_page";
+import SearchPage from "./components/videos/search/search_page";
 import TagEditPage from "./components/tags/edit/tag_edit_page";
 import SeriesIndexPage from "./components/series/index/series_index_page";
 import SeriesCreatePage from "./components/series/create/series_create_page";
@@ -24,6 +24,7 @@ import FileScriptDetails from "./components/file_scripts/details/file_script_det
 import FileScriptEdit from "./components/file_scripts/edit/file_script_edit";
 import ImageDeletePage from "./components/galleries/image_delete/image_delete_page";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import HomePage from "./components/videos/index/home_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -48,16 +49,20 @@ const App = () => {
         <NavBar />
         <BrowserRouter>
           <Routes>
-            {/* Main Browser */}
-            <Route index element={<BrowserPage />} />
+            {/* Video System */}
+            <Route index element={<HomePage />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="player/:vid_id" element={<PlayerPage />} />
+            {/* Browser System */}
+            <Route path="browser" element={<BrowserPage />} />
             <Route path="browser/search/:query/directory/:dir_path" element={<BrowserPage />} />
             <Route path="browser/search/:query" element={<BrowserPage />} />
             <Route path="browser/:dir_path" element={<BrowserPage />} />
-            <Route path="player/:vid_path" element={<PlayerPage />} />
+            <Route path="browser/player/:vid_path" element={<PlayerPage />} />
             {/* Tag System */}
             <Route path="tags" element={<TagsIndexPage />} />
             <Route path="tags/new" element={<TagsCreatePage />} />
-            <Route path="tags/:tag_id/video/:vid_path" element={<PlayerPage />} />
+            <Route path="tags/:tag_id/video/:vid_id" element={<PlayerPage />} />
             <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
             <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
             <Route path="tags/:tag_id" element={<TagDetailsPage />} />
@@ -71,8 +76,6 @@ const App = () => {
             <Route path="series/new" element={<SeriesCreatePage />} />
             <Route path="series/:series_id" element={<SeriesDetailsPage />} />
             <Route path="series/:series_id/delete" element={<SeriesDeletePage />} />
-            {/* Search */}
-            <Route path="search" element={<AdvancedSearchPage />} />
             {/* File Scripts */}
             <Route path="file-scripts" element={<FileScriptsIndex />} />
             <Route path="file-scripts/:script_id" element={<FileScriptDetails />} />

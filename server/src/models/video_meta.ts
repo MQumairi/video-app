@@ -57,6 +57,12 @@ export class VideoMeta {
   @Column("decimal", { nullable: true })
   height: number;
 
+  @Column("timestamptz", { nullable: true })
+  created_at: Date;
+
+  @Column("int", { default: 0 })
+  views: number;
+
   static create_from_path(path: string): VideoMeta {
     const video_meta = new VideoMeta();
     video_meta.path = path;
@@ -74,6 +80,7 @@ export class VideoMeta {
       video_meta.height = resolution.height;
     }
     video_meta.duration_sec = await prober.get_video_duration();
+    video_meta.created_at = prober.get_created_time();
     const video_repo = getRepository(VideoMeta);
     const saved_video = await video_repo.save(video_meta);
     const tags = await Tag.tags_from_path(saved_video.parent_path);
@@ -95,5 +102,18 @@ export class VideoMeta {
       console.log("rescued error:", err);
       return false;
     }
+  }
+
+  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta) {
+    video.thumbnail = thumbnail;
+    await getRepository(VideoMeta).save(video);
+    if (!video.gallery || video.gallery.thumbnail) return;
+    console.log("setting gallery thumbnail");
+    video.gallery.thumbnail = video.thumbnail;
+    await getRepository(ImageGallery).save(video.gallery);
+  }
+
+  static has_scripts(video: VideoMeta): boolean {
+    return video.file_scripts && video.file_scripts.length > 0;
   }
 }

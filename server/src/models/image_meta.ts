@@ -58,9 +58,8 @@ export class ImageMeta {
     return await getRepository(ImageMeta).save(image);
   }
 
-  static async add_thumbnail_to_gallert(path: string, gallery: ImageGallery, timestamp: number): Promise<ImageMeta> {
+  static async add_thumbnail_to_gallery(path: string, gallery: ImageGallery): Promise<ImageMeta> {
     const image = await ImageMeta.create(path, gallery.images.length, gallery);
-    image.timestamp_secs = timestamp;
     return await getRepository(ImageMeta).save(image);
   }
 

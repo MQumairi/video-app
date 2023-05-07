@@ -8,6 +8,7 @@ import { FileTrasher } from "../lib/file_trasher";
 import { FileScript } from "./file_script";
 import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
 import VideoTagger from "../lib/videos_lib/video_tagger";
+import G from "glob";
 
 @Entity()
 export class VideoMeta {
@@ -104,13 +105,13 @@ export class VideoMeta {
     }
   }
 
-  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta) {
+  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta, gallery?: ImageGallery) {
     video.thumbnail = thumbnail;
     await getRepository(VideoMeta).save(video);
-    if (!video.gallery || video.gallery.thumbnail) return;
+    if (!gallery) return;
     console.log("setting gallery thumbnail");
-    video.gallery.thumbnail = video.thumbnail;
-    await getRepository(ImageGallery).save(video.gallery);
+    gallery.thumbnail = thumbnail;
+    await getRepository(ImageGallery).save(gallery);
   }
 
   static has_scripts(video: VideoMeta): boolean {

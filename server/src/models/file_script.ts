@@ -6,7 +6,6 @@ import { ImageGallery } from "./image_gallery";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import { Tag } from "./tag";
-import Tagger from "../lib/tagger";
 const exec = promisify(exec_sync);
 
 @Entity()

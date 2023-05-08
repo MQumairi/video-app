@@ -1,38 +1,82 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { FileScript } from "../../models/file_script";
+import { VideoMeta } from "../../models/video_meta";
+import { ImageMeta } from "../../models/image_meta";
+
+const query_videos = async (scriptId: number, videoOffset: number, batchSize: number): Promise<VideoMeta[]> => {
+  const videoMetaRepository = getRepository(VideoMeta);
+  return await videoMetaRepository
+    .createQueryBuilder("videoMeta")
+    .innerJoin("videoMeta.file_scripts", "fileScript")
+    .where("fileScript.id = :scriptId", { scriptId })
+    .skip(videoOffset)
+    .take(batchSize)
+    .getMany();
+};
+
+const query_images = async (scriptId: number, imageOffset: number, batchSize: number): Promise<ImageMeta[]> => {
+  const imageMetaRepository = getRepository(ImageMeta);
+  return await imageMetaRepository
+    .createQueryBuilder("imageMeta")
+    .innerJoin("imageMeta.file_scripts", "fileScript")
+    .where("fileScript.id = :scriptId", { scriptId })
+    .skip(imageOffset)
+    .take(batchSize)
+    .getMany();
+};
+
+const process_videos = async (script: FileScript, videos: VideoMeta[]) => {
+  console.log("iterating over videos...");
+  for (let v of videos) {
+    console.log(`processing "${v.id}"`);
+    await FileScript.execute_script(script, `./${v.path}`);
+  }
+  console.log(`finished executing on videos`);
+};
+
+const process_images = async (script: FileScript, images: ImageMeta[]) => {
+  console.log("iterating over images...");
+  for (let i of images) {
+    console.log(`processing image ${i.id}`);
+    await FileScript.execute_script(script, `./${i.path}`);
+  }
+  console.log(`finished executing on images`);
+};
 
 const ExecuteAllManual = async (req: Request, res: Response): Promise<FileScript | undefined> => {
   console.log("entered ExecuteAllManual");
   const id = +req.params.id;
-  const file_script_repo = getRepository(FileScript);
-  const script_videos = await file_script_repo.findOne(id, { relations: ["videos"] });
-  const count = { executed_videos: 0, executed_images: 0 };
-  if (!script_videos) {
-    res.status(404).send({ message: "file script not found" });
-    return;
-  }
-  // Execute on each video
-  for (let v of script_videos.videos) {
-    await FileScript.execute_script(script_videos, `./${v.path}`);
-    count.executed_videos += 1;
-  }
-  console.log(`finished executing on videos`);
+  const fileScriptRepository = getRepository(FileScript);
 
-  const script_images = await file_script_repo.findOne(id, { relations: ["images"] });
-  if (!script_images) {
+  const batchSize = 50;
+
+  const fileScript = await fileScriptRepository.findOne(id);
+  if (!fileScript) {
     res.status(404).send({ message: "file script not found" });
     return;
   }
-  // Execute on each gallery
-  for (let i of script_images.images) {
-    await FileScript.execute_script(script_images, `./${i.path}`);
-    count.executed_images += 1;
+
+  let videoOffset = 0;
+  let videosBatch = await query_videos(id, videoOffset, batchSize);
+
+  let imageOffset = 0;
+  let imagesBatch = await query_images(id, imageOffset, batchSize);
+
+  while (videosBatch.length > 0 || imagesBatch.length > 0) {
+    // process videos and images in batches
+    await process_videos(fileScript, videosBatch);
+    await process_images(fileScript, imagesBatch);
+
+    // update batch offsets and get next batch of videos/images
+    videoOffset += batchSize;
+    videosBatch = await query_videos(id, videoOffset, batchSize);
+
+    imageOffset += batchSize;
+    imagesBatch = await query_images(id, imageOffset, batchSize);
   }
-  console.log(`finished executing script ${script_images.id} on all media`);
-  console.log(count);
-  res.status(200).send(script_images);
-  return script_images;
+
+  return fileScript;
 };
 
 export default ExecuteAllManual;

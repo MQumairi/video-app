@@ -62,6 +62,9 @@ export class VideoMeta {
   created_at: Date;
 
   @Column("int", { default: 0 })
+  size_mb: number;
+
+  @Column("int", { default: 0 })
   views: number;
 
   static create_from_path(path: string): VideoMeta {
@@ -81,7 +84,9 @@ export class VideoMeta {
       video_meta.height = resolution.height;
     }
     video_meta.duration_sec = await prober.get_video_duration();
-    video_meta.created_at = prober.get_created_time();
+    const stats = prober.get_file_stats();
+    video_meta.created_at = stats.created_at;
+    video_meta.size_mb = stats.file_size;
     const video_repo = getRepository(VideoMeta);
     const saved_video = await video_repo.save(video_meta);
     const tags = await Tag.tags_from_path(saved_video.parent_path);

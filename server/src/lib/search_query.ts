@@ -14,6 +14,7 @@ export class SearchQuery {
   max_rating: number;
   min_resolution: number;
   page: number;
+  order_by: string;
 
   constructor(
     searched_text: string = "",
@@ -22,7 +23,8 @@ export class SearchQuery {
     min_rating: number = 0,
     max_rating: number = 10,
     min_resolution = 0,
-    page = 1
+    page = 1,
+    order_by = "path"
   ) {
     this.searched_text = searched_text;
     this.included_tags = included_tags;
@@ -31,6 +33,7 @@ export class SearchQuery {
     this.max_rating = max_rating;
     this.min_resolution = min_resolution;
     this.page = page;
+    this.order_by = order_by;
   }
 
   static async from_request(req: Request): Promise<SearchQuery> {
@@ -41,6 +44,7 @@ export class SearchQuery {
     const raw_max_rating = req.query.maxrate?.toString() ?? "10";
     const raw_resolution = req.query.resolution?.toString() ?? "0";
     const raw_page = req.query.page?.toString() ?? "1";
+    const sort = req.query.sort?.toString() ?? "path";
     // Find tag ids
     const tag_ids: number[] = raw_tags.split("-").map((i) => {
       return +i;
@@ -55,7 +59,7 @@ export class SearchQuery {
     // Find page
     const page: number = +raw_page;
     // Built query
-    return new SearchQuery(raw_text, included_tags, excluded_tags, min_rating, max_rating, min_resolution, page);
+    return new SearchQuery(raw_text, included_tags, excluded_tags, min_rating, max_rating, min_resolution, page, SearchQuery.sort_option_to_video_field(sort));
   }
 
   static async from_tag(req: Request, tag: Tag): Promise<SearchQuery> {
@@ -71,5 +75,18 @@ export class SearchQuery {
     const included_tag_ids = Tag.get_ids(included_tags);
     const tags = await tag_repo.find({ where: { default_excluded: true, id: Not(In(included_tag_ids)) } });
     return tags;
+  }
+
+  private static sort_option_to_video_field(sort_option: string): string {
+    const option_map = new Map<string, string>();
+    option_map.set("Path", "path");
+    option_map.set("Name", "name");
+    option_map.set("Rating", "rating");
+    option_map.set("Latest", "created_at");
+    option_map.set("Views", "views");
+    option_map.set("Length", "duration_sec");
+    option_map.set("Size", "size_mb");
+    const res = option_map.get(sort_option);
+    return res ?? "path";
   }
 }

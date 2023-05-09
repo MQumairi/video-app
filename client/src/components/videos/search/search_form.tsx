@@ -6,6 +6,7 @@ import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import TagsStore from "../../../store/tags_store";
+import SortSelector from "./sort_selector";
 
 interface IProps {
   on_submit: () => void;
@@ -20,12 +21,14 @@ const SearchForm = (props: IProps) => {
   const [max_rating, set_max_rating] = useState<number>(10);
   const [min_resolution, set_min_resolution] = useState<number>(0);
   const [search_params, set_search_params] = useSearchParams({});
+  const [sort_option, set_sort_option] = useState<string>("Path");
 
   const TEXT_PARAM_KEY = "searched_text";
   const TAGS_PARAM_KEY = "tags";
   const MIN_RATING_PARAM_KEY = "minrate";
   const MAX_RATING_PARAM_KEY = "maxrate";
   const RES_PARAM_KEY = "resolution";
+  const SORT_PARAM_KEY = "sort";
 
   const update_query_params = (key: string, value: string) => {
     const new_search_params = search_params;
@@ -65,6 +68,12 @@ const SearchForm = (props: IProps) => {
     update_query_params(RES_PARAM_KEY, new_resolution.toString());
   };
 
+  const handle_sort_change = async (event: any) => {
+    const new_sort_option = event.target.value;
+    set_sort_option(new_sort_option);
+    update_query_params(SORT_PARAM_KEY, new_sort_option);
+  };
+
   const lookup_and_set_query = async () => {
     console.log("calling lookup from seach form");
     await tags_store.lookup();
@@ -81,10 +90,12 @@ const SearchForm = (props: IProps) => {
     const max_rating = search_params.get(MAX_RATING_PARAM_KEY);
     const resolution = search_params.get(RES_PARAM_KEY);
     const tags_params = search_params.get(TAGS_PARAM_KEY);
+    const sort_option_param = search_params.get(SORT_PARAM_KEY);
     if (search_text) set_searched_text(search_text);
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);
     if (resolution) set_min_resolution(+resolution);
+    if (sort_option_param) set_sort_option(sort_option_param);
     if (!tags_params) return;
     lookup_and_set_query();
     // eslint-disable-next-line
@@ -93,14 +104,15 @@ const SearchForm = (props: IProps) => {
   return (
     <div>
       <FormGroup sx={{ gap: "15px" }}>
-        <FormGroup>
-          <TextField variant="outlined" type="text" value={searched_text} onChange={handle_search_text_change} label="Search" />
-        </FormGroup>
         <FormGroup row>
-          <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+          <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={searched_text} onChange={handle_search_text_change} label="Search" />
           <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />
           <RatingSelector label={"Max"} rating={max_rating} handle_rating_change={handle_max_rating_change} />
           <ResolutionSelector label={"Quality"} resolution={min_resolution} handle_resolution_change={handle_resolution_change} />
+          <SortSelector selected_sort_option={sort_option} handle_sort_change={handle_sort_change} />
+        </FormGroup>
+        <FormGroup row>
+          <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
         </FormGroup>
       </FormGroup>
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">

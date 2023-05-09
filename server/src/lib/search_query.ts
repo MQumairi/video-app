@@ -15,6 +15,7 @@ export class SearchQuery {
   min_resolution: number;
   page: number;
   order_by: string;
+  order_strategy: "ASC" | "DESC" | undefined;
 
   constructor(
     searched_text: string = "",
@@ -24,7 +25,8 @@ export class SearchQuery {
     max_rating: number = 10,
     min_resolution = 0,
     page = 1,
-    order_by = "path"
+    order_by = "path",
+    order_strategy: "ASC" | "DESC" = "ASC"
   ) {
     this.searched_text = searched_text;
     this.included_tags = included_tags;
@@ -34,6 +36,7 @@ export class SearchQuery {
     this.min_resolution = min_resolution;
     this.page = page;
     this.order_by = order_by;
+    this.order_strategy = order_strategy;
   }
 
   static async from_request(req: Request): Promise<SearchQuery> {
@@ -58,8 +61,20 @@ export class SearchQuery {
     const min_resolution: number = +raw_resolution;
     // Find page
     const page: number = +raw_page;
+    // Sort option
+    const sort_option = SearchQuery.sort_option_to_video_field(sort);
     // Built query
-    return new SearchQuery(raw_text, included_tags, excluded_tags, min_rating, max_rating, min_resolution, page, SearchQuery.sort_option_to_video_field(sort));
+    return new SearchQuery(
+      raw_text,
+      included_tags,
+      excluded_tags,
+      min_rating,
+      max_rating,
+      min_resolution,
+      page,
+      sort_option,
+      SearchQuery.get_sorting_strategy(sort_option)
+    );
   }
 
   static async from_tag(req: Request, tag: Tag): Promise<SearchQuery> {
@@ -88,5 +103,26 @@ export class SearchQuery {
     option_map.set("Size", "size_mb");
     const res = option_map.get(sort_option);
     return res ?? "path";
+  }
+
+  private static get_sorting_strategy(sort_option: string): "ASC" | "DESC" {
+    switch (sort_option) {
+      case "path":
+        return "ASC";
+      case "name":
+        return "ASC";
+      case "rating":
+        return "DESC";
+      case "creted_at":
+        return "DESC";
+      case "views":
+        return "DESC";
+      case "duration_sec":
+        return "DESC";
+      case "size_mb":
+        return "DESC";
+      default:
+        return "ASC";
+    }
   }
 }

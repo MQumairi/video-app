@@ -81,8 +81,7 @@ export class SearchQuery {
     const raw_page = req.query.page?.toString() ?? "1";
     const page: number = +raw_page;
     const included_tags = await getRepository(Tag).find({ where: { id: tag.id } });
-    const excluded_tags = await SearchQuery.lookup_excluded_tags(included_tags);
-    return new SearchQuery("", included_tags, excluded_tags, MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
+    return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
   }
 
   private static async lookup_excluded_tags(included_tags: Tag[]): Promise<Tag[]> {

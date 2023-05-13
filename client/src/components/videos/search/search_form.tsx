@@ -118,6 +118,7 @@ const SearchForm = (props: IProps) => {
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         <Button onClick={props.on_submit}>Submit</Button>
         {props.random_vid_url !== "" && <Button href={`${props.random_vid_url}?${search_params}`}>Random</Button>}
+        <Button href={`/search-results-edit?${search_params}`}>Edit</Button>
       </ButtonGroup>
     </div>
   );

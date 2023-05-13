@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { makeObservable, observable, action } from "mobx";
+import { makeObservable, observable, action, toJS } from "mobx";
 import ITag from "../models/tag";
 import { Tag } from "../api/agent";
 
@@ -29,6 +29,10 @@ class TagsStore {
     console.log(`current: ${this.tags.length}, new: ${tags.length}`);
     this.selected_tags = tags;
     console.log(`current: ${this.tags.length}, new: ${tags.length}`);
+  };
+
+  get_selected_tags = (): ITag[] => {
+    return toJS(this.selected_tags);
   };
 
   // Utility functions

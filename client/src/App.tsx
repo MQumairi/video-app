@@ -25,6 +25,7 @@ import FileScriptEdit from "./components/file_scripts/edit/file_script_edit";
 import ImageDeletePage from "./components/galleries/image_delete/image_delete_page";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import HomePage from "./components/videos/index/home_page";
+import EditResultsPage from "./components/videos/search/edit_results/edit_results_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -52,6 +53,7 @@ const App = () => {
             {/* Video System */}
             <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
+            <Route path="search-results-edit" element={<EditResultsPage />} />
             <Route path="player/:vid_id" element={<PlayerPage />} />
             {/* Browser System */}
             <Route path="browser" element={<BrowserPage />} />

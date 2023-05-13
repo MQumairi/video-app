@@ -26,6 +26,16 @@ export class VideoSearcher {
     }
   };
 
+  video_objects = async (): Promise<VideoMeta[]> => {
+    try {
+      const video_query = this.build_video_query();
+      return await video_query.getMany();
+    } catch (err) {
+      console.log("rescued err:", err);
+      return [];
+    }
+  };
+
   random_video_advanced_search_result = async (): Promise<VideoMeta | undefined> => {
     try {
       return await this.build_video_query().orderBy("RANDOM()").getOne();

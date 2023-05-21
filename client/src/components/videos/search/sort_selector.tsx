@@ -17,7 +17,7 @@ const SortSelector = (props: IProps) => {
         value={props.selected_sort_option}
         onChange={props.handle_sort_change}
       >
-        {["Path", "Name", "Rating", "Latest", "Views", "Length", "Size"].map((sort_option) => {
+        {["Path", "Name", "Rating", "Latest", "Views", "Length", "Size", "Thumb"].map((sort_option) => {
           return (
             <MenuItem key={sort_option} value={sort_option}>
               {sort_option}

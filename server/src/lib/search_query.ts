@@ -100,6 +100,7 @@ export class SearchQuery {
     option_map.set("Views", "views");
     option_map.set("Length", "duration_sec");
     option_map.set("Size", "size_mb");
+    option_map.set("Thumb", "thumbnail");
     const res = option_map.get(sort_option);
     return res ?? "path";
   }
@@ -120,6 +121,8 @@ export class SearchQuery {
         return "DESC";
       case "size_mb":
         return "DESC";
+      case "thumbnail":
+        return "ASC";
       default:
         return "ASC";
     }

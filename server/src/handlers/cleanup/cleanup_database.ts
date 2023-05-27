@@ -9,13 +9,8 @@ const CleanupDatabase = async (req: Request, res: Response): Promise<void> => {
   let video_repo = getRepository(VideoMeta);
   let videos = await video_repo.find({ relations: ["file_scripts", "gallery"] });
   let result = new Map<string, boolean>();
-  const counter = { deleted: 0, kept: 0, scripted: 0 };
+  const counter = { deleted: 0, kept: 0 };
   for (let v of videos) {
-    if (v.file_scripts && v.file_scripts.length > 0) {
-      console.log(`${v.id} has a script. Not deleting.`);
-      counter.scripted += 1;
-      continue;
-    }
     console.log(`checking videos ${v.id}`);
     let path_exists = existsSync(v.path);
     result.set(v.name, path_exists);

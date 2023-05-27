@@ -45,6 +45,10 @@ export class Tag {
   @Column("bool", { default: false })
   default_excluded: boolean;
 
+  @Index()
+  @Column("bool", { default: false })
+  default_hidden: boolean;
+
   static create(name: string): Tag {
     const tag = new Tag();
     tag.name = name;

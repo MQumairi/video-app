@@ -7,7 +7,7 @@ const RandomSearchVideo = async (req: Request, res: Response): Promise<VideoMeta
   console.log("entered RandomSearchVideo");
   const search_query = await SearchQuery.from_request(req);
   const media_searcher = new VideoSearcher(search_query);
-  const random_video = await media_searcher.random_video_advanced_search_result();
+  const random_video = await media_searcher.random_single_video();
   if (!random_video) {
     res.status(404).send({ message: "No results found" });
     return;

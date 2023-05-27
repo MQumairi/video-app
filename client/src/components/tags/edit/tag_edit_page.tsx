@@ -19,6 +19,7 @@ const TagEditPage = () => {
   const [is_playlist, set_is_playlist] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
   const [default_excluded, set_default_excluded] = useState<boolean>(false);
+  const [default_hidden, set_default_hidden] = useState<boolean>(false);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
 
   const fetch_tag = async () => {
@@ -81,6 +82,7 @@ const TagEditPage = () => {
       is_studio: is_studio,
       child_tags: tags_store.selected_tags,
       default_excluded: default_excluded,
+      default_hidden: default_hidden,
     };
     const res = await Tag.edit(edited_tag);
     if (res.status !== 200) return;
@@ -142,6 +144,20 @@ const TagEditPage = () => {
             />
           }
           label="Default Excluded from Search"
+        />
+        <FormLabel>Exclude Items from homepage</FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              defaultChecked={default_excluded}
+              style={{ color: "white" }}
+              value={default_excluded}
+              onChange={(_, checked) => {
+                set_default_hidden(checked);
+              }}
+            />
+          }
+          label="Default Hidden from Home Page"
         />
         <FormLabel>Generate Thumbs for All Tagged Videos</FormLabel>
         <FormControlLabel

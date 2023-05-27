@@ -9,6 +9,7 @@ export default interface ITag {
   is_character: boolean;
   is_studio: boolean;
   default_excluded: boolean;
+  default_hidden: boolean;
 }
 
 export interface ITagCreate {
@@ -18,6 +19,7 @@ export interface ITagCreate {
   is_character: boolean;
   is_studio: boolean;
   default_excluded: boolean;
+  default_hidden: boolean;
 }
 
 export interface ITagEdit {
@@ -28,4 +30,5 @@ export interface ITagEdit {
   is_character: boolean;
   is_studio: boolean;
   default_excluded: boolean;
+  default_hidden: boolean;
 }

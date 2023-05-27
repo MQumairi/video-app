@@ -6,7 +6,6 @@ import { ImagePreprocessor } from "../images_lib/image_preprocessor";
 
 export class VideoSearcher {
   search_query: SearchQuery;
-  page_capacity = 12;
 
   constructor(query: SearchQuery) {
     console.log("creating VideoSearcher");
@@ -15,8 +14,8 @@ export class VideoSearcher {
 
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
-      const skips = (this.search_query.page - 1) * this.page_capacity;
-      const video_query = this.build_video_query().skip(skips).take(this.page_capacity);
+      const skips = (this.search_query.page - 1) * this.search_query.page_capacity;
+      const video_query = this.build_video_query().skip(skips).take(this.search_query.page_capacity);
       const [videos, count] = await video_query.getManyAndCount();
       await ImagePreprocessor.process_video_thumbs(videos);
       return [videos, count];
@@ -36,11 +35,24 @@ export class VideoSearcher {
     }
   };
 
-  random_video_advanced_search_result = async (): Promise<VideoMeta | undefined> => {
+  random_single_video = async (): Promise<VideoMeta | undefined> => {
     try {
       return await this.build_video_query().orderBy("RANDOM()").getOne();
     } catch (err) {
       console.log("rescued err:", err);
+    }
+  };
+
+  random_videos = async (): Promise<[VideoMeta[], number]> => {
+    try {
+      const skips = (this.search_query.page - 1) * this.search_query.page_capacity;
+      const video_query = this.build_video_query().orderBy("RANDOM()").offset(skips).limit(this.search_query.page_capacity);
+      const [videos, count] = await video_query.getManyAndCount();
+      await ImagePreprocessor.process_video_thumbs(videos);
+      return [videos, count];
+    } catch (err) {
+      console.log("rescued err:", err);
+      return [[], 0];
     }
   };
 

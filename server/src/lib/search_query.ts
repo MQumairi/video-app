@@ -16,6 +16,7 @@ export class SearchQuery {
   page: number;
   order_by: string;
   order_strategy: "ASC" | "DESC" | undefined;
+  page_capacity: number;
 
   constructor(
     searched_text: string = "",
@@ -25,6 +26,7 @@ export class SearchQuery {
     max_rating: number = 10,
     min_resolution = 0,
     page = 1,
+    page_capacity = 12,
     order_by = "path",
     order_strategy: "ASC" | "DESC" = "ASC"
   ) {
@@ -37,6 +39,7 @@ export class SearchQuery {
     this.page = page;
     this.order_by = order_by;
     this.order_strategy = order_strategy;
+    this.page_capacity = page_capacity;
   }
 
   static async from_request(req: Request): Promise<SearchQuery> {
@@ -72,6 +75,7 @@ export class SearchQuery {
       max_rating,
       min_resolution,
       page,
+      12,
       sort_option,
       SearchQuery.get_sorting_strategy(sort_option)
     );
@@ -113,7 +117,7 @@ export class SearchQuery {
         return "ASC";
       case "rating":
         return "DESC";
-      case "creted_at":
+      case "created_at":
         return "DESC";
       case "views":
         return "DESC";

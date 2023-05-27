@@ -39,6 +39,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   const tagger = new VideoTagger(found_tag.videos, submitted_tag.child_tags);
   await tagger.apply_tags_to_videos();
   found_tag.default_excluded = submitted_tag.default_excluded;
+  found_tag.default_hidden = submitted_tag.default_hidden;
   const saved_tag = await tag_repo.save(found_tag);
   console.log("finished saving...");
   res.status(200).send(saved_tag);

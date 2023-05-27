@@ -52,6 +52,7 @@ const TagsCreatePage = () => {
       is_playlist: is_playlist,
       is_studio: is_studio,
       default_excluded: false,
+      default_hidden: false,
     };
     const response = await Tag.post(tag);
     console.log(response);

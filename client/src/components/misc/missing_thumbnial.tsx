@@ -4,8 +4,7 @@ const MissingThumbnail = () => (
   <div
     style={{
       objectFit: "cover",
-      minHeight: "300px",
-      height: "90%",
+      height: "230px",
       backgroundColor: "black",
       fontSize: "20px",
       display: "flex",

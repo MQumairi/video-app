@@ -9,12 +9,14 @@ interface IProps {
 const Thumbnail = (props: IProps) => {
   const image_url = `${server_url}/${PathConverter.remove_base(props.image.path)}`;
 
+  const thumb_height = "230px";
+
   const vertical_container = {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
     overflow: "hidden",
-    maxHeight: "250px",
+    height: thumb_height,
   };
 
   const container_style = {
@@ -22,7 +24,7 @@ const Thumbnail = (props: IProps) => {
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    maxHeight: "250px",
+    height: thumb_height,
   };
 
   if (props.image.height > props.image.width) {
@@ -33,7 +35,7 @@ const Thumbnail = (props: IProps) => {
           srcSet={`${image_url}`}
           alt={`Vertical ${props.image.id.toString()}`}
           loading="lazy"
-          style={{ objectFit: "cover", flexShrink: 0, width: "100%"}}
+          style={{ objectFit: "cover", objectPosition: "0 0", flexShrink: 0, width: "100%", height: "100%" }}
         />
       </div>
     );
@@ -46,7 +48,7 @@ const Thumbnail = (props: IProps) => {
         srcSet={`${image_url}`}
         alt={`Horizontal ${props.image.id.toString()}`}
         loading="lazy"
-        style={{ objectFit: "cover", flexShrink: 0, width: "100%", minHeight: "100%" }}
+        style={{ objectFit: "cover", flexShrink: 0, width: "100%", height: "100%" }}
       />
     </div>
   );

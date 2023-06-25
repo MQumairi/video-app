@@ -24,9 +24,9 @@ export const VideoList = (props: IProps) => {
   };
 
   return (
-    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 4, md: 12 }}>
+    <Grid container spacing={{ xs: 1, md: 2, lg: 4 }} columns={{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }}>
       {props.videos.map((vid) => (
-        <Grid item xs={2} sm={4} md={4} key={vid.id}>
+        <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={vid.id}>
           <VideoItem url={video_item_url(vid)} video={vid} key={vid.id} />
         </Grid>
       ))}

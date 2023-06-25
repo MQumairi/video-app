@@ -36,7 +36,7 @@ const darkTheme = createTheme({
 const App = () => {
   const box_style = {
     backgroundColor: "#000f17",
-    width: "80%",
+    width: "90%",
     margin: "auto",
     marginTop: "50px",
     borderRadius: "10px",

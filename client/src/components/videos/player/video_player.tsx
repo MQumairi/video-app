@@ -18,7 +18,7 @@ const VideoPlayer = (props: any) => {
 
   return (
     <div style={box_style}>
-      <video style={video_style} width="1000" height="500" controls autoPlay loop playsInline>
+      <video style={video_style} width="1000" height="500" controls loop playsInline>
         <source src={`${base_url}/videos/stream/${PathConverter.to_query(props.vid_path)}`} type="video/mp4" />
       </video>
     </div>

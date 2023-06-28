@@ -17,6 +17,7 @@ const Thumbnail = (props: IProps) => {
     alignItems: "flex-start",
     overflow: "hidden",
     height: thumb_height,
+    borderRadius: "10px",
   };
 
   const container_style = {
@@ -25,6 +26,7 @@ const Thumbnail = (props: IProps) => {
     alignItems: "center",
     overflow: "hidden",
     height: thumb_height,
+    borderRadius: "10px",
   };
 
   if (props.image.height > props.image.width) {

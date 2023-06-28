@@ -10,6 +10,7 @@ const MissingThumbnail = () => (
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      borderRadius: "10px",
     }}
   >
     No Thumbnail

@@ -72,7 +72,9 @@ export class VideoSearcher {
     query = this.query_min_rating(query, this.search_query.min_rating);
     query = this.query_max_rating(query, this.search_query.max_rating);
     query = this.query_min_resolution(query, this.search_query.min_resolution);
-    return query.addOrderBy(`video.${this.search_query.order_by}`, this.search_query.order_strategy);
+    query.addOrderBy(`video.${this.search_query.order_by}`, this.search_query.order_strategy);
+    if (this.search_query.order_by != "path") query.addOrderBy(`video.path`);
+    return query;
   };
 
   private query_searched_text = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {

@@ -30,8 +30,9 @@ const TagDetailsPage = () => {
   };
 
   const fetch_random_tag_video = async () => {
-    let res = await Search.shuffle(`tags=${tag_id}`);
-    set_random_vid(res);
+    let res = await Tag.shuffle(+tag_id);
+    if (res.status !== 200) return;
+    set_random_vid(res.data);
   };
 
   const handle_page_change = (page: number) => {

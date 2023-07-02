@@ -58,11 +58,8 @@ class VideoStore {
     this.selected_video_tags = res.data;
   };
 
-  @action lookup_selected_video_gallery = async () => {
-    if (!this.selected_video) return;
-    const res = await Video.gallery(this.selected_video);
-    if (res.status !== 200) return;
-    this.selected_video_gallery = res.data;
+  @action set_selected_video_gallery = async (gallery: IImageGallery | undefined) => {
+    if (gallery) this.selected_video_gallery = gallery;
   };
 
   @action lookup_selected_video_scripts = async () => {

@@ -1,6 +1,6 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { PathConverter } from "../../../util/path_converter";
-import { Search } from "../../../api/agent";
+import { Search, Tag } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import VideoStore from "../../../store/video_store";
@@ -31,7 +31,9 @@ const PlayerPage = () => {
     const params = search_params.toString();
     // If we came from /tag/x
     if (tag_id) {
-      let random_video = await Search.shuffle(`tags=${tag_id}`);
+      let res = await Tag.shuffle(+tag_id);
+      if (res.status !== 200) return;
+      const random_video = res.data;
       set_random_vid_url(`/tags/${tag_id}/video/${random_video.id}`);
       set_back_url(`/tags/${tag_id}`);
     }

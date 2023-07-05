@@ -5,6 +5,8 @@ import { VideoMeta } from "./video_meta";
 import { ImageFileProbber } from "../lib/images_lib/image_file_probber";
 import { FileTrasher } from "../lib/file_trasher";
 import { existsSync } from "fs";
+import { FileOperation } from "../lib/file_system/file_operations";
+import { join, basename } from "path";
 
 @Entity()
 export class ImageMeta {
@@ -79,5 +81,15 @@ export class ImageMeta {
     if (existsSync(image.path)) return false;
     await getRepository(ImageMeta).remove(image);
     return true;
+  }
+
+  static async move(image: ImageMeta, dest_dir: string): Promise<boolean> {
+    // Move image file
+    const destination_path = join(dest_dir, basename(image.path));
+    const move_res = await FileOperation.move(image.path, destination_path);
+    // Update path in db
+    image.path = destination_path;
+    await getRepository(ImageMeta).save(image);
+    return move_res;
   }
 }

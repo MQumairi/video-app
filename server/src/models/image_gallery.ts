@@ -76,6 +76,16 @@ export class ImageGallery {
     return true;
   }
 
+  static async move_gallery_files(gallery: ImageGallery, dest_dir: string): Promise<boolean> {
+    console.log(`moving files for ${gallery.name} to ${dest_dir}`);
+    let succeeded = true;
+    for (let img of gallery.images) {
+      const move_success = await ImageMeta.move(img, dest_dir);
+      succeeded = succeeded && move_success;
+    }
+    return succeeded;
+  }
+
   static async apply_tags(gallery: ImageGallery, tags: Tag[]) {
     const gallery_repo = getRepository(ImageGallery);
     const found_gallery = await gallery_repo.findOne({ where: { id: gallery.id }, relations: ["tags"] });

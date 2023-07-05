@@ -2,47 +2,34 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { VideoMeta } from "../../models/video_meta";
 import { ImageGallery } from "../../models/image_gallery";
+import { parse } from "path";
+import { DestinationGuider } from "../../lib/images_lib/destination_guider";
+import { VideoBatcher } from "../../lib/videos_lib/video_batcher";
+
+// Given a video, find its gallery if it exists, and move all gallery images to an appropriate location
+const batcher_handler = async (video: VideoMeta): Promise<boolean> => {
+  const gallery = video.gallery;
+  const parsed_video_path = parse(video.path);
+  if (!gallery || !parsed_video_path) return true;
+  const image_dir = DestinationGuider.image_dir_from_video(video);
+  return await ImageGallery.move_gallery_files(gallery, image_dir);
+};
 
 const CleanupGalleries = async (req: Request, res: Response) => {
-  const counter = { thumbed_galleries: 0, deleted_galleries: 0, kept_galleries: 0 };
-  console.log("counter:", counter);
-  // Apply tags to all galleires based on videos
-  let video_repo = getRepository(VideoMeta);
-  let videos = await video_repo.find();
-  console.log("checking videos...");
-  for (let v of videos) {
-    try {
-      const video = await video_repo.findOne(v, { relations: ["tags", "gallery", "thumbnail"] });
-      if (!video) continue;
-      console.log(`found video: ${video.id}`);
-      if (!video.gallery) continue;
-      const gallery = video.gallery;
-      console.log(`modifying gallery ${gallery.id}, based on vid ${video.id}`);
-      await ImageGallery.apply_tags(gallery, video.tags);
-      if (gallery.thumbnail || !video.thumbnail) continue;
-      console.log(`setting thumbnail for gallery ${gallery.id}, based on vid ${video.id}`);
-      await ImageGallery.set_thumbnail(gallery, video.thumbnail);
-      counter.thumbed_galleries += 1;
-    } catch (err) {
-      console.log(`rescued error of video ${v.name}:`, err);
-    }
-  }
-  // Delete all galleries with no images
-  let gallery_repo = getRepository(ImageGallery);
-  const galleries = await gallery_repo.find({ select: ["id"] });
-  for (let g of galleries) {
-    const gallery = await gallery_repo.findOne(g.id);
-    if (!gallery) continue;
-    console.log("found gallery:", gallery.id);
-    if (gallery.images.length == 0) {
-      console.log("deleting gallery");
-      counter.deleted_galleries += 1;
-      await gallery_repo.remove(gallery);
-      continue;
-    }
-    counter.kept_galleries += 1;
-  }
-  console.log("done cleaning up galleries:\n", counter);
+  const video_repo = getRepository(VideoMeta);
+  const video_query = video_repo
+    .createQueryBuilder("video")
+    .addGroupBy("video.id")
+    .leftJoinAndSelect("video.gallery", "gallery")
+    .leftJoinAndSelect("video.thumbnail", "thumbnail")
+    .leftJoinAndSelect("gallery.images", "image")
+    .addGroupBy("gallery.id")
+    .addGroupBy("thumbnail.id")
+    .addGroupBy("image.id")
+    .addOrderBy("video.id");
+  const batcher_result = await VideoBatcher.execute_hadler(video_query, batcher_handler);
+  console.log("batcher result:", batcher_result);
+  res.status(200).json(batcher_result);
 };
 
 export default CleanupGalleries;

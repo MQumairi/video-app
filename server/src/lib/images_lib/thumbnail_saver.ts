@@ -10,7 +10,7 @@ import { getRepository } from "typeorm";
 export default class ThumbnailSaver {
   static async save_thumbnail(source_path: string, video: VideoMeta): Promise<ImageMeta | undefined> {
     try {
-      const thumbnail_directory = await DestinationGuider.find_or_create_destination();
+      const thumbnail_directory = await DestinationGuider.find_or_create_destination(video);
       console.log("destination dir:", thumbnail_directory.path);
       const thumbnail_path = ThumbnailSaver.move_thumbnail_file(source_path, thumbnail_directory);
       const gallery = await ImageGallery.find_or_create(video);
@@ -28,7 +28,7 @@ export default class ThumbnailSaver {
   }
 
   static async save_thumbnail_with_timestamp(source_path: string, video: VideoMeta, timestamp: number): Promise<ImageMeta | undefined> {
-    const thumbnail_directory = await DestinationGuider.find_or_create_destination();
+    const thumbnail_directory = await DestinationGuider.find_or_create_destination(video);
     console.log("destination dir:", thumbnail_directory.path);
     const thumbnail_path = ThumbnailSaver.move_thumbnail_file(source_path, thumbnail_directory);
     const gallery = await ImageGallery.find_or_create(video);

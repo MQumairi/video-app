@@ -16,6 +16,7 @@ import Studios from "../handlers/tags/only_studios";
 import Uncategorized from "../handlers/tags/only_uncategorized";
 import RandomImages from "../handlers/tags/random_images";
 import TagSingleVideo from "../handlers/tags/single_video_tag";
+import RandomImageSingle from "../handlers/tags/random_image_single";
 
 const tag_controller = Router();
 
@@ -45,6 +46,10 @@ tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {
 
 tag_controller.get("/:id/images", async (req: Request, res: Response) => {
   await RandomImages(req, res);
+});
+
+tag_controller.get("/:id/image-slide", async (req: Request, res: Response) => {
+  await RandomImageSingle(req, res);
 });
 
 tag_controller.get("/:id", async (req: Request, res: Response) => {

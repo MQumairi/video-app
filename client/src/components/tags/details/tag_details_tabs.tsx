@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import TagVideosTab from "./tag_videos_tab";
 import ITag from "../../../models/tag";
 import TagImagesTab from "./tag_images_tab";
+import TagSlideShowTab from "./tag_slide_show_tab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,6 +56,7 @@ const TagDetailsTabs = (props: IProps) => {
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Videos" {...tab_props(0)} style={{ color: "white" }} />
           <Tab label="Images" {...tab_props(1)} style={{ color: "white" }} />
+          <Tab label="Slideshow" {...tab_props(2)} style={{ color: "white" }} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -62,6 +64,9 @@ const TagDetailsTabs = (props: IProps) => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <TagImagesTab tag={props.tag} />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <TagSlideShowTab tag={props.tag} />
       </TabPanel>
     </Box>
   );

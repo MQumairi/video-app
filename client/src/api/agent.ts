@@ -54,6 +54,7 @@ export const Tag = {
   playlists: async () => axios.get(`tags/playlists`),
   shuffle: async (tag_id: number) => axios.get(`tags/${tag_id}/shuffle`),
   random_images: async (tag: ITag) => axios.get(`tags/${tag.id}/images`),
+  random_image_single: async (tag: ITag) => axios.get(`tags/${tag.id}/image-slide`),
   post: async (tag: ITagCreate) => axios.post(`tags`, tag),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
   edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),

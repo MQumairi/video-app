@@ -40,6 +40,7 @@ const TagEditPage = () => {
     if (tag.child_tags) tags_store.set_selected_tags(tag.child_tags);
     set_tag(res.data.tag);
     set_default_excluded(tag.default_excluded);
+    set_default_hidden(tag.default_hidden);
   };
 
   const handle_name_change = (input: any) => {
@@ -80,7 +81,7 @@ const TagEditPage = () => {
       is_playlist: is_playlist,
       is_character: is_character,
       is_studio: is_studio,
-      child_tags: tags_store.selected_tags,
+      child_tags: tags_store.selected_tags ?? [],
       default_excluded: default_excluded,
       default_hidden: default_hidden,
     };
@@ -149,9 +150,9 @@ const TagEditPage = () => {
         <FormControlLabel
           control={
             <Checkbox
-              defaultChecked={default_excluded}
+              defaultChecked={default_hidden}
               style={{ color: "white" }}
-              value={default_excluded}
+              value={default_hidden}
               onChange={(_, checked) => {
                 set_default_hidden(checked);
               }}

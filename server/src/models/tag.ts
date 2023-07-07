@@ -78,4 +78,11 @@ export class Tag {
       return t.id;
     });
   }
+
+  static tags_equal(arr_1: Tag[], arr_2: Tag[]): boolean {
+    if (!arr_1 || !arr_2) return arr_1 === arr_2;
+    if (arr_1.length != arr_2.length) return false;
+    const set_2 = new Set(Tag.get_ids(arr_2));
+    return Tag.get_ids(arr_1).every((i) => set_2.has(i));
+  }
 }

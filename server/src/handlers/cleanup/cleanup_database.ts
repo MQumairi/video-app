@@ -30,7 +30,7 @@ const CleanupDatabase = async (req: Request, res: Response): Promise<void> => {
   for (let v of videos) {
     let path_exists = doesFileExist(v.path);
     result.set(v.name, path_exists);
-    if (!path_exists || (await Directory.is_directory(v.path))) {
+    if (!path_exists) {
       console.log(`deleting video ${v.name}`);
       await delete_video(v, video_repo);
       counter.deleted += 1;

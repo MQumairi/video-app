@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { VideoMeta } from "../../models/video_meta";
 import { readdirSync } from "fs";
 import { ImageGallery } from "../../models/image_gallery";
+import { Directory } from "../../lib/directory";
 
 function doesFileExist(filePath: string): boolean {
   try {
@@ -29,7 +30,7 @@ const CleanupDatabase = async (req: Request, res: Response): Promise<void> => {
   for (let v of videos) {
     let path_exists = doesFileExist(v.path);
     result.set(v.name, path_exists);
-    if (!path_exists) {
+    if (!path_exists || (await Directory.is_directory(v.path))) {
       console.log(`deleting video ${v.name}`);
       await delete_video(v, video_repo);
       counter.deleted += 1;

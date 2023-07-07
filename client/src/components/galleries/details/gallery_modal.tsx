@@ -35,7 +35,7 @@ const GalleryModal = (props: IProps) => {
           margin: "auto",
           marginTop: "5%",
           backgroundColor: "black",
-          backgroundImage: `url('${server_url}/${PathConverter.remove_base(props.image.path)}')`,
+          backgroundImage: `url("${server_url}/${PathConverter.remove_base(props.image.path)}")`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",

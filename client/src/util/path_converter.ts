@@ -23,6 +23,7 @@ export class PathConverter {
   static remove_base(file: string): string {
     const path_array = file.split("/");
     path_array.shift();
+    console.log(encodeURIComponent(path_array.join("/")));
     return encodeURIComponent(path_array.join("/"));
   }
 }

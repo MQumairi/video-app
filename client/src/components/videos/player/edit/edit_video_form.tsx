@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../../models/video_meta";
 import TagSearcher from "../../../tags/util/searcher/tag_searcher";
 import { useContext, useEffect, useState } from "react";
-import { Button, Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { Gallery, Tag, Video } from "../../../../api/agent";
 import TagsStore from "../../../../store/tags_store";
 import VideoStore from "../../../../store/video_store";
@@ -15,6 +15,8 @@ const EditVideoForm = () => {
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
   const [should_re_process, set_should_re_process] = useState<boolean>(false);
 
+  const [gallery_id_to_associate, set_galllery_id_to_associate] = useState<string>("");
+
   const form_section_style = {
     marginTop: "30px",
   };
@@ -22,6 +24,12 @@ const EditVideoForm = () => {
   const on_file_change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === undefined) return;
     set_selected_files(e.target.files);
+  };
+
+  const on_gallery_id_change = (e: any) => {
+    const inputed_id = e.target.value;
+    if (isNaN(+inputed_id)) return;
+    set_galllery_id_to_associate(inputed_id);
   };
 
   const submit_edit_video_form = async () => {
@@ -33,6 +41,8 @@ const EditVideoForm = () => {
     await handle_upload(video);
     // Handle Generate
     await handle_generate(video);
+    // Handle Gallery Pair
+    await handle_gallery_pair(video);
     // Handle Re-Processing
     await handle_reprocess(video);
   };
@@ -60,6 +70,11 @@ const EditVideoForm = () => {
     if (!should_generate_thumbs) return;
     console.log("requesting generation...");
     await Gallery.from_video(video);
+  };
+
+  const handle_gallery_pair = async (video: IVideoMeta) => {
+    if (!video || isNaN(+gallery_id_to_associate) || !gallery_id_to_associate) return;
+    await Gallery.pair(video, +gallery_id_to_associate);
   };
 
   const handle_reprocess = async (video: IVideoMeta) => {
@@ -111,6 +126,20 @@ const EditVideoForm = () => {
               />
             }
             label="Generate"
+          />
+        </div>
+      </div>
+      <div style={form_section_style}>
+        {/* Pair Gallery*/}
+        <h3>Pair Gallery</h3>
+        <p>Associate an already existing gallery (by id) to this video.</p>
+        <div>
+          <TextField
+            type="number"
+            value={gallery_id_to_associate}
+            onChange={(n) => {
+              on_gallery_id_change(n);
+            }}
           />
         </div>
       </div>

@@ -106,6 +106,7 @@ export const Cleanup = {
 export const Gallery = {
   upload: async (data: FormData) => axios.post(`galleries/upload-for-video`, data),
   from_video: async (video: IVideoMeta) => axios.post(`galleries/from-video`, { video_id: video.id }),
+  pair: async (video: IVideoMeta, gallery_id: number) => axios.put(`galleries/pair-to-video`, { video_id: video.id, gallery_id }),
   details: async (gallery_id: number) => axios.get(`galleries/${gallery_id}`),
   delete: async (gallery: IImageGallery) => axios.delete(`galleries/${gallery.id}`),
   get_image: async (image_id: number) => axios.get(`galleries/image/${image_id}`),

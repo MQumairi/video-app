@@ -15,9 +15,11 @@ const TagEditPage = () => {
 
   const [tag_name, set_tag_name] = useState("");
   const [tag_type, set_tag_type] = useState("default");
-  const [is_character, set_is_character] = useState(false);
   const [is_playlist, set_is_playlist] = useState(false);
+  const [is_character, set_is_character] = useState(false);
+  const [is_series, set_is_series] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
+  const [is_script, set_is_script] = useState(false);
   const [default_excluded, set_default_excluded] = useState<boolean>(false);
   const [default_hidden, set_default_hidden] = useState<boolean>(false);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
@@ -33,9 +35,15 @@ const TagEditPage = () => {
     } else if (tag.is_character) {
       set_is_character(tag.is_character);
       set_tag_type("character");
+    } else if (tag.is_series) {
+      set_is_series(tag.is_series);
+      set_tag_type("series");
     } else if (tag.is_studio) {
       set_is_studio(tag.is_studio);
       set_tag_type("studio");
+    } else if (tag.is_script) {
+      set_is_script(tag.is_script);
+      set_tag_type("script");
     }
     if (tag.child_tags) tags_store.set_selected_tags(tag.child_tags);
     set_tag(res.data.tag);
@@ -50,24 +58,46 @@ const TagEditPage = () => {
   const handle_tag_type_change = (value: string) => {
     switch (value) {
       case "default":
-        set_is_character(false);
         set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
         break;
       case "playlist":
-        set_is_character(false);
         set_is_playlist(true);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
         break;
       case "character":
-        set_is_character(true);
         set_is_playlist(false);
+        set_is_character(true);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
+        break;
+      case "series":
+        set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(true);
+        set_is_studio(false);
+        set_is_script(false);
         break;
       case "studio":
-        set_is_character(false);
         set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(true);
+        set_is_script(false);
+        break;
+      case "script":
+        set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
+        set_is_studio(false);
+        set_is_script(true);
         break;
     }
     set_tag_type(value);
@@ -80,7 +110,9 @@ const TagEditPage = () => {
       name: tag_name,
       is_playlist: is_playlist,
       is_character: is_character,
+      is_series: is_series,
       is_studio: is_studio,
+      is_script: is_script,
       child_tags: tags_store.selected_tags ?? [],
       default_excluded: default_excluded,
       default_hidden: default_hidden,
@@ -126,7 +158,9 @@ const TagEditPage = () => {
             <FormControlLabel value="default" control={<Radio />} label="Default" />
             <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
+            <FormControlLabel value="series" control={<Radio />} label="Series" />
             <FormControlLabel value="studio" control={<Radio />} label="Studio" />
+            <FormControlLabel value="script" control={<Radio />} label="Script" />
           </RadioGroup>
         </FormControl>
         <FormLabel>Child Tags</FormLabel>

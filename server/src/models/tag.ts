@@ -125,6 +125,7 @@ export class Tag {
   }
 
   make_series() {
+    console.log("making series");
     this.is_playlist = false;
     this.is_character = false;
     this.is_series = true;

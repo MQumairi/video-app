@@ -1,9 +1,8 @@
 import { useContext, useState } from "react";
-import IVideoMeta from "../../../../models/video_meta";
 import { Gallery } from "../../../../api/agent";
 import VideoStore from "../../../../store/video_store";
 import { observer } from "mobx-react-lite";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button } from "@mui/material";
 
 const GenerateGallery = () => {
   const [selected_files, set_selected_files] = useState<FileList | null>(null);

@@ -38,7 +38,7 @@ const TagsPanel = () => {
         case TagType.Studio:
           res_studio_tags.push(t);
           break;
-        case TagType.Default:
+        default:
           res_default_tags.push(t);
           break;
       }

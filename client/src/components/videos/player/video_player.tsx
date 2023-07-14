@@ -4,7 +4,7 @@ import { PathConverter } from "../../../util/path_converter";
 import { useState } from "react";
 
 const VideoPlayer = (props: any) => {
-  const [volume, set_volume] = useState<number>(0.5);
+  const [, set_volume] = useState<number>(0.5);
 
   const box_style = {
     margin: "auto",

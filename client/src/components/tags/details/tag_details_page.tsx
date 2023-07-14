@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Search, Tag } from "../../../api/agent";
+import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import VideoTags from "../../videos/player/tags/video_tags";
 import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
-import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
+import { Code, Dvr, LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
 import TagDetailsTabs from "./tag_details_tabs";
 
@@ -65,6 +65,8 @@ const TagDetailsPage = () => {
         {tag_type === TagType.Character && <Person fontSize="large" />}
         {tag_type === TagType.Studio && <MovieCreation fontSize="large" />}
         {tag_type === TagType.Playlist && <Subscriptions fontSize="large" />}
+        {tag_type === TagType.Script && <Code fontSize="large" />}
+        {tag_type === TagType.Series && <Dvr fontSize="large" />}
         <h2>{tag.name}</h2>
       </Stack>
       <Stack direction="row" spacing={1}>

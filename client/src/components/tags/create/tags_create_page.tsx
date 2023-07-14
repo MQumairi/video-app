@@ -9,9 +9,11 @@ import TagsStore from "../../../store/tags_store";
 
 const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
-  const [is_character, set_is_character] = useState(false);
   const [is_playlist, set_is_playlist] = useState(false);
+  const [is_character, set_is_character] = useState(false);
+  const [is_series, set_is_series] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
+  const [is_script, set_is_script] = useState(false);
 
   const tags_store = useContext(TagsStore);
 
@@ -22,24 +24,46 @@ const TagsCreatePage = () => {
   const handle_tag_type_change = (value: string) => {
     switch (value) {
       case "default":
-        set_is_character(false);
         set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
         break;
       case "playlist":
-        set_is_character(false);
         set_is_playlist(true);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
         break;
       case "character":
-        set_is_character(true);
         set_is_playlist(false);
+        set_is_character(true);
+        set_is_series(false);
         set_is_studio(false);
+        set_is_script(false);
+        break;
+      case "series":
+        set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(true);
+        set_is_studio(false);
+        set_is_script(false);
         break;
       case "studio":
-        set_is_character(false);
         set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
         set_is_studio(true);
+        set_is_script(false);
+        break;
+      case "script":
+        set_is_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
+        set_is_studio(false);
+        set_is_script(true);
         break;
     }
   };
@@ -48,9 +72,11 @@ const TagsCreatePage = () => {
     const tag: ITagCreate = {
       name: tag_name,
       child_tags: tags_store.selected_tags,
-      is_character: is_character,
-      is_playlist: is_playlist,
-      is_studio: is_studio,
+      is_playlist,
+      is_character,
+      is_series,
+      is_studio,
+      is_script,
       default_excluded: false,
       default_hidden: false,
     };
@@ -80,7 +106,9 @@ const TagsCreatePage = () => {
             <FormControlLabel value="default" control={<Radio />} label="Default" />
             <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
+            <FormControlLabel value="series" control={<Radio />} label="Series" />
             <FormControlLabel value="studio" control={<Radio />} label="Studio" />
+            <FormControlLabel value="script" control={<Radio />} label="Script" />
           </RadioGroup>
         </FormControl>
         <FormLabel>Child Tags</FormLabel>

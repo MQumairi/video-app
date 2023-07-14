@@ -9,7 +9,7 @@ import TagSearcher from "../../../tags/util/searcher/tag_searcher";
 const EditResultsPage = () => {
   const tags_store = useContext(TagsStore);
 
-  const [search_params, _] = useSearchParams({});
+  const [search_params,] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
 
   const on_submit = async () => {

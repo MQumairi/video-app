@@ -7,7 +7,9 @@ export default interface ITag {
   child_tags?: ITag[];
   is_playlist: boolean;
   is_character: boolean;
+  is_series: boolean;
   is_studio: boolean;
+  is_script: boolean;
   default_excluded: boolean;
   default_hidden: boolean;
 }
@@ -17,7 +19,9 @@ export interface ITagCreate {
   child_tags: ITag[];
   is_playlist: boolean;
   is_character: boolean;
+  is_series: boolean;
   is_studio: boolean;
+  is_script: boolean;
   default_excluded: boolean;
   default_hidden: boolean;
 }
@@ -28,7 +32,9 @@ export interface ITagEdit {
   child_tags: ITag[];
   is_playlist: boolean;
   is_character: boolean;
+  is_series: boolean;
   is_studio: boolean;
+  is_script: boolean;
   default_excluded: boolean;
   default_hidden: boolean;
 }

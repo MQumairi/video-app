@@ -17,21 +17,17 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   found_tag.name = submitted_tag.name;
   // Set the tag type
   if (submitted_tag.is_playlist) {
-    found_tag.is_playlist = true;
-    found_tag.is_character = false;
-    found_tag.is_studio = false;
+    found_tag.make_playlist();
   } else if (submitted_tag.is_character) {
-    found_tag.is_playlist = false;
-    found_tag.is_character = true;
-    found_tag.is_studio = false;
+    found_tag.make_character();
+  } else if (submitted_tag.is_series) {
+    found_tag.make_series();
   } else if (submitted_tag.is_studio) {
-    found_tag.is_playlist = false;
-    found_tag.is_character = false;
-    found_tag.is_studio = true;
+    found_tag.make_studio();
+  } else if (submitted_tag.is_script) {
+    await found_tag.make_script(submitted_tag.start_script, submitted_tag.cleanup_script);
   } else {
-    found_tag.is_playlist = false;
-    found_tag.is_character = false;
-    found_tag.is_studio = false;
+    found_tag.make_default();
   }
   // If tag current children differ from submitted tag's children
   if (!Tag.tags_equal(found_tag.child_tags, submitted_tag.child_tags)) {

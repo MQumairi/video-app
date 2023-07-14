@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToMany, JoinTable, getRepository } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToMany, JoinTable, getRepository, OneToMany } from "typeorm";
 import { VideoMeta } from "./video_meta";
 import { ImageMeta } from "./image_meta";
 import { basename } from "path";
@@ -46,6 +46,12 @@ export class FileScript {
 
   @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
   tags: Tag[];
+
+  @OneToMany((t) => Tag, (tag) => tag.start_script)
+  start_tags: Tag[];
+
+  @OneToMany((t) => Tag, (tag) => tag.start_script)
+  cleanup_tags: Tag[];
 
   static create_from_path(path: string): FileScript {
     const file_script = new FileScript();

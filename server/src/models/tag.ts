@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, OneToMany, getRepository } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Index, OneToMany, getRepository, ManyToOne } from "typeorm";
 import { VideoMeta } from "./video_meta";
 import { ImageGallery } from "./image_gallery";
 import { Directory } from "../lib/directory";
@@ -23,7 +23,15 @@ export class Tag {
 
   @Index()
   @Column("bool", { default: false })
+  is_series: boolean;
+
+  @Index()
+  @Column("bool", { default: false })
   is_studio: boolean;
+
+  @Index()
+  @Column("bool", { default: false })
+  is_script: boolean;
 
   @ManyToMany((type) => VideoMeta, (video) => video.tags, { cascade: true })
   @JoinTable()
@@ -40,6 +48,12 @@ export class Tag {
   @ManyToMany((type) => FileScript, (script) => script.tags, { cascade: true })
   @JoinTable()
   file_scripts: FileScript[];
+
+  @ManyToOne(() => FileScript, (script) => script.start_tags, { nullable: true, onDelete: "CASCADE" })
+  start_script: FileScript;
+
+  @ManyToOne(() => FileScript, (script) => script.cleanup_tags, { nullable: true, onDelete: "CASCADE" })
+  cleanup_script: FileScript;
 
   @Index()
   @Column("bool", { default: false })
@@ -84,5 +98,62 @@ export class Tag {
     if (arr_1.length != arr_2.length) return false;
     const set_2 = new Set(Tag.get_ids(arr_2));
     return Tag.get_ids(arr_1).every((i) => set_2.has(i));
+  }
+
+  make_default() {
+    this.is_playlist = false;
+    this.is_character = false;
+    this.is_series = false;
+    this.is_studio = false;
+    this.is_script = false;
+  }
+
+  make_playlist() {
+    this.is_playlist = true;
+    this.is_character = false;
+    this.is_series = false;
+    this.is_studio = false;
+    this.is_script = false;
+  }
+
+  make_character() {
+    this.is_playlist = false;
+    this.is_character = true;
+    this.is_series = false;
+    this.is_studio = false;
+    this.is_script = false;
+  }
+
+  make_series() {
+    this.is_playlist = false;
+    this.is_character = false;
+    this.is_series = true;
+    this.is_studio = false;
+    this.is_script = false;
+  }
+
+  make_studio() {
+    this.is_playlist = false;
+    this.is_character = false;
+    this.is_series = false;
+    this.is_studio = true;
+    this.is_script = false;
+  }
+
+  async make_script(start_script: FileScript | null, cleanup_script: FileScript | null) {
+    this.is_playlist = false;
+    this.is_character = false;
+    this.is_series = false;
+    this.is_studio = false;
+    this.is_script = true;
+    const script_repo = getRepository(FileScript);
+    if (start_script) {
+      const found_start_script = await script_repo.findOne(start_script.id);
+      if (found_start_script) this.start_script = found_start_script;
+    }
+    if (cleanup_script) {
+      const found_cleanup_script = await script_repo.findOne(cleanup_script.id);
+      if (found_cleanup_script) this.cleanup_script = found_cleanup_script;
+    }
   }
 }

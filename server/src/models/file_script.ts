@@ -8,6 +8,14 @@ import { promisify } from "util";
 import { Tag } from "./tag";
 const exec = promisify(exec_sync);
 
+export enum ScriptState {
+  unscripted = 0,
+  active,
+  inactive,
+  processing_activation_script,
+  processing_deactivation_script,
+}
+
 @Entity()
 export class FileScript {
   @PrimaryGeneratedColumn()
@@ -47,11 +55,11 @@ export class FileScript {
   @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
   tags: Tag[];
 
-  @OneToMany((t) => Tag, (tag) => tag.start_script)
-  start_tags: Tag[];
+  @OneToMany((t) => Tag, (tag) => tag.activation_script)
+  activatable_tags: Tag[];
 
-  @OneToMany((t) => Tag, (tag) => tag.start_script)
-  cleanup_tags: Tag[];
+  @OneToMany((t) => Tag, (tag) => tag.deactivation_script)
+  deactivatable_tags: Tag[];
 
   static create_from_path(path: string): FileScript {
     const file_script = new FileScript();

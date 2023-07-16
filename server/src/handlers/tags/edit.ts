@@ -26,7 +26,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   } else if (submitted_tag.is_studio) {
     found_tag.make_studio();
   } else if (submitted_tag.is_script) {
-    await found_tag.make_script(submitted_tag.start_script, submitted_tag.cleanup_script);
+    await found_tag.make_script(submitted_tag.activation_script, submitted_tag.deactivation_script);
   } else {
     found_tag.make_default();
   }

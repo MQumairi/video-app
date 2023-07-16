@@ -49,11 +49,11 @@ export class Tag {
   @JoinTable()
   file_scripts: FileScript[];
 
-  @ManyToOne(() => FileScript, (script) => script.start_tags, { nullable: true, onDelete: "CASCADE" })
-  start_script: FileScript;
+  @ManyToOne(() => FileScript, (script) => script.activatable_tags, { nullable: true, onDelete: "CASCADE" })
+  activation_script: FileScript;
 
-  @ManyToOne(() => FileScript, (script) => script.cleanup_tags, { nullable: true, onDelete: "CASCADE" })
-  cleanup_script: FileScript;
+  @ManyToOne(() => FileScript, (script) => script.deactivatable_tags, { nullable: true, onDelete: "CASCADE" })
+  deactivation_script: FileScript;
 
   @Index()
   @Column("bool", { default: false })
@@ -141,20 +141,20 @@ export class Tag {
     this.is_script = false;
   }
 
-  async make_script(start_script: FileScript | null, cleanup_script: FileScript | null) {
+  async make_script(activation_script: FileScript | null, deactivation_script: FileScript | null) {
     this.is_playlist = false;
     this.is_character = false;
     this.is_series = false;
     this.is_studio = false;
     this.is_script = true;
     const script_repo = getRepository(FileScript);
-    if (start_script) {
-      const found_start_script = await script_repo.findOne(start_script.id);
-      if (found_start_script) this.start_script = found_start_script;
+    if (activation_script) {
+      const found_start_script = await script_repo.findOne(activation_script.id);
+      if (found_start_script) this.activation_script = found_start_script;
     }
-    if (cleanup_script) {
-      const found_cleanup_script = await script_repo.findOne(cleanup_script.id);
-      if (found_cleanup_script) this.cleanup_script = found_cleanup_script;
+    if (deactivation_script) {
+      const found_cleanup_script = await script_repo.findOne(deactivation_script.id);
+      if (found_cleanup_script) this.deactivation_script = found_cleanup_script;
     }
   }
 }

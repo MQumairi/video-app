@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne, OneToMany, OneToOne, JoinColumn } from "typeorm";
 import { ImageMeta } from "./image_meta";
 import { VideoMeta } from "./video_meta";
-import { FileTrasher } from "../lib/file_trasher";
 import { Tag } from "./tag";
 import Tagger from "../lib/tagger";
+import { ScriptState } from "./file_script";
 
 @Entity()
 export class ImageGallery {
@@ -23,6 +23,9 @@ export class ImageGallery {
 
   @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
   tags: Tag[];
+
+  @Column("int", { default: ScriptState.unscripted })
+  script_state: ScriptState;
 
   static create(name: string, images: ImageMeta[]): ImageGallery {
     const gallery = new ImageGallery();

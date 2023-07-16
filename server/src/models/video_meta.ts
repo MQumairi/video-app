@@ -5,10 +5,9 @@ import { Series } from "./series";
 import { ImageGallery } from "./image_gallery";
 import { ImageMeta } from "./image_meta";
 import { FileTrasher } from "../lib/file_trasher";
-import { FileScript } from "./file_script";
+import { FileScript, ScriptState } from "./file_script";
 import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
 import VideoTagger from "../lib/videos_lib/video_tagger";
-import G from "glob";
 
 @Entity()
 export class VideoMeta {
@@ -66,6 +65,9 @@ export class VideoMeta {
 
   @Column("int", { default: 0 })
   views: number;
+
+  @Column("int", { default: ScriptState.unscripted })
+  script_state: ScriptState;
 
   static create_from_path(path: string): VideoMeta {
     const video_meta = new VideoMeta();

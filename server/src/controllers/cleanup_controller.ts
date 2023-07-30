@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import CleanupDatabase from "../handlers/cleanup/cleanup_database";
+import CleanupMissingVideos from "../handlers/cleanup/cleanup_missing_videos";
 import CleanupTags from "../handlers/cleanup/cleanup_tags";
 import CleanupDuplicateTags from "../handlers/cleanup/cleanup_duplicate_tags";
 import CleanupThumbnails from "../handlers/cleanup/cleanup_thumbnails";
@@ -12,7 +12,7 @@ const cleanup_controller = Router();
 
 // Cleans up database from videos with paths that no longer exist
 cleanup_controller.get("/missing-videos", async (req: Request, res: Response) => {
-  await CleanupDatabase(req, res);
+  await CleanupMissingVideos(req, res);
 });
 
 // Iterates over video folder, tagging videos based on their directory structure

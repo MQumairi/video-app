@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { VideoMeta } from "../../models/video_meta";
 import { readdirSync } from "fs";
 import { ImageGallery } from "../../models/image_gallery";
-import { Directory } from "../../lib/directory";
 
 function doesFileExist(filePath: string): boolean {
   try {
@@ -21,7 +20,7 @@ function doesFileExist(filePath: string): boolean {
   }
 }
 
-const CleanupDatabase = async (req: Request, res: Response): Promise<void> => {
+const CleanupMissingVideos = async (req: Request, res: Response): Promise<void> => {
   console.log("cleaning database from missing videos");
   let video_repo = getRepository(VideoMeta);
   let videos = await video_repo.find({ relations: ["file_scripts", "gallery"] });
@@ -49,4 +48,4 @@ const delete_video = async (v: VideoMeta, video_repo: Repository<VideoMeta>) => 
   await video_repo.remove(v);
 };
 
-export default CleanupDatabase;
+export default CleanupMissingVideos;

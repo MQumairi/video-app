@@ -9,7 +9,7 @@ const CleanupPage = () => {
         <Button size="large" onClick={async () => await Cleanup.delete_missing_videos()}>
           Delete Videos
         </Button>
-        <Button size="large" onClick={async () => await Cleanup.tag_videos()}>
+        <Button size="large" onClick={async () => await Cleanup.new_videos()}>
           Tag Videos
         </Button>
         <Button size="large" onClick={async () => await Cleanup.delete_duplicate_tags()}>

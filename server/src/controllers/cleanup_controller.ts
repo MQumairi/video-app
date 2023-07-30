@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import CleanupMissingVideos from "../handlers/cleanup/cleanup_missing_videos";
-import CleanupTags from "../handlers/cleanup/cleanup_tags";
+import CleanupNewVideos from "../handlers/cleanup/cleanup_new_videos";
 import CleanupDuplicateTags from "../handlers/cleanup/cleanup_duplicate_tags";
 import CleanupThumbnails from "../handlers/cleanup/cleanup_thumbnails";
 import CleanupVideoFileMeta from "../handlers/cleanup/cleanup_video_file_meta";
@@ -16,8 +16,8 @@ cleanup_controller.get("/missing-videos", async (req: Request, res: Response) =>
 });
 
 // Iterates over video folder, tagging videos based on their directory structure
-cleanup_controller.get("/tag-videos", async (req: Request, res: Response) => {
-  await CleanupTags(req, res);
+cleanup_controller.get("/new-videos", async (req: Request, res: Response) => {
+  await CleanupNewVideos(req, res);
 });
 
 // Cleanup from duplicate tags

@@ -4,9 +4,8 @@ import LibraryIterator from "../../lib/library_iterator";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 import VideoTagger from "../../lib/videos_lib/video_tagger";
-import { VideoFileProber } from "../../lib/videos_lib/video_file_probber";
 
-const CleanupTags = async (req: Request, res: Response): Promise<void> => {
+const CleanupNewVideos = async (req: Request, res: Response): Promise<void> => {
   console.log("Applying tags to all videos based on their path");
   await LibraryIterator.iterate_videos(process_video);
   console.log("done tagging videos");
@@ -41,4 +40,4 @@ const save_dir_tags = async (video: VideoMeta): Promise<Tag[]> => {
   return tags;
 };
 
-export default CleanupTags;
+export default CleanupNewVideos;

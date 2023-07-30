@@ -94,7 +94,7 @@ export const FileScripts = {
 
 export const Cleanup = {
   delete_missing_videos: async () => axios.get(`cleanup/missing-videos`),
-  tag_videos: async () => axios.get(`cleanup/tag-videos`),
+  new_videos: async () => axios.get(`cleanup/new-videos`),
   delete_duplicate_tags: async () => axios.get(`cleanup/duplicate-tags`),
   cleanup_thumbs: async () => axios.get(`cleanup/thumbnails`),
   cleanup_video_file_meta: async () => axios.get(`cleanup/video-file-meta`),

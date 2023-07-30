@@ -1,10 +1,6 @@
 import { SelectQueryBuilder } from "typeorm";
 import { VideoMeta } from "../../models/video_meta";
-
-interface BatchResult {
-  successes: number;
-  failures: number;
-}
+import { BatchResult } from "../file_batcher";
 
 export class VideoBatcher {
   static BATCHSIZE = 50;

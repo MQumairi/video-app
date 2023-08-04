@@ -3,6 +3,8 @@ import { VideoMeta } from "./video_meta";
 import { ImageGallery } from "./image_gallery";
 import { Directory } from "../lib/directory";
 import { FileScript } from "./file_script";
+import { PersistentQuery } from "./persistent_query";
+import { PersistentQueryToPlaylist } from "./persistent_query_to_playlist";
 
 @Entity()
 export class Tag {
@@ -16,6 +18,10 @@ export class Tag {
   @Index()
   @Column("bool", { default: false })
   is_playlist: boolean;
+
+  @Index()
+  @Column("bool", { default: false })
+  is_dynamic_playlist: boolean;
 
   @Index()
   @Column("bool", { default: false })
@@ -62,6 +68,17 @@ export class Tag {
   @Index()
   @Column("bool", { default: false })
   default_hidden: boolean;
+
+  @ManyToMany((type) => PersistentQuery, (query) => query.tags, { cascade: true })
+  @JoinTable()
+  persistent_queries: PersistentQuery[];
+
+  @ManyToMany((type) => PersistentQuery, (query) => query.tags, { cascade: true })
+  @JoinTable()
+  excluded_persistent_queries: PersistentQuery[];
+
+  @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist, { eager: true })
+  persistent_query_to_playlists: PersistentQueryToPlaylist[];
 
   static create(name: string): Tag {
     const tag = new Tag();

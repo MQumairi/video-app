@@ -9,6 +9,8 @@ import { Series } from "./models/series";
 import { ImageGallery } from "./models/image_gallery";
 import { ImageMeta } from "./models/image_meta";
 import { FileScript } from "./models/file_script";
+import { PersistentQuery } from "./models/persistent_query";
+import { PersistentQueryToPlaylist } from "./models/persistent_query_to_playlist";
 import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
 import tag_controller from "./controllers/tag_controller";
@@ -27,7 +29,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [VideoMeta, Tag, Series, ImageMeta, ImageGallery, FileScript],
+  entities: [VideoMeta, Tag, Series, ImageMeta, ImageGallery, FileScript, PersistentQuery, PersistentQueryToPlaylist],
   synchronize: true,
   logging: false,
 })

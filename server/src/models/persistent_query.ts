@@ -15,7 +15,7 @@ export class PersistentQuery {
   name: string;
 
   @ManyToMany(() => Tag, (t) => t.persistent_queries, { eager: true, onDelete: "CASCADE" })
-  tags: Tag[];
+  included_tags: Tag[];
 
   @ManyToMany(() => Tag, (t) => t.excluded_persistent_queries, { eager: true, onDelete: "CASCADE" })
   excluded_tags: Tag[];
@@ -35,10 +35,10 @@ export class PersistentQuery {
   @Column("decimal", { default: 0 })
   max_duration_sec: number;
 
-  @Column("decimal", { nullable: true })
+  @Column("decimal", { default: 0 })
   frame_height: number;
 
-  @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist, { eager: true })
+  @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist)
   persistent_query_to_playlists: PersistentQueryToPlaylist[];
 
   static create(
@@ -53,7 +53,7 @@ export class PersistentQuery {
   ): PersistentQuery {
     const persistent_query = new PersistentQuery();
     persistent_query.name = name;
-    persistent_query.tags = included_tags;
+    persistent_query.included_tags = included_tags;
     persistent_query.excluded_tags = excluded_tags;
     persistent_query.min_rating = min_rating;
     persistent_query.max_rating = max_rating;
@@ -64,7 +64,7 @@ export class PersistentQuery {
   }
 
   static build_search_query(p: PersistentQuery): SearchQuery {
-    return new SearchQuery(p.search_text, p.tags, p.excluded_tags, p.min_rating, p.max_rating, p.frame_height);
+    return new SearchQuery(p.search_text, p.included_tags, p.excluded_tags, p.min_rating, p.max_rating, p.frame_height);
   }
 
   static async find_video(query: PersistentQuery): Promise<VideoMeta | undefined> {

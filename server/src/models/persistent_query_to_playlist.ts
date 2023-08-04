@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PersistentQuery } from "./persistent_query";
 import { Tag } from "./tag";
 

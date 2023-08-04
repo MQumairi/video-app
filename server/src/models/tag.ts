@@ -69,15 +69,15 @@ export class Tag {
   @Column("bool", { default: false })
   default_hidden: boolean;
 
-  @ManyToMany((type) => PersistentQuery, (query) => query.tags, { cascade: true })
+  @ManyToMany((type) => PersistentQuery, (query) => query.included_tags, { cascade: true })
   @JoinTable()
   persistent_queries: PersistentQuery[];
 
-  @ManyToMany((type) => PersistentQuery, (query) => query.tags, { cascade: true })
+  @ManyToMany((type) => PersistentQuery, (query) => query.excluded_tags, { cascade: true })
   @JoinTable()
   excluded_persistent_queries: PersistentQuery[];
 
-  @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist, { eager: true })
+  @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist)
   persistent_query_to_playlists: PersistentQueryToPlaylist[];
 
   static create(name: string): Tag {

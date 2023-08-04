@@ -19,6 +19,7 @@ import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
 import gallery_controller from "./controllers/gallery_controller";
 import file_script_controller from "./controllers/file_script_controller";
+import persistent_query_controller from "./controllers/persistent_query_controller";
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/api/series", series_controller);
 app.use("/api/file-scripts", file_script_controller);
 app.use("/api/cleanup", cleanup_controller);
 app.use("/api/galleries", gallery_controller);
+app.use("/api/persistent-queries", persistent_query_controller);
 
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;

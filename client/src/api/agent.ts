@@ -7,6 +7,7 @@ import IVideoMeta from "../models/video_meta";
 import IImageMeta from "../models/image_meta";
 import IImageGallery from "../models/image_gallery";
 import IFileScript from "../models/file_script";
+import IPersistentQuery, { IPersistentQueryCreate } from "../models/persistent_query";
 
 const server_host = process.env.REACT_APP_SERVER_HOST ?? "localhost";
 const server_port = process.env.REACT_APP_SERVER_PORT ?? 5000;
@@ -90,6 +91,13 @@ export const FileScripts = {
   execute_gallery_script: async (script: IFileScript, gallery: IImageGallery) => axios.put(`file-scripts/${script.id}/execute-gallery-script`, { gallery }),
   edit: async (script: IFileScript) => axios.put(`file-scripts/${script.id}/edit`, { script }),
   remove_video: async (script: IFileScript, video: IVideoMeta) => axios.put(`file-scripts/${script.id}/remove-video`, { video }),
+};
+
+export const PersistentQueries = {
+  list: async () => axios.get(`persistent-queries`),
+  create: async (query: IPersistentQueryCreate) => axios.post(`persistent-queries`, query),
+  details: async (query_id: number) => axios.get(`persistent-queries/${query_id}`),
+  delete: async (query: IPersistentQuery) => axios.delete(`persistent-queries/${query.id}`),
 };
 
 export const Cleanup = {

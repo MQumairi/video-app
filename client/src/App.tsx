@@ -26,6 +26,10 @@ import ImageDeletePage from "./components/galleries/image_delete/image_delete_pa
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import HomePage from "./components/videos/index/home_page";
 import EditResultsPage from "./components/videos/search/edit_results/edit_results_page";
+import QueriesIndexPage from "./components/queries/index/queries_index_page";
+import QueriesCreatePage from "./components/queries/create/queries_create_page";
+import QueriesDetailPage from "./components/queries/details/queries_detail_page";
+import QueryDeletePage from "./components/queries/delete/query_delete_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -68,6 +72,11 @@ const App = () => {
             <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
             <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
             <Route path="tags/:tag_id" element={<TagDetailsPage />} />
+            {/* Query System */}
+            <Route path="queries" element={<QueriesIndexPage />} />
+            <Route path="queries/new" element={<QueriesCreatePage />} />
+            <Route path="queries/delete/:query_id" element={<QueryDeletePage />} />
+            <Route path="queries/:query_id" element={<QueriesDetailPage />} />
             {/* Gallery System */}
             <Route path="galleries" element={<GalleryIndexPage />} />
             <Route path="galleries/:gallery_id" element={<GalleryDetailsPage />} />

@@ -26,6 +26,9 @@ const NavBar = () => {
           <a href="/search">Search</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
+          <a href="/queries">Queries</a>
+        </Typography>
+        <Typography variant="h6" color="inherit" component="div" sx={icon_style}>
           <a href="/galleries">Galleries</a>
         </Typography>
         <Typography variant="h6" color="inherit" component="div" sx={icon_style}>

@@ -11,7 +11,7 @@ persistent_query_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);
 });
 
-persistent_query_controller.get("/:id/preview-videos", async (req: Request, res: Response) => {
+persistent_query_controller.put("/preview-videos", async (req: Request, res: Response) => {
   await PreviewVideos(req, res);
 });
 

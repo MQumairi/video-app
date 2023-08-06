@@ -11,6 +11,7 @@ const PlayerPage = () => {
   const vid_path = params.vid_path;
   const vid_id = params.vid_id;
   const tag_id = params.tag_id;
+  const query_id = params.query_id;
 
   const video_store = useContext(VideoStore);
 
@@ -36,6 +37,9 @@ const PlayerPage = () => {
       const random_video = res.data;
       set_random_vid_url(`/tags/${tag_id}/video/${random_video.id}`);
       set_back_url(`/tags/${tag_id}`);
+    }
+    if (query_id) {
+      set_back_url(`/queries/${query_id}`);
     }
     // If we came from /search?x
     else if (params) {

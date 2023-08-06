@@ -4,9 +4,11 @@ import RatingSelector from "../../misc/rating_selector";
 import TagSearcher from "../../tags/util/searcher/tag_searcher";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
-import { IPersistentQueryCreate } from "../../../models/persistent_query";
+import IPersistentQuery, { IPersistentQueryCreate } from "../../../models/persistent_query";
 import TagsStore from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
+import IVideoMeta from "../../../models/video_meta";
+import { VideoList } from "../../videos/util/video_list";
 
 const QueriesCreateForm = () => {
   const [name, set_name] = useState<string>("");
@@ -14,8 +16,27 @@ const QueriesCreateForm = () => {
   const [min_rating, set_min_rating] = useState<number>(0);
   const [max_rating, set_max_rating] = useState<number>(10);
   const [min_resolution, set_min_resolution] = useState<number>(0);
+  const [query_videos, set_query_videos] = useState<IVideoMeta[]>([]);
 
   const tags_store = useContext(TagsStore);
+
+  const handle_preview = async () => {
+    const persistent_query: IPersistentQuery = {
+      id: 1,
+      name: name,
+      search_text: searched_text,
+      included_tags: tags_store.selected_tags,
+      excluded_tags: [],
+      min_rating: min_rating,
+      max_rating: max_rating,
+      frame_height: min_resolution,
+      min_duration_sec: 0,
+      max_duration_sec: 99999999,
+    };
+    const res = await PersistentQueries.preview_videos(persistent_query);
+    if (res.status != 200) return;
+    set_query_videos(res.data.videos);
+  };
 
   const handle_submit = async () => {
     const persistent_query: IPersistentQueryCreate = {
@@ -73,12 +94,13 @@ const QueriesCreateForm = () => {
           <TagSearcher post_selection={() => {}} post_deselection={() => {}} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
-          <Button onClick={() => {}}>Preview</Button>
+          <Button onClick={handle_preview}>Preview</Button>
           <Button onClick={handle_submit} disabled={name.length === 0}>
             Create
           </Button>
         </ButtonGroup>
       </FormGroup>
+      <VideoList videos={query_videos} base="/player" />
     </div>
   );
 };

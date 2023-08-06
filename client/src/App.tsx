@@ -75,6 +75,7 @@ const App = () => {
             {/* Query System */}
             <Route path="queries" element={<QueriesIndexPage />} />
             <Route path="queries/new" element={<QueriesCreatePage />} />
+            <Route path="queries/:query_id/video/:vid_id" element={<PlayerPage />} />
             <Route path="queries/delete/:query_id" element={<QueryDeletePage />} />
             <Route path="queries/:query_id" element={<QueriesDetailPage />} />
             {/* Gallery System */}

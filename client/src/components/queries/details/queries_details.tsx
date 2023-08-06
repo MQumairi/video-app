@@ -16,6 +16,7 @@ const QueriesDetails = (props: IProps) => {
       {props.query.search_text.length > 0 && <p>Searching for: "{props.query.search_text}"</p>}
       <TagsList tags={props.query.included_tags} />
       <h3>Videos</h3>
+      <Button>Preview</Button>
       <VideoList videos={props.videos} base="/browser/player" />
     </div>
   );

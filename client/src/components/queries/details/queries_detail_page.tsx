@@ -5,15 +5,20 @@ import IPersistentQuery from "../../../models/persistent_query";
 import { useEffect, useState } from "react";
 import { PersistentQueries } from "../../../api/agent";
 import QueriesDetails from "./queries_details";
+import IVideoMeta from "../../../models/video_meta";
 
 const QueriesDetailsPage = () => {
   let query_id = useParams().query_id ?? 1;
   const [query, set_query] = useState<IPersistentQuery | null>(null);
+  const [query_videos, set_query_videos] = useState<IVideoMeta[]>([]);
 
   const fetch_query = async () => {
     const res = await PersistentQueries.details(+query_id);
     if (res.status !== 200) return;
     set_query(res.data);
+    const video_res = await PersistentQueries.preview_videos(res.data);
+    if (video_res.status !== 200) return;
+    set_query_videos(video_res.data.videos);
   };
 
   useEffect(() => {
@@ -42,7 +47,7 @@ const QueriesDetailsPage = () => {
         </Button>
       </ButtonGroup>
 
-      <QueriesDetails query={query} />
+      <QueriesDetails query={query} videos={query_videos} />
     </div>
   );
 };

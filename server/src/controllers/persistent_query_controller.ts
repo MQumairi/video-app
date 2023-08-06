@@ -3,11 +3,16 @@ import Create from "../handlers/persistent_queries/create";
 import List from "../handlers/persistent_queries/list";
 import Details from "../handlers/persistent_queries/details";
 import Delete from "../handlers/persistent_queries/delete";
+import PreviewVideos from "../handlers/persistent_queries/preview_videos";
 
 const persistent_query_controller = Router();
 
 persistent_query_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);
+});
+
+persistent_query_controller.get("/:id/preview-videos", async (req: Request, res: Response) => {
+  await PreviewVideos(req, res);
 });
 
 persistent_query_controller.get("/:id", async (req: Request, res: Response) => {

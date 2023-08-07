@@ -31,7 +31,7 @@ const DynamicPlaylistVideo = async (req: Request, res: Response): Promise<VideoM
   const seacher = new VideoSearcher(search_query);
   const video = await seacher.random_single_video();
   const next = next_video_index(order, persistent_queries.length);
-  res.status(200).send({ video, next });
+  res.status(200).send({ video, next, persistent_query });
   return video;
 };
 

@@ -9,6 +9,7 @@ import { calculate_resolution, get_file_size_string } from "../../../lib/video_f
 import VideoPlayer from "../../videos/player/video_player";
 import RatingStars from "../../misc/rating_stars";
 import PlayerTabs from "../../videos/player/player_tabs";
+import IPersistentQuery from "../../../models/persistent_query";
 
 const DynamicPlaylistPlayer = () => {
   const params = useParams();
@@ -19,6 +20,7 @@ const DynamicPlaylistPlayer = () => {
 
   const [video, set_video] = useState<IVideoMeta | null>(null);
   const [next_url, set_next_url] = useState<string>("");
+  const [persistent_query, set_persistent_query] = useState<IPersistentQuery | null>(null);
 
   const fetch_video_meta = async () => {
     if (!tag_id || !order) return;
@@ -26,9 +28,11 @@ const DynamicPlaylistPlayer = () => {
     if (res.status !== 200) return;
     const fetched_video = res.data.video;
     const next_order = res.data.next;
+    const fetched_persistent_query = res.data.persistent_query;
     video_store.set_selected_video(fetched_video);
     set_video(fetched_video);
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
+    set_persistent_query(fetched_persistent_query);
   };
 
   const handle_rating_change = async (rating: number | null) => {
@@ -57,6 +61,7 @@ const DynamicPlaylistPlayer = () => {
           {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
           {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
           {video.size_mb && <Chip label={get_file_size_string(video)} color="primary" variant="outlined" />}
+          {persistent_query && <Chip label={persistent_query.name} color="primary" variant="outlined" />}
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">

@@ -10,6 +10,7 @@ import OtherTags from "./other_tags";
 import PlaylistTags from "./playlist_tags";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import DynamicPlaylistTags from "./dynamic_playlist_tags";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,25 +62,29 @@ const TagsTabs = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Playlists" {...tab_props(0)} style={{ color: "white" }} />
-          <Tab label="Characters" {...tab_props(1)} style={{ color: "white" }} />
-          <Tab label="Studios" {...tab_props(2)} style={{ color: "white" }} />
-          <Tab label="Other" {...tab_props(3)} style={{ color: "white" }} />
-          <Tab label="All" {...tab_props(4)} style={{ color: "white" }} />
+          <Tab label="Dynamic Playlists" {...tab_props(1)} style={{ color: "white" }} />
+          <Tab label="Characters" {...tab_props(2)} style={{ color: "white" }} />
+          <Tab label="Studios" {...tab_props(3)} style={{ color: "white" }} />
+          <Tab label="Other" {...tab_props(4)} style={{ color: "white" }} />
+          <Tab label="All" {...tab_props(5)} style={{ color: "white" }} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <PlaylistTags />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CharacterTags />
+        <DynamicPlaylistTags />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <StudioTags />
+        <CharacterTags />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <OtherTags />
+        <StudioTags />
       </TabPanel>
       <TabPanel value={value} index={4}>
+        <OtherTags />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
         <AllTags />
       </TabPanel>
     </Box>

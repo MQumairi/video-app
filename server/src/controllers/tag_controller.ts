@@ -18,11 +18,16 @@ import RandomImages from "../handlers/tags/random_images";
 import TagSingleVideo from "../handlers/tags/single_video_tag";
 import RandomImageSingle from "../handlers/tags/random_image_single";
 import DynamicPlaylistVideo from "../handlers/tags/dynamic_playlist_video";
+import DynamicPlaylists from "../handlers/tags/only_dynamic_playlist";
 
 const tag_controller = Router();
 
 tag_controller.get("/playlists", async (req: Request, res: Response) => {
   await Playlists(req, res);
+});
+
+tag_controller.get("/dynamic-playlists", async (req: Request, res: Response) => {
+  await DynamicPlaylists(req, res);
 });
 
 tag_controller.get("/characters", async (req: Request, res: Response) => {

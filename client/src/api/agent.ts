@@ -53,6 +53,7 @@ export const Tag = {
   studios: async () => axios.get(`tags/studios`),
   other: async () => axios.get(`tags/uncategorized`),
   playlists: async () => axios.get(`tags/playlists`),
+  dynamic_playlists: async () => axios.get(`tags/dynamic-playlists`),
   shuffle: async (tag_id: number) => axios.get(`tags/${tag_id}/shuffle`),
   random_images: async (tag: ITag) => axios.get(`tags/${tag.id}/images`),
   random_image_single: async (tag: ITag) => axios.get(`tags/${tag.id}/image-slide`),

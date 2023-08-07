@@ -6,7 +6,7 @@ import { SearchQuery } from "../../lib/search_query";
 import { VideoSearcher } from "../../lib/videos_lib/video_searcher";
 
 const Shuffle = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
-  console.log("entered tag details");
+  console.log("entered tag shuffle");
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
   const tag = await tag_repo.findOne(id, { relations: ["child_tags"] });

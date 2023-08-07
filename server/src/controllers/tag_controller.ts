@@ -17,6 +17,7 @@ import Uncategorized from "../handlers/tags/only_uncategorized";
 import RandomImages from "../handlers/tags/random_images";
 import TagSingleVideo from "../handlers/tags/single_video_tag";
 import RandomImageSingle from "../handlers/tags/random_image_single";
+import DynamicPlaylistVideo from "../handlers/tags/dynamic_playlist_video";
 
 const tag_controller = Router();
 
@@ -38,6 +39,10 @@ tag_controller.get("/uncategorized", async (req: Request, res: Response) => {
 
 tag_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);
+});
+
+tag_controller.get("/dynamic-playlist/:id/order/:order", async (req: Request, res: Response) => {
+  await DynamicPlaylistVideo(req, res);
 });
 
 tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {

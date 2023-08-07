@@ -174,4 +174,25 @@ export class Tag {
       if (found_cleanup_script) this.deactivation_script = found_cleanup_script;
     }
   }
+
+  static async create_dynamic_playlist(playlist: Tag, queries: PersistentQuery[]): Promise<Tag> {
+    if (!playlist.is_dynamic_playlist) return playlist;
+    for (let i = 0; i < queries.length; i++) {
+      const query = queries[i];
+      await PersistentQueryToPlaylist.create(playlist, query, i + 1);
+    }
+    return playlist;
+  }
+
+  static async get_dynamic_playlist_queries(playlist: Tag): Promise<PersistentQuery[]> {
+    if (!playlist.is_dynamic_playlist) return [];
+    const queries: PersistentQuery[] = [];
+    for (let pq2p of playlist.persistent_query_to_playlists) {
+      const fetched_pq2p = await getRepository(PersistentQueryToPlaylist).findOne(pq2p.id, { relations: ["persistent_query"] });
+      if (fetched_pq2p) {
+        queries.push(fetched_pq2p.persistent_query);
+      }
+    }
+    return queries;
+  }
 }

@@ -9,10 +9,13 @@ import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
 import { Code, Dvr, LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
 import TagDetailsTabs from "./tag_details_tabs";
+import IPersistentQuery from "../../../models/persistent_query";
+import QueriesList from "../../queries/util/queries_list";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
+  const [playlist_queries, set_playlist_queries] = useState<IPersistentQuery[]>([])
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
   const [tag_type, set_tag_type] = useState<TagType>(TagType.Default);
 
@@ -27,6 +30,7 @@ const TagDetailsPage = () => {
     set_tag(fetched_tag);
     set_tag_type(get_tag_type(fetched_tag));
     set_videos_count(res.data.count);
+    set_playlist_queries(res.data.queries)
   };
 
   const fetch_random_tag_video = async () => {
@@ -80,7 +84,10 @@ const TagDetailsPage = () => {
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>
       {tag.child_tags && tag.child_tags.length > 0 && <VideoTags tags={tag.child_tags} />}
-      <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
+      {tag.is_dynamic_playlist && <QueriesList queries={playlist_queries}/>}
+      {!tag.is_dynamic_playlist && (
+        <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
+      )}
     </div>
   );
 };

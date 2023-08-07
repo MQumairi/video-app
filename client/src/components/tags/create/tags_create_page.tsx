@@ -6,14 +6,18 @@ import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, Rad
 import TagSearcher from "../util/searcher/tag_searcher";
 import { ITagCreate } from "../../../models/tag";
 import TagsStore from "../../../store/tags_store";
+import DynamicPlaylistQueryPicker from "./dynamic_playlist_query_picker";
+import IPersistentQuery from "../../../models/persistent_query";
 
 const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
   const [is_playlist, set_is_playlist] = useState(false);
+  const [is_dynamic_playlist, set_is_dynamic_playlist] = useState(false);
   const [is_character, set_is_character] = useState(false);
   const [is_series, set_is_series] = useState(false);
   const [is_studio, set_is_studio] = useState(false);
   const [is_script, set_is_script] = useState(false);
+  const [selected_queries, set_selected_queries] = useState<IPersistentQuery[]>([]);
 
   const tags_store = useContext(TagsStore);
 
@@ -25,6 +29,7 @@ const TagsCreatePage = () => {
     switch (value) {
       case "default":
         set_is_playlist(false);
+        set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
         set_is_studio(false);
@@ -32,6 +37,15 @@ const TagsCreatePage = () => {
         break;
       case "playlist":
         set_is_playlist(true);
+        set_is_dynamic_playlist(false);
+        set_is_character(false);
+        set_is_series(false);
+        set_is_studio(false);
+        set_is_script(false);
+        break;
+      case "dynamic_playlist":
+        set_is_playlist(false);
+        set_is_dynamic_playlist(true);
         set_is_character(false);
         set_is_series(false);
         set_is_studio(false);
@@ -39,6 +53,7 @@ const TagsCreatePage = () => {
         break;
       case "character":
         set_is_playlist(false);
+        set_is_dynamic_playlist(false);
         set_is_character(true);
         set_is_series(false);
         set_is_studio(false);
@@ -46,6 +61,7 @@ const TagsCreatePage = () => {
         break;
       case "series":
         set_is_playlist(false);
+        set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(true);
         set_is_studio(false);
@@ -53,6 +69,7 @@ const TagsCreatePage = () => {
         break;
       case "studio":
         set_is_playlist(false);
+        set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
         set_is_studio(true);
@@ -60,6 +77,7 @@ const TagsCreatePage = () => {
         break;
       case "script":
         set_is_playlist(false);
+        set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
         set_is_studio(false);
@@ -73,6 +91,7 @@ const TagsCreatePage = () => {
       name: tag_name,
       child_tags: tags_store.selected_tags,
       is_playlist,
+      is_dynamic_playlist,
       is_character,
       is_series,
       is_studio,
@@ -80,8 +99,8 @@ const TagsCreatePage = () => {
       default_excluded: false,
       default_hidden: false,
     };
-    const response = await Tag.post(tag);
-    console.log(response);
+    // Passing in selected_queries in case this tag is a dynamic playlist
+    const response = await Tag.create(tag, selected_queries);
     set_tag_name("");
     tags_store.set_selected_tags([]);
   };
@@ -105,12 +124,14 @@ const TagsCreatePage = () => {
           >
             <FormControlLabel value="default" control={<Radio />} label="Default" />
             <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
+            <FormControlLabel value="dynamic_playlist" control={<Radio />} label="Dynamic Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
             <FormControlLabel value="series" control={<Radio />} label="Series" />
             <FormControlLabel value="studio" control={<Radio />} label="Studio" />
             <FormControlLabel value="script" control={<Radio />} label="Script" />
           </RadioGroup>
         </FormControl>
+        {is_dynamic_playlist && <DynamicPlaylistQueryPicker selected_queries={selected_queries} set_selected_queries={set_selected_queries} />}
         <FormLabel>Child Tags</FormLabel>
         <p>Select childs tags that will be applied to any item that this tag is applied to</p>
         <TagSearcher />

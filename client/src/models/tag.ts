@@ -6,6 +6,7 @@ export default interface ITag {
   videos: IVideoMeta[];
   child_tags?: ITag[];
   is_playlist: boolean;
+  is_dynamic_playlist: boolean;
   is_character: boolean;
   is_series: boolean;
   is_studio: boolean;
@@ -18,6 +19,7 @@ export interface ITagCreate {
   name: string;
   child_tags: ITag[];
   is_playlist: boolean;
+  is_dynamic_playlist: boolean;
   is_character: boolean;
   is_series: boolean;
   is_studio: boolean;
@@ -31,6 +33,7 @@ export interface ITagEdit {
   name: string;
   child_tags: ITag[];
   is_playlist: boolean;
+  is_dynamic_playlist: boolean;
   is_character: boolean;
   is_series: boolean;
   is_studio: boolean;

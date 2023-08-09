@@ -7,32 +7,36 @@ import { PersistentQuery } from "../../models/persistent_query";
 
 const next_video_index = (current_order: number, playlist_length: number): number => {
   const next_index = current_order + 1;
-  if (next_index >= playlist_length) return 0;
+  if (next_index >= playlist_length) return 1;
   return next_index;
 };
 
 const DynamicPlaylistVideo = async (req: Request, res: Response): Promise<VideoMeta | undefined> => {
-  console.log("entered tag shuffle");
-  const id = +req.params.id;
-  const order = +req.params.order;
-  const tag_repo = getRepository(Tag);
-  const tag = await tag_repo.findOne(id, { relations: ["child_tags", "persistent_query_to_playlists"] });
-  if (!tag || !tag.is_dynamic_playlist) {
-    res.status(404).send("Tag not found");
-    return undefined;
-  }
-  const persistent_queries = await Tag.get_dynamic_playlist_queries(tag);
-  if (persistent_queries.length <= order) {
-    res.status(404).send(`Video at index ${order}, not found`);
-    return undefined;
-  }
-  const persistent_query = persistent_queries[order];
-  const search_query = PersistentQuery.build_search_query(persistent_query);
-  const seacher = new VideoSearcher(search_query);
-  const video = await seacher.random_single_video();
-  const next = next_video_index(order, persistent_queries.length);
-  res.status(200).send({ video, next, persistent_query });
-  return video;
+  try {
+    console.log("entered tag shuffle");
+    const id = +req.params.id;
+    const order = +req.params.order;
+    const tag_repo = getRepository(Tag);
+    const tag = await tag_repo.findOne(id, { relations: ["child_tags", "persistent_query_to_playlists"] });
+    if (!tag || !tag.is_dynamic_playlist) {
+      res.status(404).send("Tag not found");
+      return undefined;
+    }
+    const persistent_queries = await PersistentQuery.find_by_order(tag, order);
+    if (persistent_queries.length === 0) {
+      await Tag.update_dynamic_playlist_query_orders(tag);
+      res.status(404).send(`Video at index ${order}, not found`);
+      return undefined;
+    }
+    const persistent_query = persistent_queries[0];
+    const search_query = PersistentQuery.build_search_query(persistent_query);
+    const seacher = new VideoSearcher(search_query);
+    const video = await seacher.random_single_video();
+    const playlist_length = (await Tag.get_dynamic_playlist_queries(tag)).length;
+    const next = next_video_index(order, playlist_length);
+    res.status(200).send({ video, next, playlist_length, persistent_query });
+    return video;
+  } catch (err) {}
 };
 
 export default DynamicPlaylistVideo;

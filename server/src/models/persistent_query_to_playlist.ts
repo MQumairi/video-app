@@ -10,10 +10,10 @@ export class PersistentQueryToPlaylist {
   @Column("decimal", { default: 0 })
   order: number;
 
-  @ManyToOne(() => PersistentQuery, (query) => query.persistent_query_to_playlists)
+  @ManyToOne(() => PersistentQuery, (query) => query.persistent_query_to_playlists, { onDelete: "CASCADE" })
   persistent_query: PersistentQuery;
 
-  @ManyToOne(() => Tag, (tag) => tag.persistent_query_to_playlists)
+  @ManyToOne(() => Tag, (tag) => tag.persistent_query_to_playlists, { onDelete: "CASCADE" })
   playlist: Tag;
 
   static async create(playlist: Tag, query: PersistentQuery, order: number): Promise<PersistentQueryToPlaylist> {
@@ -35,5 +35,10 @@ export class PersistentQueryToPlaylist {
     }
     console.log("failed to find... creating");
     return await PersistentQueryToPlaylist.create(playlist, query, order);
+  }
+
+  static async find_by_order(playlist: Tag, order: number): Promise<PersistentQueryToPlaylist[]> {
+    const pq2p_repo = getRepository(PersistentQueryToPlaylist);
+    return pq2p_repo.find({ where: { playlist: { id: playlist.id }, order: order }, order: { order: "ASC" }, relations: ["persistent_query", "playlist"] });
   }
 }

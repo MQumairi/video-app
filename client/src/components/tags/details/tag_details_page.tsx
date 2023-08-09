@@ -80,7 +80,7 @@ const TagDetailsPage = () => {
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href={`/tags?${search_params.toString()}`}>Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${random_vid.id}`}>Random</Button>}
-        {tag.is_dynamic_playlist && <Button href={`/dynamic-playlist/${tag_id}/order/${0}`}>Play</Button>}
+        {tag.is_dynamic_playlist && <Button href={`/dynamic-playlist/${tag_id}/order/${1}`}>Play</Button>}
         <Button href={`/tags/${tag_id}/edit`}>Edit</Button>
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>

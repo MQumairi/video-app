@@ -213,4 +213,17 @@ export class Tag {
     }
     return queries;
   }
+
+  static async update_dynamic_playlist_query_orders(playlist: Tag) {
+    if (!playlist.is_dynamic_playlist) return [];
+    const pq2p_repo = getRepository(PersistentQueryToPlaylist);
+    const pq2p_arr = await pq2p_repo.find({ where: { playlist: { id: playlist.id } }, order: { order: "ASC" } });
+    for (let i = 0; i < pq2p_arr.length; i++) {
+      const pq2p = pq2p_arr[i];
+      if (pq2p.order !== i + 1) {
+        pq2p.order = i + 1;
+        await pq2p_repo.save(pq2p);
+      }
+    }
+  }
 }

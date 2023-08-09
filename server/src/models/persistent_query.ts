@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToMany, OneToMany, PrimaryGeneratedColumn, getRepository } from "typeorm";
 import { Tag } from "./tag";
 import { PersistentQueryToPlaylist } from "./persistent_query_to_playlist";
 import { MAX_RATING, MIN_RATING, SearchQuery } from "../lib/search_query";
@@ -78,5 +78,12 @@ export class PersistentQuery {
     const media_searcher = new VideoSearcher(search_query);
     const [videos, _] = await media_searcher.random_videos();
     return videos;
+  }
+
+  static async find_by_order(playlist: Tag, order: number): Promise<PersistentQuery[]> {
+    const pq2p_arr = await PersistentQueryToPlaylist.find_by_order(playlist, order);
+    return pq2p_arr.map((pq2p) => {
+      return pq2p.persistent_query;
+    });
   }
 }

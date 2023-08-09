@@ -21,6 +21,7 @@ const DynamicPlaylistPlayer = () => {
   const [video, set_video] = useState<IVideoMeta | null>(null);
   const [next_url, set_next_url] = useState<string>("");
   const [persistent_query, set_persistent_query] = useState<IPersistentQuery | null>(null);
+  const [playlist_length, set_playlist_length] = useState<number>(0);
 
   const fetch_video_meta = async () => {
     if (!tag_id || !order) return;
@@ -29,10 +30,12 @@ const DynamicPlaylistPlayer = () => {
     const fetched_video = res.data.video;
     const next_order = res.data.next;
     const fetched_persistent_query = res.data.persistent_query;
+    const fetched_playlist_length = res.data.playlist_length;
     video_store.set_selected_video(fetched_video);
     set_video(fetched_video);
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
     set_persistent_query(fetched_persistent_query);
+    set_playlist_length(fetched_playlist_length);
   };
 
   const handle_rating_change = async (rating: number | null) => {
@@ -55,13 +58,14 @@ const DynamicPlaylistPlayer = () => {
   return (
     <div>
       <h1>{video.name}</h1>
+      {persistent_query && <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{persistent_query.name}</h2>}
       <div>
         <Stack direction="row" spacing={1}>
           {video.id && <Chip label={video.id} color="primary" variant="outlined" />}
           {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
           {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
           {video.size_mb && <Chip label={get_file_size_string(video)} color="primary" variant="outlined" />}
-          {persistent_query && <Chip label={persistent_query.name} color="primary" variant="outlined" />}
+          {order && playlist_length && <Chip label={`${order}/${playlist_length}`} color="primary" variant="outlined" />}
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">

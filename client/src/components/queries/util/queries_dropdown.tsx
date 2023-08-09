@@ -34,9 +34,11 @@ const QueriesDropdown = (props: IProps) => {
 
   if (queries_store.queries.length === 0) return <div></div>;
 
+  const selected_query = props.selected_queries[props.order];
+
   return (
     <div>
-      <Select sx={selector_style} labelId="tag-dropdown" id="tag-dropdown" label="tags" value={props.selected_queries[props.order]} onChange={handle_change}>
+      <Select sx={selector_style} labelId="tag-dropdown" id="tag-dropdown" label="tags" value={selected_query.id} onChange={handle_change}>
         {queries_store.queries.map((query) => {
           return (
             <MenuItem key={query.id} value={query.id}>

@@ -99,6 +99,7 @@ export const PersistentQueries = {
   list: async () => axios.get(`persistent-queries`),
   create: async (query: IPersistentQueryCreate) => axios.post(`persistent-queries`, query),
   details: async (query_id: number) => axios.get(`persistent-queries/${query_id}`),
+  edit: async (query: IPersistentQuery) => axios.put(`persistent-queries/${query.id}`, query),
   delete: async (query: IPersistentQuery) => axios.delete(`persistent-queries/${query.id}`),
   preview_videos: async (query: IPersistentQuery) => axios.put(`persistent-queries/preview-videos`, { query }),
 };

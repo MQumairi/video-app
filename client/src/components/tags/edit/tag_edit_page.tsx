@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Checkbox, FormControl, FormControlLabel, FormGroup
 import TagSearcher from "../util/searcher/tag_searcher";
 import TagsStore from "../../../store/tags_store";
 import DynamicPlaylistQueryPicker from "../create/dynamic_playlist_query_picker";
+import IPersistentQuery from "../../../models/persistent_query";
 
 const TagEditPage = () => {
   let tag_id = useParams().tag_id ?? 1;
@@ -25,6 +26,7 @@ const TagEditPage = () => {
   const [default_excluded, set_default_excluded] = useState<boolean>(false);
   const [default_hidden, set_default_hidden] = useState<boolean>(false);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
+  const [selected_queries, set_selected_queries] = useState<IPersistentQuery[]>([]);
 
   const fetch_tag = async () => {
     const res = await Tag.details(+tag_id);
@@ -34,6 +36,10 @@ const TagEditPage = () => {
     if (tag.is_playlist) {
       set_is_playlist(tag.is_playlist);
       set_tag_type("playlist");
+    } else if (tag.is_dynamic_playlist) {
+      set_is_dynamic_playlist(tag.is_dynamic_playlist);
+      set_tag_type("dynamic_playlist");
+      set_selected_queries(res.data.queries);
     } else if (tag.is_character) {
       set_is_character(tag.is_character);
       set_tag_type("character");
@@ -133,6 +139,7 @@ const TagEditPage = () => {
       child_tags: tags_store.selected_tags ?? [],
       default_excluded: default_excluded,
       default_hidden: default_hidden,
+      persistent_queries: selected_queries,
     };
     const res = await Tag.edit(edited_tag);
     if (res.status !== 200) return;
@@ -181,6 +188,7 @@ const TagEditPage = () => {
             <FormControlLabel value="script" control={<Radio />} label="Script" />
           </RadioGroup>
         </FormControl>
+        {is_dynamic_playlist && <DynamicPlaylistQueryPicker selected_queries={selected_queries} set_selected_queries={set_selected_queries} />}
         <FormLabel>Child Tags</FormLabel>
         <p style={{ marginBottom: "10px" }}>Select childs tags that will be applied to any item that this tag is applied to</p>
         <TagSearcher />

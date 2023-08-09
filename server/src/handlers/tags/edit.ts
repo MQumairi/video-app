@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Tag } from "../../models/tag";
 import VideoTagger from "../../lib/videos_lib/video_tagger";
+import { PersistentQuery } from "../../models/persistent_query";
 
 const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   console.log("eneted tag edit");
   const id = +req.params.id;
   const tag_repo = getRepository(Tag);
-  const found_tag = await tag_repo.findOne(id, { relations: ["videos", "child_tags"] });
+  const found_tag = await tag_repo.findOne(id, { relations: ["videos", "child_tags", "persistent_queries"] });
   if (found_tag === undefined) {
     res.status(404).send("Tag not found");
     return undefined;
@@ -27,6 +28,11 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     found_tag.make_studio();
   } else if (submitted_tag.is_script) {
     await found_tag.make_script(submitted_tag.activation_script, submitted_tag.deactivation_script);
+  } else if (submitted_tag.is_dynamic_playlist) {
+    console.log(`found tag now has ${found_tag.persistent_queries.length} queries`);
+    const queries: PersistentQuery[] = submitted_tag.persistent_queries;
+    console.log(`receieved ${queries.length} queries`);
+    found_tag.make_dynamic_playlist(queries);
   } else {
     found_tag.make_default();
   }
@@ -42,7 +48,9 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
   }
   found_tag.default_excluded = submitted_tag.default_excluded;
   found_tag.default_hidden = submitted_tag.default_hidden;
+  console.log(`found tag now has ${found_tag.persistent_queries.length} queries`);
   const saved_tag = await tag_repo.save(found_tag);
+  console.log(`saved_tag now has ${saved_tag.persistent_queries.length} queries`);
   console.log("finished saving...");
   res.status(200).send(saved_tag);
   return saved_tag;

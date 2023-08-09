@@ -23,4 +23,17 @@ export class PersistentQueryToPlaylist {
     pq2p.order = order;
     return await getRepository(PersistentQueryToPlaylist).save(pq2p);
   }
+
+  static async find_or_create(playlist: Tag, query: PersistentQuery, order: number): Promise<PersistentQueryToPlaylist> {
+    console.log(`entered find_or_create for playlist=${playlist.id}, query=${query.id}, order=${order}`);
+    const found_pq2p = await getRepository(PersistentQueryToPlaylist).findOne({
+      where: { playlist: { id: playlist.id }, persistent_query: { id: query.id }, order: order },
+    });
+    if (found_pq2p) {
+      console.log("FOUND found_pq2p:", found_pq2p.id);
+      return found_pq2p;
+    }
+    console.log("failed to find... creating");
+    return await PersistentQueryToPlaylist.create(playlist, query, order);
+  }
 }

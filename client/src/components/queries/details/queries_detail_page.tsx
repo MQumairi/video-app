@@ -50,6 +50,9 @@ const QueriesDetailsPage = () => {
         <Button href="/queries" variant="contained" size="medium">
           Back
         </Button>
+        <Button href={`/queries/${query.id}/edit`} variant="contained" size="medium">
+          Edit
+        </Button>
         <Button href={`/queries/delete/${query.id}`} variant="contained" size="medium">
           Delete
         </Button>

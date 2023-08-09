@@ -31,6 +31,7 @@ import QueriesCreatePage from "./components/queries/create/queries_create_page";
 import QueriesDetailPage from "./components/queries/details/queries_detail_page";
 import QueryDeletePage from "./components/queries/delete/query_delete_page";
 import DynamicPlaylistPlayer from "./components/tags/dynamic_playlist/dynamic_playlist_player";
+import QueriesEditPage from "./components/queries/edit/queries_edit_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -79,6 +80,7 @@ const App = () => {
             <Route path="queries/new" element={<QueriesCreatePage />} />
             <Route path="queries/:query_id/video/:vid_id" element={<PlayerPage />} />
             <Route path="queries/delete/:query_id" element={<QueryDeletePage />} />
+            <Route path="queries/:query_id/edit" element={<QueriesEditPage />} />
             <Route path="queries/:query_id" element={<QueriesDetailPage />} />
             {/* Gallery System */}
             <Route path="galleries" element={<GalleryIndexPage />} />

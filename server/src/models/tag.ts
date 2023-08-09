@@ -119,6 +119,7 @@ export class Tag {
 
   make_default() {
     this.is_playlist = false;
+    this.is_dynamic_playlist = false;
     this.is_character = false;
     this.is_series = false;
     this.is_studio = false;
@@ -127,14 +128,29 @@ export class Tag {
 
   make_playlist() {
     this.is_playlist = true;
+    this.is_dynamic_playlist = false;
     this.is_character = false;
     this.is_series = false;
     this.is_studio = false;
     this.is_script = false;
   }
 
+  async make_dynamic_playlist(queries: PersistentQuery[]) {
+    this.is_playlist = false;
+    this.is_dynamic_playlist = true;
+    this.is_character = false;
+    this.is_series = false;
+    this.is_studio = false;
+    this.is_script = false;
+    for (let i = 0; i < queries.length; i++) {
+      const query = queries[i];
+      await PersistentQueryToPlaylist.find_or_create(this, query, i + 1);
+    }
+  }
+
   make_character() {
     this.is_playlist = false;
+    this.is_dynamic_playlist = false;
     this.is_character = true;
     this.is_series = false;
     this.is_studio = false;
@@ -142,8 +158,8 @@ export class Tag {
   }
 
   make_series() {
-    console.log("making series");
     this.is_playlist = false;
+    this.is_dynamic_playlist = false;
     this.is_character = false;
     this.is_series = true;
     this.is_studio = false;
@@ -152,6 +168,7 @@ export class Tag {
 
   make_studio() {
     this.is_playlist = false;
+    this.is_dynamic_playlist = false;
     this.is_character = false;
     this.is_series = false;
     this.is_studio = true;
@@ -160,6 +177,7 @@ export class Tag {
 
   async make_script(activation_script: FileScript | null, deactivation_script: FileScript | null) {
     this.is_playlist = false;
+    this.is_dynamic_playlist = false;
     this.is_character = false;
     this.is_series = false;
     this.is_studio = false;

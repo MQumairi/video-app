@@ -5,6 +5,7 @@ import { VideoSearcher } from "../../lib/videos_lib/video_searcher";
 
 const PreviewVideos = async (req: Request, res: Response): Promise<VideoMeta[]> => {
   const persistent_query: PersistentQuery = req.body.query;
+  console.log(persistent_query);
   if (!persistent_query) {
     res.status(404).send("PersistentQuery not found");
     return [];

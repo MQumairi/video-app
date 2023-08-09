@@ -6,7 +6,7 @@ const List = async (req: Request, res: Response): Promise<PersistentQuery[]> => 
   try {
     console.log("entered list");
     const persistent_query_repo = getRepository(PersistentQuery);
-    const persistent_queries = await persistent_query_repo.find();
+    const persistent_queries = await persistent_query_repo.find({ order: { name: "ASC" } });
     res.json(persistent_queries);
     return persistent_queries;
   } catch (err) {

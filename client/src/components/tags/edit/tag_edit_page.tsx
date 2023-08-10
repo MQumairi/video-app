@@ -139,9 +139,8 @@ const TagEditPage = () => {
       child_tags: tags_store.selected_tags ?? [],
       default_excluded: default_excluded,
       default_hidden: default_hidden,
-      persistent_queries: selected_queries,
     };
-    const res = await Tag.edit(edited_tag);
+    const res = await Tag.edit(edited_tag, selected_queries);
     if (res.status !== 200) return;
     const saved_tag: ITag = res.data;
     if (should_generate_thumbs) {

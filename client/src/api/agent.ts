@@ -59,7 +59,7 @@ export const Tag = {
   random_image_single: async (tag: ITag) => axios.get(`tags/${tag.id}/image-slide`),
   create: async (tag: ITagCreate, queries: IPersistentQuery[] = []) => axios.post(`tags`, { tag, queries }),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
-  edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),
+  edit: async (tag: ITagEdit, queries: IPersistentQuery[] = []) => axios.put(`tags/${tag.id}`, { tag, queries }),
   tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-single-video`, { video, tags }),
   tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
   untag_video: async (videos: IVideoMeta[], tag: ITag) => axios.put(`tags/untag-videos`, { videos: videos, tag: tag }),

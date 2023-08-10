@@ -13,7 +13,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     res.status(404).send("Tag not found");
     return undefined;
   }
-  const submitted_tag: Tag = req.body;
+  const submitted_tag: Tag = req.body.tag;
   console.log(submitted_tag);
   // Set the tag name
   found_tag.name = submitted_tag.name;
@@ -30,7 +30,7 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     await found_tag.make_script(submitted_tag.activation_script, submitted_tag.deactivation_script);
   } else if (submitted_tag.is_dynamic_playlist) {
     console.log(`found tag now has ${found_tag.persistent_queries.length} queries`);
-    const queries: PersistentQuery[] = submitted_tag.persistent_queries;
+    const queries: PersistentQuery[] = req.body.queries;
     console.log(`receieved ${queries.length} queries`);
     found_tag.make_dynamic_playlist(queries);
   } else {

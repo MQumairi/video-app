@@ -98,10 +98,9 @@ const TagsCreatePage = () => {
       is_script,
       default_excluded: false,
       default_hidden: false,
-      persistent_queries: selected_queries,
     };
     // Passing in selected_queries in case this tag is a dynamic playlist
-    const response = await Tag.create(tag, selected_queries);
+    await Tag.create(tag, selected_queries);
     set_tag_name("");
     tags_store.set_selected_tags([]);
   };

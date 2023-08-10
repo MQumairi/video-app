@@ -12,7 +12,6 @@ export interface ITagCreate {
   is_script: boolean;
   default_excluded: boolean;
   default_hidden: boolean;
-  persistent_queries: IPersistentQuery[];
 }
 
 export interface ITagEdit extends ITagCreate {

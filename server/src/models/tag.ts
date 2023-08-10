@@ -142,6 +142,7 @@ export class Tag {
     this.is_series = false;
     this.is_studio = false;
     this.is_script = false;
+    await PersistentQueryToPlaylist.wipe_playlist(this);
     for (let i = 0; i < queries.length; i++) {
       const query = queries[i];
       await PersistentQueryToPlaylist.find_or_create(this, query, i + 1);

@@ -7,7 +7,7 @@ import { PersistentQuery } from "../../models/persistent_query";
 
 const next_video_index = (current_order: number, playlist_length: number): number => {
   const next_index = current_order + 1;
-  if (next_index >= playlist_length) return 1;
+  if (next_index > playlist_length) return 1;
   return next_index;
 };
 

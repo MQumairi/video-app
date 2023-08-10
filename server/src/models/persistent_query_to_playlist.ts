@@ -41,4 +41,10 @@ export class PersistentQueryToPlaylist {
     const pq2p_repo = getRepository(PersistentQueryToPlaylist);
     return pq2p_repo.find({ where: { playlist: { id: playlist.id }, order: order }, order: { order: "ASC" }, relations: ["persistent_query", "playlist"] });
   }
+
+  static async wipe_playlist(playlist: Tag) {
+    const pq2p_repo = getRepository(PersistentQueryToPlaylist);
+    const pq2p_arr = await pq2p_repo.find({ where: { playlist: { id: playlist.id } } });
+    await pq2p_repo.remove(pq2p_arr);
+  }
 }

@@ -35,7 +35,7 @@ const DynamicPlaylistPlayer = () => {
     video_store.set_selected_video(fetched_video);
     set_video(fetched_video);
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
-    set_prev_url(`/dynamic-playlist/${tag_id}/order/${next_order - 2}`);
+    set_prev_url(`/dynamic-playlist/${tag_id}/order/${+order - 1}`);
     set_persistent_query(fetched_persistent_query);
     set_playlist_length(fetched_playlist_length);
   };
@@ -76,6 +76,7 @@ const DynamicPlaylistPlayer = () => {
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         {+order > 1 && <Button href={prev_url}>Previous</Button>}
+        <Button href={`/tags/${tag_id}`}>Back</Button>
         <Button href={next_url}>Next</Button>
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />

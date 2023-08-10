@@ -20,6 +20,7 @@ const DynamicPlaylistPlayer = () => {
 
   const [video, set_video] = useState<IVideoMeta | null>(null);
   const [next_url, set_next_url] = useState<string>("");
+  const [prev_url, set_prev_url] = useState<string>("");
   const [persistent_query, set_persistent_query] = useState<IPersistentQuery | null>(null);
   const [playlist_length, set_playlist_length] = useState<number>(0);
 
@@ -34,6 +35,7 @@ const DynamicPlaylistPlayer = () => {
     video_store.set_selected_video(fetched_video);
     set_video(fetched_video);
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
+    set_prev_url(`/dynamic-playlist/${tag_id}/order/${next_order - 2}`);
     set_persistent_query(fetched_persistent_query);
     set_playlist_length(fetched_playlist_length);
   };
@@ -58,7 +60,11 @@ const DynamicPlaylistPlayer = () => {
   return (
     <div>
       <h1>{video.name}</h1>
-      {persistent_query && <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{persistent_query.name}</h2>}
+      {persistent_query && (
+        <a href={`/tags/${tag_id}`}>
+          <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{persistent_query.name}</h2>
+        </a>
+      )}
       <div>
         <Stack direction="row" spacing={1}>
           {video.id && <Chip label={video.id} color="primary" variant="outlined" />}
@@ -69,7 +75,7 @@ const DynamicPlaylistPlayer = () => {
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
-        <Button href={`/tags/${tag_id}`}>Back</Button>
+        {+order > 1 && <Button href={prev_url}>Previous</Button>}
         <Button href={next_url}>Next</Button>
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />

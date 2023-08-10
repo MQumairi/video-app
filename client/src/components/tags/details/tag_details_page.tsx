@@ -10,7 +10,7 @@ import { Code, Dvr, LocalOffer, MovieCreation, Person, Subscriptions } from "@mu
 import { TagType, get_tag_type } from "../../../lib/tag_util";
 import TagDetailsTabs from "./tag_details_tabs";
 import IPersistentQuery from "../../../models/persistent_query";
-import QueriesList from "../../queries/util/queries_list";
+import DynamicPlaylisyQueries from "../dynamic_playlist/dynamic_playlisy_queries";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
@@ -85,7 +85,7 @@ const TagDetailsPage = () => {
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>
       {tag.child_tags && tag.child_tags.length > 0 && <VideoTags tags={tag.child_tags} />}
-      {tag.is_dynamic_playlist && <QueriesList queries={playlist_queries} />}
+      {tag.is_dynamic_playlist && <DynamicPlaylisyQueries queries={playlist_queries} tag_id={tag.id} />}
       {!tag.is_dynamic_playlist && (
         <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
       )}

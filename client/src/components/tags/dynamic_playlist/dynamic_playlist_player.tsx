@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Tag, Video } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -10,6 +10,7 @@ import VideoPlayer from "../../videos/player/video_player";
 import RatingStars from "../../misc/rating_stars";
 import PlayerTabs from "../../videos/player/player_tabs";
 import IPersistentQuery from "../../../models/persistent_query";
+import { AxiosResponse } from "axios";
 
 const DynamicPlaylistPlayer = () => {
   const params = useParams();
@@ -23,17 +24,38 @@ const DynamicPlaylistPlayer = () => {
   const [prev_url, set_prev_url] = useState<string>("");
   const [persistent_query, set_persistent_query] = useState<IPersistentQuery | null>(null);
   const [playlist_length, set_playlist_length] = useState<number>(0);
+  const [query_params, set_query_params] = useSearchParams({});
 
-  const fetch_video_meta = async () => {
+  const update_query_params = (key: string, value: string) => {
+    const new_query_params = query_params;
+    new_query_params.set(key, value);
+    set_query_params(new_query_params);
+  };
+
+  const fetch_video_meta = async (res: AxiosResponse): Promise<IVideoMeta> => {
+    const video_query_id = query_params.get("video");
+    if (video_query_id) {
+      const video_res = await Video.details(+video_query_id);
+      if (video_res.status === 200) {
+        const received_video: IVideoMeta = video_res.data;
+        return received_video;
+      }
+    }
+    const fetched_playlist_video: IVideoMeta = res.data.video;
+    return fetched_playlist_video;
+  };
+
+  const fetch_dynamic_playlist_player_data = async () => {
     if (!tag_id || !order) return;
     const res = await Tag.dynamic_playlist_video(+tag_id, +order);
     if (res.status !== 200) return;
-    const fetched_video = res.data.video;
+    const fetched_video: IVideoMeta = await fetch_video_meta(res);
     const next_order = res.data.next;
     const fetched_persistent_query = res.data.persistent_query;
     const fetched_playlist_length = res.data.playlist_length;
     video_store.set_selected_video(fetched_video);
     set_video(fetched_video);
+    update_query_params("video", fetched_video.id.toString());
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
     set_prev_url(`/dynamic-playlist/${tag_id}/order/${+order - 1}`);
     set_persistent_query(fetched_persistent_query);
@@ -51,7 +73,7 @@ const DynamicPlaylistPlayer = () => {
   };
 
   useEffect(() => {
-    fetch_video_meta();
+    fetch_dynamic_playlist_player_data();
     // eslint-disable-next-line
   }, []);
 
@@ -77,6 +99,7 @@ const DynamicPlaylistPlayer = () => {
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         {+order > 1 && <Button href={prev_url}>Previous</Button>}
         <Button href={`/tags/${tag_id}`}>Back</Button>
+        <Button href={`/dynamic-playlist/${tag_id}/order/${order}`}>Refresh</Button>
         <Button href={next_url}>Next</Button>
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />

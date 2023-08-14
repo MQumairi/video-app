@@ -12,9 +12,10 @@ interface IProps {
 
 export const VideoList = (props: IProps) => {
   const video_item_url = (video: IVideoMeta): string => {
-    console.log("video id:", video.id);
     let path = "";
-    if (video.id) {
+    if (props.base.includes("dynamic-playlist")) {
+      path = `${props.base}?video=${video.id}`;
+    } else if (video.id) {
       path = `${props.base}/${video.id}`;
     } else {
       path = `${props.base}/${PathConverter.to_query(video.path)}`;

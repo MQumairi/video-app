@@ -11,6 +11,7 @@ import RatingStars from "../../misc/rating_stars";
 import PlayerTabs from "../../videos/player/player_tabs";
 import IPersistentQuery from "../../../models/persistent_query";
 import { AxiosResponse } from "axios";
+import QueriesStore from "../../../store/queries_store";
 
 const DynamicPlaylistPlayer = () => {
   const params = useParams();
@@ -18,11 +19,11 @@ const DynamicPlaylistPlayer = () => {
   const order = params.order;
 
   const video_store = useContext(VideoStore);
+  const query_store = useContext(QueriesStore);
 
   const [video, set_video] = useState<IVideoMeta | null>(null);
   const [next_url, set_next_url] = useState<string>("");
   const [prev_url, set_prev_url] = useState<string>("");
-  const [persistent_query, set_persistent_query] = useState<IPersistentQuery | null>(null);
   const [playlist_length, set_playlist_length] = useState<number>(0);
   const [query_params, set_query_params] = useSearchParams({});
 
@@ -54,11 +55,11 @@ const DynamicPlaylistPlayer = () => {
     const fetched_persistent_query = res.data.persistent_query;
     const fetched_playlist_length = res.data.playlist_length;
     video_store.set_selected_video(fetched_video);
+    query_store.set_selected_query(fetched_persistent_query);
     set_video(fetched_video);
     update_query_params("video", fetched_video.id.toString());
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
     set_prev_url(`/dynamic-playlist/${tag_id}/order/${+order - 1}`);
-    set_persistent_query(fetched_persistent_query);
     set_playlist_length(fetched_playlist_length);
   };
 
@@ -82,9 +83,9 @@ const DynamicPlaylistPlayer = () => {
   return (
     <div>
       <h1>{video.name}</h1>
-      {persistent_query && (
+      {query_store.selected_query && (
         <a href={`/tags/${tag_id}`}>
-          <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{persistent_query.name}</h2>
+          <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{query_store.selected_query.name}</h2>
         </a>
       )}
       <div>

@@ -11,8 +11,15 @@ class QueriesStore {
   // All queries
   @observable queries: IPersistentQuery[] = [];
 
+  // Selected queries
+  @observable selected_query: IPersistentQuery | undefined = undefined;
+
   @action set_queries = (queries: IPersistentQuery[]) => {
     this.queries = queries;
+  };
+
+  @action set_selected_query = (query: IPersistentQuery | undefined) => {
+    this.selected_query = query;
   };
 
   @action lookup = async () => {

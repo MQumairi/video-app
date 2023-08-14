@@ -6,10 +6,12 @@ import { TagType, get_tag_type } from "../../../../lib/tag_util";
 import { FormLabel } from "@mui/material";
 import TagsList from "../../../tags/util/tags_list";
 import VideoStore from "../../../../store/video_store";
-import VideoList from "../../util/video_list";
+import VideoRecommendations from "../../reccomendations/video_recommendations";
+import QueriesStore from "../../../../store/queries_store";
 
 const TagsPanel = () => {
   const video_store = useContext(VideoStore);
+  const query_store = useContext(QueriesStore);
 
   const [playlist_tags, set_playlist_tags] = useState<ITag[]>([]);
   const [character_tags, set_character_tags] = useState<ITag[]>([]);
@@ -51,7 +53,6 @@ const TagsPanel = () => {
 
   useEffect(() => {
     fetch_tags();
-    video_store.lookup_selected_video_similar_videos();
     // eslint-disable-next-line
   }, []);
 
@@ -93,10 +94,9 @@ const TagsPanel = () => {
           <div> {video_store.selected_video.created_at.toString().slice(0, 10).replace(/-/g, "/")}</div>
         </div>
       )}
-      {video_store.selected_video_similiar_videos.length > 0 && (
+      {video_store.selected_video && (
         <div style={tag_row_style}>
-          <FormLabel>Similar Videos</FormLabel>
-          <VideoList base="/player" videos={video_store.selected_video_similiar_videos} />
+          <VideoRecommendations video={video_store.selected_video} query={query_store.selected_query} />
         </div>
       )}
     </div>

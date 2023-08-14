@@ -68,13 +68,6 @@ class VideoStore {
     if (res.status !== 200) return;
     this.selected_video_scripts = res.data;
   };
-
-  @action lookup_selected_video_similar_videos = async () => {
-    if (!this.selected_video) return;
-    const res = await Video.similar(this.selected_video);
-    if (res.status !== 200) return;
-    this.selected_video_similiar_videos = res.data;
-  };
 }
 
 export default createContext(new VideoStore());

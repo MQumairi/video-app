@@ -34,7 +34,7 @@ const QueriesCreateForm = () => {
       max_duration_sec: 99999999,
     };
     const res = await PersistentQueries.preview_videos(persistent_query);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_query_videos(res.data.videos);
   };
 

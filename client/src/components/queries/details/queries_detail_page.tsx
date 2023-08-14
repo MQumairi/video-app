@@ -31,6 +31,7 @@ const QueriesDetailsPage = () => {
 
   useEffect(() => {
     fetch_query();
+    // eslint-disable-next-line
   }, []);
 
   if (!query) {

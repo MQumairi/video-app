@@ -1,4 +1,3 @@
-import { useState } from "react";
 import IPersistentQuery, { empty_query } from "../../../models/persistent_query";
 import QueriesDropdown from "../../queries/util/queries_dropdown";
 import { observer } from "mobx-react-lite";

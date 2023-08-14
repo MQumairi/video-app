@@ -22,7 +22,7 @@ const QueriesEditForm = (props: IProps) => {
   const handle_preview = async () => {
     if (!query) return;
     const res = await PersistentQueries.preview_videos(query);
-    if (res.status != 200) return;
+    if (res.status !== 200) return;
     set_query_videos(res.data.videos);
   };
 
@@ -93,6 +93,7 @@ const QueriesEditForm = (props: IProps) => {
 
   useEffect(() => {
     fetch_query();
+    // eslint-disable-next-line
   }, []);
 
   if (!query) {

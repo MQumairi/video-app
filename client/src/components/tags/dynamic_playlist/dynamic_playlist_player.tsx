@@ -9,7 +9,6 @@ import { calculate_resolution, get_file_size_string } from "../../../lib/video_f
 import VideoPlayer from "../../videos/player/video_player";
 import RatingStars from "../../misc/rating_stars";
 import PlayerTabs from "../../videos/player/player_tabs";
-import IPersistentQuery from "../../../models/persistent_query";
 import { AxiosResponse } from "axios";
 import QueriesStore from "../../../store/queries_store";
 

@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import IPersistentQuery from "../../../models/persistent_query";
 import { Accordion, AccordionDetails, AccordionSummary, Button, ButtonGroup, FormGroup, Typography } from "@mui/material";
-import { ExpandMore, PlayArrow } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import TagsList from "../util/tags_list";
 
 interface IProps {

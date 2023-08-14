@@ -25,6 +25,7 @@ const QueriesDeletePage = () => {
 
   useEffect(() => {
     fetch_query();
+    // eslint-disable-next-line
   }, []);
 
   if (delete_successful) {

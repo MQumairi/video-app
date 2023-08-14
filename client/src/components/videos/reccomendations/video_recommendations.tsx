@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
 import { useEffect, useState } from "react";
-import { Button, ButtonGroup, FormLabel } from "@mui/material";
+import { FormLabel } from "@mui/material";
 import { VideoList } from "../util/video_list";
 import { PersistentQueries, Video } from "../../../api/agent";
 import IPersistentQuery from "../../../models/persistent_query";
@@ -35,6 +35,7 @@ const VideoReccomendations = (props: IProps) => {
 
   useEffect(() => {
     fetch_similar_videos();
+    // eslint-disable-next-line
   }, []);
 
   return (

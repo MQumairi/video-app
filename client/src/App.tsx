@@ -32,6 +32,7 @@ import QueriesDetailPage from "./components/queries/details/queries_detail_page"
 import QueryDeletePage from "./components/queries/delete/query_delete_page";
 import DynamicPlaylistPlayer from "./components/tags/dynamic_playlist/dynamic_playlist_player";
 import QueriesEditPage from "./components/queries/edit/queries_edit_page";
+import PlaylistIndex from "./components/playlists/index/playlist_index";
 
 const darkTheme = createTheme({
   palette: {
@@ -75,6 +76,8 @@ const App = () => {
             <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
             <Route path="tags/:tag_id" element={<TagDetailsPage />} />
             <Route path="dynamic-playlist/:tag_id/order/:order" element={<DynamicPlaylistPlayer />} />
+            {/* Playlist System */}
+            <Route path="playlists" element={<PlaylistIndex />} />
             {/* Query System */}
             <Route path="queries" element={<QueriesIndexPage />} />
             <Route path="queries/new" element={<QueriesCreatePage />} />

@@ -48,7 +48,7 @@ const QueriesDetailsPage = () => {
   return (
     <div>
       <ButtonGroup>
-        <Button href="/queries" variant="contained" size="medium">
+        <Button href="/playlists?tags_index_tab=1" variant="contained" size="medium">
           Back
         </Button>
         <Button href={`/queries/${query.id}/edit`} variant="contained" size="medium">

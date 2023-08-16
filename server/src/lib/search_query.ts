@@ -61,7 +61,7 @@ export class SearchQuery {
     });
     // Find rating range
     const included_tags = await getRepository(Tag).find({ where: { id: In(tag_ids) } });
-    const excluded_tags = await SearchQuery.lookup_excluded_tags(excluded_tag_ids, included_tags);
+    const excluded_tags = await SearchQuery.lookup_excluded_tags_from_ids(excluded_tag_ids, included_tags);
     const min_rating: number = +raw_min_rating;
     const max_rating: number = +raw_max_rating;
     // Find resolution
@@ -92,8 +92,18 @@ export class SearchQuery {
     return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
   }
 
-  private static async lookup_excluded_tags(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {
+  private static async lookup_excluded_tags_from_ids(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {
     const tag_repo = getRepository(Tag);
+    const included_tag_ids = Tag.get_ids(included_tags);
+    const tags = await tag_repo.find({
+      where: [{ default_excluded: true, id: Not(In(included_tag_ids)) }, { id: In(excluded_tag_ids) }],
+    });
+    return tags;
+  }
+
+  static async lookup_excluded_tags(excluded_tags: Tag[], included_tags: Tag[]): Promise<Tag[]> {
+    const tag_repo = getRepository(Tag);
+    const excluded_tag_ids = Tag.get_ids(excluded_tags);
     const included_tag_ids = Tag.get_ids(included_tags);
     const tags = await tag_repo.find({
       where: [{ default_excluded: true, id: Not(In(included_tag_ids)) }, { id: In(excluded_tag_ids) }],

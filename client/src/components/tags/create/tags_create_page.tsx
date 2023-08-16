@@ -89,7 +89,7 @@ const TagsCreatePage = () => {
   const on_submit = async (input: any) => {
     const tag: ITagCreate = {
       name: tag_name,
-      child_tags: tags_store.selected_tags,
+      child_tags: tags_store.included_tags,
       is_playlist,
       is_dynamic_playlist,
       is_character,

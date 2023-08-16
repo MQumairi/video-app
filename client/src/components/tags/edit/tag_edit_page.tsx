@@ -136,7 +136,7 @@ const TagEditPage = () => {
       is_series: is_series,
       is_studio: is_studio,
       is_script: is_script,
-      child_tags: tags_store.selected_tags ?? [],
+      child_tags: tags_store.included_tags ?? [],
       default_excluded: default_excluded,
       default_hidden: default_hidden,
     };

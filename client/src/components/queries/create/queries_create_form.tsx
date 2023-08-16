@@ -25,7 +25,7 @@ const QueriesCreateForm = () => {
       id: 1,
       name: name,
       search_text: searched_text,
-      included_tags: tags_store.selected_tags,
+      included_tags: tags_store.included_tags,
       excluded_tags: [],
       min_rating: min_rating,
       max_rating: max_rating,
@@ -42,7 +42,7 @@ const QueriesCreateForm = () => {
     const persistent_query: IPersistentQueryCreate = {
       name: name,
       search_text: searched_text,
-      included_tags: tags_store.selected_tags,
+      included_tags: tags_store.included_tags,
       excluded_tags: [],
       min_rating: min_rating,
       max_rating: max_rating,

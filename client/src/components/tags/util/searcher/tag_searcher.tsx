@@ -41,7 +41,7 @@ const TagSearcher = (props: IProps) => {
         return option.name;
       }}
       onChange={(_, value) => add_tags(value)}
-      value={tags_store.selected_tags}
+      value={tags_store.included_tags}
       renderInput={(params) => <TextField label="Selected Tags" {...params} />}
       renderTags={(values, _: AutocompleteRenderGetTagProps) => {
         return (

@@ -22,18 +22,18 @@ class TagsStore {
     this.set_tags(fetched_tags);
   };
 
-  // Selected Tags
-  @observable selected_tags: ITag[] = [];
+  // Included Tags
+  @observable included_tags: ITag[] = [];
 
   @action set_selected_tags = (tags: ITag[]) => {
-    console.log(`current: ${this.tags.length}, new: ${tags.length}`);
-    this.selected_tags = tags;
-    console.log(`current: ${this.tags.length}, new: ${tags.length}`);
+    this.included_tags = tags;
   };
 
   get_selected_tags = (): ITag[] => {
-    return toJS(this.selected_tags);
+    return toJS(this.included_tags);
   };
+
+  //
 
   // Utility functions
 
@@ -53,25 +53,22 @@ class TagsStore {
 
   // Remove the given tag from selected_tags
   deselect = (tag: ITag) => {
-    console.log("deselecting", tag.name);
     const new_tags: ITag[] = [];
-    for (let i = 0; i < this.selected_tags.length; i++) {
-      const t = this.selected_tags[i];
-      console.log("t is", t);
+    for (let i = 0; i < this.included_tags.length; i++) {
+      const t = this.included_tags[i];
       if (t.id !== tag.id) {
         new_tags.push(t);
       }
     }
-    console.log("new tags length", new_tags.length);
     this.set_selected_tags(new_tags);
   };
 
   // Return query params for all selected tags in 1-2-3 format
   selected_tags_query_parms = (): string => {
-    return this.ids(this.selected_tags).join("-");
+    return this.ids(this.included_tags).join("-");
   };
 
-  // Given arra of tags return array of their ids
+  // Given array of tags return array of their ids
   ids = (tags: ITag[]): number[] => {
     return tags.map((t) => {
       return t.id;

@@ -73,7 +73,7 @@ const QueriesEditForm = (props: IProps) => {
 
   const handle_tag_changes = async () => {
     if (!query) return;
-    const selected_tags = tags_store.selected_tags;
+    const selected_tags = tags_store.included_tags;
     const new_query = { ...query };
     new_query.included_tags = selected_tags;
     set_query(new_query);

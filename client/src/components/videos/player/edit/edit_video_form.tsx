@@ -48,9 +48,9 @@ const EditVideoForm = () => {
   };
 
   const handle_tags = async (video: IVideoMeta) => {
-    if (tags_store.selected_tags.length === 0) return;
+    if (tags_store.included_tags.length === 0) return;
     console.log("handling tags");
-    await Tag.tag_video(video, tags_store.selected_tags);
+    await Tag.tag_video(video, tags_store.included_tags);
   };
 
   const handle_upload = async (video: IVideoMeta) => {

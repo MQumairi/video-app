@@ -33,6 +33,11 @@ import QueryDeletePage from "./components/queries/delete/query_delete_page";
 import DynamicPlaylistPlayer from "./components/tags/dynamic_playlist/dynamic_playlist_player";
 import QueriesEditPage from "./components/queries/edit/queries_edit_page";
 import PlaylistIndex from "./components/playlists/index/playlist_index";
+import PlaylistDetailsPage from "./components/playlists/details/playlist_details_page";
+import PlaylistPlayerPage from "./components/playlists/player/playlist_player_page";
+import PlaylistCreatePage from "./components/playlists/create/playlist_create_page";
+import PlaylistEditPage from "./components/playlists/edit/playlist_edit_page";
+import DeletePage from "./components/playlists/delete/delete_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -78,6 +83,11 @@ const App = () => {
             <Route path="dynamic-playlist/:tag_id/order/:order" element={<DynamicPlaylistPlayer />} />
             {/* Playlist System */}
             <Route path="playlists" element={<PlaylistIndex />} />
+            <Route path="playlists/new" element={<PlaylistCreatePage />} />
+            <Route path="playlists/:tag_id/order/:order" element={<PlaylistPlayerPage />} />
+            <Route path="playlists/:tag_id/delete" element={<DeletePage />} />
+            <Route path="playlists/:tag_id/edit" element={<PlaylistEditPage />} />
+            <Route path="playlists/:tag_id" element={<PlaylistDetailsPage />} />
             {/* Query System */}
             <Route path="queries" element={<QueriesIndexPage />} />
             <Route path="queries/new" element={<QueriesCreatePage />} />

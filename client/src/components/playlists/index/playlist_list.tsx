@@ -2,8 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
-import TagsList from "../../tags/util/tags_list";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Chip } from "@mui/material";
 
 const PlaylistList = () => {
   const box_style = {
@@ -25,11 +24,13 @@ const PlaylistList = () => {
   }, []);
   return (
     <div>
-      <Button href="/tags/new" variant="contained" size="large">
+      <Button href="/playlists/new" variant="contained" size="large">
         Create
       </Button>
       <Box component="div" sx={box_style}>
-        <TagsList tags={tags} />
+        {tags.map((tag: any) => {
+          return <Chip sx={{ fontSize: "16px", background: "#064669", margin: "5px" }} key={tag.id} label={<a href={`/playlists/${tag.id}`}>{tag.name}</a>} />;
+        })}
       </Box>
     </div>
   );

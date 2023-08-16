@@ -42,7 +42,7 @@ export class SearchQuery {
     this.page_capacity = page_capacity;
   }
 
-  static async from_request(req: Request): Promise<SearchQuery> {
+  static async from_request(req: Request, exclude_default_tags = true): Promise<SearchQuery> {
     // Parse request
     const raw_text = req.query.searched_text?.toString() ?? "";
     const raw_tags = req.query.tags?.toString() ?? "";
@@ -61,7 +61,9 @@ export class SearchQuery {
     });
     // Find rating range
     const included_tags = await getRepository(Tag).find({ where: { id: In(tag_ids) } });
-    const excluded_tags = await SearchQuery.lookup_excluded_tags_from_ids(excluded_tag_ids, included_tags);
+    const excluded_tags = exclude_default_tags
+      ? await SearchQuery.lookup_excluded_tags_from_ids(excluded_tag_ids, included_tags)
+      : await getRepository(Tag).find({ where: { id: In(excluded_tag_ids) } });
     const min_rating: number = +raw_min_rating;
     const max_rating: number = +raw_max_rating;
     // Find resolution

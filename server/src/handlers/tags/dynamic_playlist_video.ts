@@ -29,7 +29,7 @@ const DynamicPlaylistVideo = async (req: Request, res: Response): Promise<VideoM
       return undefined;
     }
     const persistent_query = persistent_queries[0];
-    const search_query = PersistentQuery.build_search_query(persistent_query);
+    const search_query = await PersistentQuery.build_search_query(persistent_query);
     const seacher = new VideoSearcher(search_query);
     const video = await seacher.random_single_video();
     const playlist_length = (await Tag.get_dynamic_playlist_queries(tag)).length;

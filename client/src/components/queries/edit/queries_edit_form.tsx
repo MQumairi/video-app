@@ -131,7 +131,7 @@ const QueriesEditForm = (props: IProps) => {
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>
           <Button onClick={handle_submit} disabled={query.name.length === 0}>
-            Edit
+            Submit
           </Button>
         </ButtonGroup>
       </FormGroup>

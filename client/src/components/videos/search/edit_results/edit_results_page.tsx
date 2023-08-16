@@ -9,27 +9,39 @@ import TagSelector from "../../../tags/util/selector/tag_selector";
 const EditResultsPage = () => {
   const tags_store = useContext(TagsStore);
 
-  const [search_params] = useSearchParams({});
+  const [search_params, set_search_params] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
 
+  const TAGS_EXCLUDED_PARAM_KEY = "excluded_tags";
+  const TAGS_PARAM_KEY = "tags";
+
+  const update_query_params = (key: string, value: string) => {
+    const new_search_params = search_params;
+    new_search_params.set(key, value);
+    set_search_params(new_search_params);
+  };
+
+  const selector_param = (selector_type: TagSelectorType): string => {
+    if (selector_type === TagSelectorType.ExcludedTags) return TAGS_EXCLUDED_PARAM_KEY;
+    return TAGS_PARAM_KEY;
+  };
+
+  const handle_tags_addition = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
+  };
+
+  const handle_tag_removal = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
+  };
+
   const on_submit = async () => {
-    const tags = tags_store.get_selected_tags(TagSelectorType.IncludedTags);
-    console.log("submiting", tags);
-    await Search.tag_results(search_params.toString(), tags);
+    await Search.tag_results(search_params.toString());
   };
 
   const fetch_search_results = async () => {
     let res = await Search.search_vidoes(search_params.toString());
     if (res.status !== 200) return;
     set_videos_count(res.data.count);
-  };
-
-  const handle_tags_addition = () => {
-    console.log("added tag, selected_tags:", tags_store.included_tags);
-  };
-
-  const handle_tag_removal = () => {
-    console.log("added tag, selected_tags:", tags_store.included_tags);
   };
 
   useEffect(() => {
@@ -44,8 +56,23 @@ const EditResultsPage = () => {
         Back
       </Button>
       <h1>Edit Results Page</h1>
-      <p style={{ marginBottom: "20px" }}>You're about to tag {videos_count} videos. Are you sure you wish to continue?</p>
-      <TagSelector selector_type={TagSelectorType.IncludedTags} post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+      <h2>{videos_count} videos</h2>
+      <div>
+        <p style={{ marginBottom: "20px" }}>Adds Tags:</p>
+        <TagSelector
+          selector_type={TagSelectorType.IncludedTags}
+          post_selection={() => handle_tags_addition(TagSelectorType.IncludedTags)}
+          post_deselection={() => handle_tag_removal(TagSelectorType.IncludedTags)}
+        />
+      </div>
+      <div>
+        <p style={{ marginBottom: "20px" }}>Remove Tags:</p>
+        <TagSelector
+          selector_type={TagSelectorType.ExcludedTags}
+          post_selection={() => handle_tags_addition(TagSelectorType.ExcludedTags)}
+          post_deselection={() => handle_tag_removal(TagSelectorType.ExcludedTags)}
+        />
+      </div>
       <Button size="large" variant="contained" onClick={on_submit}>
         Submit
       </Button>

@@ -121,7 +121,7 @@ const SearchForm = (props: IProps) => {
           <TagSelector
             selector_type={TagSelectorType.IncludedTags}
             post_selection={() => handle_tags_addition(TagSelectorType.IncludedTags)}
-            post_deselection={() => handle_tag_removal(TagSelectorType.ExcludedTags)}
+            post_deselection={() => handle_tag_removal(TagSelectorType.IncludedTags)}
           />
         </FormGroup>
         <FormGroup row>

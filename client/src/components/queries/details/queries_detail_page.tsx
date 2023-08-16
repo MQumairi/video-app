@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, FormLabel } from "@mui/material";
 import { useParams } from "react-router-dom";
 import IPersistentQuery from "../../../models/persistent_query";
 import { useEffect, useState } from "react";
@@ -62,7 +62,18 @@ const QueriesDetailsPage = () => {
       <div style={{ marginTop: "20px" }}>
         <h1>{query.name}</h1>
         {query.search_text.length > 0 && <p>Searching for: "{query.search_text}"</p>}
-        <TagsList tags={query.included_tags} />
+        {query.included_tags.length > 0 && (
+          <div>
+            <h3>Included</h3>
+            <TagsList tags={query.included_tags} />
+          </div>
+        )}
+        {query.excluded_tags.length > 0 && (
+          <div>
+            <h3>Excluded</h3>
+            <TagsList tags={query.excluded_tags} />
+          </div>
+        )}
         <h3>Videos</h3>
         <Button onClick={handle_preview}>Preview</Button>
         <VideoList videos={query_videos} base={`/queries/${query.id}/video`} />

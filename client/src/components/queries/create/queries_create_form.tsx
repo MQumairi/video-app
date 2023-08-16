@@ -20,13 +20,24 @@ const QueriesCreateForm = () => {
 
   const tags_store = useContext(TagsStore);
 
+  const reset = () => {
+    set_name("");
+    set_searched_text("");
+    set_min_rating(0);
+    set_max_rating(10);
+    set_min_resolution(0);
+    tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
+    tags_store.set_selected_tags(TagSelectorType.ExcludedTags, []);
+    set_query_videos([]);
+  };
+
   const handle_preview = async () => {
     const persistent_query: IPersistentQuery = {
       id: 1,
       name: name,
       search_text: searched_text,
       included_tags: tags_store.included_tags,
-      excluded_tags: [],
+      excluded_tags: tags_store.excluded_tags,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -43,7 +54,7 @@ const QueriesCreateForm = () => {
       name: name,
       search_text: searched_text,
       included_tags: tags_store.included_tags,
-      excluded_tags: [],
+      excluded_tags: tags_store.excluded_tags,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -51,6 +62,7 @@ const QueriesCreateForm = () => {
       max_duration_sec: 99999999,
     };
     await PersistentQueries.create(persistent_query);
+    reset();
   };
 
   const handle_name_change = (event: any) => {
@@ -92,6 +104,9 @@ const QueriesCreateForm = () => {
         </FormGroup>
         <FormGroup row>
           <TagSelector selector_type={TagSelectorType.IncludedTags} />
+        </FormGroup>
+        <FormGroup row>
+          <TagSelector selector_type={TagSelectorType.ExcludedTags} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

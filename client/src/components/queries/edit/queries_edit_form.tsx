@@ -71,11 +71,12 @@ const QueriesEditForm = (props: IProps) => {
     set_query(new_query);
   };
 
-  const handle_tag_changes = async () => {
+  const handle_tag_changes = async (selector_type: TagSelectorType) => {
     if (!query) return;
-    const selected_tags = tags_store.included_tags;
+    const selected_tags = tags_store.get_selected_tags(selector_type);
     const new_query = { ...query };
-    new_query.included_tags = selected_tags;
+    if (selector_type === TagSelectorType.IncludedTags) new_query.included_tags = selected_tags;
+    else if (selector_type === TagSelectorType.ExcludedTags) new_query.excluded_tags = selected_tags;
     set_query(new_query);
   };
 
@@ -86,6 +87,7 @@ const QueriesEditForm = (props: IProps) => {
     const new_query: IPersistentQuery = res.data;
     set_query(new_query);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, new_query.included_tags);
+    tags_store.set_selected_tags(TagSelectorType.ExcludedTags, new_query.excluded_tags);
     const video_res = await PersistentQueries.preview_videos(res.data);
     if (video_res.status !== 200) return;
     set_query_videos(video_res.data.videos);
@@ -113,7 +115,18 @@ const QueriesEditForm = (props: IProps) => {
           <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={query.search_text} onChange={handle_search_text_change} label="Search" />
         </FormGroup>
         <FormGroup row>
-          <TagSelector selector_type={TagSelectorType.IncludedTags} post_deselection={handle_tag_changes} post_selection={handle_tag_changes} />
+          <TagSelector
+            selector_type={TagSelectorType.IncludedTags}
+            post_deselection={() => handle_tag_changes(TagSelectorType.IncludedTags)}
+            post_selection={() => handle_tag_changes(TagSelectorType.IncludedTags)}
+          />
+        </FormGroup>
+        <FormGroup row>
+          <TagSelector
+            selector_type={TagSelectorType.ExcludedTags}
+            post_deselection={() => handle_tag_changes(TagSelectorType.ExcludedTags)}
+            post_selection={() => handle_tag_changes(TagSelectorType.ExcludedTags)}
+          />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

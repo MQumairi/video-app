@@ -25,6 +25,13 @@ const TagSelector = (props: IProps) => {
     if (props.post_deselection) props.post_deselection();
   };
 
+  let label = "";
+  if (props.selector_type === TagSelectorType.IncludedTags) {
+    label = "Included Tags";
+  } else if (props.selector_type === TagSelectorType.ExcludedTags) {
+    label = "Excluded Tags";
+  }
+
   useEffect(() => {
     tags_store.lookup();
     // eslint-disable-next-line
@@ -42,8 +49,8 @@ const TagSelector = (props: IProps) => {
         return option.name;
       }}
       onChange={(_, value) => add_tags(value)}
-      value={tags_store.included_tags}
-      renderInput={(params) => <TextField label="Selected Tags" {...params} />}
+      value={tags_store.get_selected_tags(props.selector_type)}
+      renderInput={(params) => <TextField label={label} {...params} />}
       renderTags={(values, _: AutocompleteRenderGetTagProps) => {
         return (
           <div>

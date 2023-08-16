@@ -4,7 +4,7 @@ import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
 import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
-import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
+import { Button, ButtonGroup, FormGroup, FormLabel, TextField } from "@mui/material";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import SortSelector from "./sort_selector";
 
@@ -25,6 +25,7 @@ const SearchForm = (props: IProps) => {
 
   const TEXT_PARAM_KEY = "searched_text";
   const TAGS_PARAM_KEY = "tags";
+  const TAGS_EXCLUDED_PARAM_KEY = "excluded_tags";
   const MIN_RATING_PARAM_KEY = "minrate";
   const MAX_RATING_PARAM_KEY = "maxrate";
   const RES_PARAM_KEY = "resolution";
@@ -36,12 +37,17 @@ const SearchForm = (props: IProps) => {
     set_search_params(new_search_params);
   };
 
-  const handle_tags_addition = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
+  const selector_param = (selector_type: TagSelectorType): string => {
+    if (selector_type === TagSelectorType.ExcludedTags) return TAGS_EXCLUDED_PARAM_KEY;
+    return TAGS_PARAM_KEY;
   };
 
-  const handle_tag_removal = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
+  const handle_tags_addition = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
+  };
+
+  const handle_tag_removal = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
   };
 
   const handle_search_text_change = async (event: any) => {
@@ -112,7 +118,18 @@ const SearchForm = (props: IProps) => {
           <SortSelector selected_sort_option={sort_option} handle_sort_change={handle_sort_change} />
         </FormGroup>
         <FormGroup row>
-          <TagSelector selector_type={TagSelectorType.IncludedTags} post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+          <TagSelector
+            selector_type={TagSelectorType.IncludedTags}
+            post_selection={() => handle_tags_addition(TagSelectorType.IncludedTags)}
+            post_deselection={() => handle_tag_removal(TagSelectorType.ExcludedTags)}
+          />
+        </FormGroup>
+        <FormGroup row>
+          <TagSelector
+            selector_type={TagSelectorType.ExcludedTags}
+            post_selection={() => handle_tags_addition(TagSelectorType.ExcludedTags)}
+            post_deselection={() => handle_tag_removal(TagSelectorType.ExcludedTags)}
+          />
         </FormGroup>
       </FormGroup>
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">

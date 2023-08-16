@@ -13,7 +13,7 @@ const EditResultsPage = () => {
   const [videos_count, set_videos_count] = useState<number>(0);
 
   const on_submit = async () => {
-    const tags = tags_store.get_selected_tags();
+    const tags = tags_store.get_selected_tags(TagSelectorType.IncludedTags);
     console.log("submiting", tags);
     await Search.tag_results(search_params.toString(), tags);
   };

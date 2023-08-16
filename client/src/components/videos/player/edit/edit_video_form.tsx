@@ -85,7 +85,7 @@ const EditVideoForm = () => {
 
   const lookup_video_tags = async () => {
     await video_store.lookup_selected_video_tags();
-    tags_store.set_selected_tags(video_store.selected_video_tags);
+    tags_store.set_selected_tags(TagSelectorType.IncludedTags, video_store.selected_video_tags);
   };
 
   useEffect(() => {

@@ -53,7 +53,7 @@ const TagEditPage = () => {
       set_is_script(tag.is_script);
       set_tag_type("script");
     }
-    if (tag.child_tags) tags_store.set_selected_tags(tag.child_tags);
+    if (tag.child_tags) tags_store.set_selected_tags(TagSelectorType.IncludedTags, tag.child_tags);
     set_tag(res.data.tag);
     set_default_excluded(tag.default_excluded);
     set_default_hidden(tag.default_hidden);

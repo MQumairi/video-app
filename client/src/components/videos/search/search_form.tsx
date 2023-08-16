@@ -37,11 +37,11 @@ const SearchForm = (props: IProps) => {
   };
 
   const handle_tags_addition = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
   };
 
   const handle_tag_removal = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
   };
 
   const handle_search_text_change = async (event: any) => {
@@ -80,7 +80,7 @@ const SearchForm = (props: IProps) => {
     const selected_tag_ids = search_params.get("tags");
     if (selected_tag_ids) {
       const tags = tags_store.search_query_to_tags(selected_tag_ids);
-      tags_store.set_selected_tags(tags);
+      tags_store.set_selected_tags(TagSelectorType.IncludedTags, tags);
     }
   };
 

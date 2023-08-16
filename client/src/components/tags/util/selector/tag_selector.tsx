@@ -16,12 +16,12 @@ const TagSelector = (props: IProps) => {
   const tags_store = useContext(TagsStore);
 
   const add_tags = (tags: ITag[]) => {
-    tags_store.set_selected_tags(tags);
+    tags_store.set_selected_tags(props.selector_type, tags);
     if (props.post_selection) props.post_selection();
   };
 
   const remove_tag = (tag: ITag) => {
-    tags_store.deselect(tag);
+    tags_store.deselect(props.selector_type, tag);
     if (props.post_deselection) props.post_deselection();
   };
 

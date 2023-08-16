@@ -102,7 +102,7 @@ const TagsCreatePage = () => {
     // Passing in selected_queries in case this tag is a dynamic playlist
     await Tag.create(tag, selected_queries);
     set_tag_name("");
-    tags_store.set_selected_tags([]);
+    tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
   };
   return (
     <div>

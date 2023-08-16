@@ -85,7 +85,7 @@ const QueriesEditForm = (props: IProps) => {
     if (res.status !== 200) return;
     const new_query: IPersistentQuery = res.data;
     set_query(new_query);
-    tags_store.set_selected_tags(new_query.included_tags);
+    tags_store.set_selected_tags(TagSelectorType.IncludedTags, new_query.included_tags);
     const video_res = await PersistentQueries.preview_videos(res.data);
     if (video_res.status !== 200) return;
     set_query_videos(video_res.data.videos);

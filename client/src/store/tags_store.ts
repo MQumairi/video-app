@@ -33,12 +33,31 @@ class TagsStore {
   // Excluded Tags
   @observable excluded_tags: ITag[] = [];
 
-  @action set_selected_tags = (tags: ITag[]) => {
-    this.included_tags = tags;
+  @action set_selected_tags = (selector_type: TagSelectorType, tags: ITag[]) => {
+    if (selector_type === TagSelectorType.IncludedTags) this.included_tags = tags;
+    else if (selector_type === TagSelectorType.ExcludedTags) this.excluded_tags = tags;
   };
 
-  get_selected_tags = (): ITag[] => {
-    return toJS(this.included_tags);
+  get_selected_tags = (selector_type: TagSelectorType): ITag[] => {
+    if (selector_type === TagSelectorType.IncludedTags) return toJS(this.included_tags);
+    else if (selector_type === TagSelectorType.ExcludedTags) return toJS(this.excluded_tags);
+    else return [];
+  };
+
+  deselect = (selector_type: TagSelectorType, tag: ITag) => {
+    let tags_to_iterate: ITag[] = this.get_selected_tags(selector_type);
+    const new_tags: ITag[] = [];
+    for (let i = 0; i < tags_to_iterate.length; i++) {
+      const t = tags_to_iterate[i];
+      if (t.id !== tag.id) {
+        new_tags.push(t);
+      }
+    }
+    this.set_selected_tags(selector_type, new_tags);
+  };
+
+  selected_tags_query_parms = (selector_type: TagSelectorType): string => {
+    return this.ids(this.get_selected_tags(selector_type)).join("-");
   };
 
   // Utility functions
@@ -55,23 +74,6 @@ class TagsStore {
       if (tag_ids.has(t.id)) tags_from_params.push(t);
     }
     return tags_from_params;
-  };
-
-  // Remove the given tag from selected_tags
-  deselect = (tag: ITag) => {
-    const new_tags: ITag[] = [];
-    for (let i = 0; i < this.included_tags.length; i++) {
-      const t = this.included_tags[i];
-      if (t.id !== tag.id) {
-        new_tags.push(t);
-      }
-    }
-    this.set_selected_tags(new_tags);
-  };
-
-  // Return query params for all selected tags in 1-2-3 format
-  selected_tags_query_parms = (): string => {
-    return this.ids(this.included_tags).join("-");
   };
 
   // Given array of tags return array of their ids

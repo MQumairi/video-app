@@ -53,11 +53,11 @@ const GalleryIndexPage = () => {
   };
 
   const handle_tags_addition = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
   };
 
   const handle_tag_removal = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.IncludedTags));
   };
 
   useEffect(() => {

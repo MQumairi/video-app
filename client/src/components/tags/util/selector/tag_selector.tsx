@@ -2,16 +2,17 @@ import Autocomplete, { AutocompleteRenderGetTagProps } from "@mui/material/Autoc
 import ITag from "../../../../models/tag";
 import { useContext, useEffect } from "react";
 import { TextField } from "@mui/material";
-import TagSearcherChip from "./tag_searcher_chip";
-import TagsStore from "../../../../store/tags_store";
+import TagSelectorChip from "./tag_selector_chip";
+import TagsStore, { TagSelectorType } from "../../../../store/tags_store";
 import { observer } from "mobx-react-lite";
 
 interface IProps {
+  selector_type: TagSelectorType;
   post_selection?: () => void;
   post_deselection?: () => void;
 }
 
-const TagSearcher = (props: IProps) => {
+const TagSelector = (props: IProps) => {
   const tags_store = useContext(TagsStore);
 
   const add_tags = (tags: ITag[]) => {
@@ -47,7 +48,7 @@ const TagSearcher = (props: IProps) => {
         return (
           <div>
             {values.map((value) => (
-              <TagSearcherChip tag={value} remove_tag={remove_tag} />
+              <TagSelectorChip tag={value} remove_tag={remove_tag} />
             ))}
           </div>
         );
@@ -56,4 +57,4 @@ const TagSearcher = (props: IProps) => {
   );
 };
 
-export default observer(TagSearcher);
+export default observer(TagSelector);

@@ -7,7 +7,7 @@ interface IProps {
   remove_tag: (tag: ITag) => void;
 }
 
-const TagSearcherChip = (props: IProps) => {
+const TagSelectorChip = (props: IProps) => {
   return (
     <Chip
       sx={{ marginLeft: "5px", marginTop: "5px" }}
@@ -20,4 +20,4 @@ const TagSearcherChip = (props: IProps) => {
   );
 };
 
-export default observer(TagSearcherChip);
+export default observer(TagSelectorChip);

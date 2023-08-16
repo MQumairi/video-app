@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../../models/video_meta";
-import TagSearcher from "../../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../../tags/util/selector/tag_selector";
 import { useContext, useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { Gallery, Tag, Video } from "../../../../api/agent";
-import TagsStore from "../../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../../store/tags_store";
 import VideoStore from "../../../../store/video_store";
 
 const EditVideoForm = () => {
@@ -99,7 +99,7 @@ const EditVideoForm = () => {
         {/* Tag */}
         <h3>Tag Video</h3>
         <p style={{ marginBottom: "10px" }}>Associate video with the selected tags</p>
-        <TagSearcher />
+        <TagSelector selector_type={TagSelectorType.IncludedTags} />
       </div>
       <div style={form_section_style}>
         {/* Uplaod */}

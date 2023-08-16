@@ -3,9 +3,9 @@ import { useContext, useState } from "react";
 import { Tag } from "../../../api/agent";
 import TextField from "@mui/material/TextField";
 import { Button, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from "@mui/material";
-import TagSearcher from "../util/searcher/tag_searcher";
+import TagSelector from "../util/selector/tag_selector";
 import { ITagCreate } from "../../../models/tag";
-import TagsStore from "../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import DynamicPlaylistQueryPicker from "./dynamic_playlist_query_picker";
 import IPersistentQuery from "../../../models/persistent_query";
 
@@ -134,7 +134,7 @@ const TagsCreatePage = () => {
         {is_dynamic_playlist && <DynamicPlaylistQueryPicker selected_queries={selected_queries} set_selected_queries={set_selected_queries} />}
         <FormLabel>Child Tags</FormLabel>
         <p>Select childs tags that will be applied to any item that this tag is applied to</p>
-        <TagSearcher />
+        <TagSelector selector_type={TagSelectorType.IncludedTags} />
         <Button sx={{ marginTop: "10px" }} variant="contained" onClick={on_submit}>
           Submit
         </Button>

@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import RatingSelector from "../../misc/rating_selector";
-import TagSearcher from "../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../tags/util/selector/tag_selector";
 import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
-import TagsStore from "../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import SortSelector from "./sort_selector";
 
 interface IProps {
@@ -112,7 +112,7 @@ const SearchForm = (props: IProps) => {
           <SortSelector selected_sort_option={sort_option} handle_sort_change={handle_sort_change} />
         </FormGroup>
         <FormGroup row>
-          <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+          <TagSelector selector_type={TagSelectorType.IncludedTags} post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
         </FormGroup>
       </FormGroup>
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">

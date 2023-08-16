@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Search } from "../../../api/agent";
-import TagSearcher from "../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../tags/util/selector/tag_selector";
 import IImageGallery from "../../../models/image_gallery";
 import { Button } from "@mui/material";
 import GalleryList from "./gallery_list";
 import { useSearchParams } from "react-router-dom";
 import PageSelector from "../../misc/page_selector";
-import TagsStore from "../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 
 const GalleryIndexPage = () => {
   const tags_store = useContext(TagsStore);
@@ -69,7 +69,7 @@ const GalleryIndexPage = () => {
   return (
     <div>
       <h1>Galleries</h1>
-      <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+      <TagSelector selector_type={TagSelectorType.IncludedTags} post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
       <Button style={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large" onClick={handle_submit}>
         Submit
       </Button>

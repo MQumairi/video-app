@@ -3,8 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search } from "../../../../api/agent";
 import { Button } from "@mui/material";
-import TagsStore from "../../../../store/tags_store";
-import TagSearcher from "../../../tags/util/searcher/tag_searcher";
+import TagsStore, { TagSelectorType } from "../../../../store/tags_store";
+import TagSelector from "../../../tags/util/selector/tag_selector";
 
 const EditResultsPage = () => {
   const tags_store = useContext(TagsStore);
@@ -45,7 +45,7 @@ const EditResultsPage = () => {
       </Button>
       <h1>Edit Results Page</h1>
       <p style={{ marginBottom: "20px" }}>You're about to tag {videos_count} videos. Are you sure you wish to continue?</p>
-      <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+      <TagSelector selector_type={TagSelectorType.IncludedTags} post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
       <Button size="large" variant="contained" onClick={on_submit}>
         Submit
       </Button>

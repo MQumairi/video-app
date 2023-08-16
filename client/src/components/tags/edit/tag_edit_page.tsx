@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { Tag } from "../../../api/agent";
 import ITag, { ITagEdit } from "../../../models/tag";
 import { Button, ButtonGroup, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
-import TagSearcher from "../util/searcher/tag_searcher";
-import TagsStore from "../../../store/tags_store";
+import TagSelector from "../util/selector/tag_selector";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import DynamicPlaylistQueryPicker from "../create/dynamic_playlist_query_picker";
 import IPersistentQuery from "../../../models/persistent_query";
 
@@ -190,7 +190,7 @@ const TagEditPage = () => {
         {is_dynamic_playlist && <DynamicPlaylistQueryPicker selected_queries={selected_queries} set_selected_queries={set_selected_queries} />}
         <FormLabel>Child Tags</FormLabel>
         <p style={{ marginBottom: "10px" }}>Select childs tags that will be applied to any item that this tag is applied to</p>
-        <TagSearcher />
+        <TagSelector selector_type={TagSelectorType.IncludedTags} />
         <FormLabel>Exclude Items from search unless this tag is explicitly searched for</FormLabel>
         <FormControlLabel
           control={

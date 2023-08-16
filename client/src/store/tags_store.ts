@@ -3,6 +3,11 @@ import { makeObservable, observable, action, toJS } from "mobx";
 import ITag from "../models/tag";
 import { Tag } from "../api/agent";
 
+export enum TagSelectorType {
+  IncludedTags = 1,
+  ExcludedTags,
+}
+
 class TagsStore {
   constructor() {
     makeObservable(this);
@@ -25,6 +30,9 @@ class TagsStore {
   // Included Tags
   @observable included_tags: ITag[] = [];
 
+  // Excluded Tags
+  @observable excluded_tags: ITag[] = [];
+
   @action set_selected_tags = (tags: ITag[]) => {
     this.included_tags = tags;
   };
@@ -32,8 +40,6 @@ class TagsStore {
   get_selected_tags = (): ITag[] => {
     return toJS(this.included_tags);
   };
-
-  //
 
   // Utility functions
 

@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
 import RatingSelector from "../../misc/rating_selector";
-import TagSearcher from "../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../tags/util/selector/tag_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
 import IPersistentQuery, { IPersistentQueryCreate } from "../../../models/persistent_query";
-import TagsStore from "../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
 import { VideoList } from "../../videos/util/video_list";
@@ -91,7 +91,7 @@ const QueriesCreateForm = () => {
           <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={searched_text} onChange={handle_search_text_change} label="Search" />
         </FormGroup>
         <FormGroup row>
-          <TagSearcher post_selection={() => {}} post_deselection={() => {}} />
+          <TagSelector selector_type={TagSelectorType.IncludedTags} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

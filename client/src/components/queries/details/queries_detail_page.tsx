@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, ButtonGroup, FormLabel } from "@mui/material";
+import { Button, ButtonGroup } from "@mui/material";
 import { useParams } from "react-router-dom";
 import IPersistentQuery from "../../../models/persistent_query";
 import { useEffect, useState } from "react";

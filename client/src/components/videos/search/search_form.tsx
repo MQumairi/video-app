@@ -4,7 +4,7 @@ import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
 import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
-import { Button, ButtonGroup, FormGroup, FormLabel, TextField } from "@mui/material";
+import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import SortSelector from "./sort_selector";
 

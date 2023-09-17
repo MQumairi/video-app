@@ -6,6 +6,12 @@ export const MIN_RATING = 0;
 export const MAX_RATING = 10;
 export const MIN_RESOLUTION = 0;
 
+export enum ThumbStatus {
+  default = 0,
+  withThumb,
+  noThumb,
+}
+
 export class SearchQuery {
   searched_text: string;
   included_tags: Tag[];
@@ -17,6 +23,7 @@ export class SearchQuery {
   order_by: string;
   order_strategy: "ASC" | "DESC" | undefined;
   page_capacity: number;
+  thumb_status: ThumbStatus;
 
   constructor(
     searched_text: string = "",
@@ -28,7 +35,8 @@ export class SearchQuery {
     page = 1,
     page_capacity = 12,
     order_by = "path",
-    order_strategy: "ASC" | "DESC" = "ASC"
+    order_strategy: "ASC" | "DESC" = "ASC",
+    thumb_status: ThumbStatus = ThumbStatus.default
   ) {
     this.searched_text = searched_text;
     this.included_tags = included_tags;
@@ -40,6 +48,7 @@ export class SearchQuery {
     this.order_by = order_by;
     this.order_strategy = order_strategy;
     this.page_capacity = page_capacity;
+    this.thumb_status = thumb_status;
   }
 
   static async from_request(req: Request, exclude_default_tags = true): Promise<SearchQuery> {
@@ -83,15 +92,16 @@ export class SearchQuery {
       page,
       12,
       sort_option,
-      SearchQuery.get_sorting_strategy(sort_option)
+      SearchQuery.get_sorting_strategy(sort_option),
+      ThumbStatus.default
     );
   }
 
-  static async from_tag(req: Request, tag: Tag): Promise<SearchQuery> {
+  static async from_tag(req: Request, tag: Tag, limit: number = 12, thumb_status: ThumbStatus = ThumbStatus.default): Promise<SearchQuery> {
     const raw_page = req.query.page?.toString() ?? "1";
     const page: number = +raw_page;
     const included_tags = await getRepository(Tag).find({ where: { id: tag.id } });
-    return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page);
+    return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page, limit, "path", "ASC", thumb_status);
   }
 
   private static async lookup_excluded_tags_from_ids(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {

@@ -1,5 +1,5 @@
 import { SelectQueryBuilder, getRepository } from "typeorm";
-import { SearchQuery } from "../search_query";
+import { SearchQuery, ThumbStatus } from "../search_query";
 import { VideoMeta } from "../../models/video_meta";
 import { Tag } from "../../models/tag";
 import { ImagePreprocessor } from "../images_lib/image_preprocessor";
@@ -72,6 +72,7 @@ export class VideoSearcher {
     query = this.query_min_rating(query, this.search_query.min_rating);
     query = this.query_max_rating(query, this.search_query.max_rating);
     query = this.query_min_resolution(query, this.search_query.min_resolution);
+    if (this.search_query.thumb_status !== ThumbStatus.default) this.filter_thumb_status(query, this.search_query.thumb_status);
     query.addOrderBy(`video.${this.search_query.order_by}`, this.search_query.order_strategy);
     if (this.search_query.order_by != "path") query.addOrderBy(`video.path`);
     return query;
@@ -120,5 +121,11 @@ export class VideoSearcher {
       .where(`tag.id IN (${tag_ids.join(",")})`);
     if (!include_having) return query;
     return query.addGroupBy("video.id").having(`COUNT(DISTINCT tag.id)=${tag_ids.length}`);
+  };
+
+  private filter_thumb_status = (query: SelectQueryBuilder<VideoMeta>, thumb_status: ThumbStatus): SelectQueryBuilder<VideoMeta> => {
+    if (thumb_status === ThumbStatus.withThumb) return query.andWhere("video.thumbnail IS NOT NULL");
+    else if (thumb_status === ThumbStatus.noThumb) return query.andWhere("video.thumbnail IS NULL");
+    return query;
   };
 }

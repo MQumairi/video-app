@@ -66,7 +66,7 @@ export const Tag = {
   add_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/add`, { tag: tag, child_tags: child_tags }),
   remove_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/remove`, { tag: tag, child_tags: child_tags }),
   delete: async (tag: ITag) => axios.delete(`tags/${tag.id}`),
-  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, tag),
+  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, { tag_id: tag.id }),
   dynamic_playlist_video: async (tag_id: number, order: number) => axios.get(`tags/dynamic-playlist/${tag_id}/order/${order}`),
 };
 

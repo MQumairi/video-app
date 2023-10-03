@@ -61,6 +61,7 @@ export class SearchQuery {
     const raw_resolution = req.query.resolution?.toString() ?? "0";
     const raw_page = req.query.page?.toString() ?? "1";
     const sort = req.query.sort?.toString() ?? "path";
+    const raw_results_per_page = req.query.results_per_page?.toString() ?? "12";
     // Find tag ids
     const tag_ids: number[] = raw_tags.split("-").map((i) => {
       return +i;
@@ -81,6 +82,8 @@ export class SearchQuery {
     const page: number = +raw_page;
     // Sort option
     const sort_option = SearchQuery.sort_option_to_video_field(sort);
+    // Results per page
+    const results_per_page = +raw_results_per_page;
     // Built query
     return new SearchQuery(
       raw_text,
@@ -90,7 +93,7 @@ export class SearchQuery {
       max_rating,
       min_resolution,
       page,
-      12,
+      results_per_page,
       sort_option,
       SearchQuery.get_sorting_strategy(sort_option),
       ThumbStatus.default

@@ -44,7 +44,8 @@ export const Search = {
   search_vidoes: async (search_param: string) => axios.get(`search?${search_param}`),
   search_galleries: async (search_param: string) => await axios.get(`search/galleries?${search_param}`),
   shuffle: async (search_param: string): Promise<IVideoMeta> => (await axios.get(`search/shuffle?${search_param}`)).data,
-  tag_results: async (search_param: string) => axios.put(`search/tag-resuts?${search_param}`),
+  tag_results: async (search_param: string, tags_to_add: ITag[], tags_to_remove: ITag[]) =>
+    axios.put(`search/tag-resuts?${search_param}`, { tags_to_add, tags_to_remove }),
 };
 
 export const Tag = {

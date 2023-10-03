@@ -11,6 +11,7 @@ const EditResultsPage = () => {
 
   const [search_params, set_search_params] = useSearchParams({});
   const [videos_count, set_videos_count] = useState<number>(0);
+  const [original_search_string, set_original_search_string] = useState<string>("");
 
   const TAGS_EXCLUDED_PARAM_KEY = "excluded_tags";
   const TAGS_PARAM_KEY = "tags";
@@ -35,13 +36,16 @@ const EditResultsPage = () => {
   };
 
   const on_submit = async () => {
-    await Search.tag_results(search_params.toString());
+    await Search.tag_results(original_search_string, tags_store.included_tags, tags_store.excluded_tags);
   };
 
   const fetch_search_results = async () => {
-    let res = await Search.search_vidoes(search_params.toString());
+    const new_search_params = search_params;
+    new_search_params.set("results_per_page", "1000");
+    let res = await Search.search_vidoes(new_search_params.toString());
     if (res.status !== 200) return;
     set_videos_count(res.data.count);
+    set_original_search_string(new_search_params.toString());
   };
 
   useEffect(() => {
@@ -52,7 +56,7 @@ const EditResultsPage = () => {
 
   return (
     <div>
-      <Button size="large" variant="contained" href={`/search?${search_params}`}>
+      <Button size="large" variant="contained" href={`/search?${original_search_string}`}>
         Back
       </Button>
       <h1>Edit Results Page</h1>

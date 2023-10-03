@@ -7,7 +7,7 @@ import { DestinationGuider } from "../../lib/images_lib/destination_guider";
 import { VideoBatcher } from "../../lib/videos_lib/video_batcher";
 
 // Given a video, find its gallery if it exists, and move all gallery images to an appropriate location
-const batcher_handler = async (video: VideoMeta): Promise<boolean> => {
+const batcher_handler = async (video: VideoMeta, args: any[] = []): Promise<boolean> => {
   const gallery = video.gallery;
   const parsed_video_path = parse(video.path);
   if (!gallery || !parsed_video_path) return true;
@@ -27,7 +27,7 @@ const CleanupGalleries = async (req: Request, res: Response) => {
     .addGroupBy("thumbnail.id")
     .addGroupBy("image.id")
     .addOrderBy("video.id");
-  const batcher_result = await VideoBatcher.execute_hadler(video_query, batcher_handler);
+  const batcher_result = await VideoBatcher.execute_handler(video_query, batcher_handler, []);
   console.log("batcher result:", batcher_result);
   res.status(200).json(batcher_result);
 };

@@ -56,7 +56,7 @@ export class VideoSearcher {
     }
   };
 
-  private build_video_query = (): SelectQueryBuilder<VideoMeta> => {
+  build_video_query = (): SelectQueryBuilder<VideoMeta> => {
     const video_meta_repo = getRepository(VideoMeta);
     let query = video_meta_repo
       .createQueryBuilder("video")

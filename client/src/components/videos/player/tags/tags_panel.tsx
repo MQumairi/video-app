@@ -16,6 +16,7 @@ const TagsPanel = () => {
   const [playlist_tags, set_playlist_tags] = useState<ITag[]>([]);
   const [character_tags, set_character_tags] = useState<ITag[]>([]);
   const [studio_tags, set_studio_tags] = useState<ITag[]>([]);
+  const [series_tags, set_series_tags] = useState<ITag[]>([]);
   const [default_tags, set_default_tags] = useState<ITag[]>([]);
   const [tags_count, set_tags_count] = useState<number>(0);
 
@@ -28,6 +29,7 @@ const TagsPanel = () => {
     const res_playlist_tags: ITag[] = [];
     const res_character_tags: ITag[] = [];
     const res_studio_tags: ITag[] = [];
+    const res_series_tags: ITag[] = [];
     const res_default_tags: ITag[] = [];
     for (const t of tags) {
       switch (get_tag_type(t)) {
@@ -40,6 +42,9 @@ const TagsPanel = () => {
         case TagType.Studio:
           res_studio_tags.push(t);
           break;
+        case TagType.Series:
+          res_series_tags.push(t);
+          break;
         default:
           res_default_tags.push(t);
           break;
@@ -48,6 +53,7 @@ const TagsPanel = () => {
     set_playlist_tags(res_playlist_tags);
     set_character_tags(res_character_tags);
     set_studio_tags(res_studio_tags);
+    set_series_tags(res_series_tags);
     set_default_tags(res_default_tags);
   };
 
@@ -64,6 +70,12 @@ const TagsPanel = () => {
 
   return (
     <div>
+      {series_tags.length > 0 && (
+        <div style={tag_row_style}>
+          <FormLabel>Series</FormLabel>
+          <TagsList tags={series_tags} />
+        </div>
+      )}
       {character_tags.length > 0 && (
         <div style={tag_row_style}>
           <FormLabel>Characters</FormLabel>

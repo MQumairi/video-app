@@ -16,6 +16,12 @@ export const base_url = `${server_url}/api`;
 
 axios.defaults.baseURL = base_url;
 
+const ignore_errors = {
+  validateStatus: function (status: any) {
+    return status < 500;
+  },
+};
+
 export const Directory = {
   get: async (dir_path: string): Promise<IDirectory> => (await axios.get(`directories/${dir_path}`)).data,
   search: async (query: string): Promise<IDirectorySearchResult> => (await axios.get(`directories/search/${query}`)).data,
@@ -43,7 +49,7 @@ export const Video = {
 export const Search = {
   search_vidoes: async (search_param: string) => axios.get(`search?${search_param}`),
   search_galleries: async (search_param: string) => await axios.get(`search/galleries?${search_param}`),
-  shuffle: async (search_param: string): Promise<IVideoMeta> => (await axios.get(`search/shuffle?${search_param}`)).data,
+  shuffle: async (search_param: string) => await axios.get(`search/shuffle?${search_param}`, ignore_errors),
   tag_results: async (search_param: string, tags_to_add: ITag[], tags_to_remove: ITag[]) =>
     axios.put(`search/tag-resuts?${search_param}`, { tags_to_add, tags_to_remove }),
 };

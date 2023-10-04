@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import VideoStore from "../../../store/video_store";
 import VideoDetails from "./video_details";
+import IVideoMeta from "../../../models/video_meta";
 
 const PlayerPage = () => {
   const params = useParams();
@@ -43,7 +44,9 @@ const PlayerPage = () => {
     }
     // If we came from /search?x
     else if (params) {
-      let random_video = await Search.shuffle(params);
+      let res = await Search.shuffle(params);
+      if (res.status !== 200) return;
+      const random_video: IVideoMeta = res.data;
       set_random_vid_url(`/player/${random_video.id}?${params}`);
       set_back_url(`/search?${params}`);
     }

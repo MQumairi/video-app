@@ -6,6 +6,7 @@ import VideoList from "../util/video_list";
 import { useSearchParams } from "react-router-dom";
 import PageSelector from "../../misc/page_selector";
 import { Search } from "../../../api/agent";
+import IVideoMeta from "../../../models/video_meta";
 
 const SearchPage = () => {
   const PAGE_PARAM_KEY = "page";
@@ -37,7 +38,9 @@ const SearchPage = () => {
   };
 
   const fetch_random_video = async () => {
-    const random_video = await Search.shuffle(search_params.toString());
+    const res = await Search.shuffle(search_params.toString());
+    if (res.status !== 200) return;
+    const random_video: IVideoMeta = res.data;
     set_random_vid_url(`/player/${random_video.id}`);
   };
 

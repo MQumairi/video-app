@@ -50,6 +50,7 @@ export const Search = {
 
 export const Tag = {
   get: async () => axios.get(`tags`),
+  series: async () => axios.get(`tags/series`),
   characters: async () => axios.get(`tags/characters`),
   studios: async () => axios.get(`tags/studios`),
   other: async () => axios.get(`tags/uncategorized`),

@@ -11,7 +11,6 @@ import IPersistentQuery from "../../../models/persistent_query";
 
 const TagsCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
-  const [is_playlist, set_is_playlist] = useState(false);
   const [is_dynamic_playlist, set_is_dynamic_playlist] = useState(false);
   const [is_character, set_is_character] = useState(false);
   const [is_series, set_is_series] = useState(false);
@@ -28,15 +27,6 @@ const TagsCreatePage = () => {
   const handle_tag_type_change = (value: string) => {
     switch (value) {
       case "default":
-        set_is_playlist(false);
-        set_is_dynamic_playlist(false);
-        set_is_character(false);
-        set_is_series(false);
-        set_is_studio(false);
-        set_is_script(false);
-        break;
-      case "playlist":
-        set_is_playlist(true);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -44,7 +34,6 @@ const TagsCreatePage = () => {
         set_is_script(false);
         break;
       case "dynamic_playlist":
-        set_is_playlist(false);
         set_is_dynamic_playlist(true);
         set_is_character(false);
         set_is_series(false);
@@ -52,7 +41,6 @@ const TagsCreatePage = () => {
         set_is_script(false);
         break;
       case "character":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(true);
         set_is_series(false);
@@ -60,7 +48,6 @@ const TagsCreatePage = () => {
         set_is_script(false);
         break;
       case "series":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(true);
@@ -68,7 +55,6 @@ const TagsCreatePage = () => {
         set_is_script(false);
         break;
       case "studio":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -76,7 +62,6 @@ const TagsCreatePage = () => {
         set_is_script(false);
         break;
       case "script":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -90,7 +75,7 @@ const TagsCreatePage = () => {
     const tag: ITagCreate = {
       name: tag_name,
       child_tags: tags_store.included_tags,
-      is_playlist,
+      is_playlist: false,
       is_dynamic_playlist,
       is_character,
       is_series,
@@ -123,7 +108,6 @@ const TagsCreatePage = () => {
             }}
           >
             <FormControlLabel value="default" control={<Radio />} label="Default" />
-            <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
             <FormControlLabel value="dynamic_playlist" control={<Radio />} label="Dynamic Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
             <FormControlLabel value="series" control={<Radio />} label="Series" />

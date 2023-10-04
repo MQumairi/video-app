@@ -13,7 +13,6 @@ const TagsPanel = () => {
   const video_store = useContext(VideoStore);
   const query_store = useContext(QueriesStore);
 
-  const [playlist_tags, set_playlist_tags] = useState<ITag[]>([]);
   const [character_tags, set_character_tags] = useState<ITag[]>([]);
   const [studio_tags, set_studio_tags] = useState<ITag[]>([]);
   const [series_tags, set_series_tags] = useState<ITag[]>([]);
@@ -26,15 +25,14 @@ const TagsPanel = () => {
     if (res.status !== 200) return;
     const tags: ITag[] = res.data;
     set_tags_count(tags.length);
-    const res_playlist_tags: ITag[] = [];
     const res_character_tags: ITag[] = [];
     const res_studio_tags: ITag[] = [];
     const res_series_tags: ITag[] = [];
     const res_default_tags: ITag[] = [];
     for (const t of tags) {
       switch (get_tag_type(t)) {
-        case TagType.Playlist:
-          res_playlist_tags.push(t);
+        case TagType.Series:
+          res_series_tags.push(t);
           break;
         case TagType.Character:
           res_character_tags.push(t);
@@ -42,15 +40,11 @@ const TagsPanel = () => {
         case TagType.Studio:
           res_studio_tags.push(t);
           break;
-        case TagType.Series:
-          res_series_tags.push(t);
-          break;
         default:
           res_default_tags.push(t);
           break;
       }
     }
-    set_playlist_tags(res_playlist_tags);
     set_character_tags(res_character_tags);
     set_studio_tags(res_studio_tags);
     set_series_tags(res_series_tags);
@@ -92,12 +86,6 @@ const TagsPanel = () => {
         <div style={tag_row_style}>
           <FormLabel>Studios</FormLabel>
           <TagsList tags={studio_tags} />
-        </div>
-      )}
-      {playlist_tags.length > 0 && (
-        <div style={tag_row_style}>
-          <FormLabel>Playlists</FormLabel>
-          <TagsList tags={playlist_tags} />
         </div>
       )}
       {video_store.selected_video?.created_at && (

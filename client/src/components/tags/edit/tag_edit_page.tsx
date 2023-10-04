@@ -17,7 +17,6 @@ const TagEditPage = () => {
 
   const [tag_name, set_tag_name] = useState("");
   const [tag_type, set_tag_type] = useState("default");
-  const [is_playlist, set_is_playlist] = useState(false);
   const [is_dynamic_playlist, set_is_dynamic_playlist] = useState(false);
   const [is_character, set_is_character] = useState(false);
   const [is_series, set_is_series] = useState(false);
@@ -33,10 +32,7 @@ const TagEditPage = () => {
     if (res.status !== 200) return;
     const tag: ITag = res.data.tag;
     set_tag_name(tag.name);
-    if (tag.is_playlist) {
-      set_is_playlist(tag.is_playlist);
-      set_tag_type("playlist");
-    } else if (tag.is_dynamic_playlist) {
+    if (tag.is_dynamic_playlist) {
       set_is_dynamic_playlist(tag.is_dynamic_playlist);
       set_tag_type("dynamic_playlist");
       set_selected_queries(res.data.queries);
@@ -66,7 +62,6 @@ const TagEditPage = () => {
   const handle_tag_type_change = (value: string) => {
     switch (value) {
       case "default":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -74,7 +69,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "playlist":
-        set_is_playlist(true);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -82,7 +76,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "dynamic_playlist":
-        set_is_playlist(false);
         set_is_dynamic_playlist(true);
         set_is_character(false);
         set_is_series(false);
@@ -90,7 +83,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "character":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(true);
         set_is_series(false);
@@ -98,7 +90,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "series":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(true);
@@ -106,7 +97,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "studio":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -114,7 +104,6 @@ const TagEditPage = () => {
         set_is_script(false);
         break;
       case "script":
-        set_is_playlist(false);
         set_is_dynamic_playlist(false);
         set_is_character(false);
         set_is_series(false);
@@ -130,7 +119,7 @@ const TagEditPage = () => {
     const edited_tag: ITagEdit = {
       id: +tag_id,
       name: tag_name,
-      is_playlist: is_playlist,
+      is_playlist: false,
       is_dynamic_playlist: is_dynamic_playlist,
       is_character: is_character,
       is_series: is_series,
@@ -179,7 +168,6 @@ const TagEditPage = () => {
             }}
           >
             <FormControlLabel value="default" control={<Radio />} label="Default" />
-            <FormControlLabel value="playlist" control={<Radio />} label="Playlist" />
             <FormControlLabel value="dynamic_playlist" control={<Radio />} label="Dynamic Playlist" />
             <FormControlLabel value="character" control={<Radio />} label="Character" />
             <FormControlLabel value="series" control={<Radio />} label="Series" />

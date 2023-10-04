@@ -51,6 +51,15 @@ export class SearchQuery {
     this.thumb_status = thumb_status;
   }
 
+  private static extract_tags(tags_string: string): number[] {
+    if (!tags_string.length) return [];
+    const tag_ids = tags_string.split("-").map((i) => {
+      return isNaN(+i) ? -1 : +i;
+    });
+    if (tag_ids.includes(-1)) return [];
+    return tag_ids;
+  }
+
   static async from_request(req: Request, exclude_default_tags = true): Promise<SearchQuery> {
     // Parse request
     const raw_text = req.query.searched_text?.toString() ?? "";
@@ -63,27 +72,23 @@ export class SearchQuery {
     const sort = req.query.sort?.toString() ?? "path";
     const raw_results_per_page = req.query.results_per_page?.toString() ?? "12";
     // Find tag ids
-    const tag_ids: number[] = raw_tags.split("-").map((i) => {
-      return +i;
-    });
-    const excluded_tag_ids: number[] = raw_excluded_tags.split("-").map((i) => {
-      return +i;
-    });
+    const tag_ids: number[] = SearchQuery.extract_tags(raw_tags);
+    const excluded_tag_ids: number[] = SearchQuery.extract_tags(raw_excluded_tags);
     // Find rating range
     const included_tags = await getRepository(Tag).find({ where: { id: In(tag_ids) } });
     const excluded_tags = exclude_default_tags
       ? await SearchQuery.lookup_excluded_tags_from_ids(excluded_tag_ids, included_tags)
       : await getRepository(Tag).find({ where: { id: In(excluded_tag_ids) } });
-    const min_rating: number = +raw_min_rating;
-    const max_rating: number = +raw_max_rating;
+    const min_rating: number = isNaN(+raw_min_rating) ? 0 : +raw_min_rating;
+    const max_rating: number = isNaN(+raw_max_rating) ? 10 : +raw_max_rating;
     // Find resolution
-    const min_resolution: number = +raw_resolution;
+    const min_resolution: number = isNaN(+raw_resolution) ? 0 : +raw_resolution;
     // Find page
-    const page: number = +raw_page;
+    const page: number = isNaN(+raw_page) ? 1 : +raw_page;
     // Sort option
     const sort_option = SearchQuery.sort_option_to_video_field(sort);
     // Results per page
-    const results_per_page = +raw_results_per_page;
+    const results_per_page = isNaN(+raw_results_per_page) ? 12 : +raw_results_per_page;
     // Built query
     return new SearchQuery(
       raw_text,

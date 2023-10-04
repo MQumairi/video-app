@@ -8,7 +8,6 @@ export class VideoSearcher {
   search_query: SearchQuery;
 
   constructor(query: SearchQuery) {
-    console.log("creating VideoSearcher");
     this.search_query = query;
   }
 

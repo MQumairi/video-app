@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne, OneToMany, OneToOne, JoinColumn } from "typeorm";
-import { basename, dirname } from "path";
+import { parse, dirname } from "path";
 import { Tag } from "./tag";
 import { Series } from "./series";
 import { ImageGallery } from "./image_gallery";
@@ -72,7 +72,7 @@ export class VideoMeta {
   static create_from_path(path: string): VideoMeta {
     const video_meta = new VideoMeta();
     video_meta.path = path;
-    video_meta.name = basename(path);
+    video_meta.name = parse(path).name;
     video_meta.parent_path = dirname(path);
     return video_meta;
   }

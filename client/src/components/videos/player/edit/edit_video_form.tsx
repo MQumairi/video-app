@@ -14,11 +14,16 @@ const EditVideoForm = () => {
   const [selected_files, set_selected_files] = useState<FileList | null>(null);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
   const [should_re_process, set_should_re_process] = useState<boolean>(false);
-
+  const [video_name, set_video_name] = useState<string>("");
   const [gallery_id_to_associate, set_galllery_id_to_associate] = useState<string>("");
 
   const form_section_style = {
     marginTop: "30px",
+  };
+
+  const on_name_change = (event: any) => {
+    const new_name = event.target.value;
+    set_video_name(new_name);
   };
 
   const on_file_change = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +40,8 @@ const EditVideoForm = () => {
   const submit_edit_video_form = async () => {
     const video = video_store.selected_video;
     if (!video) return;
+    // Handle Name
+    await handle_name_change(video);
     // Handle Tags
     await handle_tags(video);
     // Handle Upload
@@ -45,6 +52,11 @@ const EditVideoForm = () => {
     await handle_gallery_pair(video);
     // Handle Re-Processing
     await handle_reprocess(video);
+  };
+
+  const handle_name_change = async (video: IVideoMeta) => {
+    video.name = video_name;
+    Video.edit(video);
   };
 
   const handle_tags = async (video: IVideoMeta) => {
@@ -90,12 +102,18 @@ const EditVideoForm = () => {
 
   useEffect(() => {
     lookup_video_tags();
+    if (video_store.selected_video) {
+      set_video_name(video_store.selected_video.name);
+    }
     // eslint-disable-next-line
   }, []);
 
   return (
     <div>
       <div style={form_section_style}>
+        {/* Video Name */}
+        <h3>Name</h3>
+        {<TextField sx={{ width: "100%", margin: "5px 0px 30px 0px" }} id="outlined-basic" variant="outlined" value={video_name} onChange={on_name_change} />}
         {/* Tag */}
         <h3>Tag Video</h3>
         <p style={{ marginBottom: "10px" }}>Associate video with the selected tags</p>

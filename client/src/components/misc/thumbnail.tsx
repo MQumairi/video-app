@@ -4,12 +4,12 @@ import { server_url } from "../../api/agent";
 import { PathConverter } from "../../util/path_converter";
 
 interface IProps {
-  image: IImageMeta;
+  image?: IImageMeta;
+  thumbHeight?: string;
 }
-const Thumbnail = (props: IProps) => {
-  const image_url = `${server_url}/${PathConverter.remove_base(props.image.path)}`;
 
-  const thumb_height = "230px";
+const Thumbnail = (props: IProps) => {
+  const thumb_height = props.thumbHeight ? props.thumbHeight : "230px";
 
   const vertical_container = {
     display: "flex",
@@ -28,6 +28,22 @@ const Thumbnail = (props: IProps) => {
     height: thumb_height,
     borderRadius: "10px",
   };
+
+  if (!props.image) {
+    return (
+      <div style={container_style}>
+        <img
+          src={`/no_thumbnail.png`}
+          srcSet={`/no_thumbnail.png`}
+          alt="no thumbnail"
+          loading="lazy"
+          style={{ objectFit: "cover", flexShrink: 0, width: "100%", height: "100%" }}
+        />
+      </div>
+    );
+  }
+
+  const image_url = `${server_url}/${PathConverter.remove_base(props.image.path)}`;
 
   if (props.image.height > props.image.width) {
     return (

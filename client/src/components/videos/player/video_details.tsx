@@ -39,11 +39,13 @@ const VideoDetails = (props: IProps) => {
   return (
     <div>
       <div>
-        <Grid container spacing={{ xs: 2, md: 2, xl: 2 }} columns={{ xs: 2, sm: 2, md: 122 }}>
-          <div style={{ margin: "0px 10px 0px 15px" }}>
-            <Thumbnail image={video.thumbnail} thumbHeight="80px" />
-          </div>
-          <Grid direction="column" spacing={1}>
+        <Grid container columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12 }}>
+          <Grid item xs={2}>
+            <div style={{ margin: "10px 15px 0px 0px" }}>
+              <Thumbnail image={video.thumbnail} thumbHeight="100px" />
+            </div>
+          </Grid>
+          <Grid item xs={10} direction="column" spacing={1}>
             <h1>{video.name}</h1>
             {video.id && <Chip label={video.id} color="primary" variant="outlined" />}
             {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}

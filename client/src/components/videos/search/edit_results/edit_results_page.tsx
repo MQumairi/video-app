@@ -45,6 +45,7 @@ const EditResultsPage = () => {
     let res = await Search.search_vidoes(new_search_params.toString());
     if (res.status !== 200) return;
     set_videos_count(res.data.count);
+    new_search_params.set("results_per_page", "12");
     set_original_search_string(new_search_params.toString());
   };
 

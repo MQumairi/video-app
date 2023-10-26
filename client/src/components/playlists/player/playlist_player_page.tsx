@@ -49,17 +49,18 @@ const PlaylistPlayerPage = () => {
     if (!tag_id || !order) return;
     const res = await Tag.dynamic_playlist_video(+tag_id, +order);
     if (res.status !== 200) return;
-    const fetched_video: IVideoMeta = await fetch_video_meta(res);
     const next_order = res.data.next;
     const fetched_persistent_query = res.data.persistent_query;
     const fetched_playlist_length = res.data.playlist_length;
-    video_store.set_selected_video(fetched_video);
-    query_store.set_selected_query(fetched_persistent_query);
-    set_video(fetched_video);
-    update_query_params("video", fetched_video.id.toString());
     set_next_url(`/playlists/${tag_id}/order/${next_order}`);
     set_prev_url(`/playlists/${tag_id}/order/${+order - 1}`);
     set_playlist_length(fetched_playlist_length);
+    query_store.set_selected_query(fetched_persistent_query);
+    const fetched_video: IVideoMeta = await fetch_video_meta(res);
+    if (!fetched_video) return;
+    video_store.set_selected_video(fetched_video);
+    set_video(fetched_video);
+    update_query_params("video", fetched_video.id.toString());
   };
 
   const handle_rating_change = async (rating: number | null) => {
@@ -77,7 +78,13 @@ const PlaylistPlayerPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (!video || !tag_id || !order) return <div>Video not found</div>;
+  if (!video || !tag_id || !order)
+    return (
+      <div>
+        {query_store.selected_query && <h2 style={{ opacity: "0.6", marginBottom: "20px" }}>{query_store.selected_query.name}</h2>}
+        Video not found. Try <a href={next_url}>next video in playlist</a>.
+      </div>
+    );
 
   return (
     <div>

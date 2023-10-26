@@ -4,6 +4,7 @@ import IVideoMeta from "./video_meta";
 export interface ITagCreate {
   name: string;
   child_tags: ITag[];
+  playlist_included_tags: ITag[];
   is_playlist: boolean;
   is_dynamic_playlist: boolean;
   is_character: boolean;

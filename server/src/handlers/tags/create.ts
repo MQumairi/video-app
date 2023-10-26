@@ -6,6 +6,8 @@ import { PersistentQuery } from "../../models/persistent_query";
 const Create = async (req: Request, res: Response): Promise<Tag | undefined> => {
   try {
     let tag: Tag = req.body.tag;
+    console.log("tag is:", tag);
+    console.log("req body is:", req.body.tag);
     const tag_repo = getRepository(Tag);
     const found_tag = await tag_repo.findOne({ where: { name: tag.name } });
     if (found_tag) {

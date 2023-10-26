@@ -75,6 +75,7 @@ const TagsCreatePage = () => {
     const tag: ITagCreate = {
       name: tag_name,
       child_tags: tags_store.included_tags,
+      playlist_included_tags: [],
       is_playlist: false,
       is_dynamic_playlist,
       is_character,

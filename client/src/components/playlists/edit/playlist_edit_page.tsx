@@ -43,6 +43,7 @@ const PlaylistEditPage = () => {
       is_studio: false,
       is_script: false,
       child_tags: tags_store.included_tags ?? [],
+      playlist_included_tags: [],
       default_excluded: false,
       default_hidden: false,
     };

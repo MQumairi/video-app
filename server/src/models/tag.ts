@@ -51,6 +51,10 @@ export class Tag {
   @JoinTable()
   child_tags: Tag[];
 
+  @ManyToMany((type) => Tag, { cascade: true })
+  @JoinTable()
+  playlist_included_tags: Tag[];
+
   @ManyToMany((type) => FileScript, (script) => script.tags, { cascade: true })
   @JoinTable()
   file_scripts: FileScript[];

@@ -17,7 +17,7 @@ const DynamicPlaylistVideo = async (req: Request, res: Response): Promise<VideoM
     const id = +req.params.id;
     const order = +req.params.order;
     const tag_repo = getRepository(Tag);
-    const tag = await tag_repo.findOne(id, { relations: ["child_tags", "persistent_query_to_playlists"] });
+    const tag = await tag_repo.findOne(id, { relations: ["child_tags", "persistent_query_to_playlists", "playlist_included_tags"] });
     if (!tag || !tag.is_dynamic_playlist) {
       res.status(404).send("Tag not found");
       return undefined;
@@ -29,6 +29,11 @@ const DynamicPlaylistVideo = async (req: Request, res: Response): Promise<VideoM
       return undefined;
     }
     const persistent_query = persistent_queries[0];
+    // Add playlist_included_tags if they exist
+    const playlist_included_tags = tag.playlist_included_tags;
+    if (playlist_included_tags.length) {
+      persistent_query.included_tags.push(...playlist_included_tags);
+    }
     const search_query = await PersistentQuery.build_search_query(persistent_query);
     const seacher = new VideoSearcher(search_query);
     const video = await seacher.random_single_video();

@@ -10,7 +10,7 @@ const exec = promisify(exec_sync);
 export default class ThumbnailGenerator {
   // Generate thumbnail for multiple videos
   static async thumb_videos(videos: VideoMeta[]) {
-    const thumbs_per_video = 3;
+    const thumbs_per_video = 9;
     for (const v of videos) {
       const video = await getRepository(VideoMeta).findOne({ where: { id: v.id }, relations: ["gallery", "thumbnail", "tags", "file_scripts"] });
       if (!video) continue;

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import IPersistentQuery from "../../../models/persistent_query";
 import { useEffect, useState } from "react";
@@ -62,18 +62,33 @@ const QueriesDetailsPage = () => {
       <div style={{ marginTop: "20px" }}>
         <h1>{query.name}</h1>
         {query.search_text.length > 0 && <p>Searching for: "{query.search_text}"</p>}
-        {query.included_tags.length > 0 && (
-          <div>
-            <h3>Included</h3>
-            <TagsList tags={query.included_tags} />
-          </div>
-        )}
-        {query.excluded_tags.length > 0 && (
-          <div>
-            <h3>Excluded</h3>
-            <TagsList tags={query.excluded_tags} />
-          </div>
-        )}
+        <Grid container spacing={{ xs: 1, md: 2, lg: 4 }} columns={{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }}>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 1}>
+            {query.included_tags.length > 0 && (
+              <div>
+                <h3>Included</h3>
+                <TagsList tags={query.included_tags} />
+              </div>
+            )}
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 2}>
+            {query.excluded_tags.length > 0 && (
+              <div>
+                <h3>Excluded</h3>
+                <TagsList tags={query.excluded_tags} />
+              </div>
+            )}
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 3}>
+            {(query.min_rating > 0 || query.max_rating < 10) && (
+              <div>
+                <h3>Rating</h3>
+                From {query.min_rating} to {query.max_rating}
+              </div>
+            )}
+          </Grid>
+        </Grid>
+
         <h3>Videos</h3>
         <Button onClick={handle_preview}>Preview</Button>
         <VideoList videos={query_videos} base={`/queries/${query.id}/video`} />

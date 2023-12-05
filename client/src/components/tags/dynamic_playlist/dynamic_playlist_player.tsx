@@ -21,6 +21,7 @@ const DynamicPlaylistPlayer = () => {
   const query_store = useContext(QueriesStore);
 
   const [video, set_video] = useState<IVideoMeta | null>(null);
+  const [current_video_index, set_current_video_index] = useState<number>(0);
   const [next_url, set_next_url] = useState<string>("");
   const [prev_url, set_prev_url] = useState<string>("");
   const [playlist_length, set_playlist_length] = useState<number>(0);
@@ -50,15 +51,16 @@ const DynamicPlaylistPlayer = () => {
     const res = await Tag.dynamic_playlist_video(+tag_id, +order);
     if (res.status !== 200) return;
     const fetched_video: IVideoMeta = await fetch_video_meta(res);
-    const next_order = res.data.next;
+    const next_order = res.data.next_video_index;
     const fetched_persistent_query = res.data.persistent_query;
     const fetched_playlist_length = res.data.playlist_length;
+    set_current_video_index(res.data.order);
     video_store.set_selected_video(fetched_video);
     query_store.set_selected_query(fetched_persistent_query);
     set_video(fetched_video);
     update_query_params("video", fetched_video.id.toString());
     set_next_url(`/dynamic-playlist/${tag_id}/order/${next_order}`);
-    set_prev_url(`/dynamic-playlist/${tag_id}/order/${+order - 1}`);
+    set_prev_url(`/dynamic-playlist/${tag_id}/order/${current_video_index - 1}`);
     set_playlist_length(fetched_playlist_length);
   };
 
@@ -93,13 +95,13 @@ const DynamicPlaylistPlayer = () => {
           {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
           {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
           {video.size_mb && <Chip label={get_file_size_string(video)} color="primary" variant="outlined" />}
-          {order && playlist_length && <Chip label={`${order}/${playlist_length}`} color="primary" variant="outlined" />}
+          {order && playlist_length && <Chip label={`${current_video_index}/${playlist_length}`} color="primary" variant="outlined" />}
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         {+order > 1 && <Button href={prev_url}>Previous</Button>}
-        <Button href={`/tags/${tag_id}`}>Back</Button>
-        <Button href={`/dynamic-playlist/${tag_id}/order/${order}`}>Refresh</Button>
+        <Button href={`/playlists/${tag_id}`}>Back</Button>
+        <Button href={`/dynamic-playlist/${tag_id}/order/${current_video_index}`}>Refresh</Button>
         <Button href={next_url}>Next</Button>
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />

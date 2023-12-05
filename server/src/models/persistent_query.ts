@@ -68,10 +68,12 @@ export class PersistentQuery {
     return new SearchQuery(p.search_text, p.included_tags, excluded_tags, p.min_rating, p.max_rating, p.frame_height);
   }
 
-  static async find_video(query: PersistentQuery): Promise<VideoMeta | undefined> {
+  static async find_video(query: PersistentQuery): Promise<VideoMeta | null> {
     const search_query = await PersistentQuery.build_search_query(query);
     const media_searcher = new VideoSearcher(search_query);
-    return await media_searcher.random_single_video();
+    const video = await media_searcher.random_single_video();
+    if (video) return video;
+    return null;
   }
 
   static async find_videos(query: PersistentQuery): Promise<VideoMeta[]> {
@@ -83,6 +85,13 @@ export class PersistentQuery {
 
   static async find_by_order(playlist: Tag, order: number): Promise<PersistentQuery[]> {
     const pq2p_arr = await PersistentQueryToPlaylist.find_by_order(playlist, order);
+    return pq2p_arr.map((pq2p) => {
+      return pq2p.persistent_query;
+    });
+  }
+
+  static async all_playlist_queries(playlist: Tag): Promise<PersistentQuery[]> {
+    const pq2p_arr = await PersistentQueryToPlaylist.generate_playlist_p2ps(playlist);
     return pq2p_arr.map((pq2p) => {
       return pq2p.persistent_query;
     });

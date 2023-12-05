@@ -1,18 +1,21 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Search, Tag } from "../../../api/agent";
+import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import IVideoMeta from "../../../models/video_meta";
 import VideoTags from "../../videos/player/tags/video_tags";
 import { Button, ButtonGroup, Chip, Stack } from "@mui/material";
-import { LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
+import { Code, Dvr, LocalOffer, MovieCreation, Person, Subscriptions } from "@mui/icons-material";
 import { TagType, get_tag_type } from "../../../lib/tag_util";
 import TagDetailsTabs from "./tag_details_tabs";
+import IPersistentQuery from "../../../models/persistent_query";
+import DynamicPlaylisyQueries from "../dynamic_playlist/dynamic_playlisy_queries";
 
 const TagDetailsPage = () => {
   let tag_id = useParams().tag_id ?? 1;
   const [tag, set_tag] = useState<ITag | null>(null);
+  const [playlist_queries, set_playlist_queries] = useState<IPersistentQuery[]>([]);
   const [random_vid, set_random_vid] = useState<IVideoMeta | null>(null);
   const [tag_type, set_tag_type] = useState<TagType>(TagType.Default);
 
@@ -27,11 +30,13 @@ const TagDetailsPage = () => {
     set_tag(fetched_tag);
     set_tag_type(get_tag_type(fetched_tag));
     set_videos_count(res.data.count);
+    set_playlist_queries(res.data.queries);
   };
 
   const fetch_random_tag_video = async () => {
-    let res = await Search.shuffle(`tags=${tag_id}`);
-    set_random_vid(res);
+    let res = await Tag.shuffle(+tag_id);
+    if (res.status !== 200) return;
+    set_random_vid(res.data);
   };
 
   const handle_page_change = (page: number) => {
@@ -64,6 +69,8 @@ const TagDetailsPage = () => {
         {tag_type === TagType.Character && <Person fontSize="large" />}
         {tag_type === TagType.Studio && <MovieCreation fontSize="large" />}
         {tag_type === TagType.Playlist && <Subscriptions fontSize="large" />}
+        {tag_type === TagType.Script && <Code fontSize="large" />}
+        {tag_type === TagType.Series && <Dvr fontSize="large" />}
         <h2>{tag.name}</h2>
       </Stack>
       <Stack direction="row" spacing={1}>
@@ -73,11 +80,15 @@ const TagDetailsPage = () => {
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href={`/tags?${search_params.toString()}`}>Back</Button>
         {random_vid && <Button href={`/tags/${tag_id}/video/${random_vid.id}`}>Random</Button>}
+        {tag.is_dynamic_playlist && <Button href={`/dynamic-playlist/${tag_id}/order/${1}`}>Play</Button>}
         <Button href={`/tags/${tag_id}/edit`}>Edit</Button>
         <Button href={`/tags/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>
       {tag.child_tags && tag.child_tags.length > 0 && <VideoTags tags={tag.child_tags} />}
-      <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
+      {tag.is_dynamic_playlist && <DynamicPlaylisyQueries queries={playlist_queries} tag_id={tag.id} />}
+      {!tag.is_dynamic_playlist && (
+        <TagDetailsTabs tag={tag} pages_total={calc_page_numbers()} current_page={current_page} handle_page_change={handle_page_change} />
+      )}
     </div>
   );
 };

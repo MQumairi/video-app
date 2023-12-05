@@ -1,31 +1,24 @@
+import IPersistentQuery from "./persistent_query";
 import IVideoMeta from "./video_meta";
-
-export default interface ITag {
-  id: number;
-  name: string;
-  videos: IVideoMeta[];
-  child_tags?: ITag[];
-  is_playlist: boolean;
-  is_character: boolean;
-  is_studio: boolean;
-  default_excluded: boolean;
-}
 
 export interface ITagCreate {
   name: string;
   child_tags: ITag[];
+  playlist_included_tags: ITag[];
   is_playlist: boolean;
+  is_dynamic_playlist: boolean;
   is_character: boolean;
+  is_series: boolean;
   is_studio: boolean;
+  is_script: boolean;
   default_excluded: boolean;
+  default_hidden: boolean;
 }
 
-export interface ITagEdit {
+export interface ITagEdit extends ITagCreate {
   id: number;
-  name: string;
-  child_tags: ITag[];
-  is_playlist: boolean;
-  is_character: boolean;
-  is_studio: boolean;
-  default_excluded: boolean;
+}
+
+export default interface ITag extends ITagEdit {
+  videos: IVideoMeta[];
 }

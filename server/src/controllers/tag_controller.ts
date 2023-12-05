@@ -16,11 +16,23 @@ import Studios from "../handlers/tags/only_studios";
 import Uncategorized from "../handlers/tags/only_uncategorized";
 import RandomImages from "../handlers/tags/random_images";
 import TagSingleVideo from "../handlers/tags/single_video_tag";
+import RandomImageSingle from "../handlers/tags/random_image_single";
+import DynamicPlaylistVideo from "../handlers/tags/dynamic_playlist_video";
+import DynamicPlaylists from "../handlers/tags/only_dynamic_playlist";
+import Series from "../handlers/tags/only_series";
 
 const tag_controller = Router();
 
 tag_controller.get("/playlists", async (req: Request, res: Response) => {
   await Playlists(req, res);
+});
+
+tag_controller.get("/dynamic-playlists", async (req: Request, res: Response) => {
+  await DynamicPlaylists(req, res);
+});
+
+tag_controller.get("/series", async (req: Request, res: Response) => {
+  await Series(req, res);
 });
 
 tag_controller.get("/characters", async (req: Request, res: Response) => {
@@ -39,12 +51,20 @@ tag_controller.get("/", async (req: Request, res: Response) => {
   await List(req, res);
 });
 
+tag_controller.get("/dynamic-playlist/:id/order/:order", async (req: Request, res: Response) => {
+  await DynamicPlaylistVideo(req, res);
+});
+
 tag_controller.get("/:id/shuffle", async (req: Request, res: Response) => {
   await Shuffle(req, res);
 });
 
 tag_controller.get("/:id/images", async (req: Request, res: Response) => {
   await RandomImages(req, res);
+});
+
+tag_controller.get("/:id/image-slide", async (req: Request, res: Response) => {
+  await RandomImageSingle(req, res);
 });
 
 tag_controller.get("/:id", async (req: Request, res: Response) => {

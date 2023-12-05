@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToMany, JoinTable, getRepository } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToMany, JoinTable, getRepository, OneToMany } from "typeorm";
 import { VideoMeta } from "./video_meta";
 import { ImageMeta } from "./image_meta";
 import { basename } from "path";
@@ -6,8 +6,15 @@ import { ImageGallery } from "./image_gallery";
 import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import { Tag } from "./tag";
-import Tagger from "../lib/tagger";
 const exec = promisify(exec_sync);
+
+export enum ScriptState {
+  unscripted = 0,
+  active,
+  inactive,
+  processing_activation_script,
+  processing_deactivation_script,
+}
 
 @Entity()
 export class FileScript {
@@ -47,6 +54,12 @@ export class FileScript {
 
   @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
   tags: Tag[];
+
+  @OneToMany((t) => Tag, (tag) => tag.activation_script)
+  activatable_tags: Tag[];
+
+  @OneToMany((t) => Tag, (tag) => tag.deactivation_script)
+  deactivatable_tags: Tag[];
 
   static create_from_path(path: string): FileScript {
     const file_script = new FileScript();

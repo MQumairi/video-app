@@ -1,11 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import RatingSelector from "../../misc/rating_selector";
-import TagSearcher from "../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../tags/util/selector/tag_selector";
 import ResolutionSelector from "./resolution_selector";
 import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
-import TagsStore from "../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../store/tags_store";
+import SortSelector from "./sort_selector";
 
 interface IProps {
   on_submit: () => void;
@@ -20,12 +21,15 @@ const SearchForm = (props: IProps) => {
   const [max_rating, set_max_rating] = useState<number>(10);
   const [min_resolution, set_min_resolution] = useState<number>(0);
   const [search_params, set_search_params] = useSearchParams({});
+  const [sort_option, set_sort_option] = useState<string>("Path");
 
   const TEXT_PARAM_KEY = "searched_text";
   const TAGS_PARAM_KEY = "tags";
+  const TAGS_EXCLUDED_PARAM_KEY = "excluded_tags";
   const MIN_RATING_PARAM_KEY = "minrate";
   const MAX_RATING_PARAM_KEY = "maxrate";
   const RES_PARAM_KEY = "resolution";
+  const SORT_PARAM_KEY = "sort";
 
   const update_query_params = (key: string, value: string) => {
     const new_search_params = search_params;
@@ -33,12 +37,17 @@ const SearchForm = (props: IProps) => {
     set_search_params(new_search_params);
   };
 
-  const handle_tags_addition = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+  const selector_param = (selector_type: TagSelectorType): string => {
+    if (selector_type === TagSelectorType.ExcludedTags) return TAGS_EXCLUDED_PARAM_KEY;
+    return TAGS_PARAM_KEY;
   };
 
-  const handle_tag_removal = () => {
-    update_query_params(TAGS_PARAM_KEY, tags_store.selected_tags_query_parms());
+  const handle_tags_addition = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
+  };
+
+  const handle_tag_removal = (selector_type: TagSelectorType) => {
+    update_query_params(selector_param(selector_type), tags_store.selected_tags_query_parms(selector_type));
   };
 
   const handle_search_text_change = async (event: any) => {
@@ -65,13 +74,19 @@ const SearchForm = (props: IProps) => {
     update_query_params(RES_PARAM_KEY, new_resolution.toString());
   };
 
+  const handle_sort_change = async (event: any) => {
+    const new_sort_option = event.target.value;
+    set_sort_option(new_sort_option);
+    update_query_params(SORT_PARAM_KEY, new_sort_option);
+  };
+
   const lookup_and_set_query = async () => {
     console.log("calling lookup from seach form");
     await tags_store.lookup();
     const selected_tag_ids = search_params.get("tags");
     if (selected_tag_ids) {
       const tags = tags_store.search_query_to_tags(selected_tag_ids);
-      tags_store.set_selected_tags(tags);
+      tags_store.set_selected_tags(TagSelectorType.IncludedTags, tags);
     }
   };
 
@@ -81,10 +96,12 @@ const SearchForm = (props: IProps) => {
     const max_rating = search_params.get(MAX_RATING_PARAM_KEY);
     const resolution = search_params.get(RES_PARAM_KEY);
     const tags_params = search_params.get(TAGS_PARAM_KEY);
+    const sort_option_param = search_params.get(SORT_PARAM_KEY);
     if (search_text) set_searched_text(search_text);
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);
     if (resolution) set_min_resolution(+resolution);
+    if (sort_option_param) set_sort_option(sort_option_param);
     if (!tags_params) return;
     lookup_and_set_query();
     // eslint-disable-next-line
@@ -93,19 +110,32 @@ const SearchForm = (props: IProps) => {
   return (
     <div>
       <FormGroup sx={{ gap: "15px" }}>
-        <FormGroup>
-          <TextField variant="outlined" type="text" value={searched_text} onChange={handle_search_text_change} label="Search" />
-        </FormGroup>
         <FormGroup row>
-          <TagSearcher post_selection={handle_tags_addition} post_deselection={handle_tag_removal} />
+          <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={searched_text} onChange={handle_search_text_change} label="Search" />
           <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />
           <RatingSelector label={"Max"} rating={max_rating} handle_rating_change={handle_max_rating_change} />
           <ResolutionSelector label={"Quality"} resolution={min_resolution} handle_resolution_change={handle_resolution_change} />
+          <SortSelector selected_sort_option={sort_option} handle_sort_change={handle_sort_change} />
+        </FormGroup>
+        <FormGroup row>
+          <TagSelector
+            selector_type={TagSelectorType.IncludedTags}
+            post_selection={() => handle_tags_addition(TagSelectorType.IncludedTags)}
+            post_deselection={() => handle_tag_removal(TagSelectorType.IncludedTags)}
+          />
+        </FormGroup>
+        <FormGroup row>
+          <TagSelector
+            selector_type={TagSelectorType.ExcludedTags}
+            post_selection={() => handle_tags_addition(TagSelectorType.ExcludedTags)}
+            post_deselection={() => handle_tag_removal(TagSelectorType.ExcludedTags)}
+          />
         </FormGroup>
       </FormGroup>
       <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
         <Button onClick={props.on_submit}>Submit</Button>
         {props.random_vid_url !== "" && <Button href={`${props.random_vid_url}?${search_params}`}>Random</Button>}
+        <Button href={`/search-results-edit?${search_params}`}>Edit</Button>
       </ButtonGroup>
     </div>
   );

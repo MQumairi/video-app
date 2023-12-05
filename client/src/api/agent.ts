@@ -7,6 +7,7 @@ import IVideoMeta from "../models/video_meta";
 import IImageMeta from "../models/image_meta";
 import IImageGallery from "../models/image_gallery";
 import IFileScript from "../models/file_script";
+import IPersistentQuery, { IPersistentQueryCreate } from "../models/persistent_query";
 
 const server_host = process.env.REACT_APP_SERVER_HOST ?? "localhost";
 const server_port = process.env.REACT_APP_SERVER_PORT ?? 5000;
@@ -14,6 +15,12 @@ export const server_url = `http://${server_host}:${server_port}`;
 export const base_url = `${server_url}/api`;
 
 axios.defaults.baseURL = base_url;
+
+const ignore_errors = {
+  validateStatus: function (status: any) {
+    return status < 500;
+  },
+};
 
 export const Directory = {
   get: async (dir_path: string): Promise<IDirectory> => (await axios.get(`directories/${dir_path}`)).data,
@@ -42,26 +49,33 @@ export const Video = {
 export const Search = {
   search_vidoes: async (search_param: string) => axios.get(`search?${search_param}`),
   search_galleries: async (search_param: string) => await axios.get(`search/galleries?${search_param}`),
-  shuffle: async (search_param: string): Promise<IVideoMeta> => (await axios.get(`search/shuffle?${search_param}`)).data,
+  shuffle: async (search_param: string) => await axios.get(`search/shuffle?${search_param}`, ignore_errors),
+  tag_results: async (search_param: string, tags_to_add: ITag[], tags_to_remove: ITag[]) =>
+    axios.put(`search/tag-resuts?${search_param}`, { tags_to_add, tags_to_remove }),
 };
 
 export const Tag = {
   get: async () => axios.get(`tags`),
+  series: async () => axios.get(`tags/series`),
   characters: async () => axios.get(`tags/characters`),
   studios: async () => axios.get(`tags/studios`),
   other: async () => axios.get(`tags/uncategorized`),
   playlists: async () => axios.get(`tags/playlists`),
+  dynamic_playlists: async () => axios.get(`tags/dynamic-playlists`),
+  shuffle: async (tag_id: number) => axios.get(`tags/${tag_id}/shuffle`),
   random_images: async (tag: ITag) => axios.get(`tags/${tag.id}/images`),
-  post: async (tag: ITagCreate) => axios.post(`tags`, tag),
+  random_image_single: async (tag: ITag) => axios.get(`tags/${tag.id}/image-slide`),
+  create: async (tag: ITagCreate, queries: IPersistentQuery[] = []) => axios.post(`tags`, { tag, queries }),
   details: async (tag_id: number, search_params: string = "") => axios.get(`tags/${tag_id}?${search_params}`),
-  edit: async (tag: ITagEdit) => axios.put(`tags/${tag.id}`, tag),
+  edit: async (tag: ITagEdit, queries: IPersistentQuery[] = []) => axios.put(`tags/${tag.id}`, { tag, queries }),
   tag_video: async (video: IVideoMeta, tags: ITag[]) => axios.put(`tags/tag-single-video`, { video, tags }),
   tag_videos: async (videos: IVideoMeta[], tags: ITag[]) => axios.put(`tags/tag-videos`, { videos: videos, tags: tags }),
   untag_video: async (videos: IVideoMeta[], tag: ITag) => axios.put(`tags/untag-videos`, { videos: videos, tag: tag }),
   add_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/add`, { tag: tag, child_tags: child_tags }),
   remove_children: async (tag: ITag, child_tags: ITag[]) => axios.put(`tags/${tag.id}/children/remove`, { tag: tag, child_tags: child_tags }),
   delete: async (tag: ITag) => axios.delete(`tags/${tag.id}`),
-  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, tag),
+  generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, { tag_id: tag.id }),
+  dynamic_playlist_video: async (tag_id: number, order: number) => axios.get(`tags/dynamic-playlist/${tag_id}/order/${order}`),
 };
 
 export const Series = {
@@ -89,9 +103,18 @@ export const FileScripts = {
   remove_video: async (script: IFileScript, video: IVideoMeta) => axios.put(`file-scripts/${script.id}/remove-video`, { video }),
 };
 
+export const PersistentQueries = {
+  list: async () => axios.get(`persistent-queries`),
+  create: async (query: IPersistentQueryCreate) => axios.post(`persistent-queries`, query),
+  details: async (query_id: number) => axios.get(`persistent-queries/${query_id}`),
+  edit: async (query: IPersistentQuery) => axios.put(`persistent-queries/${query.id}`, query),
+  delete: async (query: IPersistentQuery) => axios.delete(`persistent-queries/${query.id}`),
+  preview_videos: async (query: IPersistentQuery) => axios.put(`persistent-queries/preview-videos`, { query }),
+};
+
 export const Cleanup = {
   delete_missing_videos: async () => axios.get(`cleanup/missing-videos`),
-  tag_videos: async () => axios.get(`cleanup/tag-videos`),
+  new_videos: async () => axios.get(`cleanup/new-videos`),
   delete_duplicate_tags: async () => axios.get(`cleanup/duplicate-tags`),
   cleanup_thumbs: async () => axios.get(`cleanup/thumbnails`),
   cleanup_video_file_meta: async () => axios.get(`cleanup/video-file-meta`),
@@ -103,6 +126,7 @@ export const Cleanup = {
 export const Gallery = {
   upload: async (data: FormData) => axios.post(`galleries/upload-for-video`, data),
   from_video: async (video: IVideoMeta) => axios.post(`galleries/from-video`, { video_id: video.id }),
+  pair: async (video: IVideoMeta, gallery_id: number) => axios.put(`galleries/pair-to-video`, { video_id: video.id, gallery_id }),
   details: async (gallery_id: number) => axios.get(`galleries/${gallery_id}`),
   delete: async (gallery: IImageGallery) => axios.delete(`galleries/${gallery.id}`),
   get_image: async (image_id: number) => axios.get(`galleries/image/${image_id}`),

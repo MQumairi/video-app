@@ -6,7 +6,7 @@ const ExecuteGlobal = async (req: Request, res: Response): Promise<FileScript | 
   const id = +req.params.id;
   const file_script_repo = getRepository(FileScript);
   const script = await file_script_repo.findOne(id);
-  if (!script) {
+  if (!script || !script.is_global_script) {
     res.status(404).send({ message: "file script not found" });
     return;
   }

@@ -1,16 +1,18 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { PathConverter } from "../../../util/path_converter";
-import { Search } from "../../../api/agent";
+import { Search, Tag } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import VideoStore from "../../../store/video_store";
 import VideoDetails from "./video_details";
+import IVideoMeta from "../../../models/video_meta";
 
 const PlayerPage = () => {
   const params = useParams();
   const vid_path = params.vid_path;
   const vid_id = params.vid_id;
   const tag_id = params.tag_id;
+  const query_id = params.query_id;
 
   const video_store = useContext(VideoStore);
 
@@ -31,13 +33,20 @@ const PlayerPage = () => {
     const params = search_params.toString();
     // If we came from /tag/x
     if (tag_id) {
-      let random_video = await Search.shuffle(`tags=${tag_id}`);
+      let res = await Tag.shuffle(+tag_id);
+      if (res.status !== 200) return;
+      const random_video = res.data;
       set_random_vid_url(`/tags/${tag_id}/video/${random_video.id}`);
       set_back_url(`/tags/${tag_id}`);
     }
+    if (query_id) {
+      set_back_url(`/queries/${query_id}`);
+    }
     // If we came from /search?x
     else if (params) {
-      let random_video = await Search.shuffle(params);
+      let res = await Search.shuffle(params);
+      if (res.status !== 200) return;
+      const random_video: IVideoMeta = res.data;
       set_random_vid_url(`/player/${random_video.id}?${params}`);
       set_back_url(`/search?${params}`);
     }

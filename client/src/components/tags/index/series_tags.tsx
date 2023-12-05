@@ -4,10 +4,10 @@ import { Tag } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import TagsList from "./tags_list";
 
-const PlaylistTags = () => {
+const SeriesTags = () => {
   const [tags, set_tags] = useState<ITag[]>([]);
   const fetch_tags = async () => {
-    const res = await Tag.playlists();
+    const res = await Tag.series();
     if (res.status !== 200) return;
     set_tags(res.data);
   };
@@ -16,11 +16,11 @@ const PlaylistTags = () => {
   }, []);
   return (
     <div>
-      <h1>Playlists</h1>
+      <h1>Series</h1>
       <h4>{tags.length} tags</h4>
       <TagsList tags={tags} />
     </div>
   );
 };
 
-export default observer(PlaylistTags);
+export default observer(SeriesTags);

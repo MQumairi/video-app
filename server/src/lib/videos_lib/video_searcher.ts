@@ -1,22 +1,20 @@
 import { SelectQueryBuilder, getRepository } from "typeorm";
-import { SearchQuery } from "../search_query";
+import { SearchQuery, ThumbStatus } from "../search_query";
 import { VideoMeta } from "../../models/video_meta";
 import { Tag } from "../../models/tag";
 import { ImagePreprocessor } from "../images_lib/image_preprocessor";
 
 export class VideoSearcher {
   search_query: SearchQuery;
-  page_capacity = 12;
 
   constructor(query: SearchQuery) {
-    console.log("creating VideoSearcher");
     this.search_query = query;
   }
 
   video_search_results = async (): Promise<[VideoMeta[], number]> => {
     try {
-      const skips = (this.search_query.page - 1) * this.page_capacity;
-      const video_query = this.build_video_query().skip(skips).take(this.page_capacity);
+      const skips = (this.search_query.page - 1) * this.search_query.page_capacity;
+      const video_query = this.build_video_query().skip(skips).take(this.search_query.page_capacity);
       const [videos, count] = await video_query.getManyAndCount();
       await ImagePreprocessor.process_video_thumbs(videos);
       return [videos, count];
@@ -26,7 +24,17 @@ export class VideoSearcher {
     }
   };
 
-  random_video_advanced_search_result = async (): Promise<VideoMeta | undefined> => {
+  video_objects = async (): Promise<VideoMeta[]> => {
+    try {
+      const video_query = this.build_video_query();
+      return await video_query.getMany();
+    } catch (err) {
+      console.log("rescued err:", err);
+      return [];
+    }
+  };
+
+  random_single_video = async (): Promise<VideoMeta | undefined> => {
     try {
       return await this.build_video_query().orderBy("RANDOM()").getOne();
     } catch (err) {
@@ -34,7 +42,20 @@ export class VideoSearcher {
     }
   };
 
-  private build_video_query = (): SelectQueryBuilder<VideoMeta> => {
+  random_videos = async (): Promise<[VideoMeta[], number]> => {
+    try {
+      const skips = (this.search_query.page - 1) * this.search_query.page_capacity;
+      const video_query = this.build_video_query().orderBy("RANDOM()").offset(skips).limit(this.search_query.page_capacity);
+      const [videos, count] = await video_query.getManyAndCount();
+      await ImagePreprocessor.process_video_thumbs(videos);
+      return [videos, count];
+    } catch (err) {
+      console.log("rescued err:", err);
+      return [[], 0];
+    }
+  };
+
+  build_video_query = (): SelectQueryBuilder<VideoMeta> => {
     const video_meta_repo = getRepository(VideoMeta);
     let query = video_meta_repo
       .createQueryBuilder("video")
@@ -50,7 +71,10 @@ export class VideoSearcher {
     query = this.query_min_rating(query, this.search_query.min_rating);
     query = this.query_max_rating(query, this.search_query.max_rating);
     query = this.query_min_resolution(query, this.search_query.min_resolution);
-    return query.addOrderBy("video.path", "ASC");
+    if (this.search_query.thumb_status !== ThumbStatus.default) this.filter_thumb_status(query, this.search_query.thumb_status);
+    query.addOrderBy(`video.${this.search_query.order_by}`, this.search_query.order_strategy);
+    if (this.search_query.order_by != "path") query.addOrderBy(`video.path`);
+    return query;
   };
 
   private query_searched_text = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
@@ -96,5 +120,11 @@ export class VideoSearcher {
       .where(`tag.id IN (${tag_ids.join(",")})`);
     if (!include_having) return query;
     return query.addGroupBy("video.id").having(`COUNT(DISTINCT tag.id)=${tag_ids.length}`);
+  };
+
+  private filter_thumb_status = (query: SelectQueryBuilder<VideoMeta>, thumb_status: ThumbStatus): SelectQueryBuilder<VideoMeta> => {
+    if (thumb_status === ThumbStatus.withThumb) return query.andWhere("video.thumbnail IS NOT NULL");
+    else if (thumb_status === ThumbStatus.noThumb) return query.andWhere("video.thumbnail IS NULL");
+    return query;
   };
 }

@@ -6,6 +6,7 @@ import VideoStore from "../../../../store/video_store";
 import { observer } from "mobx-react-lite";
 import IImageMeta from "../../../../models/image_meta";
 import { Video } from "../../../../api/agent";
+import GenerateGallery from "./generate_gallery";
 
 const GalleryPanel = () => {
   const video_store = useContext(VideoStore);
@@ -17,15 +18,26 @@ const GalleryPanel = () => {
     return res.status === 200;
   };
 
+  const lookup_gallery = async () => {
+    if (!video_store.selected_video) return;
+    try {
+      const res = await Video.gallery(video_store.selected_video);
+      if (res.status !== 200) return;
+      video_store.set_selected_video_gallery(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    video_store.lookup_selected_video_gallery();
+    lookup_gallery();
     // eslint-disable-next-line
   }, []);
 
   if (!gallery)
     return (
       <div>
-        <h2>No gallery associated with this video</h2>
+        <GenerateGallery />
       </div>
     );
   return (

@@ -16,6 +16,14 @@ export const calculate_duration = (video: IVideoMeta | null): string => {
   return seconds_to_duration(video.duration_sec);
 };
 
+export const get_file_size_string = (video: IVideoMeta | null): string => {
+  if (!video) return "0 MB";
+  const size_mb = video.size_mb;
+  if (size_mb < 1000) return `${size_mb} MB`;
+  const size_gigabytes = size_mb / 1000;
+  return `${size_gigabytes.toFixed(1)} GB`;
+};
+
 export const seconds_to_duration = (seconds: number): string => {
   const hrs = ~~(seconds / 3600);
   const mins = ~~((seconds % 3600) / 60);

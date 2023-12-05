@@ -2,27 +2,35 @@ import Autocomplete, { AutocompleteRenderGetTagProps } from "@mui/material/Autoc
 import ITag from "../../../../models/tag";
 import { useContext, useEffect } from "react";
 import { TextField } from "@mui/material";
-import TagSearcherChip from "./tag_searcher_chip";
-import TagsStore from "../../../../store/tags_store";
+import TagSelectorChip from "./tag_selector_chip";
+import TagsStore, { TagSelectorType } from "../../../../store/tags_store";
 import { observer } from "mobx-react-lite";
 
 interface IProps {
+  selector_type: TagSelectorType;
   post_selection?: () => void;
   post_deselection?: () => void;
 }
 
-const TagSearcher = (props: IProps) => {
+const TagSelector = (props: IProps) => {
   const tags_store = useContext(TagsStore);
 
   const add_tags = (tags: ITag[]) => {
-    tags_store.set_selected_tags(tags);
+    tags_store.set_selected_tags(props.selector_type, tags);
     if (props.post_selection) props.post_selection();
   };
 
   const remove_tag = (tag: ITag) => {
-    tags_store.deselect(tag);
+    tags_store.deselect(props.selector_type, tag);
     if (props.post_deselection) props.post_deselection();
   };
+
+  let label = "";
+  if (props.selector_type === TagSelectorType.IncludedTags) {
+    label = "Included Tags";
+  } else if (props.selector_type === TagSelectorType.ExcludedTags) {
+    label = "Excluded Tags";
+  }
 
   useEffect(() => {
     tags_store.lookup();
@@ -41,13 +49,13 @@ const TagSearcher = (props: IProps) => {
         return option.name;
       }}
       onChange={(_, value) => add_tags(value)}
-      value={tags_store.selected_tags}
-      renderInput={(params) => <TextField label="Selected Tags" {...params} />}
+      value={tags_store.get_selected_tags(props.selector_type)}
+      renderInput={(params) => <TextField label={label} {...params} />}
       renderTags={(values, _: AutocompleteRenderGetTagProps) => {
         return (
           <div>
             {values.map((value) => (
-              <TagSearcherChip tag={value} remove_tag={remove_tag} />
+              <TagSelectorChip tag={value} remove_tag={remove_tag} />
             ))}
           </div>
         );
@@ -56,4 +64,4 @@ const TagSearcher = (props: IProps) => {
   );
 };
 
-export default observer(TagSearcher);
+export default observer(TagSelector);

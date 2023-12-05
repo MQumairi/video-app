@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne, OneToMany, OneToOne, JoinColumn } from "typeorm";
 import { ImageMeta } from "./image_meta";
 import { VideoMeta } from "./video_meta";
-import { FileTrasher } from "../lib/file_trasher";
 import { Tag } from "./tag";
 import Tagger from "../lib/tagger";
+import { ScriptState } from "./file_script";
 
 @Entity()
 export class ImageGallery {
@@ -23,6 +23,9 @@ export class ImageGallery {
 
   @ManyToMany((type) => Tag, (tag) => tag.galleries, { onDelete: "CASCADE" })
   tags: Tag[];
+
+  @Column("int", { default: ScriptState.unscripted })
+  script_state: ScriptState;
 
   static create(name: string, images: ImageMeta[]): ImageGallery {
     const gallery = new ImageGallery();
@@ -74,6 +77,16 @@ export class ImageGallery {
     }
     console.log(`deleted gallery ${gallery.id}`);
     return true;
+  }
+
+  static async move_gallery_files(gallery: ImageGallery, dest_dir: string): Promise<boolean> {
+    console.log(`moving files for ${gallery.name} to ${dest_dir}`);
+    let succeeded = true;
+    for (let img of gallery.images) {
+      const move_success = await ImageMeta.move(img, dest_dir);
+      succeeded = succeeded && move_success;
+    }
+    return succeeded;
   }
 
   static async apply_tags(gallery: ImageGallery, tags: Tag[]) {

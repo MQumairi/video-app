@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, Index, getRepository, ManyToOne, OneToMany, OneToOne, JoinColumn } from "typeorm";
-import { basename, dirname } from "path";
+import { parse, dirname } from "path";
 import { Tag } from "./tag";
 import { Series } from "./series";
 import { ImageGallery } from "./image_gallery";
 import { ImageMeta } from "./image_meta";
 import { FileTrasher } from "../lib/file_trasher";
-import { FileScript } from "./file_script";
+import { FileScript, ScriptState } from "./file_script";
 import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
 import VideoTagger from "../lib/videos_lib/video_tagger";
 
@@ -61,12 +61,18 @@ export class VideoMeta {
   created_at: Date;
 
   @Column("int", { default: 0 })
+  size_mb: number;
+
+  @Column("int", { default: 0 })
   views: number;
+
+  @Column("int", { default: ScriptState.unscripted })
+  script_state: ScriptState;
 
   static create_from_path(path: string): VideoMeta {
     const video_meta = new VideoMeta();
     video_meta.path = path;
-    video_meta.name = basename(path);
+    video_meta.name = parse(path).name;
     video_meta.parent_path = dirname(path);
     return video_meta;
   }
@@ -80,7 +86,9 @@ export class VideoMeta {
       video_meta.height = resolution.height;
     }
     video_meta.duration_sec = await prober.get_video_duration();
-    video_meta.created_at = prober.get_created_time();
+    const stats = prober.get_file_stats();
+    video_meta.created_at = stats.created_at;
+    video_meta.size_mb = stats.file_size;
     const video_repo = getRepository(VideoMeta);
     const saved_video = await video_repo.save(video_meta);
     const tags = await Tag.tags_from_path(saved_video.parent_path);
@@ -104,13 +112,13 @@ export class VideoMeta {
     }
   }
 
-  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta) {
+  static async thumb_video(video: VideoMeta, thumbnail: ImageMeta, gallery?: ImageGallery) {
     video.thumbnail = thumbnail;
     await getRepository(VideoMeta).save(video);
-    if (!video.gallery || video.gallery.thumbnail) return;
+    if (!gallery) return;
     console.log("setting gallery thumbnail");
-    video.gallery.thumbnail = video.thumbnail;
-    await getRepository(ImageGallery).save(video.gallery);
+    gallery.thumbnail = thumbnail;
+    await getRepository(ImageGallery).save(gallery);
   }
 
   static has_scripts(video: VideoMeta): boolean {

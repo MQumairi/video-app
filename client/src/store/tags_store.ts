@@ -1,7 +1,12 @@
 import { createContext } from "react";
-import { makeObservable, observable, action } from "mobx";
+import { makeObservable, observable, action, toJS } from "mobx";
 import ITag from "../models/tag";
 import { Tag } from "../api/agent";
+
+export enum TagSelectorType {
+  IncludedTags = 1,
+  ExcludedTags,
+}
 
 class TagsStore {
   constructor() {
@@ -22,13 +27,37 @@ class TagsStore {
     this.set_tags(fetched_tags);
   };
 
-  // Selected Tags
-  @observable selected_tags: ITag[] = [];
+  // Included Tags
+  @observable included_tags: ITag[] = [];
 
-  @action set_selected_tags = (tags: ITag[]) => {
-    console.log(`current: ${this.tags.length}, new: ${tags.length}`);
-    this.selected_tags = tags;
-    console.log(`current: ${this.tags.length}, new: ${tags.length}`);
+  // Excluded Tags
+  @observable excluded_tags: ITag[] = [];
+
+  @action set_selected_tags = (selector_type: TagSelectorType, tags: ITag[]) => {
+    if (selector_type === TagSelectorType.IncludedTags) this.included_tags = tags;
+    else if (selector_type === TagSelectorType.ExcludedTags) this.excluded_tags = tags;
+  };
+
+  get_selected_tags = (selector_type: TagSelectorType): ITag[] => {
+    if (selector_type === TagSelectorType.IncludedTags) return toJS(this.included_tags);
+    else if (selector_type === TagSelectorType.ExcludedTags) return toJS(this.excluded_tags);
+    else return [];
+  };
+
+  deselect = (selector_type: TagSelectorType, tag: ITag) => {
+    let tags_to_iterate: ITag[] = this.get_selected_tags(selector_type);
+    const new_tags: ITag[] = [];
+    for (let i = 0; i < tags_to_iterate.length; i++) {
+      const t = tags_to_iterate[i];
+      if (t.id !== tag.id) {
+        new_tags.push(t);
+      }
+    }
+    this.set_selected_tags(selector_type, new_tags);
+  };
+
+  selected_tags_query_parms = (selector_type: TagSelectorType): string => {
+    return this.ids(this.get_selected_tags(selector_type)).join("-");
   };
 
   // Utility functions
@@ -47,27 +76,7 @@ class TagsStore {
     return tags_from_params;
   };
 
-  // Remove the given tag from selected_tags
-  deselect = (tag: ITag) => {
-    console.log("deselecting", tag.name);
-    const new_tags: ITag[] = [];
-    for (let i = 0; i < this.selected_tags.length; i++) {
-      const t = this.selected_tags[i];
-      console.log("t is", t);
-      if (t.id !== tag.id) {
-        new_tags.push(t);
-      }
-    }
-    console.log("new tags length", new_tags.length);
-    this.set_selected_tags(new_tags);
-  };
-
-  // Return query params for all selected tags in 1-2-3 format
-  selected_tags_query_parms = (): string => {
-    return this.ids(this.selected_tags).join("-");
-  };
-
-  // Given arra of tags return array of their ids
+  // Given array of tags return array of their ids
   ids = (tags: ITag[]): number[] => {
     return tags.map((t) => {
       return t.id;

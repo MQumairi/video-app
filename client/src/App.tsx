@@ -25,6 +25,19 @@ import FileScriptEdit from "./components/file_scripts/edit/file_script_edit";
 import ImageDeletePage from "./components/galleries/image_delete/image_delete_page";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import HomePage from "./components/videos/index/home_page";
+import EditResultsPage from "./components/videos/search/edit_results/edit_results_page";
+import QueriesIndexPage from "./components/queries/index/queries_index_page";
+import QueriesCreatePage from "./components/queries/create/queries_create_page";
+import QueriesDetailPage from "./components/queries/details/queries_detail_page";
+import QueryDeletePage from "./components/queries/delete/query_delete_page";
+import DynamicPlaylistPlayer from "./components/tags/dynamic_playlist/dynamic_playlist_player";
+import QueriesEditPage from "./components/queries/edit/queries_edit_page";
+import PlaylistIndex from "./components/playlists/index/playlist_index";
+import PlaylistDetailsPage from "./components/playlists/details/playlist_details_page";
+import PlaylistPlayerPage from "./components/playlists/player/playlist_player_page";
+import PlaylistCreatePage from "./components/playlists/create/playlist_create_page";
+import PlaylistEditPage from "./components/playlists/edit/playlist_edit_page";
+import DeletePage from "./components/playlists/delete/delete_page";
 
 const darkTheme = createTheme({
   palette: {
@@ -35,7 +48,7 @@ const darkTheme = createTheme({
 const App = () => {
   const box_style = {
     backgroundColor: "#000f17",
-    width: "80%",
+    width: "90%",
     margin: "auto",
     marginTop: "50px",
     borderRadius: "10px",
@@ -52,6 +65,7 @@ const App = () => {
             {/* Video System */}
             <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
+            <Route path="search-results-edit" element={<EditResultsPage />} />
             <Route path="player/:vid_id" element={<PlayerPage />} />
             {/* Browser System */}
             <Route path="browser" element={<BrowserPage />} />
@@ -66,6 +80,21 @@ const App = () => {
             <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
             <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
             <Route path="tags/:tag_id" element={<TagDetailsPage />} />
+            <Route path="dynamic-playlist/:tag_id/order/:order" element={<DynamicPlaylistPlayer />} />
+            {/* Playlist System */}
+            <Route path="playlists" element={<PlaylistIndex />} />
+            <Route path="playlists/new" element={<PlaylistCreatePage />} />
+            <Route path="playlists/:tag_id/order/:order" element={<PlaylistPlayerPage />} />
+            <Route path="playlists/:tag_id/delete" element={<DeletePage />} />
+            <Route path="playlists/:tag_id/edit" element={<PlaylistEditPage />} />
+            <Route path="playlists/:tag_id" element={<PlaylistDetailsPage />} />
+            {/* Query System */}
+            <Route path="queries" element={<QueriesIndexPage />} />
+            <Route path="queries/new" element={<QueriesCreatePage />} />
+            <Route path="queries/:query_id/video/:vid_id" element={<PlayerPage />} />
+            <Route path="queries/delete/:query_id" element={<QueryDeletePage />} />
+            <Route path="queries/:query_id/edit" element={<QueriesEditPage />} />
+            <Route path="queries/:query_id" element={<QueriesDetailPage />} />
             {/* Gallery System */}
             <Route path="galleries" element={<GalleryIndexPage />} />
             <Route path="galleries/:gallery_id" element={<GalleryDetailsPage />} />

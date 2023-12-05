@@ -11,6 +11,11 @@ interface VideResolution {
   height: number;
 }
 
+interface VideoFileStats {
+  created_at: Date;
+  file_size: number;
+}
+
 export class VideoFileProber {
   video: VideoMeta;
 
@@ -47,8 +52,16 @@ export class VideoFileProber {
     }
   };
 
-  get_created_time = (): Date => {
-    const stats = statSync(this.video.path);
-    return stats.ctime;
+  get_file_stats = (): VideoFileStats => {
+    try {
+      const stats = statSync(this.video.path);
+      const fileSizeInBytes = stats.size;
+      const fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+      const video_file_stats: VideoFileStats = { created_at: stats.ctime, file_size: Math.round(fileSizeInMb) };
+      return video_file_stats;
+    } catch (e) {
+      console.log("encountered error");
+      return { created_at: new Date(), file_size: 0 };
+    }
   };
 }

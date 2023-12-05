@@ -9,6 +9,8 @@ import { Series } from "./models/series";
 import { ImageGallery } from "./models/image_gallery";
 import { ImageMeta } from "./models/image_meta";
 import { FileScript } from "./models/file_script";
+import { PersistentQuery } from "./models/persistent_query";
+import { PersistentQueryToPlaylist } from "./models/persistent_query_to_playlist";
 import video_controller from "./controllers/video_controller";
 import directory_controller from "./controllers/directory_controller";
 import tag_controller from "./controllers/tag_controller";
@@ -17,6 +19,7 @@ import search_controller from "./controllers/search_controller";
 import cleanup_controller from "./controllers/cleanup_controller";
 import gallery_controller from "./controllers/gallery_controller";
 import file_script_controller from "./controllers/file_script_controller";
+import persistent_query_controller from "./controllers/persistent_query_controller";
 
 dotenv.config();
 
@@ -27,7 +30,7 @@ createConnection({
   host: "host.docker.internal",
   username: "user",
   database: process.env.DBNAME,
-  entities: [VideoMeta, Tag, Series, ImageMeta, ImageGallery, FileScript],
+  entities: [VideoMeta, Tag, Series, ImageMeta, ImageGallery, FileScript, PersistentQuery, PersistentQueryToPlaylist],
   synchronize: true,
   logging: false,
 })
@@ -52,6 +55,7 @@ app.use("/api/series", series_controller);
 app.use("/api/file-scripts", file_script_controller);
 app.use("/api/cleanup", cleanup_controller);
 app.use("/api/galleries", gallery_controller);
+app.use("/api/persistent-queries", persistent_query_controller);
 
 export const not_found_error = { message: "page not found" };
 export const data_dir = process.env.DATADIR;

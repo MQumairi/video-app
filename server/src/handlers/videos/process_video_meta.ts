@@ -20,6 +20,9 @@ const ProcessVideoMeta = async (req: Request, res: Response): Promise<VideoMeta 
     video.width = resolution.width;
     video.height = resolution.height;
   }
+  const stats = prober.get_file_stats();
+  video.created_at = stats.created_at;
+  video.size_mb = stats.file_size;
   console.log("finished probing");
   const saved_video = await video_repo.save(video);
   res.status(200).send(saved_video);

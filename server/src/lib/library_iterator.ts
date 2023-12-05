@@ -7,7 +7,7 @@ export default class LibraryIterator {
   // Iterate over entire library, for each video found, perform callback function
   static async iterate_videos(callback: (video: VideoMeta) => Promise<void>): Promise<void> {
     const glob_patterns = Directory.video_extensions.map((ext) => {
-      return `**/*${ext}`;
+      return `videos/**/*${ext}`;
     });
     const video_files = await glob(glob_patterns);
     for (let video_path of video_files) {

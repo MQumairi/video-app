@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../../models/video_meta";
-import TagSearcher from "../../../tags/util/searcher/tag_searcher";
+import TagSelector from "../../../tags/util/selector/tag_selector";
 import { useContext, useEffect, useState } from "react";
-import { Button, Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { Gallery, Tag, Video } from "../../../../api/agent";
-import TagsStore from "../../../../store/tags_store";
+import TagsStore, { TagSelectorType } from "../../../../store/tags_store";
 import VideoStore from "../../../../store/video_store";
 
 const EditVideoForm = () => {
@@ -14,9 +14,16 @@ const EditVideoForm = () => {
   const [selected_files, set_selected_files] = useState<FileList | null>(null);
   const [should_generate_thumbs, set_should_generate_thumbs] = useState<boolean>(false);
   const [should_re_process, set_should_re_process] = useState<boolean>(false);
+  const [video_name, set_video_name] = useState<string>("");
+  const [gallery_id_to_associate, set_galllery_id_to_associate] = useState<string>("");
 
   const form_section_style = {
     marginTop: "30px",
+  };
+
+  const on_name_change = (event: any) => {
+    const new_name = event.target.value;
+    set_video_name(new_name);
   };
 
   const on_file_change = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,23 +31,38 @@ const EditVideoForm = () => {
     set_selected_files(e.target.files);
   };
 
+  const on_gallery_id_change = (e: any) => {
+    const inputed_id = e.target.value;
+    if (isNaN(+inputed_id)) return;
+    set_galllery_id_to_associate(inputed_id);
+  };
+
   const submit_edit_video_form = async () => {
     const video = video_store.selected_video;
     if (!video) return;
+    // Handle Name
+    await handle_name_change(video);
     // Handle Tags
     await handle_tags(video);
     // Handle Upload
     await handle_upload(video);
     // Handle Generate
     await handle_generate(video);
+    // Handle Gallery Pair
+    await handle_gallery_pair(video);
     // Handle Re-Processing
     await handle_reprocess(video);
   };
 
+  const handle_name_change = async (video: IVideoMeta) => {
+    video.name = video_name;
+    Video.edit(video);
+  };
+
   const handle_tags = async (video: IVideoMeta) => {
-    if (tags_store.selected_tags.length === 0) return;
+    if (tags_store.included_tags.length === 0) return;
     console.log("handling tags");
-    await Tag.tag_video(video, tags_store.selected_tags);
+    await Tag.tag_video(video, tags_store.included_tags);
   };
 
   const handle_upload = async (video: IVideoMeta) => {
@@ -62,6 +84,11 @@ const EditVideoForm = () => {
     await Gallery.from_video(video);
   };
 
+  const handle_gallery_pair = async (video: IVideoMeta) => {
+    if (!video || isNaN(+gallery_id_to_associate) || !gallery_id_to_associate) return;
+    await Gallery.pair(video, +gallery_id_to_associate);
+  };
+
   const handle_reprocess = async (video: IVideoMeta) => {
     if (!should_re_process) return;
     console.log("requesting reprocessing...");
@@ -70,21 +97,27 @@ const EditVideoForm = () => {
 
   const lookup_video_tags = async () => {
     await video_store.lookup_selected_video_tags();
-    tags_store.set_selected_tags(video_store.selected_video_tags);
+    tags_store.set_selected_tags(TagSelectorType.IncludedTags, video_store.selected_video_tags);
   };
 
   useEffect(() => {
     lookup_video_tags();
+    if (video_store.selected_video) {
+      set_video_name(video_store.selected_video.name);
+    }
     // eslint-disable-next-line
   }, []);
 
   return (
     <div>
       <div style={form_section_style}>
+        {/* Video Name */}
+        <h3>Name</h3>
+        {<TextField sx={{ width: "100%", margin: "5px 0px 30px 0px" }} id="outlined-basic" variant="outlined" value={video_name} onChange={on_name_change} />}
         {/* Tag */}
         <h3>Tag Video</h3>
         <p style={{ marginBottom: "10px" }}>Associate video with the selected tags</p>
-        <TagSearcher />
+        <TagSelector selector_type={TagSelectorType.IncludedTags} />
       </div>
       <div style={form_section_style}>
         {/* Uplaod */}
@@ -111,6 +144,20 @@ const EditVideoForm = () => {
               />
             }
             label="Generate"
+          />
+        </div>
+      </div>
+      <div style={form_section_style}>
+        {/* Pair Gallery*/}
+        <h3>Pair Gallery</h3>
+        <p>Associate an already existing gallery (by id) to this video.</p>
+        <div>
+          <TextField
+            type="number"
+            value={gallery_id_to_associate}
+            onChange={(n) => {
+              on_gallery_id_change(n);
+            }}
           />
         </div>
       </div>

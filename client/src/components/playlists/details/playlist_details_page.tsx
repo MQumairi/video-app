@@ -41,7 +41,7 @@ const PlayListDetailsPage = () => {
       </Stack>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained" size="large">
         <Button href={`/playlists?tags_index_tab=0`}>Back</Button>
-        <Button href={`/playlists/${tag_id}/order/${1}`}>Play</Button>
+        <Button href={`/dynamic-playlist/${tag_id}/order/${1}`}>Play</Button>
         <Button href={`/playlists/${tag_id}/edit`}>Edit</Button>
         <Button href={`/playlists/${tag_id}/delete`}>Delete</Button>
       </ButtonGroup>

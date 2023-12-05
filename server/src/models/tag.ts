@@ -147,8 +147,13 @@ export class Tag {
     this.is_studio = false;
     this.is_script = false;
     await PersistentQueryToPlaylist.wipe_playlist(this);
+    console.log("looping through submitted queries..");
     for (let i = 0; i < queries.length; i++) {
       const query = queries[i];
+      if (query.id === -1) {
+        console.log("this one is an empty query:", query);
+        continue;
+      }
       await PersistentQueryToPlaylist.find_or_create(this, query, i + 1);
     }
   }

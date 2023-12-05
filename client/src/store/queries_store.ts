@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { makeObservable, observable, action, toJS } from "mobx";
 import { PersistentQueries } from "../api/agent";
-import IPersistentQuery from "../models/persistent_query";
+import IPersistentQuery, { empty_query } from "../models/persistent_query";
 
 class QueriesStore {
   constructor() {
@@ -23,9 +23,13 @@ class QueriesStore {
   };
 
   @action lookup = async () => {
+    const queires: IPersistentQuery[] = [];
+    queires.push(empty_query());
     let res = await PersistentQueries.list();
     if (res.status !== 200) return;
-    this.set_queries(res.data);
+    const loaded_queries: IPersistentQuery[] = res.data;
+    queires.push(...loaded_queries);
+    this.set_queries(queires);
   };
 
   @action query_from_id = (query_id: number): IPersistentQuery | undefined => {

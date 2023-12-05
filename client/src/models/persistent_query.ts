@@ -18,8 +18,8 @@ export default interface IPersistentQuery extends IPersistentQueryCreate {
 
 export const empty_query = (): IPersistentQuery => {
   return {
-    id: 0,
-    name: "",
+    id: -1,
+    name: "None",
     included_tags: [],
     excluded_tags: [],
     search_text: "",

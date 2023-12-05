@@ -5,7 +5,7 @@ import QueriesCreateForm from "./queries_create_form";
 const QueriesCreatePage = () => {
   return (
     <div>
-      <Button href="/queries" variant="contained" size="large">
+      <Button href="/playlists?tags_index_tab=1" variant="contained" size="large">
         Back
       </Button>
       <QueriesCreateForm />

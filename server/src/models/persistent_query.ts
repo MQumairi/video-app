@@ -69,6 +69,7 @@ export class PersistentQuery {
   }
 
   static async find_video(query: PersistentQuery): Promise<VideoMeta | null> {
+    console.log("fiding video for query:", query);
     const search_query = await PersistentQuery.build_search_query(query);
     const media_searcher = new VideoSearcher(search_query);
     const video = await media_searcher.random_single_video();

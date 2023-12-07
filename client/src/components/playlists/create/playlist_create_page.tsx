@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
-import { Tag } from "../../../api/agent";
+import { Playlist, Tag } from "../../../api/agent";
 import TextField from "@mui/material/TextField";
 import { Button, FormGroup, FormLabel } from "@mui/material";
 import { ITagCreate } from "../../../models/tag";
@@ -8,6 +8,7 @@ import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import IPersistentQuery from "../../../models/persistent_query";
 import DynamicPlaylistQueryPicker from "../../tags/create/dynamic_playlist_query_picker";
 import TagSelector from "../../tags/util/selector/tag_selector";
+import { IPlaylistCreate } from "../../../models/playlist";
 
 const PlaylistCreatePage = () => {
   const [tag_name, set_tag_name] = useState("");
@@ -20,21 +21,11 @@ const PlaylistCreatePage = () => {
   };
 
   const on_submit = async (input: any) => {
-    const tag: ITagCreate = {
+    const playlist: IPlaylistCreate = {
       name: tag_name,
-      child_tags: [],
-      playlist_included_tags: tags_store.included_tags,
-      is_playlist: false,
-      is_dynamic_playlist: true,
-      is_character: false,
-      is_series: false,
-      is_studio: false,
-      is_script: false,
-      default_excluded: false,
-      default_hidden: false,
+      included_tags: tags_store.included_tags,
     };
-    // Passing in selected_queries in case this tag is a dynamic playlist
-    await Tag.create(tag, selected_queries);
+    await Playlist.create(playlist, selected_queries);
     set_tag_name("");
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
   };

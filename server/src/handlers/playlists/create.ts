@@ -5,12 +5,15 @@ import { PersistentQuery } from "../../models/persistent_query";
 
 const Create = async (req: Request, res: Response): Promise<Playlist | undefined> => {
   try {
-    const playlist = await PlaylistFactory.find_or_create(req.body.name);
-    const queries: PersistentQuery[] = req.body.queries;
-    await PlaylistFactory.set_queries(playlist, queries);
-    res.status(201).send(playlist);
+    const submitted_playlist: Playlist = req.body.playlist;
+    console.log("submitted playlist:", submitted_playlist);
+    const playlist = await PlaylistFactory.find_or_create(submitted_playlist);
+    const submitted_queries: PersistentQuery[] = req.body.queries;
+    await PlaylistFactory.set_queries(playlist, submitted_queries);
+    res.sendStatus(201);
     return playlist;
   } catch (error) {
+    console.log(error);
     res.status(409).json(error);
     return undefined;
   }

@@ -21,6 +21,7 @@ import cleanup_controller from "./controllers/cleanup_controller";
 import gallery_controller from "./controllers/gallery_controller";
 import file_script_controller from "./controllers/file_script_controller";
 import persistent_query_controller from "./controllers/persistent_query_controller";
+import playlist_controller from "./controllers/playlist_controller";
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use("/api/videos", video_controller);
 app.use("/api/directories", directory_controller);
 app.use("/api/search", search_controller);
 app.use("/api/tags", tag_controller);
+app.use("/api/playlists", playlist_controller);
 app.use("/api/series", series_controller);
 app.use("/api/file-scripts", file_script_controller);
 app.use("/api/cleanup", cleanup_controller);

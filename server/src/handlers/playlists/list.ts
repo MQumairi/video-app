@@ -5,7 +5,7 @@ import { Playlist } from "../../models/playlist";
 const List = async (req: Request, res: Response): Promise<Playlist[]> => {
   const playlist_repo = getRepository(Playlist);
   const playlists = await playlist_repo.find();
-  res.send(200).json(playlists);
+  res.status(200).json(playlists);
   return playlists;
 };
 

@@ -30,11 +30,10 @@ import QueriesIndexPage from "./components/queries/index/queries_index_page";
 import QueriesCreatePage from "./components/queries/create/queries_create_page";
 import QueriesDetailPage from "./components/queries/details/queries_detail_page";
 import QueryDeletePage from "./components/queries/delete/query_delete_page";
-import DynamicPlaylistPlayer from "./components/tags/dynamic_playlist/dynamic_playlist_player";
+import PlaylistPlayer from "./components/playlists/player/playlist_player";
 import QueriesEditPage from "./components/queries/edit/queries_edit_page";
 import PlaylistIndex from "./components/playlists/index/playlist_index";
 import PlaylistDetailsPage from "./components/playlists/details/playlist_details_page";
-import PlaylistPlayerPage from "./components/playlists/player/playlist_player_page";
 import PlaylistCreatePage from "./components/playlists/create/playlist_create_page";
 import PlaylistEditPage from "./components/playlists/edit/playlist_edit_page";
 import DeletePage from "./components/playlists/delete/delete_page";
@@ -80,14 +79,14 @@ const App = () => {
             <Route path="tags/:tag_id/delete" element={<TagsDeletePage />} />
             <Route path="tags/:tag_id/edit" element={<TagEditPage />} />
             <Route path="tags/:tag_id" element={<TagDetailsPage />} />
-            <Route path="dynamic-playlist/:tag_id/order/:order" element={<DynamicPlaylistPlayer />} />
             {/* Playlist System */}
             <Route path="playlists" element={<PlaylistIndex />} />
             <Route path="playlists/new" element={<PlaylistCreatePage />} />
-            <Route path="playlists/:tag_id/order/:order" element={<PlaylistPlayerPage />} />
-            <Route path="playlists/:tag_id/delete" element={<DeletePage />} />
-            <Route path="playlists/:tag_id/edit" element={<PlaylistEditPage />} />
-            <Route path="playlists/:tag_id" element={<PlaylistDetailsPage />} />
+            <Route path="playlists/:playlist_id/order/:order" element={<PlaylistPlayer />} />
+            <Route path="playlists/:playlist_id/delete" element={<DeletePage />} />
+            <Route path="playlists/:playlist_id/edit" element={<PlaylistEditPage />} />
+            <Route path="playlists/:playlist_id" element={<PlaylistDetailsPage />} />
+            <Route path="dynamic-playlist/:playlist_id/order/:order" element={<PlaylistPlayer />} />
             {/* Query System */}
             <Route path="queries" element={<QueriesIndexPage />} />
             <Route path="queries/new" element={<QueriesCreatePage />} />

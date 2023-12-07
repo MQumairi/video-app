@@ -72,6 +72,7 @@ export class PlaylistVideoSearcher {
   }
 
   private static async find_query_video(playlist: Playlist, query: PersistentQuery): Promise<VideoMeta | null> {
+    console.log("playlist includes:", playlist.included_tags);
     query.included_tags.push(...playlist.included_tags);
     return await PersistentQuery.find_video(query);
   }

@@ -12,6 +12,7 @@ const FindVideo = async (req: Request, res: Response): Promise<PlaylistVideoFind
     res.status(404).json({ message: "playlist not found, of id:" + id });
     return undefined;
   }
+  console.log("playlist includes:", playlist.included_tags);
   const order = +req.params.order;
   const playlist_video_finder_res = await PlaylistVideoSearcher.find_video_or_next(playlist, order);
   if (!playlist_video_finder_res) {

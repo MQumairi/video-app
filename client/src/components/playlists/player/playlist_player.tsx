@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { Playlist, Tag, Video } from "../../../api/agent";
+import { Playlist, Video } from "../../../api/agent";
 import { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import VideoStore from "../../../store/video_store";

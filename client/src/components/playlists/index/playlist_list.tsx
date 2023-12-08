@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { Playlist, Tag } from "../../../api/agent";
+import { Playlist } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import { Box, Button, Chip } from "@mui/material";
 

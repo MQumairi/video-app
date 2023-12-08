@@ -1,9 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
-import { Playlist, Tag } from "../../../api/agent";
+import { Playlist } from "../../../api/agent";
 import TextField from "@mui/material/TextField";
 import { Button, FormGroup, FormLabel } from "@mui/material";
-import { ITagCreate } from "../../../models/tag";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import IPersistentQuery from "../../../models/persistent_query";
 import DynamicPlaylistQueryPicker from "../../tags/create/dynamic_playlist_query_picker";

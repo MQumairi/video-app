@@ -2,8 +2,7 @@ import { Button, FormGroup, TextField } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Playlist, Tag } from "../../../api/agent";
-import ITag from "../../../models/tag";
+import { Playlist } from "../../../api/agent";
 import { IPlaylist } from "../../../models/playlist";
 
 const DeletePage = () => {

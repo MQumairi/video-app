@@ -31,6 +31,10 @@ export class PlaylistVideoSearcher {
     // then try to find the first video in playlist after index order
     const playlist_length = await this.get_playlist_length(playlist);
     const queries_and_videos = await this.find_queries_and_videos(playlist);
+    if (order < 0 || order >= playlist_length) {
+      console.log("received invalid order param of:", order);
+      return null;
+    }
     let valid_qv_pair = this.find_first_valid_qv_pair(queries_and_videos, order, queries_and_videos.length);
     console.log("after first search, valid_qv_pair:", valid_qv_pair);
     if (valid_qv_pair) {
@@ -72,7 +76,6 @@ export class PlaylistVideoSearcher {
   }
 
   private static async find_query_video(playlist: Playlist, query: PersistentQuery): Promise<VideoMeta | null> {
-    console.log("playlist includes:", playlist.included_tags);
     query.included_tags.push(...playlist.included_tags);
     return await PersistentQuery.find_video(query);
   }

@@ -14,7 +14,7 @@ export class PlaylistVideoSearcher {
     if (!video) return null;
     const playlist_length = await this.get_playlist_length(playlist);
     const qv = new PlaylistQueryVideoPair(video, query, order);
-    return new PlaylistVideoFinderResult(qv, order, playlist_length);
+    return new PlaylistVideoFinderResult(qv, order, playlist_length, playlist.name);
   }
 
   static async find_video_or_next(playlist: Playlist, order: number): Promise<PlaylistVideoFinderResult | null> {
@@ -38,12 +38,12 @@ export class PlaylistVideoSearcher {
     let valid_qv_pair = this.find_first_valid_qv_pair(queries_and_videos, order, queries_and_videos.length);
     console.log("after first search, valid_qv_pair:", valid_qv_pair);
     if (valid_qv_pair) {
-      return new PlaylistVideoFinderResult(valid_qv_pair, valid_qv_pair.index + 1, playlist_length);
+      return new PlaylistVideoFinderResult(valid_qv_pair, valid_qv_pair.index + 1, playlist_length, playlist.name);
     }
     // if no video for result found, try to find the first video in playlist from the start
     valid_qv_pair = this.find_first_valid_qv_pair(queries_and_videos, 0, order);
     if (valid_qv_pair) {
-      return new PlaylistVideoFinderResult(valid_qv_pair, valid_qv_pair.index + 1, playlist_length);
+      return new PlaylistVideoFinderResult(valid_qv_pair, valid_qv_pair.index + 1, playlist_length, playlist.name);
     }
     console.log("after second search, valid_qv_pair:", valid_qv_pair);
     return null;

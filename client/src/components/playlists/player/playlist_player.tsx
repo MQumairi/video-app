@@ -21,6 +21,7 @@ const PlaylistPlayer = () => {
   const query_store = useContext(QueriesStore);
 
   const [video, set_video] = useState<IVideoMeta | null>(null);
+  const [playlist_name, set_playlist_name] = useState<string>("");
   const [current_video_index, set_current_video_index] = useState<number>(0);
   const [next_url, set_next_url] = useState<string>("");
   const [prev_url, set_prev_url] = useState<string>("");
@@ -54,6 +55,7 @@ const PlaylistPlayer = () => {
     const next_order = res.data.next_video_index;
     const fetched_persistent_query = res.data.persistent_query;
     const fetched_playlist_length = res.data.playlist_length;
+    const fetched_playlist_name = res.data.playlist_name;
     set_current_video_index(res.data.order);
     video_store.set_selected_video(fetched_video);
     query_store.set_selected_query(fetched_persistent_query);
@@ -62,6 +64,7 @@ const PlaylistPlayer = () => {
     set_next_url(`/playlists/${playlist_id}/order/${next_order}`);
     set_prev_url(`/playlists/${playlist_id}/order/${current_video_index - 1}`);
     set_playlist_length(fetched_playlist_length);
+    set_playlist_name(fetched_playlist_name);
   };
 
   const handle_rating_change = async (rating: number | null) => {
@@ -91,6 +94,11 @@ const PlaylistPlayer = () => {
       )}
       <div>
         <Stack direction="row" spacing={1}>
+          {playlist_name.length > 0 && (
+            <a href={`/playlists/${playlist_id}`}>
+              <Chip label={`${playlist_name}`} color="primary" variant="outlined" />
+            </a>
+          )}
           {video.id && <Chip label={video.id} color="primary" variant="outlined" />}
           {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
           {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
@@ -99,8 +107,7 @@ const PlaylistPlayer = () => {
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
-        {+order > 1 && <Button href={prev_url}>Previous</Button>}
-        <Button href={`/playlists/${playlist_id}`}>Back</Button>
+        {current_video_index > 1 && <Button href={prev_url}>Previous</Button>}
         <Button href={`/playlists/${playlist_id}/order/${current_video_index}`}>Refresh</Button>
         <Button href={next_url}>Next</Button>
       </ButtonGroup>

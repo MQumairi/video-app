@@ -97,4 +97,16 @@ export class PersistentQuery {
       return pq2p.persistent_query;
     });
   }
+
+  add_included_tags(tags: Tag[]) {
+    const seen_tag_ids = new Set<number>();
+    const all_tags: Tag[] = [...this.included_tags, ...tags];
+    const new_included_tags: Tag[] = [];
+    for (const t of all_tags) {
+      if (seen_tag_ids.has(t.id)) continue;
+      seen_tag_ids.add(t.id);
+      new_included_tags.push(t);
+    }
+    this.included_tags = new_included_tags;
+  }
 }

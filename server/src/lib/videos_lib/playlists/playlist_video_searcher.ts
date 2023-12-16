@@ -76,7 +76,7 @@ export class PlaylistVideoSearcher {
   }
 
   private static async find_query_video(playlist: Playlist, query: PersistentQuery): Promise<VideoMeta | null> {
-    query.included_tags.push(...playlist.included_tags);
+    query.add_included_tags(playlist.included_tags);
     return await PersistentQuery.find_video(query);
   }
 }

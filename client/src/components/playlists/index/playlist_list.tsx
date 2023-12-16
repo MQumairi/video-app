@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { Tag } from "../../../api/agent";
+import { Playlist } from "../../../api/agent";
 import ITag from "../../../models/tag";
 import { Box, Button, Chip } from "@mui/material";
 
@@ -15,7 +15,7 @@ const PlaylistList = () => {
 
   const [tags, set_tags] = useState<ITag[]>([]);
   const fetch_tags = async () => {
-    const res = await Tag.dynamic_playlists();
+    const res = await Playlist.get();
     if (res.status !== 200) return;
     set_tags(res.data);
   };

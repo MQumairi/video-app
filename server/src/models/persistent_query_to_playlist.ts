@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, getRepository } from "typeorm";
 import { PersistentQuery } from "./persistent_query";
 import { Tag } from "./tag";
+import { Playlist } from "./playlist";
 
 @Entity()
 export class PersistentQueryToPlaylist {
@@ -15,6 +16,9 @@ export class PersistentQueryToPlaylist {
 
   @ManyToOne(() => Tag, (tag) => tag.persistent_query_to_playlists, { onDelete: "CASCADE" })
   playlist: Tag;
+
+  @ManyToOne(() => Playlist, (playlist) => playlist.persistent_query_to_playlists, { onDelete: "CASCADE" })
+  playlist_2: Playlist;
 
   static async create(playlist: Tag, query: PersistentQuery, order: number): Promise<PersistentQueryToPlaylist> {
     const pq2p = new PersistentQueryToPlaylist();

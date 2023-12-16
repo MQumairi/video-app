@@ -8,6 +8,7 @@ import IImageMeta from "../models/image_meta";
 import IImageGallery from "../models/image_gallery";
 import IFileScript from "../models/file_script";
 import IPersistentQuery, { IPersistentQueryCreate } from "../models/persistent_query";
+import { IPlaylist, IPlaylistCreate } from "../models/playlist";
 
 const server_host = process.env.REACT_APP_SERVER_HOST ?? "localhost";
 const server_port = process.env.REACT_APP_SERVER_PORT ?? 5000;
@@ -76,6 +77,15 @@ export const Tag = {
   delete: async (tag: ITag) => axios.delete(`tags/${tag.id}`),
   generate_video_thumbnails: async (tag: ITag) => axios.put(`tags/generate-video-thumbnails`, { tag_id: tag.id }),
   dynamic_playlist_video: async (tag_id: number, order: number) => axios.get(`tags/dynamic-playlist/${tag_id}/order/${order}`),
+};
+
+export const Playlist = {
+  get: async () => axios.get(`playlists`),
+  details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
+  create: async (playlist: IPlaylistCreate, queries: IPersistentQuery[] = []) => axios.post(`playlists`, { playlist, queries }),
+  edit: async (playlist: IPlaylist, queries: IPersistentQuery[] = []) => axios.put(`playlists/${playlist.id}`, { playlist, queries }),
+  delete: async (playlist: IPlaylist) => axios.delete(`playlists/${playlist.id}`),
+  find_video: async (playlist_id: number, order: number) => axios.get(`playlists/${playlist_id}/video/${order}`),
 };
 
 export const Series = {

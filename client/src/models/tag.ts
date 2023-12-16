@@ -1,4 +1,3 @@
-import IPersistentQuery from "./persistent_query";
 import IVideoMeta from "./video_meta";
 
 export interface ITagCreate {

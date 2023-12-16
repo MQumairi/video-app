@@ -1,6 +1,7 @@
 import { In, Not, getRepository } from "typeorm";
 import { Tag } from "../models/tag";
 import { Request } from "express";
+import { Playlist } from "../models/playlist";
 
 export const MIN_RATING = 0;
 export const MAX_RATING = 10;
@@ -110,6 +111,12 @@ export class SearchQuery {
     const page: number = +raw_page;
     const included_tags = await getRepository(Tag).find({ where: { id: tag.id } });
     return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page, limit, "path", "ASC", thumb_status);
+  }
+
+  static async from_playlist(req: Request, playlist: Playlist, limit: number = 12, thumb_status: ThumbStatus = ThumbStatus.default): Promise<SearchQuery> {
+    const raw_page = req.query.page?.toString() ?? "1";
+    const page: number = +raw_page;
+    return new SearchQuery("", playlist.included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page, limit, "path", "ASC", thumb_status);
   }
 
   private static async lookup_excluded_tags_from_ids(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {

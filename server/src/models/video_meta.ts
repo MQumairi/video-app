@@ -8,6 +8,7 @@ import { FileTrasher } from "../lib/file_trasher";
 import { FileScript, ScriptState } from "./file_script";
 import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
 import VideoTagger from "../lib/videos_lib/video_tagger";
+import { Playlist } from "./playlist";
 
 @Entity()
 export class VideoMeta {

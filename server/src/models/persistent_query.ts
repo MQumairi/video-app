@@ -69,6 +69,7 @@ export class PersistentQuery {
   }
 
   static async find_video(query: PersistentQuery): Promise<VideoMeta | null> {
+    console.log("fiding video for query:", query);
     const search_query = await PersistentQuery.build_search_query(query);
     const media_searcher = new VideoSearcher(search_query);
     const video = await media_searcher.random_single_video();
@@ -95,5 +96,17 @@ export class PersistentQuery {
     return pq2p_arr.map((pq2p) => {
       return pq2p.persistent_query;
     });
+  }
+
+  add_included_tags(tags: Tag[]) {
+    const seen_tag_ids = new Set<number>();
+    const all_tags: Tag[] = [...this.included_tags, ...tags];
+    const new_included_tags: Tag[] = [];
+    for (const t of all_tags) {
+      if (seen_tag_ids.has(t.id)) continue;
+      seen_tag_ids.add(t.id);
+      new_included_tags.push(t);
+    }
+    this.included_tags = new_included_tags;
   }
 }

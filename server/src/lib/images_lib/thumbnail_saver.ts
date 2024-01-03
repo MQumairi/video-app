@@ -1,5 +1,5 @@
 import fs from "fs";
-import { join, basename } from "path";
+import { join } from "path";
 import { VideoMeta } from "../../models/video_meta";
 import { DestinationGuider } from "./destination_guider";
 import { Directory } from "../directory";
@@ -28,13 +28,10 @@ export default class ThumbnailSaver {
     }
   }
 
-  static async save_thumbnail_with_timestamp(source_path: string, video: VideoMeta, timestamp: number): Promise<ImageMeta | undefined> {
-    const thumbnail_directory = await DestinationGuider.find_or_create_destination(video);
-    console.log("destination dir:", thumbnail_directory.path);
-    const thumbnail_path = ThumbnailSaver.move_thumbnail_file(source_path, basename(source_path), thumbnail_directory);
+  static async save_thumbnail_with_timestamp(thumb_path: string, video: VideoMeta, timestamp: number): Promise<ImageMeta | undefined> {
     const gallery = await ImageGallery.find_or_create(video);
     console.log(`assocating to gallery ${gallery.id}`);
-    return await ImageMeta.add_thumbnail_to_video_gallery(thumbnail_path, video, gallery, timestamp);
+    return await ImageMeta.add_thumbnail_to_video_gallery(thumb_path, video, gallery, timestamp);
   }
 
   private static move_thumbnail_file(source_path: string, file_name: string, thumbnail_directory: Directory): string {

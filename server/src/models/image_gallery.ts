@@ -37,6 +37,7 @@ export class ImageGallery {
     const gallery = new ImageGallery();
     gallery.name = name;
     gallery.images = images;
+    gallery.path = path;
     return gallery;
   }
 

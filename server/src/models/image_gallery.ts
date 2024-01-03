@@ -4,6 +4,8 @@ import { VideoMeta } from "./video_meta";
 import { Tag } from "./tag";
 import Tagger from "../lib/tagger";
 import { ScriptState } from "./file_script";
+import path from "path";
+import { DestinationGuider } from "../lib/images_lib/destination_guider";
 
 @Entity()
 export class ImageGallery {
@@ -13,6 +15,10 @@ export class ImageGallery {
   @Index()
   @Column("text")
   name: string;
+
+  @Index()
+  @Column({ type: "text", default: "" })
+  path: string;
 
   @OneToMany(() => ImageMeta, (i) => i.gallery, { eager: true })
   images: ImageMeta[];
@@ -27,17 +33,23 @@ export class ImageGallery {
   @Column("int", { default: ScriptState.unscripted })
   script_state: ScriptState;
 
-  static create(name: string, images: ImageMeta[]): ImageGallery {
+  static create(name: string, images: ImageMeta[], path: string): ImageGallery {
     const gallery = new ImageGallery();
     gallery.name = name;
     gallery.images = images;
     return gallery;
   }
 
+  static expected_gallery_path_from_video(video: VideoMeta): string {
+    const expected_path = path.join(DestinationGuider.IMAGE_PATH, video.parent_path);
+    return expected_path;
+  }
+
   static async find_or_create(video: VideoMeta): Promise<ImageGallery> {
     const gallery_repo = getRepository(ImageGallery);
     const video_repo = getRepository(VideoMeta);
-    const found_gallery = await gallery_repo.findOne({ where: { name: video.name } });
+    const expected_path = ImageGallery.expected_gallery_path_from_video(video);
+    const found_gallery = await gallery_repo.findOne({ where: { path: expected_path } });
     if (found_gallery) {
       console.log(`found gallery is: ${found_gallery.id}`);
       video.gallery = found_gallery;
@@ -45,7 +57,7 @@ export class ImageGallery {
       return found_gallery;
     }
     console.log("creating a new gallery");
-    const saved_gallery = await gallery_repo.save(ImageGallery.create(video.name, []));
+    const saved_gallery = await gallery_repo.save(ImageGallery.create(video.name, [], expected_path));
     video.gallery = saved_gallery;
     await ImageGallery.apply_tags(saved_gallery, video.tags);
     await video_repo.save(video);

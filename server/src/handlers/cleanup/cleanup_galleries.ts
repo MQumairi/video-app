@@ -6,13 +6,17 @@ import { parse } from "path";
 import { DestinationGuider } from "../../lib/images_lib/destination_guider";
 import { VideoBatcher } from "../../lib/videos_lib/video_batcher";
 
-// Given a video, find its gallery if it exists, and move all gallery images to an appropriate location
+// Given a video, find its gallery if it exists, and set its path to the expected path
 const batcher_handler = async (video: VideoMeta, args: any[] = []): Promise<boolean> => {
   const gallery = video.gallery;
-  const parsed_video_path = parse(video.path);
-  if (!gallery || !parsed_video_path) return true;
-  const image_dir = DestinationGuider.image_dir_from_video(video);
-  return await ImageGallery.move_gallery_files(gallery, image_dir);
+  if (!gallery) {
+    console.log("no gallery found");
+    return true;
+  }
+  gallery.path = ImageGallery.expected_gallery_path_from_video(video);
+  const gallery_repo = getRepository(ImageGallery);
+  await gallery_repo.save(gallery);
+  return true;
 };
 
 const CleanupGalleries = async (req: Request, res: Response) => {

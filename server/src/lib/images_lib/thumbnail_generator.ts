@@ -5,6 +5,8 @@ import { exec as exec_sync } from "child_process";
 import { promisify } from "util";
 import ThumbnailSaver from "./thumbnail_saver";
 import { getRepository } from "typeorm";
+import path from "path";
+import { DestinationGuider } from "./destination_guider";
 const exec = promisify(exec_sync);
 
 export default class ThumbnailGenerator {
@@ -32,7 +34,7 @@ export default class ThumbnailGenerator {
     await timestamper.video_markers(number_of_thumbs);
     const markers = timestamper.get_timestamps();
     const markers_sec = timestamper.get_timestamps_secs();
-    const destination_paths = ThumbnailGenerator.build_thumb_paths(video, markers_sec);
+    const destination_paths = await ThumbnailGenerator.build_thumb_paths(video, markers_sec);
     console.log("will generate thumbs out of timestamps:", markers);
     const generate_res = await ThumbnailGenerator.generate_thumbnails(video, markers, destination_paths);
     if (!generate_res) return;
@@ -40,11 +42,14 @@ export default class ThumbnailGenerator {
     console.log("✅ ✅ ✅ done generating thumbs");
   }
 
-  private static build_thumb_paths(video: VideoMeta, markers_sec: number[]): string[] {
+  private static async build_thumb_paths(video: VideoMeta, markers_sec: number[]): Promise<string[]> {
+    await DestinationGuider.find_or_create_destination(video);
     const paths: string[] = [];
     for (let i = 0; i < markers_sec.length; i++) {
-      const path = `output_${video.id}_${Math.floor(markers_sec[i])}_${i}.png`;
-      paths.push(path);
+      const thumb_name = `output_${video.id}_${Math.floor(markers_sec[i])}_${i}.png`;
+      const thumb_directory = path.join(DestinationGuider.IMAGE_PATH, video.parent_path, video.name);
+      const thumb_path = path.join(thumb_directory, thumb_name);
+      paths.push(thumb_path);
     }
     return paths;
   }

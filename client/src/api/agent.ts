@@ -29,7 +29,6 @@ export const Directory = {
 };
 
 export const Video = {
-  // /:filepath/metadata
   details_from_path: async (video_path: string) => axios.get(`videos/${video_path}/metadata`),
   details: async (video_id: number) => axios.get(`videos/${video_id}`),
   rate: async (video: IVideoMeta, rating: number) => axios.put(`videos/${video.id}/rate`, { rating }),
@@ -44,7 +43,6 @@ export const Video = {
   popular: async () => axios.get(`videos/popular`),
   latest: async () => axios.get(`videos/latest`),
   discover: async () => axios.get(`videos/discover`),
-  // process-meta-data
 };
 
 export const Search = {

@@ -41,7 +41,9 @@ export class ImageGallery {
   }
 
   static expected_gallery_path_from_video(video: VideoMeta): string {
-    const expected_path = path.join(DestinationGuider.IMAGE_PATH, video.parent_path);
+    const extension = path.extname(video.path);
+    const video_name = path.basename(video.path, extension);
+    const expected_path = path.join(DestinationGuider.IMAGE_PATH, video.parent_path, video_name);
     return expected_path;
   }
 
@@ -51,9 +53,11 @@ export class ImageGallery {
     const expected_path = ImageGallery.expected_gallery_path_from_video(video);
     const found_gallery = await gallery_repo.findOne({ where: { path: expected_path } });
     if (found_gallery) {
-      console.log(`found gallery is: ${found_gallery.id}`);
-      video.gallery = found_gallery;
-      await video_repo.save(video);
+      if (!video.gallery || video.gallery.id != found_gallery.id) {
+        console.log(`mismatch between found_gallery and video's current gallery`);
+        video.gallery = found_gallery;
+        await video_repo.save(video);
+      }
       return found_gallery;
     }
     console.log("creating a new gallery");

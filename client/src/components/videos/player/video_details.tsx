@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Button, ButtonGroup, Chip, FormGroup, Grid } from "@mui/material";
+import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
 import { calculate_resolution, get_file_size_string } from "../../../lib/video_file_meta_calculator";
 import VideoPlayer from "./video_player";
 import PlayerTabs from "./player_tabs";
@@ -59,9 +59,9 @@ const VideoDetails = (props: IProps) => {
         {props.random_url && <Button href={props.random_url}>Random</Button>}
       </ButtonGroup>
       <VideoPlayer vid_path={video.path} />
-      <FormGroup sx={{ marginTop: "30px" }}>
+      <div style={{ marginTop: "30px" }}>
         <RatingStars default_rating={video.rating} rating={video_store.selected_video_rating} set_rating={handle_rating_change} />
-      </FormGroup>
+      </div>
       <PlayerTabs />
     </div>
   );

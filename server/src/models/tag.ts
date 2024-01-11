@@ -114,6 +114,12 @@ export class Tag {
     });
   }
 
+  static get_names(tags: Tag[]): string[] {
+    return tags.map((t) => {
+      return t.name;
+    });
+  }
+
   static tags_equal(arr_1: Tag[], arr_2: Tag[]): boolean {
     if (!arr_1 || !arr_2) return arr_1 === arr_2;
     if (arr_1.length != arr_2.length) return false;

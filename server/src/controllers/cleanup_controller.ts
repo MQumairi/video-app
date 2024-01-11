@@ -7,6 +7,7 @@ import CleanupVideoFileMeta from "../handlers/cleanup/cleanup_video_file_meta";
 import CleanupFileScripts from "../handlers/cleanup/cleanup_file_scripts";
 import CleanupGalleries from "../handlers/cleanup/cleanup_galleries";
 import CleanupImages from "../handlers/cleanup/cleanup_images";
+import CleanupExportedData from "../handlers/cleanup/cleanup_exported_data";
 
 const cleanup_controller = Router();
 
@@ -47,6 +48,11 @@ cleanup_controller.get("/galleries", async (req: Request, res: Response) => {
 cleanup_controller.get("/images", async (req: Request, res: Response) => {
   console.log("entered cleanup galleries");
   await CleanupImages(req, res);
+});
+
+cleanup_controller.get("/exports", async (req: Request, res: Response) => {
+  console.log("entered cleanup exported");
+  await CleanupExportedData(req, res);
 });
 
 export default cleanup_controller;

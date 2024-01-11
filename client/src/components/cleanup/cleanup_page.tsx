@@ -30,6 +30,9 @@ const CleanupPage = () => {
         <Button size="large" onClick={async () => await Cleanup.cleanup_images()}>
           Images
         </Button>
+        <Button size="large" onClick={async () => await Cleanup.cleanup_exports()}>
+          Exports
+        </Button>
       </ButtonGroup>
     </div>
   );

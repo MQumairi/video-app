@@ -1,5 +1,5 @@
 // tags ****
-// galleries
+// galleries ****
 // videos ****
 // persistent_queries
 // playlists
@@ -10,6 +10,7 @@ import { VideoMeta } from "../models/video_meta";
 import { Tag } from "../models/tag";
 import { getRepository } from "typeorm";
 import { appendFileSync, readFileSync, writeFileSync } from "fs";
+import { ImageGallery } from "../models/image_gallery";
 
 interface DataObject {
   [key: string]: any;
@@ -17,11 +18,9 @@ interface DataObject {
 
 export class DataExporter {
   static export_dir_name = "exported_data";
-  static video_file_path = join(DataExporter.export_dir_name, "exported_videos.json");
-  static tag_file_path = join(DataExporter.export_dir_name, "exported_tags.json");
 
   static async export_videos() {
-    const file_path = DataExporter.video_file_path;
+    const file_path = join(DataExporter.export_dir_name, "exported_videos.json");
     await FileOperation.create_file(file_path, "");
     const video_meta_repo = getRepository(VideoMeta);
     const video_query = video_meta_repo
@@ -43,7 +42,7 @@ export class DataExporter {
   }
 
   static async export_tags() {
-    const file_path = DataExporter.tag_file_path;
+    const file_path = join(DataExporter.export_dir_name, "exported_tags.json");
     await FileOperation.create_file(file_path, "");
     const tag_repo = getRepository(Tag);
     const tags_query = tag_repo
@@ -55,6 +54,26 @@ export class DataExporter {
     const tags = await tags_query.getMany();
     for (const t of tags) {
       const obj = DataExporter.tagToJson(t);
+      DataExporter.appendObjectToFile(file_path, obj);
+    }
+    DataExporter.cleanupFile(file_path);
+  }
+
+  static async export_galleries() {
+    const file_path = join(DataExporter.export_dir_name, "exported_galleries.json");
+    await FileOperation.create_file(file_path, "");
+    const gallery_repo = getRepository(ImageGallery);
+    const gallery_query = gallery_repo
+      .createQueryBuilder("image_gallery")
+      .addGroupBy("image_gallery.id")
+      .leftJoinAndSelect("image_gallery.tags", "tag")
+      .leftJoinAndSelect("image_gallery.thumbnail", "thumbnail")
+      .addGroupBy("tag.id")
+      .addGroupBy("thumbnail.id")
+      .orderBy("image_gallery.id");
+    const galleries = await gallery_query.getMany();
+    for (const g of galleries) {
+      const obj = DataExporter.galleryToJson(g);
       DataExporter.appendObjectToFile(file_path, obj);
     }
     DataExporter.cleanupFile(file_path);
@@ -91,6 +110,17 @@ export class DataExporter {
       child_tags: Tag.get_names(tag.child_tags),
     };
     return tag_object;
+  };
+
+  private static galleryToJson = (gallery: ImageGallery): DataObject => {
+    console.log("gallery:", gallery.name);
+    const gallery_object = {
+      name: gallery.name,
+      path: gallery.path,
+      thumbnail: gallery.thumbnail ? gallery.thumbnail.path : null,
+      tags: Tag.get_names(gallery.tags),
+    };
+    return gallery_object;
   };
 
   private static appendObjectToFile = (filePath: string, obj: DataObject) => {

@@ -3,6 +3,7 @@
 /server/images
 /server/trash
 /server/scripts
+/server/exported_data
 /videos
 /pg
 /test.sh

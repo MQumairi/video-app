@@ -129,6 +129,7 @@ export const Cleanup = {
   cleanup_file_scripts: async () => axios.get(`cleanup/file-scripts`),
   cleanup_galleries: async () => axios.get(`cleanup/galleries`),
   cleanup_images: async () => axios.get(`cleanup/images`),
+  cleanup_exports: async () => axios.get(`cleanup/exports`),
 };
 
 export const Gallery = {

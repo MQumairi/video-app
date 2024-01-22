@@ -71,7 +71,7 @@ export default class ThumbnailGenerator {
     const command_paths: string[] = [];
     for (let i = 0; i < markers.length; i++) {
       command_markers.push(`-ss ${markers[i]} -i "./${video.path}"`);
-      command_paths.push(`-map ${i}:v -vframes 1 '${destination_paths[i]}'`);
+      command_paths.push(`-map ${i}:v -vframes 1 "${destination_paths[i]}"`);
     }
     return "ffmpeg " + command_markers.join(" ") + " " + command_paths.join(" ");
   }

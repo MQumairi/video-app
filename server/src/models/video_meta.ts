@@ -70,6 +70,10 @@ export class VideoMeta {
   @Column("int", { default: ScriptState.unscripted })
   script_state: ScriptState;
 
+  @Index()
+  @Column("float", { default: 0 })
+  rating_size_value: number;
+
   static create_from_path(path: string): VideoMeta {
     const video_meta = new VideoMeta();
     video_meta.path = path;

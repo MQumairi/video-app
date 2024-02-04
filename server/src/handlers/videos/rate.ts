@@ -12,6 +12,7 @@ const Rate = async (req: Request, res: Response): Promise<VideoMeta | undefined>
     return;
   }
   video.rating = req.body.rating ?? 0;
+  video.rating_size_value = video.rating / video.size_mb;
   res.status(200).send({ message: `"changed rating to ${video.rating}` });
   return await videoMetaRepo.save(video);
 };

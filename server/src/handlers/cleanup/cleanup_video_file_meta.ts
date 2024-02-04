@@ -30,6 +30,7 @@ const CleanupVideoFileMeta = async (req: Request, res: Response) => {
     const stats = video_prober.get_file_stats();
     v.size_mb = stats.file_size;
     v.created_at = stats.created_at;
+    v.rating_size_value = v.rating / v.size_mb;
     // Save
     await video_repo.save(v);
   }

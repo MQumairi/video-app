@@ -10,14 +10,8 @@ const SortSelector = (props: IProps) => {
   return (
     <FormControl sx={{ marginLeft: "1em" }}>
       <InputLabel>Sort</InputLabel>
-      <Select
-        labelId="sort-dropdown"
-        id="sort-dropdown"
-        label="sort-selector"
-        value={props.selected_sort_option}
-        onChange={props.handle_sort_change}
-      >
-        {["Path", "Name", "Rating", "Latest", "Views", "Length", "Size", "Thumb"].map((sort_option) => {
+      <Select labelId="sort-dropdown" id="sort-dropdown" label="sort-selector" value={props.selected_sort_option} onChange={props.handle_sort_change}>
+        {["Path", "Name", "Rating", "Latest", "Views", "Length", "Size", "Thumb", "Rated Value"].map((sort_option) => {
           return (
             <MenuItem key={sort_option} value={sort_option}>
               {sort_option}

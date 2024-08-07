@@ -83,10 +83,15 @@ const SearchForm = (props: IProps) => {
   const lookup_and_set_query = async () => {
     console.log("calling lookup from seach form");
     await tags_store.lookup();
-    const selected_tag_ids = search_params.get("tags");
+    const selected_tag_ids = search_params.get(TAGS_PARAM_KEY);
     if (selected_tag_ids) {
       const tags = tags_store.search_query_to_tags(selected_tag_ids);
       tags_store.set_selected_tags(TagSelectorType.IncludedTags, tags);
+    }
+    const excluded_tag_ids = search_params.get(TAGS_EXCLUDED_PARAM_KEY)
+    if (excluded_tag_ids) {
+      const excluded_tags = tags_store.search_query_to_tags(excluded_tag_ids);
+      tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
     }
   };
 
@@ -96,13 +101,14 @@ const SearchForm = (props: IProps) => {
     const max_rating = search_params.get(MAX_RATING_PARAM_KEY);
     const resolution = search_params.get(RES_PARAM_KEY);
     const tags_params = search_params.get(TAGS_PARAM_KEY);
+    const tags_excluded_params = search_params.get(TAGS_EXCLUDED_PARAM_KEY)
     const sort_option_param = search_params.get(SORT_PARAM_KEY);
     if (search_text) set_searched_text(search_text);
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);
     if (resolution) set_min_resolution(+resolution);
     if (sort_option_param) set_sort_option(sort_option_param);
-    if (!tags_params) return;
+    if (!tags_params && !tags_excluded_params) return;
     lookup_and_set_query();
     // eslint-disable-next-line
   }, []);

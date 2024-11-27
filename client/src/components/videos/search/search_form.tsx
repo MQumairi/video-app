@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import SortSelector from "./sort_selector";
+import { Tag } from "../../../api/agent";
 
 interface IProps {
   on_submit: () => void;
@@ -40,6 +41,16 @@ const SearchForm = (props: IProps) => {
   const selector_param = (selector_type: TagSelectorType): string => {
     if (selector_type === TagSelectorType.ExcludedTags) return TAGS_EXCLUDED_PARAM_KEY;
     return TAGS_PARAM_KEY;
+  };
+
+  const set_excluded_tags = async () => {
+    console.log("calling set_excluded_tags")
+    const res = await Tag.excluded();
+    if (res.status !== 200) return;
+    let excluded_tags = res.data;
+    console.log("excluded tags are: ", excluded_tags);
+    tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
+    update_query_params(TAGS_EXCLUDED_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.ExcludedTags));
   };
 
   const handle_tags_addition = (selector_type: TagSelectorType) => {
@@ -88,7 +99,7 @@ const SearchForm = (props: IProps) => {
       const tags = tags_store.search_query_to_tags(selected_tag_ids);
       tags_store.set_selected_tags(TagSelectorType.IncludedTags, tags);
     }
-    const excluded_tag_ids = search_params.get(TAGS_EXCLUDED_PARAM_KEY)
+    const excluded_tag_ids = search_params.get(TAGS_EXCLUDED_PARAM_KEY);
     if (excluded_tag_ids) {
       const excluded_tags = tags_store.search_query_to_tags(excluded_tag_ids);
       tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
@@ -101,8 +112,9 @@ const SearchForm = (props: IProps) => {
     const max_rating = search_params.get(MAX_RATING_PARAM_KEY);
     const resolution = search_params.get(RES_PARAM_KEY);
     const tags_params = search_params.get(TAGS_PARAM_KEY);
-    const tags_excluded_params = search_params.get(TAGS_EXCLUDED_PARAM_KEY)
+    const tags_excluded_params = search_params.get(TAGS_EXCLUDED_PARAM_KEY);
     const sort_option_param = search_params.get(SORT_PARAM_KEY);
+    set_excluded_tags()
     if (search_text) set_searched_text(search_text);
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);

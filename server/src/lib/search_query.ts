@@ -121,9 +121,8 @@ export class SearchQuery {
 
   private static async lookup_excluded_tags_from_ids(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {
     const tag_repo = getRepository(Tag);
-    const included_tag_ids = Tag.get_ids(included_tags);
     const tags = await tag_repo.find({
-      where: [{ default_excluded: true, id: Not(In(included_tag_ids)) }, { id: In(excluded_tag_ids) }],
+      where: [{ id: In(excluded_tag_ids) }],
     });
     return tags;
   }

@@ -58,6 +58,7 @@ export const Tag = {
   series: async () => axios.get(`tags/series`),
   characters: async () => axios.get(`tags/characters`),
   studios: async () => axios.get(`tags/studios`),
+  excluded: async () => axios.get(`tags/excluded`),
   other: async () => axios.get(`tags/uncategorized`),
   playlists: async () => axios.get(`tags/playlists`),
   dynamic_playlists: async () => axios.get(`tags/dynamic-playlists`),

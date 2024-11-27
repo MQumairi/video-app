@@ -24,7 +24,6 @@ const PlaylistPlayer = () => {
   const [playlist_name, set_playlist_name] = useState<string>("");
   const [current_video_index, set_current_video_index] = useState<number>(0);
   const [next_url, set_next_url] = useState<string>("");
-  const [prev_url, set_prev_url] = useState<string>("");
   const [playlist_length, set_playlist_length] = useState<number>(0);
   const [query_params, set_query_params] = useSearchParams({});
 
@@ -62,7 +61,6 @@ const PlaylistPlayer = () => {
     set_video(fetched_video);
     update_query_params("video", fetched_video.id.toString());
     set_next_url(`/playlists/${playlist_id}/order/${next_order}`);
-    set_prev_url(`/playlists/${playlist_id}/order/${current_video_index - 1}`);
     set_playlist_length(fetched_playlist_length);
     set_playlist_name(fetched_playlist_name);
   };
@@ -107,7 +105,7 @@ const PlaylistPlayer = () => {
         </Stack>
       </div>
       <ButtonGroup sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
-        {current_video_index > 1 && <Button href={prev_url}>Previous</Button>}
+        <Button href={`/playlists/${playlist_id}/order/1`}>Restart</Button>
         <Button href={`/playlists/${playlist_id}/order/${current_video_index}`}>Refresh</Button>
         <Button href={next_url}>Next</Button>
       </ButtonGroup>

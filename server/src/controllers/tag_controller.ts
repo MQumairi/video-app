@@ -20,6 +20,7 @@ import RandomImageSingle from "../handlers/tags/random_image_single";
 import DynamicPlaylistVideo from "../handlers/tags/dynamic_playlist_video";
 import DynamicPlaylists from "../handlers/tags/only_dynamic_playlist";
 import Series from "../handlers/tags/only_series";
+import DefaultExcluded from "../handlers/tags/only_default_excluded";
 
 const tag_controller = Router();
 
@@ -45,6 +46,10 @@ tag_controller.get("/studios", async (req: Request, res: Response) => {
 
 tag_controller.get("/uncategorized", async (req: Request, res: Response) => {
   await Uncategorized(req, res);
+});
+
+tag_controller.get("/excluded", async (req: Request, res: Response) => {
+  await DefaultExcluded(req, res);
 });
 
 tag_controller.get("/", async (req: Request, res: Response) => {

@@ -57,8 +57,11 @@ export default class ThumbnailGenerator {
   private static async generate_thumbnails(video: VideoMeta, markers: string[], destination_paths: string[]): Promise<boolean> {
     if (destination_paths.length != markers.length) return false;
     const command = ThumbnailGenerator.build_command(video, markers, destination_paths);
+    const execOptions = {
+      timeout: 120000, // 120 seconds timeout
+    };
     try {
-      await exec(command);
+      await exec(command, execOptions);
       return true;
     } catch (err) {
       console.log("encountered error:", err);

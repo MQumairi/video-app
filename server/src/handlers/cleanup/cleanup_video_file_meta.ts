@@ -13,23 +13,24 @@ const CleanupVideoFileMeta = async (req: Request, res: Response) => {
       counter.unchanged += 1;
       continue;
     }
-    const video_prober = new VideoFileProber(v.path);
-    // Find duration
-    const duration = await video_prober.get_video_duration();
-    if (duration > 0) {
-      v.duration_sec = duration;
-      counter.add_duration += 1;
-    }
-    // Find resolution
-    const resolution = await video_prober.get_video_resolution();
-    if (resolution) {
-      v.width = resolution.width;
-      v.height = resolution.height;
-    }
-    // Find size
-    const stats = video_prober.get_file_stats();
-    v.size_mb = stats.file_size;
-    v.created_at = stats.created_at;
+    console.log(`Re-processing video id: ${v.id}`)
+    // const video_prober = new VideoFileProber(v.path);
+    // // Find duration
+    // const duration = await video_prober.get_video_duration();
+    // if (duration > 0) {
+    //   v.duration_sec = duration;
+    //   counter.add_duration += 1;
+    // }
+    // // Find resolution
+    // const resolution = await video_prober.get_video_resolution();
+    // if (resolution) {
+    //   v.width = resolution.width;
+    //   v.height = resolution.height;
+    // }
+    // // Find size
+    // const stats = video_prober.get_file_stats();
+    // v.size_mb = stats.file_size;
+    // v.created_at = stats.created_at;
     v.rating_size_value = VideoMeta.calc_value(v)
     // Save
     await video_repo.save(v);

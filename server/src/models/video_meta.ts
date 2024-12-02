@@ -130,7 +130,7 @@ export class VideoMeta {
   }
 
   static calc_value(video: VideoMeta): number {
-    let value = ((video.rating * video.rating) + video.duration_sec) / video.size_mb
+    let value = ((Math.pow(video.rating, 7)) * (video.duration_sec * video.height)) / (video.size_mb);
     return value
   }
 }

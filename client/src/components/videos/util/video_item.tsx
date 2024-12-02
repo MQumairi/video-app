@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import IVideoMeta from "../../../models/video_meta";
 import { Chip, ImageListItem, ImageListItemBar, Stack } from "@mui/material";
-import { calculate_duration, calculate_resolution, get_file_size_string } from "../../../lib/video_file_meta_calculator";
+import { calculate_duration, calculate_resolution, get_file_size_string, calc_video_value } from "../../../lib/video_file_meta_calculator";
 import Thumbnail from "../../misc/thumbnail";
 import { useSearchParams } from "react-router-dom";
 
@@ -38,7 +38,7 @@ const VideoItem = (props: IProps) => {
             transition: 'opacity 0.3s ease', // Add transition for smooth fade-in
           }}
           title={`Rating ${props.video.rating}/10`}
-          subtitle={`Score ${(props.video.rating_size_value * 1000).toFixed(2)}`}
+          subtitle={`Score ${calc_video_value(props.video.rating_size_value)}`}
           position="top"
         />
         <Thumbnail image={props.video.thumbnail} />

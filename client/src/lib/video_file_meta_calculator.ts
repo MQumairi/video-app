@@ -42,3 +42,8 @@ export const seconds_to_duration = (seconds: number): string => {
   duration += `.${Math.floor(Math.random() * 1000)}`;
   return duration;
 };
+
+export const calc_video_value = (rated_value: number) : String => {
+  let value = rated_value / 10_000
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+}

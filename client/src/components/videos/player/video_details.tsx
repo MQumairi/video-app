@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
-import { calculate_resolution, get_file_size_string } from "../../../lib/video_file_meta_calculator";
+import { calculate_resolution, get_file_size_string, calc_video_value } from "../../../lib/video_file_meta_calculator";
 import VideoPlayer from "./video_player";
 import PlayerTabs from "./player_tabs";
 import RatingStars from "../../misc/rating_stars";
@@ -51,6 +51,8 @@ const VideoDetails = (props: IProps) => {
             {video.width !== null && <Chip label={calculate_resolution(video)} color="primary" variant="outlined" />}
             {video.views !== null && <Chip label={`${video.views} views`} color="primary" variant="outlined" />}
             {video.size_mb && <Chip label={get_file_size_string(video)} color="primary" variant="outlined" />}
+            {video.rating !== null && video.rating !== 0 && <Chip label={`${video.rating}/10`} color="primary" variant="outlined" />}
+            {video.rating_size_value !== null && video.rating !== 0 && <Chip label={calc_video_value(video.rating_size_value)} color="primary" variant="outlined" />}
           </Grid>
         </Grid>
       </div>

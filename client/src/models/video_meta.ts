@@ -22,4 +22,5 @@ export default interface IVideoMeta {
   created_at?: Date;
   size_mb: number;
   views: number;
+  rating_size_value: number;
 }

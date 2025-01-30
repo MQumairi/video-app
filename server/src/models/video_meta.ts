@@ -131,15 +131,23 @@ export class VideoMeta {
   }
 
   static calc_value(video: VideoMeta): number {
+    // rating contribution
     let rating_contribution = video.rating
     if (video.rating == MAX_RATING) {
-      rating_contribution = rating_contribution * 100
+      rating_contribution = Math.pow(rating_contribution, 4)
     } else if (video.rating == MAX_RATING - 1) {
-      rating_contribution = rating_contribution * 50
+      rating_contribution = Math.pow(rating_contribution, 3)
     } else if (video.rating == MAX_RATING - 1) {
-      rating_contribution = rating_contribution * 30
+      rating_contribution = Math.pow(rating_contribution, 2)
     }
-    let value = ((rating_contribution) * (video.duration_sec * video.height)) / (video.size_mb);
+    // length contribution
+    let length_contribution = video.duration_sec / 3
+    // quality contribution
+    let quality_contribution = Math.pow(video.height, 2)
+    // size contribution
+    let size_contribution = video.size_mb * 4
+    // final calculation
+    let value = ((rating_contribution) * (length_contribution * quality_contribution)) / size_contribution;
     return value
   }
 }

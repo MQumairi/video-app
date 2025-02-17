@@ -8,7 +8,7 @@ import { FileTrasher } from "../lib/file_trasher";
 import { FileScript, ScriptState } from "./file_script";
 import { VideoFileProber } from "../lib/videos_lib/video_file_probber";
 import VideoTagger from "../lib/videos_lib/video_tagger";
-import { Playlist } from "./playlist";
+import { MAX_RATING } from "../lib/search_query";
 
 @Entity()
 export class VideoMeta {
@@ -128,5 +128,26 @@ export class VideoMeta {
 
   static has_scripts(video: VideoMeta): boolean {
     return video.file_scripts && video.file_scripts.length > 0;
+  }
+
+  static calc_value(video: VideoMeta): number {
+    // rating contribution
+    let rating_contribution = video.rating
+    if (video.rating == MAX_RATING) {
+      rating_contribution = Math.pow(rating_contribution, 4)
+    } else if (video.rating == MAX_RATING - 1) {
+      rating_contribution = Math.pow(rating_contribution, 3)
+    } else if (video.rating == MAX_RATING - 1) {
+      rating_contribution = Math.pow(rating_contribution, 2)
+    }
+    // length contribution
+    let length_contribution = video.duration_sec / 3
+    // quality contribution
+    let quality_contribution = Math.pow(video.height, 2)
+    // size contribution
+    let size_contribution = video.size_mb * 4
+    // final calculation
+    let value = ((rating_contribution) * (length_contribution * quality_contribution)) / size_contribution;
+    return value
   }
 }

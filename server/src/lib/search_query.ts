@@ -171,7 +171,7 @@ export class SearchQuery {
       case "thumbnail":
         return "ASC";
       case "rating_size_value":
-        return "DESC";
+        return "ASC";
       default:
         return "ASC";
     }

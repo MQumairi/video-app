@@ -24,7 +24,7 @@ const ProcessVideoMeta = async (req: Request, res: Response): Promise<VideoMeta 
   video.created_at = stats.created_at;
   video.size_mb = stats.file_size;
   console.log("finished probing");
-  video.rating_size_value = video.rating / video.size_mb;
+  video.rating_size_value = VideoMeta.calc_value(video)
   const saved_video = await video_repo.save(video);
   res.status(200).send(saved_video);
   return saved_video;

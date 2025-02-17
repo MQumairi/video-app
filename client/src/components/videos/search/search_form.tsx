@@ -43,14 +43,33 @@ const SearchForm = (props: IProps) => {
     return TAGS_PARAM_KEY;
   };
 
-  const set_excluded_tags = async () => {
-    console.log("calling set_excluded_tags")
+  const set_default_excluded_tags = async () => {
     const res = await Tag.excluded();
     if (res.status !== 200) return;
     let excluded_tags = res.data;
     console.log("excluded tags are: ", excluded_tags);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
     update_query_params(TAGS_EXCLUDED_PARAM_KEY, tags_store.selected_tags_query_parms(TagSelectorType.ExcludedTags));
+  };
+
+  const set_excluded_tags = async () => {
+    await tags_store.lookup();
+    // if no excluded tags in query param ,set the default
+    console.log("calling set_excluded_tags");
+    const excluded_tag_ids = search_params.get(TAGS_EXCLUDED_PARAM_KEY);
+    console.group("excluded_tag_ids from params:", excluded_tag_ids);
+    if (excluded_tag_ids) {
+      const excluded_tags = tags_store.search_query_to_tags(excluded_tag_ids);
+      console.log("iteratig over excluded_tags of size", excluded_tags.length);
+      excluded_tags.forEach((t) => {
+        console.log(t.name);
+      });
+      console.log("excluded_tags are: ", excluded_tags);
+      tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
+    } else {
+      console.log("setting defaults");
+      await set_default_excluded_tags();
+    }
   };
 
   const handle_tags_addition = (selector_type: TagSelectorType) => {
@@ -114,7 +133,7 @@ const SearchForm = (props: IProps) => {
     const tags_params = search_params.get(TAGS_PARAM_KEY);
     const tags_excluded_params = search_params.get(TAGS_EXCLUDED_PARAM_KEY);
     const sort_option_param = search_params.get(SORT_PARAM_KEY);
-    set_excluded_tags()
+    set_excluded_tags();
     if (search_text) set_searched_text(search_text);
     if (min_rating) set_min_rating(+min_rating);
     if (max_rating) set_max_rating(+max_rating);

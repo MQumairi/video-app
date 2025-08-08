@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { base_url } from "../../../api/agent";
+import { server_url } from "../../../api/agent";
 import { PathConverter } from "../../../util/path_converter";
 import { useState } from "react";
 
@@ -47,7 +47,7 @@ const VideoPlayer = (props: any) => {
           handle_volume_change(event);
         }}
       >
-        <source src={`${base_url}/videos/stream/${PathConverter.to_query(props.vid_path)}`} type="video/mp4" />
+        <source src={`${server_url}/${PathConverter.remove_base(props.vid_path)}`} type="video/mp4" />
       </video>
     </div>
   );

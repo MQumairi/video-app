@@ -2,7 +2,6 @@ import { Router, Request, Response } from "express";
 import Metadata from "../handlers/videos/metadata";
 import Rate from "../handlers/videos/rate";
 import Edit from "../handlers/videos/edit";
-import Stream from "../handlers/videos/stream";
 import ThumbVideo from "../handlers/videos/thumb_video";
 import Gallery from "../handlers/videos/gallery";
 import Delete from "../handlers/videos/delete";
@@ -47,10 +46,6 @@ video_controller.get("/:id/similar", async (req: Request, res: Response) => {
 
 video_controller.get("/:filepath/metadata", async (req: Request, res: Response) => {
   await Metadata(req, res);
-});
-
-video_controller.get("/stream/:filepath", async (req: Request, res: Response) => {
-  await Stream(req, res);
 });
 
 video_controller.get("/:id", async (req: Request, res: Response) => {

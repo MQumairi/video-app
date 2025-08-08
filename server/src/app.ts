@@ -49,6 +49,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("images"));
+app.use(express.static("videos"));
 app.use("/api/videos", video_controller);
 app.use("/api/directories", directory_controller);
 app.use("/api/search", search_controller);

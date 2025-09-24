@@ -3,8 +3,10 @@
 /server/images
 /server/trash
 /server/scripts
+!/server/scripts/delete_trash.sh
 /server/exported_data
 /videos
 /pg
 /test.sh
 .DS_Store
+/docker-compose.yml

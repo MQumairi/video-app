@@ -64,6 +64,7 @@ const QueriesCreateForm = () => {
     };
     await PersistentQueries.create(persistent_query);
     reset();
+    window.location.reload();
   };
 
   const handle_name_change = (event: any) => {

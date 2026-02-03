@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
@@ -9,6 +9,7 @@ import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
 import { VideoList } from "../../videos/util/video_list";
+import { Tag } from "../../../api/agent";
 
 const QueriesCreateForm = () => {
   const [name, set_name] = useState<string>("");
@@ -89,6 +90,24 @@ const QueriesCreateForm = () => {
     const new_resolution = event.target.value;
     set_min_resolution(new_resolution);
   };
+
+  const set_default_excluded_tags = async () => {
+    const res = await Tag.excluded();
+    if (res.status !== 200) return;
+    let excluded_tags = res.data;
+    console.log("excluded tags are: ", excluded_tags);
+    tags_store.set_selected_tags(TagSelectorType.ExcludedTags, excluded_tags);
+  };
+
+  const set_excluded_tags = async () => {
+    await tags_store.lookup();
+    // if no excluded tags in query param ,set the default
+    await set_default_excluded_tags();
+  };
+
+  useEffect(() => {
+    set_excluded_tags();
+  }, []);
 
   return (
     <div>

@@ -7,7 +7,13 @@ import { PlaylistSearcher } from "../../lib/videos_lib/playlists/playlist_search
 const Details = async (req: Request, res: Response): Promise<Playlist | undefined> => {
   const id = +req.params.id;
   const playlist_repo = getRepository(Playlist);
-  const playlist = await playlist_repo.findOne(id, { relations: ["persistent_query_to_playlists", "included_tags"] });
+  const playlist = await playlist_repo
+    .createQueryBuilder("playlist")
+    .leftJoinAndSelect("playlist.persistent_query_to_playlists", "pqp")
+    .leftJoinAndSelect("playlist.included_tags", "tag")
+    .where("playlist.id = :id", { id })
+    .orderBy("pqp.order", "ASC")
+    .getOne();
   if (!playlist) {
     res.status(404).json({ message: "playlist not found, of id:" + id });
     return undefined;

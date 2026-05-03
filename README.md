@@ -38,7 +38,7 @@ services:
       - "/app/node_modules"
       - ./server:/app
     ports:
-      - "5000:5000"
+      - "5001:5001"
     command: ["npm", "run", "dev"]
     restart: always
   client:

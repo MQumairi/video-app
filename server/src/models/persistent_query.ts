@@ -64,8 +64,7 @@ export class PersistentQuery {
   }
 
   static async build_search_query(p: PersistentQuery): Promise<SearchQuery> {
-    const excluded_tags = await SearchQuery.lookup_excluded_tags(p.excluded_tags, p.included_tags);
-    return new SearchQuery(p.search_text, p.included_tags, excluded_tags, p.min_rating, p.max_rating, p.frame_height);
+    return new SearchQuery(p.search_text, p.included_tags, p.excluded_tags, p.min_rating, p.max_rating, p.frame_height);
   }
 
   static async find_video(query: PersistentQuery): Promise<VideoMeta | null> {

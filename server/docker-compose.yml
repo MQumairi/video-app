@@ -16,5 +16,5 @@ services:
       - "/app/node_modules"
       - ./:/app
     ports:
-      - "5000:5000"
+      - "5001:5001"
     command: ["npm", "run", "dev"]

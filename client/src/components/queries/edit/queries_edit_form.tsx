@@ -2,9 +2,11 @@ import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
+import StudioSelector from "../../tags/util/selector/studio_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
 import IPersistentQuery from "../../../models/persistent_query";
+import ITag from "../../../models/tag";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
@@ -80,11 +82,17 @@ const QueriesEditForm = (props: IProps) => {
     set_query(new_query);
   };
 
+  const handle_studio_changes = (studios: ITag[]) => {
+    if (!query) return;
+    set_query({ ...query, studios });
+  };
+
   const fetch_query = async () => {
     if (!props.query_id || isNaN(+props.query_id)) return;
     const res = await PersistentQueries.details(+props.query_id);
     if (res.status !== 200) return;
     const new_query: IPersistentQuery = res.data;
+    if (!new_query.studios) new_query.studios = [];
     set_query(new_query);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, new_query.included_tags);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, new_query.excluded_tags);
@@ -127,6 +135,9 @@ const QueriesEditForm = (props: IProps) => {
             post_deselection={() => handle_tag_changes(TagSelectorType.ExcludedTags)}
             post_selection={() => handle_tag_changes(TagSelectorType.ExcludedTags)}
           />
+        </FormGroup>
+        <FormGroup row>
+          <StudioSelector selected_studios={query.studios ?? []} on_change={handle_studio_changes} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

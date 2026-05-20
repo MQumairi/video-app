@@ -81,6 +81,10 @@ export class Tag {
   @JoinTable()
   excluded_persistent_queries: PersistentQuery[];
 
+  @ManyToMany((type) => PersistentQuery, (query) => query.studios, { cascade: true })
+  @JoinTable()
+  studio_persistent_queries: PersistentQuery[];
+
   @OneToMany(() => PersistentQueryToPlaylist, (pqp) => pqp.playlist)
   persistent_query_to_playlists: PersistentQueryToPlaylist[];
 

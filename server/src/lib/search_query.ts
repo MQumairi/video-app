@@ -17,6 +17,7 @@ export class SearchQuery {
   searched_text: string;
   included_tags: Tag[];
   excluded_tags: Tag[];
+  studios: Tag[];
   min_rating: number;
   max_rating: number;
   min_resolution: number;
@@ -33,6 +34,7 @@ export class SearchQuery {
     min_rating: number = 0,
     max_rating: number = 10,
     min_resolution = 0,
+    studios: Tag[] = [],
     page = 1,
     page_capacity = 12,
     order_by = "path",
@@ -42,6 +44,7 @@ export class SearchQuery {
     this.searched_text = searched_text;
     this.included_tags = included_tags;
     this.excluded_tags = excluded_tags;
+    this.studios = studios;
     this.min_rating = min_rating;
     this.max_rating = max_rating;
     this.min_resolution = min_resolution;
@@ -98,6 +101,7 @@ export class SearchQuery {
       min_rating,
       max_rating,
       min_resolution,
+      [],
       page,
       results_per_page,
       sort_option,
@@ -110,13 +114,13 @@ export class SearchQuery {
     const raw_page = req.query.page?.toString() ?? "1";
     const page: number = +raw_page;
     const included_tags = await getRepository(Tag).find({ where: { id: tag.id } });
-    return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page, limit, "path", "ASC", thumb_status);
+    return new SearchQuery("", included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, [], page, limit, "path", "ASC", thumb_status);
   }
 
   static async from_playlist(req: Request, playlist: Playlist, limit: number = 12, thumb_status: ThumbStatus = ThumbStatus.default): Promise<SearchQuery> {
     const raw_page = req.query.page?.toString() ?? "1";
     const page: number = +raw_page;
-    return new SearchQuery("", playlist.included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, page, limit, "path", "ASC", thumb_status);
+    return new SearchQuery("", playlist.included_tags, [], MIN_RATING, MAX_RATING, MIN_RESOLUTION, [], page, limit, "path", "ASC", thumb_status);
   }
 
   private static async lookup_excluded_tags_from_ids(excluded_tag_ids: number[], included_tags: Tag[]): Promise<Tag[]> {

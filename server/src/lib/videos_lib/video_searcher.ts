@@ -89,6 +89,8 @@ export class VideoSearcher {
     if (this.search_query.included_tags.length > 0) query.where(`video.id IN (${this.get_inner_query(this.search_query.included_tags, true).getSql()})`);
     if (this.search_query.excluded_tags.length > 0)
       query.andWhere(`video.id NOT IN (${this.get_inner_query(this.search_query.excluded_tags, false).getSql()})`);
+    if (this.search_query.studios.length > 0)
+      query.andWhere(`video.id IN (${this.get_inner_query(this.search_query.studios, false).getSql()})`);
     return query;
   };
 

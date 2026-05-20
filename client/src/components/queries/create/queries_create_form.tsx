@@ -2,12 +2,14 @@ import { observer } from "mobx-react-lite";
 import { useContext, useState, useEffect } from "react";
 import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
+import StudioSelector from "../../tags/util/selector/studio_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
 import IPersistentQuery, { IPersistentQueryCreate } from "../../../models/persistent_query";
 import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
+import ITag from "../../../models/tag";
 import { VideoList } from "../../videos/util/video_list";
 import { Tag } from "../../../api/agent";
 
@@ -17,6 +19,7 @@ const QueriesCreateForm = () => {
   const [min_rating, set_min_rating] = useState<number>(0);
   const [max_rating, set_max_rating] = useState<number>(10);
   const [min_resolution, set_min_resolution] = useState<number>(0);
+  const [studios, set_studios] = useState<ITag[]>([]);
   const [query_videos, set_query_videos] = useState<IVideoMeta[]>([]);
 
   const tags_store = useContext(TagsStore);
@@ -27,6 +30,7 @@ const QueriesCreateForm = () => {
     set_min_rating(0);
     set_max_rating(10);
     set_min_resolution(0);
+    set_studios([]);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, []);
     set_query_videos([]);
@@ -39,6 +43,7 @@ const QueriesCreateForm = () => {
       search_text: searched_text,
       included_tags: tags_store.included_tags,
       excluded_tags: tags_store.excluded_tags,
+      studios: studios,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -56,6 +61,7 @@ const QueriesCreateForm = () => {
       search_text: searched_text,
       included_tags: tags_store.included_tags,
       excluded_tags: tags_store.excluded_tags,
+      studios: studios,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -127,6 +133,9 @@ const QueriesCreateForm = () => {
         </FormGroup>
         <FormGroup row>
           <TagSelector selector_type={TagSelectorType.ExcludedTags} />
+        </FormGroup>
+        <FormGroup row>
+          <StudioSelector selected_studios={studios} on_change={set_studios} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

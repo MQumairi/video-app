@@ -20,6 +20,9 @@ export class PersistentQuery {
   @ManyToMany(() => Tag, (t) => t.excluded_persistent_queries, { eager: true, onDelete: "CASCADE" })
   excluded_tags: Tag[];
 
+  @ManyToMany(() => Tag, (t) => t.studio_persistent_queries, { eager: true, onDelete: "CASCADE" })
+  studios: Tag[];
+
   @Column("text")
   search_text: string;
 
@@ -45,6 +48,7 @@ export class PersistentQuery {
     name: string,
     included_tags: Tag[] = [],
     excluded_tags: Tag[] = [],
+    studios: Tag[] = [],
     min_rating: number = MIN_RATING,
     max_rating: number = MAX_RATING,
     min_duration: number = 0,
@@ -55,6 +59,7 @@ export class PersistentQuery {
     persistent_query.name = name;
     persistent_query.included_tags = included_tags;
     persistent_query.excluded_tags = excluded_tags;
+    persistent_query.studios = studios;
     persistent_query.min_rating = min_rating;
     persistent_query.max_rating = max_rating;
     persistent_query.min_duration_sec = min_duration;
@@ -64,7 +69,7 @@ export class PersistentQuery {
   }
 
   static async build_search_query(p: PersistentQuery): Promise<SearchQuery> {
-    return new SearchQuery(p.search_text, p.included_tags, p.excluded_tags, p.min_rating, p.max_rating, p.frame_height);
+    return new SearchQuery(p.search_text, p.included_tags, p.excluded_tags, p.min_rating, p.max_rating, p.frame_height, p.studios);
   }
 
   static async find_video(query: PersistentQuery): Promise<VideoMeta | null> {

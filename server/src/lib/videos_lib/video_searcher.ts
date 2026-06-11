@@ -91,6 +91,8 @@ export class VideoSearcher {
       query.andWhere(`video.id NOT IN (${this.get_inner_query(this.search_query.excluded_tags, false).getSql()})`);
     if (this.search_query.studios.length > 0)
       query.andWhere(`video.id IN (${this.get_inner_query(this.search_query.studios, false).getSql()})`);
+    if (this.search_query.fairness_tags.length > 0)
+      query.andWhere(`video.id IN (${this.get_inner_query(this.search_query.fairness_tags, false).getSql()})`);
     return query;
   };
 

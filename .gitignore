@@ -11,3 +11,4 @@
 .DS_Store
 /docker-compose.yml
 /MEDIAPATH
+/PASSWORD

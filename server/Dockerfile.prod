@@ -1,0 +1,17 @@
+FROM node:18.2-alpine
+
+WORKDIR /app
+
+RUN apk add --update ffmpeg
+
+# Install deps first so this layer is cached unless package files change.
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Bake the source into the image (no volume mount -> no hot reload in production).
+COPY . .
+
+EXPOSE 5001
+
+# Run once via ts-node (transpile-only), not ts-node-dev: no file watching / restarts.
+CMD ["npm", "run", "prod"]

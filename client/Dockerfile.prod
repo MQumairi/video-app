@@ -1,0 +1,32 @@
+# --- Build stage: produce an optimized, minified static bundle ---
+FROM node:18.2-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+
+# REACT_APP_* vars are inlined into the bundle at build time. The browser runs on
+# the host and reaches the server via its published port, so localhost:5001 is correct.
+ARG REACT_APP_SERVER_HOST=localhost
+ARG REACT_APP_SERVER_PORT=5001
+ENV REACT_APP_SERVER_HOST=$REACT_APP_SERVER_HOST
+ENV REACT_APP_SERVER_PORT=$REACT_APP_SERVER_PORT
+
+RUN npm run build
+
+# --- Serve stage: lightweight static file server (no webpack dev server) ---
+FROM node:18.2-alpine
+
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=build /app/build ./build
+
+EXPOSE 3000
+
+# -s = single-page-app fallback (serves index.html for client-side routes)
+CMD ["serve", "-s", "build", "-l", "3000"]

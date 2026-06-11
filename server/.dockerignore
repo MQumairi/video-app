@@ -1,0 +1,13 @@
+node_modules
+dist
+videos
+images
+trash
+exported_data
+scripts
+test
+.env
+PASSWORD
+*.log
+.git
+.DS_Store

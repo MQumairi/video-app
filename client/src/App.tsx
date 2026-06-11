@@ -57,8 +57,8 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <Box component="div" sx={box_style}>
-        <CssBaseline />
         <AuthGate>
           <NavBar />
           <BrowserRouter>

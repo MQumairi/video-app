@@ -18,6 +18,7 @@ const Edit = async (req: Request, res: Response): Promise<PersistentQuery | unde
   found_query.included_tags = submitted_query.included_tags;
   found_query.excluded_tags = submitted_query.excluded_tags;
   found_query.studios = submitted_query.studios ?? [];
+  found_query.fairness_tags = submitted_query.fairness_tags ?? [];
   found_query.search_text = submitted_query.search_text;
   found_query.min_rating = submitted_query.min_rating;
   found_query.max_rating = submitted_query.max_rating;

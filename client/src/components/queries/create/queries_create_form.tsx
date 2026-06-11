@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
 import StudioSelector from "../../tags/util/selector/studio_selector";
+import FairnessSelector from "../../tags/util/selector/fairness_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
 import IPersistentQuery, { IPersistentQueryCreate } from "../../../models/persistent_query";
@@ -20,6 +21,7 @@ const QueriesCreateForm = () => {
   const [max_rating, set_max_rating] = useState<number>(10);
   const [min_resolution, set_min_resolution] = useState<number>(0);
   const [studios, set_studios] = useState<ITag[]>([]);
+  const [fairness_tags, set_fairness_tags] = useState<ITag[]>([]);
   const [query_videos, set_query_videos] = useState<IVideoMeta[]>([]);
 
   const tags_store = useContext(TagsStore);
@@ -31,6 +33,7 @@ const QueriesCreateForm = () => {
     set_max_rating(10);
     set_min_resolution(0);
     set_studios([]);
+    set_fairness_tags([]);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, []);
     set_query_videos([]);
@@ -44,6 +47,7 @@ const QueriesCreateForm = () => {
       included_tags: tags_store.included_tags,
       excluded_tags: tags_store.excluded_tags,
       studios: studios,
+      fairness_tags: fairness_tags,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -62,6 +66,7 @@ const QueriesCreateForm = () => {
       included_tags: tags_store.included_tags,
       excluded_tags: tags_store.excluded_tags,
       studios: studios,
+      fairness_tags: fairness_tags,
       min_rating: min_rating,
       max_rating: max_rating,
       frame_height: min_resolution,
@@ -114,6 +119,7 @@ const QueriesCreateForm = () => {
 
   useEffect(() => {
     set_excluded_tags();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -136,6 +142,9 @@ const QueriesCreateForm = () => {
         </FormGroup>
         <FormGroup row>
           <StudioSelector selected_studios={studios} on_change={set_studios} />
+        </FormGroup>
+        <FormGroup row>
+          <FairnessSelector selected_tags={fairness_tags} on_change={set_fairness_tags} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

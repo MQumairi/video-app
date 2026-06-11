@@ -22,6 +22,8 @@ import gallery_controller from "./controllers/gallery_controller";
 import file_script_controller from "./controllers/file_script_controller";
 import persistent_query_controller from "./controllers/persistent_query_controller";
 import playlist_controller from "./controllers/playlist_controller";
+import auth_controller from "./controllers/auth_controller";
+import auth_middleware from "./middleware/auth_middleware";
 
 dotenv.config();
 
@@ -45,9 +47,12 @@ createConnection({
   });
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Auth routes are reachable without a cookie; the guard below protects everything else.
+app.use("/api/auth", auth_controller);
+app.use(auth_middleware);
 app.use(express.static("images"));
 app.use(express.static("videos"));
 app.use("/api/videos", video_controller);

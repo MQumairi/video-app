@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npx jest",
     "start": "node dist/start.js",
-    "dev": "ts-node-dev src/start.ts"
+    "dev": "ts-node-dev src/start.ts",
+    "prod": "ts-node --transpile-only src/start.ts"
   },
   "keywords": [],
   "author": "",

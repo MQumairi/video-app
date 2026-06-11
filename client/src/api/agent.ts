@@ -16,11 +16,19 @@ export const server_url = `http://${server_host}:${server_port}`;
 export const base_url = `${server_url}/api`;
 
 axios.defaults.baseURL = base_url;
+// Send/receive the auth cookie cross-origin (client :3000 <-> server :5001).
+axios.defaults.withCredentials = true;
 
 const ignore_errors = {
   validateStatus: function (status: any) {
     return status < 500;
   },
+};
+
+export const Auth = {
+  status: async () => axios.get(`auth/status`, ignore_errors),
+  login: async (password: string) => axios.post(`auth/login`, { password }, ignore_errors),
+  logout: async () => axios.post(`auth/logout`, {}, ignore_errors),
 };
 
 export const Directory = {

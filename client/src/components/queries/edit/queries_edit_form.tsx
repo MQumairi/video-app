@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import RatingSelector from "../../misc/rating_selector";
 import TagSelector from "../../tags/util/selector/tag_selector";
 import StudioSelector from "../../tags/util/selector/studio_selector";
+import FairnessSelector from "../../tags/util/selector/fairness_selector";
 import { Button, ButtonGroup, FormGroup, TextField } from "@mui/material";
 import ResolutionSelector from "../../videos/search/resolution_selector";
 import IPersistentQuery from "../../../models/persistent_query";
@@ -87,12 +88,18 @@ const QueriesEditForm = (props: IProps) => {
     set_query({ ...query, studios });
   };
 
+  const handle_fairness_changes = (fairness_tags: ITag[]) => {
+    if (!query) return;
+    set_query({ ...query, fairness_tags });
+  };
+
   const fetch_query = async () => {
     if (!props.query_id || isNaN(+props.query_id)) return;
     const res = await PersistentQueries.details(+props.query_id);
     if (res.status !== 200) return;
     const new_query: IPersistentQuery = res.data;
     if (!new_query.studios) new_query.studios = [];
+    if (!new_query.fairness_tags) new_query.fairness_tags = [];
     set_query(new_query);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, new_query.included_tags);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, new_query.excluded_tags);
@@ -138,6 +145,9 @@ const QueriesEditForm = (props: IProps) => {
         </FormGroup>
         <FormGroup row>
           <StudioSelector selected_studios={query.studios ?? []} on_change={handle_studio_changes} />
+        </FormGroup>
+        <FormGroup row>
+          <FairnessSelector selected_tags={query.fairness_tags ?? []} on_change={handle_fairness_changes} />
         </FormGroup>
         <ButtonGroup size="large" sx={{ margin: "10px 0px 10px 0px" }} variant="contained">
           <Button onClick={handle_preview}>Preview</Button>

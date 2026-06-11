@@ -5,6 +5,7 @@ export interface IPersistentQueryCreate {
   included_tags: ITag[];
   excluded_tags: ITag[];
   studios: ITag[];
+  fairness_tags: ITag[];
   search_text: string;
   min_rating: number;
   max_rating: number;
@@ -24,6 +25,7 @@ export const empty_query = (): IPersistentQuery => {
     included_tags: [],
     excluded_tags: [],
     studios: [],
+    fairness_tags: [],
     search_text: "",
     min_rating: 0,
     max_rating: 0,

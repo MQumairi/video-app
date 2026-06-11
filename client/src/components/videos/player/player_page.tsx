@@ -23,9 +23,11 @@ const PlayerPage = () => {
   const fetch_video_meta = async () => {
     if (vid_path) await video_store.lookup_selected_video_from_path(vid_path);
     else if (vid_id) await video_store.lookup_selected_video(+vid_id);
-    if (!video_store.selected_video || back_url !== "") return;
-    // Set back url if we came from file system
-    set_back_url(`/browser/${PathConverter.to_query(video_store.selected_video.parent_path)}`);
+    // Set back url if we came from the file system (i.e. not from a tag/query/search context)
+    const params = search_params.toString();
+    if (!tag_id && !query_id && !params && video_store.selected_video) {
+      set_back_url(`/browser/${PathConverter.to_query(video_store.selected_video.parent_path)}`);
+    }
   };
 
   const set_button_urls = async () => {
@@ -33,22 +35,24 @@ const PlayerPage = () => {
     const params = search_params.toString();
     // If we came from /tag/x
     if (tag_id) {
+      set_back_url(`/tags/${tag_id}`);
       let res = await Tag.shuffle(+tag_id);
       if (res.status !== 200) return;
       const random_video = res.data;
       set_random_vid_url(`/tags/${tag_id}/video/${random_video.id}`);
-      set_back_url(`/tags/${tag_id}`);
+      return;
     }
     if (query_id) {
       set_back_url(`/queries/${query_id}`);
+      return;
     }
     // If we came from /search?x
-    else if (params) {
+    if (params) {
+      set_back_url(`/search?${params}`);
       let res = await Search.shuffle(params);
       if (res.status !== 200) return;
       const random_video: IVideoMeta = res.data;
       set_random_vid_url(`/player/${random_video.id}?${params}`);
-      set_back_url(`/search?${params}`);
     }
   };
 
@@ -56,7 +60,7 @@ const PlayerPage = () => {
     fetch_video_meta();
     set_button_urls();
     // eslint-disable-next-line
-  }, [back_url]);
+  }, [vid_id, vid_path, tag_id, query_id]);
 
   return <VideoDetails back_url={back_url} random_url={random_vid_url} />;
 };

@@ -119,6 +119,7 @@ const QueriesCreateForm = () => {
 
   useEffect(() => {
     set_excluded_tags();
+    // eslint-disable-next-line
   }, []);
 
   return (

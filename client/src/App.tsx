@@ -37,6 +37,7 @@ import PlaylistDetailsPage from "./components/playlists/details/playlist_details
 import PlaylistCreatePage from "./components/playlists/create/playlist_create_page";
 import PlaylistEditPage from "./components/playlists/edit/playlist_edit_page";
 import DeletePage from "./components/playlists/delete/delete_page";
+import AuthGate from "./components/auth/auth_gate";
 
 const darkTheme = createTheme({
   palette: {
@@ -58,8 +59,9 @@ const App = () => {
     <ThemeProvider theme={darkTheme}>
       <Box component="div" sx={box_style}>
         <CssBaseline />
-        <NavBar />
-        <BrowserRouter>
+        <AuthGate>
+          <NavBar />
+          <BrowserRouter>
           <Routes>
             {/* Video System */}
             <Route index element={<HomePage />} />
@@ -110,8 +112,9 @@ const App = () => {
             <Route path="file-scripts/:script_id/edit" element={<FileScriptEdit />} />
             {/* Cleanup */}
             <Route path="cleanup" element={<CleanupPage />} />
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </AuthGate>
       </Box>
     </ThemeProvider>
   );

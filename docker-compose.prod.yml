@@ -29,6 +29,10 @@ services:
       # must contain "videos" and "images" subdirectories.
       - "${MEDIA_ROOT:?MEDIA_ROOT is not set — run ./start.sh, which reads it from the MEDIAPATH file}/videos:/app/videos"
       - "${MEDIA_ROOT:?MEDIA_ROOT is not set — run ./start.sh, which reads it from the MEDIAPATH file}/images:/app/images"
+      # Auth password, mounted read-only at runtime so it stays out of the image.
+      # The server reads /app/PASSWORD at startup; if this file is absent, auth is
+      # disabled. Create ./PASSWORD in the repo root before running ./start.sh.
+      - "./PASSWORD:/app/PASSWORD:ro"
     restart: always
     depends_on:
       - database

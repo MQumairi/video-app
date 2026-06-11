@@ -16,11 +16,12 @@ const VideoItem = (props: IProps) => {
   const video_path = parmas_string.length > 0 ? `${props.url}?${parmas_string}` : props.url;
 
   return (
-    <a href={video_path} key={props.video.name}>
+    <a href={video_path} key={props.video.name} style={{ display: "block" }}>
       <ImageListItem
         key={props.video.id}
         sx={{
           position: 'relative', // Make sure the hover effect is relative to this container
+          width: '100%',
           '&:hover .top-bar': {
             opacity: 1, // Show the top bar on hover
           },
@@ -48,7 +49,10 @@ const VideoItem = (props: IProps) => {
           title={props.video.name}
           position="below"
         />
-        <Stack direction="row" spacing={1}>
+        {/* lineHeight is reset here because ImageListItem sets line-height:0 (to remove
+            the inline gap under tiled images), which otherwise collapses the chip labels
+            to zero height and clips their text — making the metadata appear blank. */}
+        <Stack direction="row" spacing={1} sx={{ lineHeight: "normal", mt: 1, flexWrap: "wrap", rowGap: 1 }}>
           <Chip label={calculate_resolution(props.video)} color="primary" variant="outlined" />
           <Chip label={calculate_duration(props.video)} color="primary" variant="outlined" />
           <Chip label={get_file_size_string(props.video)} color="primary" variant="outlined" />

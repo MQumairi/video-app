@@ -7,6 +7,7 @@ import { Subscriptions } from "@mui/icons-material";
 import IPersistentQuery from "../../../models/persistent_query";
 import DynamicPlaylistQueries from "../../tags/dynamic_playlist/dynamic_playlisy_queries";
 import { IPlaylist } from "../../../models/playlist";
+import TagsList from "../../tags/util/tags_list";
 
 const PlayListDetailsPage = () => {
   let playlist_id = useParams().playlist_id ?? 1;
@@ -51,6 +52,8 @@ const PlayListDetailsPage = () => {
         <Button onClick={handle_duplicate}>Duplicate</Button>
         <Button href={`/playlists/${playlist_id}/delete`}>Delete</Button>
       </ButtonGroup>
+      <h3>Tags Included in All Videos</h3>
+      {playlist.included_tags && playlist.included_tags.length > 0 ? <TagsList tags={playlist.included_tags} /> : <p>None</p>}
       <DynamicPlaylistQueries queries={playlist_queries} tag_id={playlist.id} />
     </div>
   );

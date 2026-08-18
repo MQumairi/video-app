@@ -7,6 +7,7 @@ import { Subscriptions } from "@mui/icons-material";
 import IPersistentQuery from "../../../models/persistent_query";
 import DynamicPlaylistQueries from "../../tags/dynamic_playlist/dynamic_playlisy_queries";
 import { IPlaylist } from "../../../models/playlist";
+import TagsList from "../../tags/util/tags_list";
 
 const PlayListDetailsPage = () => {
   let playlist_id = useParams().playlist_id ?? 1;
@@ -19,6 +20,13 @@ const PlayListDetailsPage = () => {
     const fetched_playlist: IPlaylist = res.data.playlist;
     set_playlist(fetched_playlist);
     set_playlist_queries(res.data.queries);
+  };
+
+  const handle_duplicate = async () => {
+    if (!playlist) return;
+    const res = await Playlist.duplicate(playlist.id);
+    if (res.status !== 201) return;
+    window.location.href = `/playlists/${res.data.id}`;
   };
 
   useEffect(() => {
@@ -41,8 +49,11 @@ const PlayListDetailsPage = () => {
         <Button href={`/playlists?tags_index_tab=0`}>Back</Button>
         <Button href={`/playlists/${playlist_id}/order/${1}`}>Play</Button>
         <Button href={`/playlists/${playlist_id}/edit`}>Edit</Button>
+        <Button onClick={handle_duplicate}>Duplicate</Button>
         <Button href={`/playlists/${playlist_id}/delete`}>Delete</Button>
       </ButtonGroup>
+      <h3>Tags Included in All Videos</h3>
+      {playlist.included_tags && playlist.included_tags.length > 0 ? <TagsList tags={playlist.included_tags} /> : <p>None</p>}
       <DynamicPlaylistQueries queries={playlist_queries} tag_id={playlist.id} />
     </div>
   );

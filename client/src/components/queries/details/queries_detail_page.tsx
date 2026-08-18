@@ -7,6 +7,16 @@ import { PersistentQueries } from "../../../api/agent";
 import TagsList from "../../tags/util/tags_list";
 import IVideoMeta from "../../../models/video_meta";
 import { VideoList } from "../../videos/util/video_list";
+import ITag from "../../../models/tag";
+import { resolution_from_height } from "../../../lib/video_file_meta_calculator";
+
+const none_label = "None";
+
+// The details view mirrors the create/edit forms, so every field is rendered even when unset.
+const tags_or_none = (tags: ITag[] | undefined) => {
+  if (!tags || tags.length === 0) return <p>{none_label}</p>;
+  return <TagsList tags={tags} />;
+};
 
 const QueriesDetailsPage = () => {
   let query_id = useParams().query_id ?? 1;
@@ -18,6 +28,13 @@ const QueriesDetailsPage = () => {
     const video_res = await PersistentQueries.preview_videos(query);
     if (video_res.status !== 200) return;
     set_query_videos(video_res.data.videos);
+  };
+
+  const handle_duplicate = async () => {
+    if (!query) return;
+    const res = await PersistentQueries.duplicate(query.id);
+    if (res.status !== 201) return;
+    window.location.href = `/queries/${res.data.id}`;
   };
 
   const fetch_query = async () => {
@@ -54,6 +71,9 @@ const QueriesDetailsPage = () => {
         <Button href={`/queries/${query.id}/edit`} variant="contained" size="medium">
           Edit
         </Button>
+        <Button onClick={handle_duplicate} variant="contained" size="medium">
+          Duplicate
+        </Button>
         <Button href={`/queries/delete/${query.id}`} variant="contained" size="medium">
           Delete
         </Button>
@@ -61,31 +81,36 @@ const QueriesDetailsPage = () => {
 
       <div style={{ marginTop: "20px" }}>
         <h1>{query.name}</h1>
-        {query.search_text.length > 0 && <p>Searching for: "{query.search_text}"</p>}
         <Grid container spacing={{ xs: 1, md: 2, lg: 4 }} columns={{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }}>
-          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 1}>
-            {query.included_tags.length > 0 && (
-              <div>
-                <h3>Included</h3>
-                <TagsList tags={query.included_tags} />
-              </div>
-            )}
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="rating">
+            <h3>Rating</h3>
+            <p>
+              From {query.min_rating} to {query.max_rating}
+            </p>
           </Grid>
-          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 2}>
-            {query.excluded_tags.length > 0 && (
-              <div>
-                <h3>Excluded</h3>
-                <TagsList tags={query.excluded_tags} />
-              </div>
-            )}
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="quality">
+            <h3>Quality</h3>
+            <p>{resolution_from_height(+query.frame_height)}</p>
           </Grid>
-          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key={query.id + 3}>
-            {(query.min_rating > 0 || query.max_rating < 10) && (
-              <div>
-                <h3>Rating</h3>
-                From {query.min_rating} to {query.max_rating}
-              </div>
-            )}
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="search">
+            <h3>Search</h3>
+            <p>{query.search_text.length > 0 ? `"${query.search_text}"` : none_label}</p>
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="included">
+            <h3>Included</h3>
+            {tags_or_none(query.included_tags)}
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="excluded">
+            <h3>Excluded</h3>
+            {tags_or_none(query.excluded_tags)}
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="studios">
+            <h3>Studios</h3>
+            {tags_or_none(query.studios)}
+          </Grid>
+          <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="fairness">
+            <h3>Fairness</h3>
+            {tags_or_none(query.fairness_tags)}
           </Grid>
         </Grid>
 

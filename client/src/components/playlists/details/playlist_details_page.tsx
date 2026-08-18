@@ -21,6 +21,13 @@ const PlayListDetailsPage = () => {
     set_playlist_queries(res.data.queries);
   };
 
+  const handle_duplicate = async () => {
+    if (!playlist) return;
+    const res = await Playlist.duplicate(playlist.id);
+    if (res.status !== 201) return;
+    window.location.href = `/playlists/${res.data.id}`;
+  };
+
   useEffect(() => {
     fetch_tag();
     // eslint-disable-next-line
@@ -41,6 +48,7 @@ const PlayListDetailsPage = () => {
         <Button href={`/playlists?tags_index_tab=0`}>Back</Button>
         <Button href={`/playlists/${playlist_id}/order/${1}`}>Play</Button>
         <Button href={`/playlists/${playlist_id}/edit`}>Edit</Button>
+        <Button onClick={handle_duplicate}>Duplicate</Button>
         <Button href={`/playlists/${playlist_id}/delete`}>Delete</Button>
       </ButtonGroup>
       <DynamicPlaylistQueries queries={playlist_queries} tag_id={playlist.id} />

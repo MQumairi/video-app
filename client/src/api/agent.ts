@@ -91,6 +91,7 @@ export const Playlist = {
   details: async (playlist_id: number) => axios.get(`playlists/${playlist_id}`),
   create: async (playlist: IPlaylistCreate, queries: IPersistentQuery[] = []) => axios.post(`playlists`, { playlist, queries }),
   edit: async (playlist: IPlaylist, queries: IPersistentQuery[] = []) => axios.put(`playlists/${playlist.id}`, { playlist, queries }),
+  duplicate: async (playlist_id: number) => axios.post(`playlists/${playlist_id}/duplicate`),
   delete: async (playlist: IPlaylist) => axios.delete(`playlists/${playlist.id}`),
   find_video: async (playlist_id: number, order: number) => axios.get(`playlists/${playlist_id}/video/${order}`),
 };
@@ -125,6 +126,7 @@ export const PersistentQueries = {
   create: async (query: IPersistentQueryCreate) => axios.post(`persistent-queries`, query),
   details: async (query_id: number) => axios.get(`persistent-queries/${query_id}`),
   edit: async (query: IPersistentQuery) => axios.put(`persistent-queries/${query.id}`, query),
+  duplicate: async (query_id: number) => axios.post(`persistent-queries/${query_id}/duplicate`),
   delete: async (query: IPersistentQuery) => axios.delete(`persistent-queries/${query.id}`),
   preview_videos: async (query: IPersistentQuery) => axios.put(`persistent-queries/preview-videos`, { query }),
 };

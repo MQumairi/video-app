@@ -33,7 +33,7 @@ export class PlaylistFactory {
 
   private static async create_pqtp(playlist: Playlist, query: PersistentQuery, order: number): Promise<PersistentQueryToPlaylist> {
     const found_pq2p = await getRepository(PersistentQueryToPlaylist).findOne({
-      where: { playlist: { id: playlist.id }, persistent_query: { id: query.id }, order: order },
+      where: { playlist_2: { id: playlist.id }, persistent_query: { id: query.id }, order: order },
     });
     if (found_pq2p) {
       return found_pq2p;

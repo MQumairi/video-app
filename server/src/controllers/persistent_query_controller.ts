@@ -5,6 +5,7 @@ import Details from "../handlers/persistent_queries/details";
 import Delete from "../handlers/persistent_queries/delete";
 import PreviewVideos from "../handlers/persistent_queries/preview_videos";
 import Edit from "../handlers/persistent_queries/edit";
+import Duplicate from "../handlers/persistent_queries/duplicate";
 
 const persistent_query_controller = Router();
 
@@ -26,6 +27,10 @@ persistent_query_controller.get("/:id", async (req: Request, res: Response) => {
 
 persistent_query_controller.post("/", async (req: Request, res: Response) => {
   await Create(req, res);
+});
+
+persistent_query_controller.post("/:id/duplicate", async (req: Request, res: Response) => {
+  await Duplicate(req, res);
 });
 
 persistent_query_controller.delete("/:id", async (req: Request, res: Response) => {

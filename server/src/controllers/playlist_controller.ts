@@ -5,6 +5,7 @@ import Edit from "../handlers/playlists/edit";
 import Details from "../handlers/playlists/details";
 import FindVideo from "../handlers/playlists/find_video";
 import Delete from "../handlers/playlists/delete";
+import Duplicate from "../handlers/playlists/duplicate";
 
 const playlist_controller = Router();
 
@@ -14,6 +15,10 @@ playlist_controller.get("/", async (req: Request, res: Response) => {
 
 playlist_controller.post("/", async (req: Request, res: Response) => {
   await Create(req, res);
+});
+
+playlist_controller.post("/:id/duplicate", async (req: Request, res: Response) => {
+  await Duplicate(req, res);
 });
 
 playlist_controller.put("/:id", async (req: Request, res: Response) => {

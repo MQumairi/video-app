@@ -20,6 +20,13 @@ const QueriesDetailsPage = () => {
     set_query_videos(video_res.data.videos);
   };
 
+  const handle_duplicate = async () => {
+    if (!query) return;
+    const res = await PersistentQueries.duplicate(query.id);
+    if (res.status !== 201) return;
+    window.location.href = `/queries/${res.data.id}`;
+  };
+
   const fetch_query = async () => {
     const res = await PersistentQueries.details(+query_id);
     if (res.status !== 200) return;
@@ -53,6 +60,9 @@ const QueriesDetailsPage = () => {
         </Button>
         <Button href={`/queries/${query.id}/edit`} variant="contained" size="medium">
           Edit
+        </Button>
+        <Button onClick={handle_duplicate} variant="contained" size="medium">
+          Duplicate
         </Button>
         <Button href={`/queries/delete/${query.id}`} variant="contained" size="medium">
           Delete

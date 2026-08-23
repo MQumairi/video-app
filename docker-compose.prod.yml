@@ -41,9 +41,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-      args:
-        REACT_APP_SERVER_HOST: localhost
-        REACT_APP_SERVER_PORT: 5001
     container_name: va_client
     ports:
       - "3000:3000"

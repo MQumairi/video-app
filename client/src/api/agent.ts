@@ -10,7 +10,7 @@ import IFileScript from "../models/file_script";
 import IPersistentQuery, { IPersistentQueryCreate } from "../models/persistent_query";
 import { IPlaylist, IPlaylistCreate } from "../models/playlist";
 
-const server_host = process.env.REACT_APP_SERVER_HOST ?? "localhost";
+const server_host = process.env.REACT_APP_SERVER_HOST || window.location.hostname || "localhost";
 const server_port = process.env.REACT_APP_SERVER_PORT ?? 5001;
 export const server_url = `http://${server_host}:${server_port}`;
 export const base_url = `${server_url}/api`;

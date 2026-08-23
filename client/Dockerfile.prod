@@ -8,13 +8,6 @@ RUN npm ci
 
 COPY . .
 
-# REACT_APP_* vars are inlined into the bundle at build time. The browser runs on
-# the host and reaches the server via its published port, so localhost:5001 is correct.
-ARG REACT_APP_SERVER_HOST=localhost
-ARG REACT_APP_SERVER_PORT=5001
-ENV REACT_APP_SERVER_HOST=$REACT_APP_SERVER_HOST
-ENV REACT_APP_SERVER_PORT=$REACT_APP_SERVER_PORT
-
 RUN npm run build
 
 # --- Serve stage: lightweight static file server (no webpack dev server) ---

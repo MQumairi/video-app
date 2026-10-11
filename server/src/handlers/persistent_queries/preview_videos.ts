@@ -10,7 +10,8 @@ const PreviewVideos = async (req: Request, res: Response): Promise<VideoMeta[]> 
     res.status(404).send("PersistentQuery not found");
     return [];
   }
-  const search_query = await PersistentQuery.build_search_query(persistent_query);
+  // Templates can be previewed on their own; other queries are previewed with their template merged in
+  const search_query = await PersistentQuery.build_search_query(await PersistentQuery.resolve(persistent_query));
   const media_searcher = new VideoSearcher(search_query);
   const [videos, count] = await media_searcher.random_videos();
   console.log("count is:", count);

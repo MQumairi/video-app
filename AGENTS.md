@@ -110,6 +110,10 @@ A saved search filter used as a building block for dynamic playlists.
 | `min_duration_sec`| decimal |                                    |
 | `max_duration_sec`| decimal |                                    |
 | `frame_height`    | decimal | minimum resolution                 |
+| `is_template`     | bool    | template: previewable, but can't be executed or added to playlists |
+| `template_id`     | int FK  | template this query inherits from (nullable, `SET NULL` on delete) |
+
+A query with a template is run through `PersistentQuery.resolve()` before searching: included/excluded/fairness tags are combined, rating/duration/resolution bounds take the stricter value, both search texts must match, and the query's own `studios` replace the template's (the template's apply only if the query has none). Templates can't have templates, and `is_template` is fixed at creation.
 
 ### `PersistentQueryToPlaylist`
 Junction table linking a `PersistentQuery` to a dynamic playlist, carrying an `order` (1-indexed position in the playlist). Has two playlist FK columns: `playlist` (Tag) and `playlist_2` (Playlist entity) to support both playlist representations.

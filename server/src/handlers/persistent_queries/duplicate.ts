@@ -23,6 +23,8 @@ const Duplicate = async (req: Request, res: Response): Promise<PersistentQuery |
   duplicate.min_duration_sec = found_query.min_duration_sec;
   duplicate.max_duration_sec = found_query.max_duration_sec;
   duplicate.frame_height = found_query.frame_height;
+  duplicate.is_template = found_query.is_template;
+  duplicate.template_id = found_query.template_id;
   const saved_query = await query_repo.save(duplicate);
   res.status(201).send(saved_query);
   return saved_query;

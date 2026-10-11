@@ -8,6 +8,11 @@ const Create = async (req: Request, res: Response): Promise<Tag | undefined> => 
     let tag: Tag = req.body.tag;
     console.log("tag is:", tag);
     console.log("req body is:", req.body.tag);
+    const playlist_error = tag.is_dynamic_playlist ? await PersistentQuery.playlist_assignment_error(req.body.queries) : null;
+    if (playlist_error) {
+      res.status(400).send(playlist_error);
+      return undefined;
+    }
     const tag_repo = getRepository(Tag);
     const found_tag = await tag_repo.findOne({ where: { name: tag.name } });
     if (found_tag) {

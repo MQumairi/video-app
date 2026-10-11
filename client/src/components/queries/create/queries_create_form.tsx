@@ -13,8 +13,13 @@ import IVideoMeta from "../../../models/video_meta";
 import ITag from "../../../models/tag";
 import { VideoList } from "../../videos/util/video_list";
 import { Tag } from "../../../api/agent";
+import { useSearchParams } from "react-router-dom";
+import TemplateSelector from "../util/template_selector";
 
 const QueriesCreateForm = () => {
+  const [search_params] = useSearchParams({});
+  const is_template = search_params.get("template") === "true";
+  const [template_id, set_template_id] = useState<number | null>(null);
   const [name, set_name] = useState<string>("");
   const [searched_text, set_searched_text] = useState<string>("");
   const [min_rating, set_min_rating] = useState<number>(0);
@@ -34,6 +39,7 @@ const QueriesCreateForm = () => {
     set_min_resolution(0);
     set_studios([]);
     set_fairness_tags([]);
+    set_template_id(null);
     tags_store.set_selected_tags(TagSelectorType.IncludedTags, []);
     tags_store.set_selected_tags(TagSelectorType.ExcludedTags, []);
     set_query_videos([]);
@@ -53,6 +59,8 @@ const QueriesCreateForm = () => {
       frame_height: min_resolution,
       min_duration_sec: 0,
       max_duration_sec: 99999999,
+      is_template: is_template,
+      template_id: is_template ? null : template_id,
     };
     const res = await PersistentQueries.preview_videos(persistent_query);
     if (res.status !== 200) return;
@@ -72,6 +80,8 @@ const QueriesCreateForm = () => {
       frame_height: min_resolution,
       min_duration_sec: 0,
       max_duration_sec: 99999999,
+      is_template: is_template,
+      template_id: is_template ? null : template_id,
     };
     await PersistentQueries.create(persistent_query);
     reset();
@@ -124,7 +134,13 @@ const QueriesCreateForm = () => {
 
   return (
     <div>
+      {is_template && <h2>New Template</h2>}
       <FormGroup sx={{ marginTop: "20px", gap: "15px" }}>
+        {!is_template && (
+          <FormGroup row>
+            <TemplateSelector template_id={template_id} on_change={set_template_id} />
+          </FormGroup>
+        )}
         <FormGroup row>
           <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={name} onChange={handle_name_change} label="Name" />
           <RatingSelector label={"Min"} rating={min_rating} handle_rating_change={handle_min_rating_change} />

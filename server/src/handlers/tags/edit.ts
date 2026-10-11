@@ -14,6 +14,11 @@ const Edit = async (req: Request, res: Response): Promise<Tag | undefined> => {
     return undefined;
   }
   const submitted_tag: Tag = req.body.tag;
+  const playlist_error = await PersistentQuery.playlist_assignment_error(req.body.queries);
+  if (submitted_tag.is_dynamic_playlist && playlist_error) {
+    res.status(400).send(playlist_error);
+    return undefined;
+  }
   console.log(submitted_tag);
   // Set the tag name
   found_tag.name = submitted_tag.name;

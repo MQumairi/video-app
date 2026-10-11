@@ -15,6 +15,8 @@ export enum ThumbStatus {
 
 export class SearchQuery {
   searched_text: string;
+  // Further texts that video paths must also contain (e.g. a persistent query's template text)
+  additional_searched_texts: string[] = [];
   included_tags: Tag[];
   excluded_tags: Tag[];
   studios: Tag[];

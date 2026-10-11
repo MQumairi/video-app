@@ -25,6 +25,16 @@ const Edit = async (req: Request, res: Response): Promise<PersistentQuery | unde
   found_query.min_duration_sec = submitted_query.min_duration_sec;
   found_query.max_duration_sec = submitted_query.max_duration_sec;
   found_query.frame_height = submitted_query.frame_height;
+  // is_template is fixed at creation, so a template's children can't end up inheriting from a regular query
+  if (!found_query.is_template) {
+    const template_id = submitted_query.template_id ?? null;
+    const template_error = await PersistentQuery.template_assignment_error(found_query, template_id);
+    if (template_error) {
+      res.status(400).send(template_error);
+      return;
+    }
+    found_query.template_id = template_id;
+  }
   const saved_query = await query_repo.save(found_query);
   console.log("finished saving...");
   res.status(200).send(saved_query);

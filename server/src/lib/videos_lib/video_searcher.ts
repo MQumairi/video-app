@@ -79,8 +79,10 @@ export class VideoSearcher {
 
   private query_searched_text = (query: SelectQueryBuilder<VideoMeta>): SelectQueryBuilder<VideoMeta> => {
     const searched_text = this.search_query.searched_text;
-    if (searched_text.length === 0) return query;
-    query.andWhere(`video.path LIKE '%${searched_text}%'`);
+    if (searched_text.length > 0) query.andWhere(`video.path LIKE '%${searched_text}%'`);
+    (this.search_query.additional_searched_texts ?? []).forEach((text, i) => {
+      if (text.length > 0) query.andWhere(`video.path LIKE :additional_searched_text_${i}`, { [`additional_searched_text_${i}`]: `%${text}%` });
+    });
     return query;
   };
 

@@ -27,7 +27,8 @@ class QueriesStore {
     queires.push(empty_query());
     let res = await PersistentQueries.list();
     if (res.status !== 200) return;
-    const loaded_queries: IPersistentQuery[] = res.data;
+    // Templates can't be executed, so they're left out of the queries offered for playlists
+    const loaded_queries: IPersistentQuery[] = res.data.filter((q: IPersistentQuery) => !q.is_template);
     queires.push(...loaded_queries);
     this.set_queries(queires);
   };

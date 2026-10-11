@@ -12,6 +12,7 @@ import TagsStore, { TagSelectorType } from "../../../store/tags_store";
 import { PersistentQueries } from "../../../api/agent";
 import IVideoMeta from "../../../models/video_meta";
 import { VideoList } from "../../videos/util/video_list";
+import TemplateSelector from "../util/template_selector";
 
 interface IProps {
   query_id: string;
@@ -88,6 +89,11 @@ const QueriesEditForm = (props: IProps) => {
     set_query({ ...query, studios });
   };
 
+  const handle_template_change = (template_id: number | null) => {
+    if (!query) return;
+    set_query({ ...query, template_id, template: undefined });
+  };
+
   const handle_fairness_changes = (fairness_tags: ITag[]) => {
     if (!query) return;
     set_query({ ...query, fairness_tags });
@@ -119,7 +125,13 @@ const QueriesEditForm = (props: IProps) => {
 
   return (
     <div>
+      {query.is_template && <h2>Editing Template</h2>}
       <FormGroup sx={{ marginTop: "20px", gap: "15px" }}>
+        {!query.is_template && (
+          <FormGroup row>
+            <TemplateSelector template_id={query.template_id ?? null} on_change={handle_template_change} />
+          </FormGroup>
+        )}
         <FormGroup row>
           <TextField sx={{ flexGrow: "100" }} variant="outlined" type="text" value={query.name} onChange={handle_name_change} label="Name" />
           <RatingSelector label={"Min"} rating={query.min_rating} handle_rating_change={handle_min_rating_change} />

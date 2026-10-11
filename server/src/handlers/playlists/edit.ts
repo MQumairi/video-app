@@ -15,6 +15,11 @@ const Edit = async (req: Request, res: Response): Promise<Playlist | undefined> 
     return undefined;
   }
   const submitted_playlist: Playlist = req.body.playlist;
+  const playlist_error = await PersistentQuery.playlist_assignment_error(req.body.queries);
+  if (playlist_error) {
+    res.status(400).send(playlist_error);
+    return undefined;
+  }
   // Set the playlist name
   found_playlist.name = submitted_playlist.name;
   // Set the tags included in every video of the playlist. The submitted tags are re-read from the

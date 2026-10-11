@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Button, ButtonGroup, Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
-import IPersistentQuery from "../../../models/persistent_query";
+import IPersistentQuery, { TEMPLATE_MERGE_HELP, TEMPLATE_STUDIOS_HELP } from "../../../models/persistent_query";
 import { useEffect, useState } from "react";
 import { PersistentQueries } from "../../../api/agent";
 import TagsList from "../../tags/util/tags_list";
@@ -81,6 +81,17 @@ const QueriesDetailsPage = () => {
 
       <div style={{ marginTop: "20px" }}>
         <h1>{query.name}</h1>
+        {query.is_template && <p>This is a template: it can be previewed, but can't be added to playlists.</p>}
+        {query.template && (
+          <div>
+            <h3>
+              Template: <a href={`/queries/${query.template.id}`}>{query.template.name}</a>
+            </h3>
+            <p>
+              {TEMPLATE_MERGE_HELP} {TEMPLATE_STUDIOS_HELP} The fields below show this query's own configuration; the videos include the template's.
+            </p>
+          </div>
+        )}
         <Grid container spacing={{ xs: 1, md: 2, lg: 4 }} columns={{ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }}>
           <Grid item xs={1} sm={1} md={1} lg={1} xl={1} key="rating">
             <h3>Rating</h3>

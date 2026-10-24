@@ -40,18 +40,8 @@ const ProcessVideo = async (video_path: string): Promise<void> => {
 
 const SaveDirTags = async (video: VideoMeta): Promise<Tag[]> => {
   const parent_dirs = video.parent_path.split("/");
-  const tag_repo = getRepository(Tag);
   const tags: Tag[] = [];
-  for (let dir_name of parent_dirs) {
-    let found_tag = await tag_repo.findOne({ where: { name: dir_name } });
-    if (!found_tag) {
-      console.log(`a tag named ${dir_name} doesn't exist. Creating.`);
-      let tag = new Tag();
-      tag.name = dir_name;
-      found_tag = await tag_repo.save(tag);
-    }
-    tags.push(found_tag);
-  }
+  for (let dir_name of parent_dirs) tags.push(await Tag.find_or_create(dir_name));
   return tags;
 };
 

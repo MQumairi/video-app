@@ -102,18 +102,27 @@ export class Tag {
     const tags: Tag[] = [];
     if (!(await Directory.is_directory(path))) tags;
     const tag_names = path.split("/");
-    const tag_repo = getRepository(Tag);
-    for (let name of tag_names) {
-      let found_tag = await tag_repo.findOne({ where: { name: name } });
-      if (found_tag) {
-        tags.push(found_tag);
-        continue;
-      }
-      const new_tag = Tag.create(name);
-      const saved_tag = await tag_repo.save(new_tag);
-      tags.push(saved_tag);
-    }
+    for (let name of tag_names) tags.push(await Tag.find_or_create(name));
     return tags;
+  }
+
+  // Case-insensitive lookup. If tags differing only by casing already exist, the oldest wins.
+  static async find_by_name(name: string, relations: string[] = []): Promise<Tag | undefined> {
+    const tag_repo = getRepository(Tag);
+    const found_tag = await tag_repo
+      .createQueryBuilder("tag")
+      .where("LOWER(tag.name) = LOWER(:name)", { name })
+      .orderBy("tag.id", "ASC")
+      .getOne();
+    if (!found_tag || relations.length === 0) return found_tag;
+    return tag_repo.findOne(found_tag.id, { relations });
+  }
+
+  static async find_or_create(name: string): Promise<Tag> {
+    const found_tag = await Tag.find_by_name(name);
+    if (found_tag) return found_tag;
+    console.log(`a tag named ${name} doesn't exist. Creating.`);
+    return getRepository(Tag).save(Tag.create(name));
   }
 
   static get_ids(tags: Tag[]): number[] {

@@ -14,7 +14,7 @@ const Create = async (req: Request, res: Response): Promise<Tag | undefined> => 
       return undefined;
     }
     const tag_repo = getRepository(Tag);
-    const found_tag = await tag_repo.findOne({ where: { name: tag.name } });
+    const found_tag = await Tag.find_by_name(tag.name);
     if (found_tag) {
       console.log("Tag already exists.");
       res.status(201).send(found_tag);
